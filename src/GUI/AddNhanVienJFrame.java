@@ -176,7 +176,6 @@ public class AddNhanVienJFrame extends javax.swing.JFrame {
     private void btn_exitMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_exitMouseClicked
         this.dispose();
     }//GEN-LAST:event_btn_exitMouseClicked
-
     private void btn_addMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_addMouseClicked
         if(jtf_id_nv.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Vui lòng nhập họ tên", "erorr", 0);
@@ -207,7 +206,6 @@ public class AddNhanVienJFrame extends javax.swing.JFrame {
 
         } catch (ParseException ex) {
             JOptionPane.showMessageDialog(null, "Lỗi nhập ngày", "Erorr", 0);
-            jtf_date_nv.setText("");
             return;
         }
         nv.setGioiTinh(jtf_gioitinh_nv.getText());

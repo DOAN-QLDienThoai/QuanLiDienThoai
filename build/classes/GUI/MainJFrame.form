@@ -121,7 +121,7 @@
               </Group>
               <Group type="103" rootIndex="2" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace min="0" pref="114" max="32767" attributes="0"/>
+                      <EmptySpace min="0" pref="106" max="32767" attributes="0"/>
                       <Component id="jpanel_menu_bottom" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -167,24 +167,24 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="btn_nv" alignment="0" max="32767" attributes="0"/>
                   <Component id="btn_thuoctinh" alignment="0" max="32767" attributes="0"/>
                   <Component id="btn_dt" pref="200" max="32767" attributes="0"/>
+                  <Component id="btn_nv" alignment="0" max="32767" attributes="0"/>
                   <Component id="btn_ncc" alignment="0" pref="200" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
-                      <Component id="btn_nv" min="-2" pref="33" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btn_thuoctinh" min="-2" pref="37" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                      <Component id="btn_nv" min="-2" pref="43" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="btn_thuoctinh" min="-2" pref="37" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                       <Component id="btn_dt" min="-2" pref="37" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="btn_ncc" min="-2" pref="33" max="-2" attributes="0"/>
-                      <EmptySpace pref="317" max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="btn_ncc" min="-2" pref="38" max="-2" attributes="0"/>
+                      <EmptySpace pref="312" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -196,6 +196,7 @@
                   <Font name="Segoe UI" size="14" style="0"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Thu&#x1ed9;c T&#xed;nh"/>
+                <Property name="horizontalAlignment" type="int" value="10"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="btn_nv">
@@ -204,6 +205,7 @@
                   <Font name="Segoe UI" size="14" style="0"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Nh&#xe2;n Vi&#xea;n"/>
+                <Property name="horizontalAlignment" type="int" value="10"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="btn_ncc">
@@ -212,6 +214,7 @@
                   <Font name="Segoe UI" size="14" style="0"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Nh&#xe0; Cung C&#x1ea5;p"/>
+                <Property name="horizontalAlignment" type="int" value="10"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JButton" name="btn_dt">
@@ -220,6 +223,7 @@
                   <Font name="Segoe UI" size="14" style="0"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="&#x110;i&#x1ec7;n Tho&#x1ea1;i"/>
+                <Property name="horizontalAlignment" type="int" value="10"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -247,7 +251,7 @@
                       <Component id="jLabel6" min="-2" pref="140" max="-2" attributes="0"/>
                       <Component id="jpanel_timkiem_nv" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="432" max="32767" attributes="0"/>
+                  <EmptySpace pref="438" max="32767" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
@@ -447,8 +451,8 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jtf_find" min="-2" pref="179" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="jtf_find" min="-2" pref="185" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Component id="jlabel_look" min="-2" pref="45" max="-2" attributes="0"/>
                       <EmptySpace pref="18" max="32767" attributes="0"/>
                   </Group>
@@ -515,7 +519,7 @@
                       </Group>
                       <Component id="jScrollPane2" alignment="0" min="-2" pref="900" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="124" max="32767" attributes="0"/>
+                  <EmptySpace pref="132" max="32767" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
@@ -535,11 +539,11 @@
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="jpanel_chucNang_ncc" pref="85" max="32767" attributes="0"/>
                       <Component id="jpanel_timkiem_ncc" max="32767" attributes="0"/>
-                      <Component id="jpanel_chucNang_ncc" pref="95" max="32767" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                  <Component id="jScrollPane2" min="-2" pref="352" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <Component id="jScrollPane2" min="-2" pref="370" max="-2" attributes="0"/>
                   <EmptySpace pref="15" max="32767" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
@@ -568,9 +572,9 @@
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                       <Component id="jlabel_add_ncc" min="-2" pref="50" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="52" max="-2" attributes="0"/>
                       <Component id="jlabel_update_ncc" min="-2" pref="50" max="-2" attributes="0"/>
-                      <EmptySpace pref="55" max="32767" attributes="0"/>
+                      <EmptySpace pref="54" max="32767" attributes="0"/>
                       <Component id="jlabel_delete_ncc" min="-2" pref="50" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                   </Group>
@@ -585,14 +589,14 @@
                               <Component id="jlabel_add_ncc" min="-2" pref="49" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" pref="22" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="1" attributes="0">
                                   <Component id="jlabel_update_ncc" min="-2" pref="49" max="-2" attributes="0"/>
                                   <Component id="jlabel_delete_ncc" min="-2" pref="49" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
-                      <EmptySpace max="32767" attributes="0"/>
+                      <EmptySpace pref="18" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -685,9 +689,9 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Component id="jtf_find_ncc" min="-2" pref="188" max="-2" attributes="0"/>
-                      <EmptySpace pref="11" max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jlabel_look_ncc" min="-2" pref="49" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -696,10 +700,10 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="36" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="jtf_find_ncc" pref="42" max="32767" attributes="0"/>
-                          <Component id="jlabel_look_ncc" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Component id="jlabel_look_ncc" min="-2" pref="42" max="-2" attributes="0"/>
+                          <Component id="jtf_find_ncc" min="-2" pref="33" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                   </Group>

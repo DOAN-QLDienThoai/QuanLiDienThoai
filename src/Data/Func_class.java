@@ -4,6 +4,7 @@
  */
 package Data;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -19,9 +20,7 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class Func_class {
     public void disPlayImage(int width,int height,String linkImage,JLabel jlabel){
-        ImageIcon imageIcon=new ImageIcon(getClass().getResource(linkImage));
-        Image image=imageIcon.getImage().getScaledInstance(width,height,Image.SCALE_SMOOTH);
-        jlabel.setIcon(new ImageIcon(image));
+        jlabel.setIcon(new FlatSVGIcon("./resources/icon/a.svg",0.5f));
     }
     public void centerTable(JTable table){
         DefaultTableCellRenderer center=new DefaultTableCellRenderer();
