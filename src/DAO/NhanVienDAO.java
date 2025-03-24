@@ -78,6 +78,8 @@ public class NhanVienDAO {
         }
         return 0;
     }
+    
+    
 
     public ArrayList<NhanVienDTO> listNV() {
         ArrayList<NhanVienDTO> listNV = new ArrayList<NhanVienDTO>();
@@ -100,4 +102,6 @@ public class NhanVienDAO {
         }
         return listNV;
     }
+    
+    
 }

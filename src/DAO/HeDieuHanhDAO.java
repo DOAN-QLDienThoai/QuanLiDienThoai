@@ -10,17 +10,17 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
+import java.util.HashMap;
 
 public class HeDieuHanhDAO {
 
     public int insertHeDieuHanh(HeDieuHanhDTO hdh) {
-        String sqlAddHDH = "INSERT INTO HeDieuHanh(maHDH,tenHDH,trangThai)"
-                + "VALUES (?,?,1)";
+        String sqlAddHDH = "INSERT INTO HeDieuHanh(tenHDH,trangThai)"
+                + "VALUES (?,1)";
         PreparedStatement ps;
         try {
             ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlAddHDH);
-            ps.setString(1, hdh.getMaHDH());
-            ps.setString(2, hdh.getTenHDH());
+            ps.setString(1, hdh.getTenHDH());
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Thêm hệ điều hành thành công", "Success", 1);
             }
@@ -36,7 +36,7 @@ public class HeDieuHanhDAO {
         try {
             ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlUpdateHDH);
             ps.setString(1, hdh.getTenHDH());
-            ps.setString(2, hdh.getMaHDH());
+            ps.setInt(2, hdh.getMaHDH());
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Cập nhật thành công", "Success", 1);
             }
@@ -46,12 +46,12 @@ public class HeDieuHanhDAO {
         return 0;
     }
 
-    public int deleteHDH(String maHDH) {
+    public int deleteHDH(int maHDH) {
         String sqlDelete = "UPDATE HeDieuHanh SET trangThai=0 WHERE maHDH=? ";
         PreparedStatement ps;
         try {
             ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlDelete);
-            ps.setString(1, maHDH);
+            ps.setInt(1, maHDH);
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Xóa thành công", "Success", 1);
             }
@@ -70,7 +70,7 @@ public class HeDieuHanhDAO {
             ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlAllHDH);
             rs = ps.executeQuery();
             while (rs.next()) {
-                String maHDH = rs.getString("maHDH");
+                int maHDH = rs.getInt("maHDH");
                 String tenHDH = rs.getString("tenHDH");
                 listHDH.add(new HeDieuHanhDTO(maHDH, tenHDH));
             }
@@ -78,5 +78,24 @@ public class HeDieuHanhDAO {
             e.printStackTrace();
         }
         return listHDH;
+    }
+    
+    public HashMap<String,Integer> listMapHDH() {
+        HashMap<String, Integer> mapHDH = new HashMap<>();
+        String sql = "SELECT * FROM HeDieuHanh WHERE trangThai=1";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int maHDH = rs.getInt("maHDH");
+                String tenHDH = rs.getString("tenHDH");
+                mapHDH.put(tenHDH,maHDH);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mapHDH;
     }
 }

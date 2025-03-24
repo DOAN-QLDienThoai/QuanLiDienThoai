@@ -20,7 +20,9 @@ import javax.swing.table.DefaultTableCellRenderer;
  */
 public class Func_class {
     public void disPlayImage(int width,int height,String linkImage,JLabel jlabel){
-        jlabel.setIcon(new FlatSVGIcon("./resources/icon/a.svg",0.5f));
+        ImageIcon imgIcon=new ImageIcon(linkImage);
+        Image image=imgIcon.getImage().getScaledInstance(width, height,Image.SCALE_SMOOTH);
+        jlabel.setIcon(new ImageIcon(image));
     }
     public void centerTable(JTable table){
         DefaultTableCellRenderer center=new DefaultTableCellRenderer();

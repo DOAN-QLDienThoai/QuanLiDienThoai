@@ -9,17 +9,17 @@ package DTO;
  * @author kiman
  */
 public class MauSacDTO {
-    private String maMau;
+    private int maMau;
     private String tenMau;
     public MauSacDTO(){};
-    public MauSacDTO(String maMau,String tenMau){
+    public MauSacDTO(int maMau,String tenMau){
         this.maMau=maMau;
         this.tenMau=tenMau;
     }
-    public String getMaMau(){
+    public int getMaMau(){
         return this.maMau;
     }
-    public void setMaMau(String maMau){
+    public void setMaMau(int maMau){
         this.maMau=maMau;
     }
     public String getTenMau(){

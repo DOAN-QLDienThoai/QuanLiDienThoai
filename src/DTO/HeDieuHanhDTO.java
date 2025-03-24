@@ -9,17 +9,17 @@ package DTO;
  * @author kiman
  */
 public class HeDieuHanhDTO {
-    private String maHDH;
+    private int maHDH;
     private String tenHDH;
     public HeDieuHanhDTO(){};
-    public HeDieuHanhDTO(String maHDH,String tenHDH){
+    public HeDieuHanhDTO(int maHDH,String tenHDH){
         this.maHDH=maHDH;
         this.tenHDH=tenHDH;
     }
-    public String getMaHDH(){
+    public int getMaHDH(){
         return this.maHDH;
     }
-    public void setMaHDH(String maHDH){
+    public void setMaHDH(int maHDH){
         this.maHDH=maHDH;
     }
     public String getTenHDH(){
