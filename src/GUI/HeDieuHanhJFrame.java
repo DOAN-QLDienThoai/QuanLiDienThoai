@@ -34,7 +34,7 @@ public class HeDieuHanhJFrame extends javax.swing.JFrame {
     }
     public void addDataTable() {
         ArrayList<HeDieuHanhDTO> listHDH = new HeDieuHanhDAO().listHDH();
-        String[] colNames = {"Mã Màu", "Tên màu"};
+        String[] colNames = {"Mã Hệ Điều Hành", "Tên Hệ Điều Hành"};
         Object[][] rows = new Object[listHDH.size()][colNames.length];
         for (int i = 0; i < listHDH.size(); i++) {
             rows[i][0] = listHDH.get(i).getMaHDH();
