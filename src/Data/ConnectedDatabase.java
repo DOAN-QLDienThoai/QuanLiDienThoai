@@ -1,43 +1,44 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Data;
 
-import java.sql.Connection; 
+import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+
 public class ConnectedDatabase {
+    private static final String URL = "jdbc:mysql://localhost:3306/quanlidienthoai?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC";
+    private static final String USER = "root";  // Thay đổi nếu tài khoản khác
+    private static final String PASSWORD = "";  // Nhập mật khẩu của bạn (hoặc để trống nếu không có)
+
     public static Connection getConnectedDB() {
-		Connection c=null;
-		try {
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			String url="jdbc:sqlserver://LAPTOP-2EA7CM4Q:1433;databaseName=QuanLiDienThoai;encrypt=false;characterEncoding=UTF-8";
-			String username="sa";
-			String password="123456789";
-			c=DriverManager.getConnection(url,username,password);
-			System.out.println("Ket noi thanh cong ");
-		}catch(Exception e) {
-			e.printStackTrace();
-			System.out.println("Ket noi co so du lieu that bai");
-		}
-		return c;
-	}
-    public static void closeConnectedDB(Connection c) {
-		try {
-			if(c!=null) {
-				c.close();
-				System.out.println("Đóng thành công !");
-			}
-		}catch(Exception e) {
-			e.printStackTrace();
-			System.out.println("Không thể đóng ");
-		}
-	}
-    public static void main(String[] args){
-        ConnectedDatabase.getConnectedDB();
+        Connection c = null;
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver"); // Driver cho MySQL
+            c = DriverManager.getConnection(URL, USER, PASSWORD);
+            System.out.println("Kết nối MySQL thành công!");
+        } catch (ClassNotFoundException e) {
+            System.err.println("Không tìm thấy Driver MySQL JDBC!");
+            e.printStackTrace();
+        } catch (SQLException e) {
+            System.err.println("Lỗi kết nối CSDL: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return c;
     }
 
-    public static com.sun.jdi.connect.spi.Connection getConnection() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public static void closeConnectedDB(Connection c) {
+        if (c != null) {
+            try {
+                c.close();
+                System.out.println("Đóng kết nối thành công!");
+            } catch (SQLException e) {
+                System.err.println("Không thể đóng kết nối!");
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        Connection conn = getConnectedDB();
+        closeConnectedDB(conn);
     }
 }
