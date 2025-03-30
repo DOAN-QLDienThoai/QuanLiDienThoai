@@ -9,9 +9,12 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableCellRenderer;
 
 /**
@@ -46,6 +49,26 @@ public class Func_class {
     }
     public void cursorPointer(JLabel label){
         label.setCursor(new Cursor(Cursor.HAND_CURSOR) {
+        });
+    }
+    public void notAllowText(JTextField jtf){
+        jtf.addKeyListener(new KeyAdapter(){
+           public void keyTyped(KeyEvent e){
+               char c=e.getKeyChar();
+               if(!Character.isDigit(c)){
+                   e.consume(); 
+               }
+           }
+        });
+    }
+    public void notAllowNumber(JTextField jtf){
+        jtf.addKeyListener(new KeyAdapter(){
+           public void keyTyped(KeyEvent e){
+               char c=e.getKeyChar();
+               if(Character.isDigit(c)){
+                   e.consume(); 
+               }
+           }
         });
     }
 }
