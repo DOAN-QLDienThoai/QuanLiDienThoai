@@ -138,7 +138,7 @@ public class RegisterForm extends javax.swing.JFrame {
                     .addComponent(btn_create))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jlabelRegister)
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jlabek_register.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N

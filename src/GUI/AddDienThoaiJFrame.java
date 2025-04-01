@@ -87,7 +87,7 @@ public class AddDienThoaiJFrame extends javax.swing.JFrame {
         btn_add = new javax.swing.JButton();
         btn_exit = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jpn_container.setBackground(new java.awt.Color(204, 204, 255));
 

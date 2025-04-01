@@ -51,7 +51,7 @@ public class AddNhanVienJFrame extends javax.swing.JFrame {
         btn_exit = new javax.swing.JButton();
         jtf_date_nv = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(51, 102, 255));
 
