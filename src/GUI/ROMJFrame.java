@@ -26,11 +26,6 @@ public class ROMJFrame extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         addDataTable();
         setUpTable();
-        setIconClose();
-    }
-    public void setIconClose(){
-        jlabel_close.setIcon(new FlatSVGIcon("./resources/icon/close.svg",0.4f));
-        jlabel_close.setCursor(new Cursor(Cursor.HAND_CURSOR) {});
     }
     public void addDataTable() {
         ArrayList<RomDTO> listRom = new RomDAO().listRom();
@@ -55,7 +50,6 @@ public class ROMJFrame extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jlabel_close = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jtf_dlr = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -70,14 +64,8 @@ public class ROMJFrame extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(102, 204, 255));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("ROM");
-
-        jlabel_close.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jlabel_closeMouseClicked(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -86,20 +74,14 @@ public class ROMJFrame extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(179, 179, 179)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jlabel_close, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(14, 14, 14))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlabel_close, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 15, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addComponent(jLabel1)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -275,10 +257,6 @@ public class ROMJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_deleteMouseClicked
 
-    private void jlabel_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_closeMouseClicked
-        this.dispose();
-    }//GEN-LAST:event_jlabel_closeMouseClicked
-
     /**
          * @param args the command line arguments
          */
@@ -325,7 +303,6 @@ public class ROMJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel jlabel_close;
     private javax.swing.JTextField jtf_dlr;
     private javax.swing.JTable table_rom;
     // End of variables declaration//GEN-END:variables

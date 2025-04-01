@@ -28,7 +28,6 @@ public class MauSacJFrame extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         addDataTable();
         setUpTable();
-        setIconClose();
     }
 
     public void addDataTable() {
@@ -54,7 +53,6 @@ public class MauSacJFrame extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jlabel_close = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jtf_tenmau = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -69,35 +67,24 @@ public class MauSacJFrame extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(102, 204, 255));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Màu Sắc");
-
-        jlabel_close.setText("                  ");
-        jlabel_close.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jlabel_closeMouseClicked(evt);
-            }
-        });
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setText("MÀU SẮC");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(125, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(151, 151, 151)
                 .addComponent(jLabel1)
-                .addGap(139, 139, 139)
-                .addComponent(jlabel_close, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15))
+                .addContainerGap(156, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jlabel_close, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(14, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(19, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addGap(17, 17, 17))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -272,13 +259,6 @@ public class MauSacJFrame extends javax.swing.JFrame {
             func.centerTable(table_mausac);
         }
     }//GEN-LAST:event_btn_deleteMouseClicked
-    public void setIconClose(){
-        jlabel_close.setIcon(new FlatSVGIcon("./resources/icon/close.svg",0.4f));
-        jlabel_close.setCursor(new Cursor(Cursor.HAND_CURSOR) {});
-    }
-    private void jlabel_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_closeMouseClicked
-        this.dispose();
-    }//GEN-LAST:event_jlabel_closeMouseClicked
 
     /**
          * @param args the command line arguments
@@ -326,7 +306,6 @@ public class MauSacJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel jlabel_close;
     private javax.swing.JTextField jtf_tenmau;
     private javax.swing.JTable table_mausac;
     // End of variables declaration//GEN-END:variables

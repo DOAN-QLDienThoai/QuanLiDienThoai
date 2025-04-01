@@ -26,11 +26,6 @@ public class HeDieuHanhJFrame extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         addDataTable();
         setUpTable();
-        setIconClose();
-    }
-    public void setIconClose(){
-        jlabel_close.setIcon(new FlatSVGIcon("./resources/icon/close.svg",0.4f));
-        jlabel_close.setCursor(new Cursor(Cursor.HAND_CURSOR) {});
     }
     public void addDataTable() {
         ArrayList<HeDieuHanhDTO> listHDH = new HeDieuHanhDAO().listHDH();
@@ -55,7 +50,6 @@ public class HeDieuHanhJFrame extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jlabel_close = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jtf_tenhdh = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
@@ -71,34 +65,23 @@ public class HeDieuHanhJFrame extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(102, 204, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Hệ Điều Hành");
-
-        jlabel_close.setText("             ");
-        jlabel_close.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jlabel_closeMouseClicked(evt);
-            }
-        });
+        jLabel1.setText("HỆ ĐIỀU HÀNH");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(149, Short.MAX_VALUE)
+                .addContainerGap(141, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(90, 90, 90)
-                .addComponent(jlabel_close, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(137, 137, 137))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlabel_close, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(15, 15, 15))
+                .addGap(15, 15, 15)
+                .addComponent(jLabel1)
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -274,10 +257,6 @@ public class HeDieuHanhJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_deleteMouseClicked
 
-    private void jlabel_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_closeMouseClicked
-        this.dispose();
-    }//GEN-LAST:event_jlabel_closeMouseClicked
-
     /**
          * @param args the command line arguments
          */
@@ -326,7 +305,6 @@ public class HeDieuHanhJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JLabel jlabel_close;
     private javax.swing.JTextField jtf_tenhdh;
     private javax.swing.JTable table_hdh;
     // End of variables declaration//GEN-END:variables
