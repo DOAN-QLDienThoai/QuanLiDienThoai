@@ -4,6 +4,7 @@
  */
 package DAO;
 import DTO.KhachHangDTO;
+import java.sql.Connection;
 import Data.ConnectedDatabase;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
@@ -14,8 +15,8 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 public class KhachHangDAO {
     public int insertKhachHang(KhachHangDTO kh) throws SQLException {
-        String sql = "INSERT INTO KhachHang (maKh,tenKh,diaChi,sdt,trangThai)"
-                + "VALUES (?,?,?,?,1)";
+        String sql = "INSERT INTO KhachHang (maKh,tenKh,diaChikh,sdtKH)"
+                + "VALUES (?,?,?,?)";
         PreparedStatement ps;
         try {
             ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
@@ -23,9 +24,11 @@ public class KhachHangDAO {
             ps.setString(2, kh.getName());
             ps.setString(3, kh.getAddress());
             ps.setString(4, kh.getSDT());
-            if (ps.executeUpdate() > 0) {
-                JOptionPane.showMessageDialog(null, "Thêm Khách hàng thành công", "Success", 1);
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                 JOptionPane.showMessageDialog(null, "Thêm Khách hàng thành công", "Success", 1);
             }
+            return rows;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -33,34 +36,37 @@ public class KhachHangDAO {
     }
     public int updateKhachHang(KhachHangDTO kh) throws SQLException {
         String sqlUpdate = "UPDATE KhachHang "
-                + "SET tenKh=?,diaChi=?,sdt=? "
-                + "WHERE maKh=? ";
-        PreparedStatement ps;
-        try {
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlUpdate);
-            ps.setString(1, kh.getName());
-            ps.setString(2, kh.getAddress());
-            ps.setString(3, kh.getSDT());
-            ps.setString(5, kh.getID());
-            if (ps.executeUpdate() > 0) {
-                JOptionPane.showMessageDialog(null, "Update thành công", "Success", 1);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
+                     + "SET tenKh = ?, diachiKh = ?, sdtKh = ? "
+                     + "WHERE maKh = ?";
+    try (Connection conn = ConnectedDatabase.getConnectedDB();
+         PreparedStatement ps = conn.prepareStatement(sqlUpdate)) {
+        
+        ps.setString(1, kh.getName());
+        ps.setString(2, kh.getAddress());
+        ps.setString(3, kh.getSDT());
+        ps.setString(4, kh.getID());
+        System.out.println("UPDATE với giá trị: " + kh.getName() + " | " + kh.getAddress() + " | " + kh.getSDT() + " | " + kh.getID());
+        int rows = ps.executeUpdate();
+        System.out.println("Số dòng bị ảnh hưởng: " + rows);
+
+        return rows;
+    } catch (SQLException e) {
+        e.printStackTrace();
+        System.out.println("Chi tiết lỗi SQL: " + e.getMessage());
+        throw e; // ném lại để lớp GUI xử lý
+    }
     }
 
     public int deleteKhachHang(String maKh) {
-        String sqlDelete = "UPDATE KhachHang SET trangThai=0 "
-                + "WHERE maKh=?";
-        PreparedStatement ps;
+        String sqlDelete = "DELETE FROM KhachHang WHERE maKh=?";
         try {
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlDelete);
+            PreparedStatement ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlDelete);
             ps.setString(1, maKh);
-            if (ps.executeUpdate() > 0) {
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
                 JOptionPane.showMessageDialog(null, "Xóa thành công", "Success", 1);
             }
+            return rows;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,16 +77,16 @@ public class KhachHangDAO {
         ArrayList<KhachHangDTO> listKh = new ArrayList<KhachHangDTO>();
         PreparedStatement ps;
         ResultSet rs;
-        String sqlSelect = "SELECT * FROM KhachHang WHERE trangThai=1";
+        String sqlSelect = "SELECT * FROM KhachHang";
         try {
             ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlSelect);
             rs = ps.executeQuery();
             while (rs.next()) {
-                String maKh = rs.getString("maKh");
-                String name = rs.getString("tenKh");
-                String address = rs.getString("diaChi");
-                String sdt = rs.getString("sdt");
-                KhachHangDTO kh = new KhachHangDTO(maKh, name, address, sdt);
+                String maKh = rs.getString("makh");
+                String tenKh = rs.getString("tenKh");
+                String diachiKh = rs.getString("diachiKh");
+                String sdtKh = rs.getString("sdtKh");
+                KhachHangDTO kh = new KhachHangDTO(maKh, tenKh, diachiKh, sdtKh);
                 listKh.add(kh);
             }
         } catch (SQLException ex) {

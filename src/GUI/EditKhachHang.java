@@ -3,25 +3,38 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package GUI;
+
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
+import DTO.KhachHangDTO;
+import DAO.KhachHangDAO;
+import Data.Func_class;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
- *
+ **
  * @author LE MINH HUY
  */
-public class AddKhachHang extends javax.swing.JFrame {
+public class EditKhachHang extends javax.swing.JFrame {
     private MainJFrame mainFrame;
+    private String maKhachHang;
 
+     Func_class func=new Func_class();
     /**
-     * Creates new form AddKhachHang
+     * Creates new form EditKhachHangGUI
      */
-    public AddKhachHang() {
+    public EditKhachHang() {
     initComponents();
 }
-    public AddKhachHang(MainJFrame mainFrame) {
+    public EditKhachHang(String maKh,String tenKh, String sdtKh, String diachiKh, MainJFrame mainFrame) {
         initComponents();
         this.mainFrame = mainFrame;
+        this.maKhachHang = maKh;
+        txtTenKh.setText(tenKh);
+        txtSdtKh.setText(sdtKh);
+        txtDiachiKh.setText(diachiKh);
     }
 
     /**
@@ -36,75 +49,56 @@ public class AddKhachHang extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtDiachiKh = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtTenKh = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        txtSdtKh = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Thêm khách hàng");
+        setTitle("Sửa thông tin khách hàng");
 
-        jPanel1.setBackground(new java.awt.Color(0, 51, 204));
-        jPanel1.setForeground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(0, 51, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("THÊM KHÁCH HÀNG");
+        jLabel1.setText("SỬA THÔNG TIN KHÁCH HÀNG");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(87, 87, 87)
+                .addGap(38, 38, 38)
                 .addComponent(jLabel1)
-                .addContainerGap(82, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
+                .addGap(19, 19, 19)
                 .addComponent(jLabel1)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(24, Short.MAX_VALUE))
         );
 
         jLabel2.setText("Tên khách hàng");
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
         jLabel3.setText("Số điện thoại");
-
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
 
         jLabel4.setText("Địa chỉ");
 
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
-            }
-        });
-
         jButton1.setBackground(new java.awt.Color(0, 153, 255));
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Thêm");
+        jButton1.setText("Hoàn tất");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
             }
         });
 
-        jButton2.setBackground(new java.awt.Color(204, 0, 0));
+        jButton2.setBackground(new java.awt.Color(255, 0, 0));
         jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Hủy");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -123,17 +117,17 @@ public class AddKhachHang extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtDiachiKh)
                             .addGroup(layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel2)
                                     .addComponent(jLabel3)
                                     .addComponent(jLabel4))
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addComponent(txtSdtKh)
+                            .addComponent(txtTenKh)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(98, 98, 98)
+                        .addGap(91, 91, 91)
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2)
@@ -144,120 +138,80 @@ public class AddKhachHang extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
+                .addComponent(txtTenKh, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtSdtKh, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addComponent(txtDiachiKh, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
-                .addGap(0, 14, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-            String name = jTextField2.getText().trim();
-            String sdt = jTextField3.getText().trim();
-            String address = jTextField1.getText().trim();
-
-    if (name.isEmpty() || sdt.isEmpty() || address.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin", "Lỗi", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    try {
-        // Tự động sinh mã khách hàng (KH001, KH002, ...)
-        ArrayList<DTO.KhachHangDTO> list = new DAO.KhachHangDAO().listKh();
-        int max = 0;
-        for (DTO.KhachHangDTO kh : list) {
-            try {
-                String numberPart = kh.getID().replace("KH", "");
-                int number = Integer.parseInt(numberPart);
-                if (number > max) {
-                    max = number;
-                }
-            } catch (Exception e) {
-            }
-        }
-        String newID = String.format("KH%03d", max + 1);
-
-        DTO.KhachHangDTO khDTO = new DTO.KhachHangDTO(newID, name, address, sdt);
-        new DAO.KhachHangDAO().insertKhachHang(khDTO);
-        dispose();
-    } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Lỗi khi thêm khách hàng", "Lỗi", JOptionPane.ERROR_MESSAGE);
-    }
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-           String tenKH = jTextField2.getText().trim();
-           String sdtKh = jTextField3.getText().trim();
-           String diachiKh = jTextField1.getText().trim();
-
-    if (tenKH.isEmpty() || sdtKh.isEmpty() || diachiKh.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin", "Lỗi", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    try {
-        ArrayList<DTO.KhachHangDTO> list = new DAO.KhachHangDAO().listKh();
-        int max = 0;
-        for (DTO.KhachHangDTO kh : list) {
-            try {
-                String numberPart = kh.getID().replace("KH", "");
-                int number = Integer.parseInt(numberPart);
-                if (number > max) {
-                    max = number;
-                }
-            } catch (Exception e) {
-            }
+    if(this.txtTenKh.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Vui lòng nhập tên khách hàng");
+            return;
         }
-        String newID = String.format("KH%03d", max + 1);
-        DTO.KhachHangDTO khDTO = new DTO.KhachHangDTO(newID, tenKH, diachiKh, sdtKh);
-        new DAO.KhachHangDAO().insertKhachHang(khDTO);
-       if (mainFrame != null) {
+        else if(this.txtSdtKh.getText().equals("")){
+            JOptionPane.showMessageDialog(null,"Vui lòng nhập số điện thoại khách hàng");
+            return;
+        }
+        else if(this.txtDiachiKh.getText().equals("")){
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập địa chỉ khách hàng");
+            return;
+        }
+        KhachHangDTO kh=new KhachHangDTO();
+        kh.setID(maKhachHang); 
+        kh.setName(this.txtTenKh.getText());
+        kh.setAddress(this.txtDiachiKh.getText());
+        String sdt=txtSdtKh.getText();
+        if(sdt.length()!=10||sdt.charAt(0)!='0'){
+            JOptionPane.showMessageDialog(null,"Số điện thoại không hợp lệ","Erorr",0);
+            return;
+        }
+        else
+            kh.setSDT(sdt);
+        KhachHangDAO khDAO=new KhachHangDAO();
+        try {
+            khDAO.updateKhachHang(kh);
+            System.out.println("Đã gọi updateKhachHang()");
             mainFrame.addDataTableKhachHang();
-        }
-        dispose();
-    } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Lỗi khi thêm khách hàng", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            System.out.println("Đã gọi addDataTableKhachHang()");
+            func.centerTable(mainFrame.getTableKhachHang());
+            JOptionPane.showMessageDialog(null, "Cập nhật khách hàng thành công!");
+            dispose();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            System.out.println("Chi tiết lỗi SQL: " + ex.getMessage());
+            JOptionPane.showMessageDialog(null, "Lỗi khi cập nhật khách hàng:\n" + ex.getMessage(), "Error", 0);
     }
+
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        dispose();
-
+         dispose(); 
     }//GEN-LAST:event_jButton2ActionPerformed
-
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+       public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -271,24 +225,24 @@ public class AddKhachHang extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddKhachHang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditKhachHang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddKhachHang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditKhachHang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddKhachHang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditKhachHang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddKhachHang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(EditKhachHang.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new AddKhachHang().setVisible(true);
+                new EditKhachHang("","","","",new MainJFrame()).setVisible(true);
             }
         });
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
@@ -297,8 +251,8 @@ public class AddKhachHang extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField txtDiachiKh;
+    private javax.swing.JTextField txtSdtKh;
+    private javax.swing.JTextField txtTenKh;
     // End of variables declaration//GEN-END:variables
 }
