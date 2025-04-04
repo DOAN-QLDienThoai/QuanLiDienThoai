@@ -36,25 +36,23 @@ public class KhachHangDAO {
     }
     public int updateKhachHang(KhachHangDTO kh) throws SQLException {
         String sqlUpdate = "UPDATE KhachHang "
-                     + "SET tenKh = ?, diachiKh = ?, sdtKh = ? "
-                     + "WHERE maKh = ?";
-    try (Connection conn = ConnectedDatabase.getConnectedDB();
-         PreparedStatement ps = conn.prepareStatement(sqlUpdate)) {
-        
-        ps.setString(1, kh.getName());
-        ps.setString(2, kh.getAddress());
-        ps.setString(3, kh.getSDT());
-        ps.setString(4, kh.getID());
-        System.out.println("UPDATE với giá trị: " + kh.getName() + " | " + kh.getAddress() + " | " + kh.getSDT() + " | " + kh.getID());
-        int rows = ps.executeUpdate();
-        System.out.println("Số dòng bị ảnh hưởng: " + rows);
+                + "SET tenKh = ?, diachiKh = ?, sdtKh = ? "
+                + "WHERE maKh = ?";
+        try (Connection conn = ConnectedDatabase.getConnectedDB(); PreparedStatement ps = conn.prepareStatement(sqlUpdate)) {
 
-        return rows;
-    } catch (SQLException e) {
-        e.printStackTrace();
-        System.out.println("Chi tiết lỗi SQL: " + e.getMessage());
-        throw e; // ném lại để lớp GUI xử lý
-    }
+            ps.setString(1, kh.getName());
+            ps.setString(2, kh.getAddress());
+            ps.setString(3, kh.getSDT());
+            ps.setString(4, kh.getID());
+            System.out.println("UPDATE với giá trị: " + kh.getName() + " | " + kh.getAddress() + " | " + kh.getSDT() + " | " + kh.getID());
+            int rows = ps.executeUpdate();
+            System.out.println("Số dòng bị ảnh hưởng: " + rows);
+            return rows;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Chi tiết lỗi SQL: " + e.getMessage());
+            throw e; // ném lại để lớp GUI xử lý
+        }
     }
 
     public int deleteKhachHang(String maKh) {

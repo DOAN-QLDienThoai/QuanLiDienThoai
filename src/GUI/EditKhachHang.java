@@ -5,13 +5,10 @@
 package GUI;
 
 import javax.swing.JOptionPane;
-import java.util.ArrayList;
 import DTO.KhachHangDTO;
 import DAO.KhachHangDAO;
 import Data.Func_class;
 import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  **

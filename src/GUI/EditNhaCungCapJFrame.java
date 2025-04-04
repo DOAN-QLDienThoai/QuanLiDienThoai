@@ -18,9 +18,9 @@ import javax.swing.JOptionPane;
  */
 public class EditNhaCungCapJFrame extends javax.swing.JFrame {
     private MainJFrame mainJFrame;
-    String id;
+    int id;
     Func_class func=new Func_class();
-    public EditNhaCungCapJFrame(String id,String name,String address,String sdt,String email,MainJFrame mainJFrame) {
+    public EditNhaCungCapJFrame(int id,String name,String address,String sdt,String email,MainJFrame mainJFrame) {
         initComponents();
         this.mainJFrame=mainJFrame;
         this.id=id;
@@ -135,11 +135,11 @@ public class EditNhaCungCapJFrame extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtf_email_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtf_address_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btn_edit_ncc)
-                    .addComponent(btn_close_ncc))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btn_edit_ncc, javax.swing.GroupLayout.DEFAULT_SIZE, 31, Short.MAX_VALUE)
+                    .addComponent(btn_close_ncc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -231,7 +231,7 @@ public class EditNhaCungCapJFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new EditNhaCungCapJFrame("","","","","",new MainJFrame()).setVisible(true);
+                new EditNhaCungCapJFrame(0,"","","","",new MainJFrame()).setVisible(true);
             }
         });
     }

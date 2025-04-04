@@ -9,24 +9,30 @@ package DTO;
  * @author kiman
  */
 public class NhaCungCapDTO {
-    private String id;
+    private int maNCC;
     private String name;
     private String address;
     private String sdt;
     private String email;
     public NhaCungCapDTO(){}
-    public NhaCungCapDTO(String id,String name,String address,String sdt,String email){
-        this.id=id;
+    public NhaCungCapDTO(int maNCC,String name,String address,String sdt,String email){
+        this.maNCC=maNCC;
         this.name=name;
         this.address=address;
         this.sdt=sdt;
         this.email=email;
     }
-    public String getID(){
-        return this.id;
+    public NhaCungCapDTO(String name,String address,String sdt,String email){
+        this.name=name;
+        this.address=address;
+        this.sdt=sdt;
+        this.email=email;
     }
-    public void setID(String id){
-        this.id=id;
+    public int getmaNCC(){
+        return this.maNCC;
+    }
+    public void setID(int maNCC){
+        this.maNCC=maNCC;
     }
     public String getName(){
         return this.name;
