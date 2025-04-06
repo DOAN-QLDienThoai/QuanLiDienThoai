@@ -16,6 +16,9 @@ public class HeDieuHanhDTO {
         this.maHDH=maHDH;
         this.tenHDH=tenHDH;
     }
+    public HeDieuHanhDTO(String tenHDH){
+        this.tenHDH=tenHDH;
+    }
     public int getMaHDH(){
         return this.maHDH;
     }

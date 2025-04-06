@@ -6,9 +6,7 @@ package GUI;
 
 import DAO.HeDieuHanhDAO;
 import DTO.HeDieuHanhDTO;
-import Data.Func_class;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
-import java.awt.Cursor;
+import util.Func_class;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -18,9 +16,8 @@ import javax.swing.table.DefaultTableModel;
  * @author kiman
  */
 public class HeDieuHanhJFrame extends javax.swing.JFrame {
-
-    Func_class func = new Func_class();
-
+    private Func_class func = new Func_class();
+    private ArrayList<HeDieuHanhDTO> listHDH;
     public HeDieuHanhJFrame() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -28,7 +25,7 @@ public class HeDieuHanhJFrame extends javax.swing.JFrame {
         setUpTable();
     }
     public void addDataTable() {
-        ArrayList<HeDieuHanhDTO> listHDH = new HeDieuHanhDAO().listHDH();
+        listHDH = new HeDieuHanhDAO().listHDH();
         String[] colNames = {"Mã Hệ Điều Hành", "Tên Hệ Điều Hành"};
         Object[][] rows = new Object[listHDH.size()][colNames.length];
         for (int i = 0; i < listHDH.size(); i++) {
@@ -212,8 +209,14 @@ public class HeDieuHanhJFrame extends javax.swing.JFrame {
             return;
         }
         String tenHDH = jtf_tenhdh.getText();
-        HeDieuHanhDTO hdh= new HeDieuHanhDTO(0, tenHDH);
-        new HeDieuHanhDAO().insertHeDieuHanh(hdh);
+        listHDH=new HeDieuHanhDAO().listHDH();
+        for(HeDieuHanhDTO hdh : listHDH){
+            if(hdh.getTenHDH().equalsIgnoreCase(tenHDH)){
+                JOptionPane.showMessageDialog(null,"Hệ điều hành đã tồn tại","Error",0);
+                return;
+            }
+        }
+        new HeDieuHanhDAO().insertHeDieuHanh(new HeDieuHanhDTO(tenHDH));
         addDataTable();
         func.centerTable(table_hdh);
         jtf_tenhdh.setText("");
@@ -225,12 +228,15 @@ public class HeDieuHanhJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Bạn chưa chọn hệ điều hành để cập nhật", "Error", 0);
             return;
         }
-        int maHDH = (int) table_hdh.getValueAt(vitriRow, 0);
+        int maHDH = Integer.parseInt(table_hdh.getValueAt(vitriRow, 0).toString());
+        String tenHDHOld = table_hdh.getValueAt(vitriRow, 1).toString();
         String tenHDH = jtf_tenhdh.getText();
-        new HeDieuHanhDAO().updateHDH(new HeDieuHanhDTO(maHDH, tenHDH));
-        addDataTable();
-        func.centerTable(table_hdh);
-        jtf_tenhdh.setText("");
+        if (!tenHDHOld.equalsIgnoreCase(tenHDH)) {
+            new HeDieuHanhDAO().updateHDH(new HeDieuHanhDTO(maHDH, tenHDH));
+            addDataTable();
+            func.centerTable(table_hdh);
+            jtf_tenhdh.setText("");
+        }
     }//GEN-LAST:event_btn_updateMouseClicked
 
     private void table_hdhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_hdhMouseClicked
@@ -256,44 +262,6 @@ public class HeDieuHanhJFrame extends javax.swing.JFrame {
             func.centerTable(table_hdh);
         }
     }//GEN-LAST:event_btn_deleteMouseClicked
-
-    /**
-         * @param args the command line arguments
-         */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(HeDieuHanhJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(HeDieuHanhJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(HeDieuHanhJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HeDieuHanhJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new HeDieuHanhJFrame().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_add;

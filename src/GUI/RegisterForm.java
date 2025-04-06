@@ -4,7 +4,7 @@
  */
 package GUI;
 
-import Data.ConnectedDatabase;
+import util.ConnectedDatabase;
 import com.sun.jdi.connect.spi.Connection;
 import javax.swing.JFrame;
 import java.sql.PreparedStatement;

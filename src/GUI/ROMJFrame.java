@@ -6,9 +6,7 @@ package GUI;
 
 import DAO.RomDAO;
 import DTO.RomDTO;
-import Data.Func_class;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
-import java.awt.Cursor;
+import util.Func_class;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -18,9 +16,8 @@ import javax.swing.table.DefaultTableModel;
  * @author kiman
  */
 public class ROMJFrame extends javax.swing.JFrame {
-
-    Func_class func = new Func_class();
-
+    private Func_class func = new Func_class();
+    private ArrayList<RomDTO> listRom;
     public ROMJFrame() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -28,7 +25,7 @@ public class ROMJFrame extends javax.swing.JFrame {
         setUpTable();
     }
     public void addDataTable() {
-        ArrayList<RomDTO> listRom = new RomDAO().listRom();
+        listRom = new RomDAO().listRom();
         String[] colNames = {"Mã Rom", "Dung lượng rom"};
         Object[][] rows = new Object[listRom.size()][colNames.length];
         for (int i = 0; i < listRom.size(); i++) {
@@ -212,7 +209,14 @@ public class ROMJFrame extends javax.swing.JFrame {
             return;
         }
         int dungLuongRom = Integer.parseInt(jtf_dlr.getText());
-        RomDTO rom = new RomDTO(0, dungLuongRom);
+        listRom=new RomDAO().listRom();
+        for(RomDTO ram : listRom){
+            if(ram.getDungLuongRom()==dungLuongRom){
+                JOptionPane.showMessageDialog(null,"Rom đã tồn tại","Error",0);
+                return;
+            }
+        }
+        RomDTO rom = new RomDTO( dungLuongRom);
         new RomDAO().insertRom(rom);
         addDataTable();
         func.centerTable(table_rom);
@@ -226,11 +230,14 @@ public class ROMJFrame extends javax.swing.JFrame {
             return;
         }
         int maRom = (int) table_rom.getValueAt(vitriRow, 0);
+        int dungLuongRomOld = Integer.parseInt(table_rom.getValueAt(vitriRow, 1).toString());
         int dungLuongRom = Integer.parseInt(jtf_dlr.getText());
-        new RomDAO().updateRom(new RomDTO(maRom, dungLuongRom));
-        addDataTable();
-        func.centerTable(table_rom);
-        jtf_dlr.setText("");
+        if (dungLuongRomOld != dungLuongRom) {
+            new RomDAO().updateRom(new RomDTO(maRom, dungLuongRom));
+            addDataTable();
+            func.centerTable(table_rom);
+            jtf_dlr.setText("");
+        }
     }//GEN-LAST:event_btn_updateMouseClicked
 
     private void table_romMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_romMouseClicked
@@ -257,41 +264,6 @@ public class ROMJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btn_deleteMouseClicked
 
-    /**
-         * @param args the command line arguments
-         */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ROMJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ROMJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ROMJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ROMJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ROMJFrame().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_add;

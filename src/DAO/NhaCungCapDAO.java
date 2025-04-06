@@ -4,7 +4,7 @@
  */
 package DAO;
 import DTO.NhaCungCapDTO;
-import Data.ConnectedDatabase;
+import util.ConnectedDatabase;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 public class NhaCungCapDAO {
-    public int insertNhaCungCap(NhaCungCapDTO ncc) throws SQLException {
+    public int insertNhaCungCap(NhaCungCapDTO ncc) {
         String sql = "INSERT INTO NhaCungCap (tenNCC,diaChi,sdt,email,trangThai)"
                 + "VALUES (?,?,?,?,1)";
         PreparedStatement ps;
@@ -31,7 +31,7 @@ public class NhaCungCapDAO {
         }
         return 0;
     }
-    public int updateNhaCungCap(NhaCungCapDTO ncc) throws SQLException {
+    public int updateNhaCungCap(NhaCungCapDTO ncc) {
         String sqlUpdate = "UPDATE NhaCungCap "
                 + "SET tenNCC=?,diaChi=?,sdt=?,email=? "
                 + "WHERE maNCC=? ";

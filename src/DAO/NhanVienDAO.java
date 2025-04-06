@@ -5,7 +5,7 @@
 package DAO;
 
 import DTO.NhanVienDTO;
-import Data.ConnectedDatabase;
+import util.ConnectedDatabase;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
@@ -22,17 +22,16 @@ import java.util.logging.Logger;
  */
 public class NhanVienDAO {
 
-    public int insertNhanVien(NhanVienDTO nv) throws SQLException {
+    public int insertNhanVien(NhanVienDTO nv) {
         try {
-            String sqlAdd = "INSERT INTO NhanVien(maNV,hoTen,ngaySinh,gioiTinh,sdt,trangThai) "
-                    + "VALUES (?,?,?,?,?,1)";
+            String sqlAdd = "INSERT INTO NhanVien(hoTen,ngaySinh,gioiTinh,sdt,trangThai) "
+                    + "VALUES (?,?,?,?,1)";
             PreparedStatement ps;
             ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlAdd);
-            ps.setString(1, nv.getMaNV());
-            ps.setString(2, nv.getHoTen());
-            ps.setDate(3, (Date) nv.getNgaySinh());
-            ps.setString(4, nv.getGioiTinh());
-            ps.setString(5, nv.getSDT());
+            ps.setString(1, nv.getHoTen());
+            ps.setDate(2, (Date) nv.getNgaySinh());
+            ps.setString(3, nv.getGioiTinh());
+            ps.setString(4, nv.getSDT());
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Thêm nhân viên thành công");
             }
@@ -53,7 +52,7 @@ public class NhanVienDAO {
             ps.setDate(2, new java.sql.Date(nv.getNgaySinh().getTime()));
             ps.setString(3, nv.getGioiTinh());
             ps.setString(4, nv.getSDT());
-            ps.setString(5, nv.getMaNV());
+            ps.setInt(5, nv.getMaNV());
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Cập nhật thông tin nhân viên thành công", "Success", 1);
             }
@@ -90,12 +89,12 @@ public class NhanVienDAO {
             ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlListNV);
             rs = ps.executeQuery();
             while (rs.next()) {
-                String maNV = rs.getString("maNV");
+                int maNV = rs.getInt("maNV");
                 String hoTen = rs.getString("hoTen");
                 Date ngaySinh = rs.getDate("ngaySinh");
                 String gioiTinh = rs.getString("gioiTinh");
                 String sdt = rs.getString("sdt");
-                listNV.add(new NhanVienDTO(maNV, hoTen, ngaySinh, gioiTinh, sdt));
+                listNV.add(new NhanVienDTO(maNV,hoTen, ngaySinh, gioiTinh, sdt));
             }
         } catch (SQLException ex) {
             Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);

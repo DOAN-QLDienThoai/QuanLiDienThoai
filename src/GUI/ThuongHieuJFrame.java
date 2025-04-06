@@ -3,26 +3,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package GUI;
-
-import DAO.RomDAO;
 import DAO.ThuongHieuDAO;
-import DTO.RomDTO;
 import DTO.ThuongHieuDTO;
-import Data.Func_class;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
-import java.awt.Cursor;
+import util.Func_class;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
-/**
- *
- * @author kiman
- */
 public class ThuongHieuJFrame extends javax.swing.JFrame {
-
-    Func_class func = new Func_class();
-
+    private Func_class func = new Func_class();
+    private ArrayList<ThuongHieuDTO> listThuongHieu;
     public ThuongHieuJFrame() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -31,7 +20,7 @@ public class ThuongHieuJFrame extends javax.swing.JFrame {
     }
 
     public void addDataTable() {
-        ArrayList<ThuongHieuDTO> listThuongHieu = new ThuongHieuDAO().listThuongHieu();
+        listThuongHieu = new ThuongHieuDAO().listThuongHieu();
         String[] colNames = {"Mã Thương Hiệu", "Tên thương hiệu"};
         Object[][] rows = new Object[listThuongHieu.size()][colNames.length];
         for (int i = 0; i < listThuongHieu.size(); i++) {
@@ -215,8 +204,14 @@ public class ThuongHieuJFrame extends javax.swing.JFrame {
             return;
         }
         String tenThuongHieu = jtf_nameTH.getText();
-        ThuongHieuDTO th = new ThuongHieuDTO(0, tenThuongHieu);
-        new ThuongHieuDAO().insertThuongHieu(th);
+        listThuongHieu=new ThuongHieuDAO().listThuongHieu();
+        for(ThuongHieuDTO th : listThuongHieu){
+            if(th.getTenThuongHieu().equalsIgnoreCase(tenThuongHieu)){
+                JOptionPane.showMessageDialog(null,"Thương hiệu đã tồn tại","Error",0);
+                return;
+            }
+        }
+        new ThuongHieuDAO().insertThuongHieu(new ThuongHieuDTO(tenThuongHieu));
         addDataTable();
         func.centerTable(table_thuongHieu);
         jtf_nameTH.setText("");
@@ -229,11 +224,14 @@ public class ThuongHieuJFrame extends javax.swing.JFrame {
             return;
         }
         int maThuongHieu = (int) table_thuongHieu.getValueAt(vitriRow, 0);
+        String tenThuongHieuOld = table_thuongHieu.getValueAt(vitriRow, 1).toString();
         String tenThuongHieu = jtf_nameTH.getText();
-        new ThuongHieuDAO().updateThuongHieu(new ThuongHieuDTO(maThuongHieu, tenThuongHieu));
-        addDataTable();
-        func.centerTable(table_thuongHieu);
-        jtf_nameTH.setText("");
+        if (!tenThuongHieuOld.equalsIgnoreCase(tenThuongHieu)) {
+            new ThuongHieuDAO().updateThuongHieu(new ThuongHieuDTO(maThuongHieu, tenThuongHieu));
+            addDataTable();
+            func.centerTable(table_thuongHieu);
+            jtf_nameTH.setText("");
+        }
     }//GEN-LAST:event_btn_updateMouseClicked
 
     private void table_thuongHieuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_thuongHieuMouseClicked
@@ -259,44 +257,6 @@ public class ThuongHieuJFrame extends javax.swing.JFrame {
             func.centerTable(table_thuongHieu);
         }
     }//GEN-LAST:event_btn_deleteMouseClicked
-
-    /**
-         * @param args the command line arguments
-         */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ThuongHieuJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ThuongHieuJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ThuongHieuJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ThuongHieuJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ThuongHieuJFrame().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_add;

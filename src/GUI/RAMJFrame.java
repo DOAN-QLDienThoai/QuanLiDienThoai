@@ -6,9 +6,7 @@ package GUI;
 
 import DAO.RamDAO;
 import DTO.RamDTO;
-import Data.Func_class;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
-import java.awt.Cursor;
+import util.Func_class;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -18,9 +16,8 @@ import javax.swing.table.DefaultTableModel;
  * @author kiman
  */
 public class RAMJFrame extends javax.swing.JFrame {
-
-    Func_class func = new Func_class();
-
+    private Func_class func = new Func_class();
+    private ArrayList<RamDTO> listRam;
     public RAMJFrame() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -212,7 +209,14 @@ public class RAMJFrame extends javax.swing.JFrame {
             return;
         }
         int dungLuongRam = Integer.parseInt(jtf_dlr.getText());
-        RamDTO ram = new RamDTO(0, dungLuongRam);
+        listRam=new RamDAO().listRam();
+        for(RamDTO ram : listRam){
+            if(ram.getDungLuongRam()==dungLuongRam){
+                JOptionPane.showMessageDialog(null,"Ram đã tồn tại","Error",0);
+                return;
+            }
+        }
+        RamDTO ram = new RamDTO(dungLuongRam);
         new RamDAO().insertRam(ram);
         addDataTable();
         func.centerTable(table_ram);
@@ -225,12 +229,15 @@ public class RAMJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Bạn chưa chọn Ram để cập nhật dung lượng", "Error", 0);
             return;
         }
-        int maRam = (int) table_ram.getValueAt(vitriRow, 0);
+        int maRam = Integer.parseInt(table_ram.getValueAt(vitriRow, 0).toString());
+        int dungLuongRamOld = Integer.parseInt(table_ram.getValueAt(vitriRow, 1).toString());
         int dungLuongRam = Integer.parseInt(jtf_dlr.getText());
-        new RamDAO().updateRam(new RamDTO(maRam, dungLuongRam));
-        addDataTable();
-        func.centerTable(table_ram);
-        jtf_dlr.setText("");
+        if (dungLuongRamOld != dungLuongRam) {
+            new RamDAO().updateRam(new RamDTO(maRam, dungLuongRam));
+            addDataTable();
+            func.centerTable(table_ram);
+            jtf_dlr.setText("");
+        }
     }//GEN-LAST:event_btn_updateMouseClicked
 
     private void table_ramMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_ramMouseClicked
@@ -256,41 +263,6 @@ public class RAMJFrame extends javax.swing.JFrame {
             func.centerTable(table_ram);
         }
     }//GEN-LAST:event_btn_deleteMouseClicked
-
-    /**
-         * @param args the command line arguments
-         */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RAMJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RAMJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RAMJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RAMJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new RAMJFrame().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_add;

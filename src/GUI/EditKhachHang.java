@@ -7,7 +7,7 @@ package GUI;
 import javax.swing.JOptionPane;
 import DTO.KhachHangDTO;
 import DAO.KhachHangDAO;
-import Data.Func_class;
+import util.Func_class;
 import java.sql.SQLException;
 
 /**

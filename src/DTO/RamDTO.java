@@ -16,6 +16,9 @@ public class RamDTO {
         this.maRam=maRam;
         this.dungLuongRam=dungLuongRam;
     }
+    public RamDTO(int dungLuongRam){
+        this.dungLuongRam=dungLuongRam;
+    }
     public int getMaRam(){
         return this.maRam;
     }

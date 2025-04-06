@@ -6,10 +6,8 @@ package GUI;
 
 import DAO.NhaCungCapDAO;
 import DTO.NhaCungCapDTO;
-import Data.Func_class;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import util.Func_class;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,16 +16,16 @@ import javax.swing.JOptionPane;
  */
 public class EditNhaCungCapJFrame extends javax.swing.JFrame {
     private MainJFrame mainJFrame;
-    int id;
+    private NhaCungCapDTO ncc;
     Func_class func=new Func_class();
-    public EditNhaCungCapJFrame(int id,String name,String address,String sdt,String email,MainJFrame mainJFrame) {
+    public EditNhaCungCapJFrame(NhaCungCapDTO ncc,MainJFrame mainJFrame) {
         initComponents();
         this.mainJFrame=mainJFrame;
-        this.id=id;
-        this.jtf_name_ncc.setText(name);
-        this.jtf_address_ncc.setText(address);
-        this.jtf_sdt_ncc.setText(sdt);
-        this.jtf_email_ncc.setText(email);
+        this.ncc=ncc;
+        this.jtf_name_ncc.setText(ncc.getName());
+        this.jtf_address_ncc.setText(ncc.getAddress());
+        this.jtf_sdt_ncc.setText(ncc.getSDT());
+        this.jtf_email_ncc.setText(ncc.getEmail());
         this.setLocationRelativeTo(null);
     }
 
@@ -163,78 +161,46 @@ public class EditNhaCungCapJFrame extends javax.swing.JFrame {
     private void btn_close_nccMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_close_nccMouseClicked
         this.dispose();
     }//GEN-LAST:event_btn_close_nccMouseClicked
-
-    private void btn_edit_nccMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_edit_nccMouseClicked
+    public int check_edit_NhaCungCap(){
         if(this.jtf_name_ncc.getText().equals("")){
             JOptionPane.showMessageDialog(null,"Vui lòng nhập tên nhà cung cấp");
-            return;
+            return 0;
         }
         else if(this.jtf_address_ncc.getText().equals("")){
             JOptionPane.showMessageDialog(null,"Vui lòng nhập địa chỉ nhà cung cấp");
-            return;
+            return 0;
         }
         else if(this.jtf_sdt_ncc.getText().equals("")){
             JOptionPane.showMessageDialog(null, "Vui lòng nhập số điện thoại nhà cung cấp");
-            return;
+            return 0;
         }
         else if(this.jtf_email_ncc.getText().equals("")){
             JOptionPane.showMessageDialog(null,"Vui lòng nhập email nhà cung cấp");
-            return;
+            return 0;
         }
-        NhaCungCapDTO ncc=new NhaCungCapDTO();
-        ncc.setID(this.id);
-        ncc.setName(this.jtf_name_ncc.getText());
-        ncc.setAddress(this.jtf_address_ncc.getText());
-        String sdt=jtf_sdt_ncc.getText();
-        if(sdt.length()!=10&&sdt.charAt(0)!='0'){
-            JOptionPane.showMessageDialog(null,"Số điện thoại không hợp lệ","Erorr",0);
-            return;
-        }
-        else
-            ncc.setSDT(sdt);
-        ncc.setEmail(this.jtf_email_ncc.getText());
-        NhaCungCapDAO nccDAO=new NhaCungCapDAO();
-        try {
-            nccDAO.updateNhaCungCap(ncc);
-            this.mainJFrame.addDataTableNhaCungCap();
+        return 1;
+    }
+    private void btn_edit_nccMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_edit_nccMouseClicked
+        if(check_edit_NhaCungCap()==1){
+            String tenNCC=jtf_name_ncc.getText();
+            String sdt=jtf_sdt_ncc.getText();
+            if(sdt.length()!=10||sdt.charAt(0)!='0'){
+                JOptionPane.showMessageDialog(null,"Số điện thoại không hợp lệ !","Error",0);
+                return;
+            }
+            String email=jtf_email_ncc.getText();
+            if(email.endsWith("@gmail.com")||email.indexOf("@")==0){
+                JOptionPane.showMessageDialog(null,"Email không hợp lệ","Error",0);
+                return;
+            }
+            String address=jtf_address_ncc.getText();
+            ncc=new NhaCungCapDTO(tenNCC, address, sdt, email);
+            new NhaCungCapDAO().updateNhaCungCap(ncc);
+            ArrayList<NhaCungCapDTO> listNCC=new NhaCungCapDAO().listNCC();
+            func.addDataTableNCC(listNCC,mainJFrame.getTableNhaCungCap());
             func.centerTable(mainJFrame.getTableNhaCungCap());
-        } catch (SQLException ex) {
-            Logger.getLogger(EditNhaCungCapJFrame.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btn_edit_nccMouseClicked
-
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(EditNhaCungCapJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(EditNhaCungCapJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(EditNhaCungCapJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(EditNhaCungCapJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new EditNhaCungCapJFrame(0,"","","","",new MainJFrame()).setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_close_ncc;

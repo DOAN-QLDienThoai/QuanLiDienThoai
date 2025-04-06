@@ -11,23 +11,29 @@ import java.util.Date;
  * @author kiman
  */
 public class NhanVienDTO {
-    private String maNV;
+    private int maNV;
     private String hoTen;
     private Date ngaySinh;
     private String gioiTinh;
     private String sdt;
     public NhanVienDTO(){}
-    public NhanVienDTO(String maNV,String hoTen,Date ngaySinh,String gioiTinh,String sdt){
+    public NhanVienDTO(int maNV,String hoTen,Date ngaySinh,String gioiTinh,String sdt){
         this.maNV=maNV;
         this.hoTen=hoTen;
         this.ngaySinh=ngaySinh;
         this.gioiTinh=gioiTinh;
         this.sdt=sdt;
     }
-    public String getMaNV(){
+    public NhanVienDTO(String hoTen,Date ngaySinh,String gioiTinh,String sdt){
+        this.hoTen=hoTen;
+        this.ngaySinh=ngaySinh;
+        this.gioiTinh=gioiTinh;
+        this.sdt=sdt;
+    }
+    public int getMaNV(){
         return this.maNV;
     }
-    public void setMaNV(String maNV){
+    public void setMaNV(int maNV){
         this.maNV=maNV;
     }
     public String getHoTen(){

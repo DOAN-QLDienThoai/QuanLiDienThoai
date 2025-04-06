@@ -5,7 +5,7 @@
 package DAO;
 import DTO.KhachHangDTO;
 import java.sql.Connection;
-import Data.ConnectedDatabase;
+import util.ConnectedDatabase;
 import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

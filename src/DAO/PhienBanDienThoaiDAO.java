@@ -7,7 +7,7 @@ package DAO;
 import DTO.PhienBanDienThoaiDTO;
 import javax.swing.JOptionPane;
 import java.sql.PreparedStatement;
-import Data.ConnectedDatabase;
+import util.ConnectedDatabase;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 /**

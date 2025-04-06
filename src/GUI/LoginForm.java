@@ -4,7 +4,7 @@
  */
 package GUI;
 
-import Data.ConnectedDatabase;
+import util.ConnectedDatabase;
 import com.microsoft.sqlserver.jdbc.SQLServerStatementColumnEncryptionSetting;
 import java.sql.SQLException;
 import java.util.logging.Level;

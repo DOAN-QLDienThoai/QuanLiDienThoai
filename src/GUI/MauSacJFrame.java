@@ -5,24 +5,14 @@
 package GUI;
 
 import DAO.MauSacDAO;
-import DAO.RamDAO;
 import DTO.MauSacDTO;
-import DTO.RamDTO;
-import Data.Func_class;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
-import java.awt.Cursor;
+import util.Func_class;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-
-/**
- *
- * @author kiman
- */
 public class MauSacJFrame extends javax.swing.JFrame {
-
-    Func_class func = new Func_class();
-
+    private Func_class func = new Func_class();
+    private ArrayList<MauSacDTO> listMS;
     public MauSacJFrame() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -31,7 +21,7 @@ public class MauSacJFrame extends javax.swing.JFrame {
     }
 
     public void addDataTable() {
-        ArrayList<MauSacDTO> listMS = new MauSacDAO().listMS();
+        listMS = new MauSacDAO().listMS();
         String[] colNames = {"Mã Màu", "Tên màu"};
         Object[][] rows = new Object[listMS.size()][colNames.length];
         for (int i = 0; i < listMS.size(); i++) {
@@ -215,7 +205,14 @@ public class MauSacJFrame extends javax.swing.JFrame {
             return;
         }
         String tenMau = jtf_tenmau.getText();
-        MauSacDTO mau= new MauSacDTO(0, tenMau);
+        listMS=new MauSacDAO().listMS();
+        for(MauSacDTO ms : listMS){
+            if(ms.getTenMau().equalsIgnoreCase(tenMau)){
+                JOptionPane.showMessageDialog(null,"Màu đã tồn tại","Error",0);
+                return;
+            }
+        }
+        MauSacDTO mau= new MauSacDTO(tenMau);
         new MauSacDAO().insertMauSac(mau);
         addDataTable();
         func.centerTable(table_mausac);
@@ -229,11 +226,14 @@ public class MauSacJFrame extends javax.swing.JFrame {
             return;
         }
         int maMau = (int) table_mausac.getValueAt(vitriRow, 0);
+        String tenMauOld = table_mausac.getValueAt(vitriRow, 1).toString();
         String tenMau = jtf_tenmau.getText();
-        new MauSacDAO().updateMS(new MauSacDTO(maMau, tenMau));
-        addDataTable();
-        func.centerTable(table_mausac);
-        jtf_tenmau.setText("");
+        if (!tenMauOld.equalsIgnoreCase(tenMau)) {
+            new MauSacDAO().updateMS(new MauSacDTO(maMau, tenMau));
+            addDataTable();
+            func.centerTable(table_mausac);
+            jtf_tenmau.setText("");
+        }
     }//GEN-LAST:event_btn_updateMouseClicked
 
     private void table_mausacMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_mausacMouseClicked
@@ -259,42 +259,6 @@ public class MauSacJFrame extends javax.swing.JFrame {
             func.centerTable(table_mausac);
         }
     }//GEN-LAST:event_btn_deleteMouseClicked
-
-    /**
-         * @param args the command line arguments
-         */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MauSacJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MauSacJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MauSacJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MauSacJFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new MauSacJFrame().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_add;

@@ -6,10 +6,8 @@ package GUI;
 
 import DAO.NhaCungCapDAO;
 import DTO.NhaCungCapDTO;
-import Data.Func_class;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import util.Func_class;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,7 +16,7 @@ import javax.swing.JOptionPane;
  */
 public class AddNhaCungCapFrame extends javax.swing.JFrame {
     private MainJFrame mainJFrame;
-    Func_class func=new Func_class();
+    private Func_class func=new Func_class();
     public AddNhaCungCapFrame(MainJFrame mainJFrame) {
         this.mainJFrame=mainJFrame;
         initComponents();
@@ -72,12 +70,6 @@ public class AddNhaCungCapFrame extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Tên nhà cung cấp ");
-
-        jtf_email_ncc.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtf_email_nccActionPerformed(evt);
-            }
-        });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel4.setText("Số điện thoại");
@@ -188,10 +180,6 @@ public class AddNhaCungCapFrame extends javax.swing.JFrame {
     private void btn_exit_nccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_exit_nccActionPerformed
         this.dispose();
     }//GEN-LAST:event_btn_exit_nccActionPerformed
-
-    private void jtf_email_nccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtf_email_nccActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtf_email_nccActionPerformed
     public int check_Add_ncc(){
         if (this.jtf_name_ncc.getText().equals("")) {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập tên nhà cung cấp", "Erorr", 0);
@@ -210,63 +198,21 @@ public class AddNhaCungCapFrame extends javax.swing.JFrame {
     }
     private void btn_add_nccMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_add_nccMouseClicked
         if (check_Add_ncc() == 1) {
-            NhaCungCapDTO ncc = new NhaCungCapDTO();
-            ncc.setName(this.jtf_name_ncc.getText());
-            ncc.setAddress(this.jtf_address_ncc.getText());
-            String sdt = jtf_phone_ncc.getText();
-            if (sdt.length() != 10 || sdt.charAt(0) != '0') {
-                JOptionPane.showMessageDialog(null, "Số điện thoại không hợp lệ", "Erorr", 0);
+            String tenNCC=jtf_name_ncc.getText();
+            String sdt= jtf_phone_ncc.getText();
+            if(sdt.length()!=10||sdt.charAt(0)!='0'){
+                JOptionPane.showMessageDialog(null,"Số điện thoại không hợp lệ","Error",0);
                 return;
-            } else {
-                ncc.setSDT(sdt);
             }
-            ncc.setEmail(this.jtf_email_ncc.getText());
-            NhaCungCapDAO nccDAO = new NhaCungCapDAO();
-            try {
-                nccDAO.insertNhaCungCap(ncc);
-                this.mainJFrame.addDataTableNhaCungCap();
-                func.centerTable(mainJFrame.getTableNhaCungCap());
-            } catch (SQLException ex) {
-                Logger.getLogger(AddNhaCungCapFrame.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            String email=jtf_email_ncc.getText();
+            String address=jtf_address_ncc.getText();
+            NhaCungCapDTO ncc=new NhaCungCapDTO(tenNCC, address, sdt, email);
+            new NhaCungCapDAO().insertNhaCungCap(ncc);
+            ArrayList<NhaCungCapDTO> listNCC=new NhaCungCapDAO().listNCC();
+            func.addDataTableNCC(listNCC,mainJFrame.getTableNhaCungCap());
+            func.centerTable(mainJFrame.getTableNhaCungCap());
         }
     }//GEN-LAST:event_btn_add_nccMouseClicked
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AddNhaCungCapFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AddNhaCungCapFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AddNhaCungCapFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AddNhaCungCapFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AddNhaCungCapFrame(new MainJFrame()).setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_add_ncc;

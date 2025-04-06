@@ -16,6 +16,9 @@ public class ThuongHieuDTO {
         this.maThuongHieu=maThuongHieu;
         this.tenThuongHieu=tenThuongHieu;
     }
+    public ThuongHieuDTO(String tenThuongHieu) {
+        this.tenThuongHieu = tenThuongHieu;
+    }
     public int getMaThuongHieu(){
         return this.maThuongHieu;
     }

@@ -5,7 +5,7 @@
 package DAO;
 
 import DTO.ThuongHieuDTO;
-import Data.ConnectedDatabase;
+import util.ConnectedDatabase;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;

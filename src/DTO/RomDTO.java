@@ -16,6 +16,9 @@ public class RomDTO {
         this.maRom=maRom;
         this.dungLuongRom=dungLuongRom;
     }
+    public RomDTO(int dungLuongRom){
+        this.dungLuongRom=dungLuongRom;
+    }
     public int getMaRom(){
         return this.maRom;
     }
