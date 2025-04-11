@@ -5,7 +5,7 @@
 package GUI;
 import javax.swing.JOptionPane;
 import java.util.ArrayList;
-
+import java.sql.Date;
 /**
  *
  * @author LE MINH HUY
@@ -192,8 +192,8 @@ public class AddKhachHang extends javax.swing.JFrame {
             }
         }
         String newID = String.format("KH%03d", max + 1);
-
-        DTO.KhachHangDTO khDTO = new DTO.KhachHangDTO(newID, name, address, sdt);
+        java.sql.Date ngayThamGia = new java.sql.Date(System.currentTimeMillis());
+        DTO.KhachHangDTO khDTO = new DTO.KhachHangDTO(newID, name, address, sdt,ngayThamGia);
         new DAO.KhachHangDAO().insertKhachHang(khDTO);
         dispose();
     } catch (Exception e) {
@@ -235,7 +235,8 @@ public class AddKhachHang extends javax.swing.JFrame {
             }
         }
         String newID = String.format("KH%03d", max + 1);
-        DTO.KhachHangDTO khDTO = new DTO.KhachHangDTO(newID, tenKH, diachiKh, sdtKh);
+        java.sql.Date ngayThamGia = new java.sql.Date(System.currentTimeMillis());
+        DTO.KhachHangDTO khDTO = new DTO.KhachHangDTO(newID, tenKH, diachiKh, sdtKh, ngayThamGia);
         new DAO.KhachHangDAO().insertKhachHang(khDTO);
        if (mainFrame != null) {
             mainFrame.addDataTableKhachHang();

@@ -60,7 +60,7 @@
           </Group>
           <Group type="103" rootIndex="6" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace min="0" pref="219" max="32767" attributes="0"/>
+                  <EmptySpace min="0" pref="187" max="32767" attributes="0"/>
                   <Component id="jpn_kh" min="-2" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -963,7 +963,7 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
-                  <EmptySpace pref="556" max="32767" attributes="0"/>
+                  <EmptySpace pref="557" max="32767" attributes="0"/>
                   <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
               </Group>
@@ -981,7 +981,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jPanel2" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="526" max="32767" attributes="0"/>
+                  <EmptySpace pref="514" max="32767" attributes="0"/>
               </Group>
               <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
@@ -1009,11 +1009,13 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <EmptySpace min="6" pref="6" max="-2" attributes="0"/>
-                              <Component id="jScrollPane4" min="-2" pref="939" max="-2" attributes="0"/>
+                              <Component id="jScrollPane4" pref="1000" max="32767" attributes="0"/>
                           </Group>
-                          <Component id="jpanel_chucNang_kh" min="-2" max="-2" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <Component id="jpanel_chucNang_kh" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace pref="785" max="32767" attributes="0"/>
+                          </Group>
                       </Group>
-                      <EmptySpace pref="61" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -1042,7 +1044,11 @@
                           <Component id="jlabel_update_kh" min="-2" pref="50" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="jlabel_delete_kh" min="-2" pref="50" max="-2" attributes="0"/>
-                          <EmptySpace pref="19" max="32767" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="jlabel_detail_kh" min="-2" pref="50" max="-2" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Component id="jlabel_excel_kh" min="-2" pref="50" max="-2" attributes="0"/>
+                          <EmptySpace pref="37" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                 </DimensionLayout>
@@ -1051,6 +1057,8 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="jlabel_excel_kh" min="-2" pref="50" max="-2" attributes="0"/>
+                              <Component id="jlabel_detail_kh" min="-2" pref="50" max="-2" attributes="0"/>
                               <Component id="jlabel_add_kh" alignment="0" min="-2" pref="50" max="-2" attributes="0"/>
                               <Component id="jlabel_delete_kh" alignment="0" min="-2" pref="50" max="-2" attributes="0"/>
                               <Component id="jlabel_update_kh" alignment="0" min="-2" pref="50" max="-2" attributes="0"/>
@@ -1074,6 +1082,16 @@
                 <Component class="javax.swing.JLabel" name="jlabel_delete_kh">
                   <Events>
                     <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jlabel_delete_khMouseClicked"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jlabel_detail_kh">
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jlabel_detail_khMouseClicked"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JLabel" name="jlabel_excel_kh">
+                  <Events>
+                    <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jlabel_excel_khMouseClicked"/>
                   </Events>
                 </Component>
               </SubComponents>
@@ -1138,8 +1156,8 @@
                       <Component id="cbb_search_kh" min="-2" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="txt_search_kh" min="-2" pref="167" max="-2" attributes="0"/>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="reset_kh" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="reset_kh" min="-2" pref="114" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -1149,8 +1167,8 @@
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="reset_kh" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="txt_search_kh" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
+                          <Component id="reset_kh" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
+                          <Component id="txt_search_kh" alignment="3" min="-2" pref="35" max="-2" attributes="0"/>
                           <Component id="cbb_search_kh" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="36" max="32767" attributes="0"/>
@@ -1168,6 +1186,9 @@
               </Events>
             </Component>
             <Component class="javax.swing.JTextField" name="txt_search_kh">
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txt_search_khActionPerformed"/>
+              </Events>
             </Component>
             <Component class="javax.swing.JComboBox" name="cbb_search_kh">
               <Properties>

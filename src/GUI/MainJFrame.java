@@ -37,6 +37,25 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.TableRowSorter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.SwingConstants;
+import java.awt.Dimension;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.SwingConstants;
+import javax.swing.JLabel;
+import java.awt.Font;
+import java.awt.Color;
+import java.awt.Component;
+import javax.swing.plaf.basic.BasicScrollBarUI;
+import javax.swing.JScrollBar;
+import java.awt.Cursor;
+import java.text.SimpleDateFormat;
+import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.io.FileOutputStream;
+import java.io.File;
+import javax.swing.JFileChooser;
+
 
 public class MainJFrame extends javax.swing.JFrame {
 
@@ -49,6 +68,7 @@ public class MainJFrame extends javax.swing.JFrame {
 
     public MainJFrame() {
         initComponents();
+        
         this.setLocationRelativeTo(null);
         khoitaoJPanel();
         khoitaoButtonInMenu();
@@ -71,6 +91,33 @@ public class MainJFrame extends javax.swing.JFrame {
         cbb_search_kh.addItem("Tên khách hàng");
         cbb_search_kh.addItem("Địa chỉ");
         cbb_search_kh.addItem("Số điện thoại");
+        // Thiết lập giao diện hiện đại cho ComboBox
+cbb_search_kh.setBackground(Color.WHITE); // nền trắng
+cbb_search_kh.setForeground(Color.BLACK); // chữ đen
+cbb_search_kh.setFocusable(false); // bỏ viền focus xanh 
+cbb_search_kh.setPreferredSize(new Dimension(130, 35)); // kích thước chuẩn theo ảnh
+cbb_search_kh.setOpaque(true);
+cbb_search_kh.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+txt_search_kh.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
+txt_search_kh.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+txt_search_kh.setPreferredSize(new Dimension(170, 30)); // chỉnh đẹp
+txt_search_kh.setPreferredSize(new Dimension(300, 100)); // chiều rộng
+txt_search_kh.setBackground(Color.WHITE); // nền trắng
+txt_search_kh.setForeground(Color.BLACK); // màu chữ
+txt_search_kh.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200))); // viền xám nhạt
+txt_search_kh.setToolTipText("Nhập nội dung tìm kiếm..."); // như placeholder
+reset_kh.setText("Làm mới");
+reset_kh.setFocusPainted(false);
+reset_kh.setContentAreaFilled(false); // Nền trong suốt
+reset_kh.setOpaque(true);
+reset_kh.setBackground(Color.WHITE);
+reset_kh.setForeground(Color.BLACK);
+reset_kh.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1, true)); // Bo góc + viền xám nhẹ
+reset_kh.setCursor(new Cursor(Cursor.HAND_CURSOR));
+reset_kh.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+reset_kh.setIcon(new FlatSVGIcon("./resources/icon/refresh.svg", 0.4f));
+reset_kh.setIconTextGap(10); // khoảng cách icon và chữ
+
         txt_search_kh.getDocument().addDocumentListener(new DocumentListener() {
          @Override
         public void insertUpdate(DocumentEvent e) {
@@ -86,11 +133,6 @@ public class MainJFrame extends javax.swing.JFrame {
          public void changedUpdate(DocumentEvent e) {
              searchKhachHang();
             }
-        });
-        txt_search_kh.getDocument().addDocumentListener(new DocumentListener() {
-        public void insertUpdate(DocumentEvent e) { searchKhachHang(); }
-        public void removeUpdate(DocumentEvent e) { searchKhachHang(); }
-         public void changedUpdate(DocumentEvent e) {}
         });
 
     }
@@ -171,6 +213,8 @@ public class MainJFrame extends javax.swing.JFrame {
         jlabel_add_kh.setIcon(new FlatSVGIcon("./resources/icon/add.svg", 0.06f));
         jlabel_update_kh.setIcon(new FlatSVGIcon("./resources/icon/update.svg", 0.85f));
         jlabel_delete_kh.setIcon(new FlatSVGIcon("./resources/icon/delete.svg", 0.75f));
+        jlabel_detail_kh.setIcon(new FlatSVGIcon("./resources/icon/detail.svg", 2.25f));
+        jlabel_excel_kh.setIcon(new FlatSVGIcon("./resources/icon/excel.svg", 0.075f));
         btn_kh.setIcon(new FlatSVGIcon("./resources/icon/khachhang.svg", 0.035f));
     }
 
@@ -348,6 +392,8 @@ public class MainJFrame extends javax.swing.JFrame {
         jlabel_update_kh = new javax.swing.JLabel();
         jlabel_add_kh = new javax.swing.JLabel();
         jlabel_delete_kh = new javax.swing.JLabel();
+        jlabel_detail_kh = new javax.swing.JLabel();
+        jlabel_excel_kh = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         table_kh = new javax.swing.JTable();
         jPanel2 = new javax.swing.JPanel();
@@ -949,6 +995,18 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
+        jlabel_detail_kh.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jlabel_detail_khMouseClicked(evt);
+            }
+        });
+
+        jlabel_excel_kh.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jlabel_excel_khMouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout jpanel_chucNang_khLayout = new javax.swing.GroupLayout(jpanel_chucNang_kh);
         jpanel_chucNang_kh.setLayout(jpanel_chucNang_khLayout);
         jpanel_chucNang_khLayout.setHorizontalGroup(
@@ -960,13 +1018,19 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(jlabel_update_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jlabel_delete_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jlabel_detail_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jlabel_excel_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(37, Short.MAX_VALUE))
         );
         jpanel_chucNang_khLayout.setVerticalGroup(
             jpanel_chucNang_khLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpanel_chucNang_khLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jpanel_chucNang_khLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlabel_excel_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlabel_detail_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlabel_add_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlabel_delete_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlabel_update_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -992,9 +1056,10 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addGroup(jpn_kh1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpn_kh1Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 939, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jpanel_chucNang_kh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(61, Short.MAX_VALUE))
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 1000, Short.MAX_VALUE))
+                    .addGroup(jpn_kh1Layout.createSequentialGroup()
+                        .addComponent(jpanel_chucNang_kh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(785, Short.MAX_VALUE))))
         );
         jpn_kh1Layout.setVerticalGroup(
             jpn_kh1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1013,6 +1078,12 @@ public class MainJFrame extends javax.swing.JFrame {
             }
         });
 
+        txt_search_kh.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txt_search_khActionPerformed(evt);
+            }
+        });
+
         cbb_search_kh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -1024,8 +1095,8 @@ public class MainJFrame extends javax.swing.JFrame {
                 .addComponent(cbb_search_kh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txt_search_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(reset_kh)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(reset_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -1033,8 +1104,8 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(34, 34, 34)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(reset_kh)
-                    .addComponent(txt_search_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(reset_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_search_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cbb_search_kh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(36, Short.MAX_VALUE))
         );
@@ -1044,7 +1115,7 @@ public class MainJFrame extends javax.swing.JFrame {
         jpn_khLayout.setHorizontalGroup(
             jpn_khLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpn_khLayout.createSequentialGroup()
-                .addContainerGap(556, Short.MAX_VALUE)
+                .addContainerGap(557, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(68, 68, 68))
             .addGroup(jpn_khLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1058,7 +1129,7 @@ public class MainJFrame extends javax.swing.JFrame {
             .addGroup(jpn_khLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(526, Short.MAX_VALUE))
+                .addContainerGap(514, Short.MAX_VALUE))
             .addGroup(jpn_khLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jpn_khLayout.createSequentialGroup()
                     .addContainerGap()
@@ -1292,7 +1363,7 @@ public class MainJFrame extends javax.swing.JFrame {
                     .addComponent(jpn_dt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addGap(0, 219, Short.MAX_VALUE)
+                    .addGap(0, 187, Short.MAX_VALUE)
                     .addComponent(jpn_kh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
@@ -1456,6 +1527,7 @@ public class MainJFrame extends javax.swing.JFrame {
         String tenKh = table_kh.getValueAt(vitriRow, 1).toString();
         String  sdtKh= table_kh.getValueAt(vitriRow, 3).toString();
         String diachiKh = table_kh.getValueAt(vitriRow, 2).toString();
+        String ngayThamGia = table_kh.getValueAt(vitriRow, 4).toString();
         EditKhachHang editKh = new EditKhachHang(maKh,tenKh,sdtKh,diachiKh, this);
         editKh.setVisible(true);
         editKh.setLocationRelativeTo(null);
@@ -1480,6 +1552,7 @@ public class MainJFrame extends javax.swing.JFrame {
         addDataTableKhachHang();
         func.centerTable(table_kh);
     }//GEN-LAST:event_jlabel_delete_khMouseClicked
+
 
     private void jlabel_update_pxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_update_pxMouseClicked
         // TODO add your handling code here:
@@ -1521,29 +1594,135 @@ public class MainJFrame extends javax.swing.JFrame {
     private void reset_pxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reset_pxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_reset_pxActionPerformed
-    private void searchKhachHang() {
-        String keyword = txt_search_kh.getText().trim().toLowerCase();
-        String selectedFilter = (String) cbb_search_kh.getSelectedItem();
-        DefaultTableModel model = (DefaultTableModel) table_kh.getModel();
-        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
-        table_kh.setRowSorter(sorter);
-        if (keyword.isEmpty()) {
-            sorter.setRowFilter(null);
-            return;
-        }
-        int columnIndex = switch (selectedFilter) {
-            case "Mã khách hàng" -> 0;
-            case "Tên khách hàng" -> 1;
-            case "Địa chỉ" -> 2;
-            case "Số điện thoại" -> 3;
-            default -> -1;
-        };
 
-        if (columnIndex >= 0) {
-            sorter.setRowFilter(RowFilter.regexFilter("(?i)" + keyword, columnIndex));
-        } else {
-            sorter.setRowFilter(null);
+    private void txt_search_khActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_search_khActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txt_search_khActionPerformed
+
+    private void jlabel_detail_khMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_detail_khMouseClicked
+      System.out.println(">> Clicked xem chi tiết");
+
+    int viewIndex = table_kh.getSelectedRow();
+    System.out.println("Selected Row (view): " + viewIndex);
+
+    if (viewIndex == -1) {
+        JOptionPane.showMessageDialog(null, "Vui lòng chọn khách hàng để xem chi tiết.");
+        return;
+    }
+
+    int modelIndex = table_kh.convertRowIndexToModel(viewIndex); 
+    String id = table_kh.getModel().getValueAt(modelIndex, 0).toString();
+    String name = table_kh.getModel().getValueAt(modelIndex, 1).toString();
+    String address = table_kh.getModel().getValueAt(modelIndex, 2).toString();
+    String sdt = table_kh.getModel().getValueAt(modelIndex, 3).toString();
+    try {
+     modelIndex = table_kh.convertRowIndexToModel(viewIndex); 
+     id = table_kh.getModel().getValueAt(modelIndex, 0).toString();
+     name = table_kh.getModel().getValueAt(modelIndex, 1).toString();
+     address = table_kh.getModel().getValueAt(modelIndex, 2).toString();
+     sdt = table_kh.getModel().getValueAt(modelIndex, 3).toString();
+    String ngayStr = table_kh.getModel().getValueAt(modelIndex, 4).toString();
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    java.util.Date utilDate = sdf.parse(ngayStr);
+    java.sql.Date ngayThamGia = new java.sql.Date(utilDate.getTime()); // ✅ Convert here
+
+    KhachHangDTO kh = new KhachHangDTO(id, name, address, sdt, ngayThamGia);
+    DetailKhachHang detail = new DetailKhachHang(kh);
+    detail.setLocationRelativeTo(null);
+    detail.setVisible(true);
+} catch (Exception e) {
+    e.printStackTrace();
+    JOptionPane.showMessageDialog(null, "Lỗi khi mở chi tiết: " + e.getMessage());
+}
+
+
+    }//GEN-LAST:event_jlabel_detail_khMouseClicked
+    private void exportKhachHangToExcel() {
+    JFileChooser fileChooser = new JFileChooser();
+    fileChooser.setDialogTitle("Chọn nơi lưu file Excel");
+    fileChooser.setSelectedFile(new File("DanhSachKhachHang.xlsx"));
+
+    int userSelection = fileChooser.showSaveDialog(this);
+    if (userSelection != JFileChooser.APPROVE_OPTION) return;
+
+    File fileToSave = fileChooser.getSelectedFile();
+        String filePath = fileToSave.getAbsolutePath();
+        if (!filePath.endsWith(".xlsx")) {
+        fileToSave = new File(filePath + ".xlsx");
         }
+        System.out.println("Đường dẫn lưu file: " + fileToSave.getAbsolutePath());
+    try (Workbook workbook = new XSSFWorkbook()) {
+        Sheet sheet = workbook.createSheet("KhachHang");
+
+        // Header
+        Row header = sheet.createRow(0);
+        for (int i = 0; i < table_kh.getColumnCount(); i++) {
+            Cell cell = header.createCell(i);
+            cell.setCellValue(table_kh.getColumnName(i));
+        }
+
+        // Data
+        for (int row = 0; row < table_kh.getRowCount(); row++) {
+            Row excelRow = sheet.createRow(row + 1);
+            for (int col = 0; col < table_kh.getColumnCount(); col++) {
+                Object value = table_kh.getValueAt(row, col);
+                Cell cell = excelRow.createCell(col);
+                cell.setCellValue(value != null ? value.toString() : "");
+            }
+        }
+
+        // Auto resize
+        for (int i = 0; i < table_kh.getColumnCount(); i++) {
+            sheet.autoSizeColumn(i);
+        }
+
+        FileOutputStream fos = new FileOutputStream(fileToSave);
+        workbook.write(fos);
+        fos.close();
+
+        JOptionPane.showMessageDialog(this, "Xuất Excel thành công!");
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Lỗi khi xuất file Excel: " + e.getMessage());
+    }
+}
+    private void jlabel_excel_khMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_excel_khMouseClicked
+        // TODO add your handling code here:
+         exportKhachHangToExcel();
+    }//GEN-LAST:event_jlabel_excel_khMouseClicked
+    private void searchKhachHang() {
+         String keyword = txt_search_kh.getText().trim().toLowerCase();
+    String selectedFilter = (String) cbb_search_kh.getSelectedItem();
+    DefaultTableModel model = (DefaultTableModel) table_kh.getModel();
+    TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+    table_kh.setRowSorter(sorter);
+
+    if (keyword.isEmpty()) {
+        sorter.setRowFilter(null);
+        return;
+    }
+
+    // Nếu chọn "Tất cả" thì tìm trong tất cả cột
+    if ("Tất cả".equalsIgnoreCase(selectedFilter)) {
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + keyword));
+        return;
+    }
+
+    // Còn lại thì lọc theo cột cụ thể
+    int columnIndex = switch (selectedFilter) {
+        case "Mã khách hàng" -> 0;
+        case "Tên khách hàng" -> 1;
+        case "Địa chỉ" -> 2;
+        case "Số điện thoại" -> 3;
+        default -> -1;
+    };
+
+    if (columnIndex >= 0) {
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + keyword, columnIndex));
+    } else {
+        sorter.setRowFilter(null);
+    }
     }
 
     public JTable getTableNhanVien() {
@@ -1595,7 +1774,7 @@ public class MainJFrame extends javax.swing.JFrame {
     ArrayList<KhachHangDTO> dsKH = dao.listKh(); 
     DefaultTableModel model = new DefaultTableModel(
         new Object[][]{},
-        new String[]{"Mã khách hàng", "Tên khách hàng", "Địa chỉ", "Số điện thoại"}
+        new String[]{"Mã khách hàng", "Tên khách hàng", "Địa chỉ", "Số điện thoại","Ngày tham gia"}
     ) {
         @Override
         public boolean isCellEditable(int row, int column) {
@@ -1604,12 +1783,68 @@ public class MainJFrame extends javax.swing.JFrame {
     };
      for (KhachHangDTO kh : dsKH) {
         model.addRow(new Object[]{
-            kh.getID(), kh.getName(), kh.getAddress(), kh.getSDT()
+            kh.getID(), kh.getName(), kh.getAddress(), kh.getSDT(), kh.getNgayThamGia()
         });
     }
     table_kh.setModel(model);
-    System.out.println("Đã cập nhật model table_kh với " + dsKH.size() + " dòng.");
-}
+    JScrollBar verticalBar = jScrollPane4.getVerticalScrollBar();
+    verticalBar.setPreferredSize(new Dimension(8, Integer.MAX_VALUE)); // chiều ngang thanh cuộn
+    verticalBar.setUI(new BasicScrollBarUI() {
+    @Override
+    protected void configureScrollBarColors() {
+        this.thumbColor = new Color(180, 180, 180); // màu thanh kéo
+        this.trackColor = new Color(245, 245, 245); // màu nền thanh cuộn
+    }
+
+    @Override
+    protected JButton createDecreaseButton(int orientation) {
+        return createZeroButton();
+    }
+
+    @Override
+    protected JButton createIncreaseButton(int orientation) {
+        return createZeroButton();
+    }
+
+    private JButton createZeroButton() {
+        JButton button = new JButton();
+        button.setPreferredSize(new Dimension(0, 0));
+        button.setMinimumSize(new Dimension(0, 0));
+        button.setMaximumSize(new Dimension(0, 0));
+        return button;
+    }
+    });
+
+    // Thiết lập style cho tiêu đề bảng
+    JTableHeader header = table_kh.getTableHeader();
+    header.setDefaultRenderer(new DefaultTableCellRenderer() {
+    @Override
+    public Component getTableCellRendererComponent(JTable table, Object value,
+            boolean isSelected, boolean hasFocus, int row, int column) {
+
+        JLabel label = new JLabel(value.toString());
+        label.setFont(label.getFont().deriveFont(Font.BOLD)); // chữ đậm
+        label.setHorizontalAlignment(SwingConstants.CENTER); // căn giữa
+        label.setOpaque(true);
+        label.setBackground(new Color(245, 245, 245)); // nền xám nhạt
+        label.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5)); // padding
+
+        return label;
+    }
+    });
+
+    func.centerTable(table_kh); 
+    // Định dạng hiển thị kiểu "phẳng đẹp" như ảnh bạn gửi:
+    table_kh.getTableHeader().setReorderingAllowed(false);
+    table_kh.getTableHeader().setResizingAllowed(false);
+
+    table_kh.setShowGrid(true); // bật lưới
+    table_kh.setGridColor(new Color(240, 240, 240)); // màu lưới nhạt (xám sáng)
+    table_kh.setIntercellSpacing(new Dimension(0, 1)); // chỉ có đường ngang
+    table_kh.setBorder(null); // không viền table
+    jScrollPane4.setBorder(null); // không viền khung cuộn
+        System.out.println("Đã cập nhật model table_kh với " + dsKH.size() + " dòng.");
+    }
     
     public void addDataTableDienThoai() {
         HashMap<String, Integer> mapHDH = new HeDieuHanhDAO().listMapHDH();
@@ -1701,6 +1936,8 @@ public class MainJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jlabel_delete_ncc;
     private javax.swing.JLabel jlabel_delete_nv;
     private javax.swing.JLabel jlabel_delete_px;
+    private javax.swing.JLabel jlabel_detail_kh;
+    private javax.swing.JLabel jlabel_excel_kh;
     private javax.swing.JLabel jlabel_look_dt;
     private javax.swing.JLabel jlabel_look_ncc;
     private javax.swing.JLabel jlabel_update_dt;

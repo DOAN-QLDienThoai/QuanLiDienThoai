@@ -13,13 +13,16 @@ public class KhachHangDTO {
     private String name;
     private String address;
     private String sdt;
+    private java.sql.Date ngayThamGia;
     public KhachHangDTO(){}
-    public KhachHangDTO(String id,String name,String address,String sdt){
+    public KhachHangDTO(String id,String name,String address,String sdt, java.sql.Date ngayThamGia){
         this.id=id;
         this.name=name;
         this.address=address;
         this.sdt=sdt;
+        this.ngayThamGia = ngayThamGia;
     }
+    
     public String getID(){
         return this.id;
     }
@@ -43,5 +46,11 @@ public class KhachHangDTO {
     }
     public void setSDT(String sdt){
         this.sdt=sdt;
+    }
+    public java.sql.Date getNgayThamGia() {
+    return ngayThamGia;
+    }
+    public void setNgayThamGia(java.sql.Date ngayThamGia) {
+    this.ngayThamGia = ngayThamGia;
     }
 }
