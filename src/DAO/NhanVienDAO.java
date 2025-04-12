@@ -62,13 +62,13 @@ public class NhanVienDAO {
         return 0;
     }
 
-    public int deleteNhanVien(String maNV) {
+    public int deleteNhanVien(int maNV) {
         try {
             String sqlDelete = "UPDATE NhanVien SET trangThai=0 "
                     + "WHERE maNV=?";
             PreparedStatement ps;
             ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlDelete);
-            ps.setString(1, maNV);
+            ps.setInt(1, maNV);
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Xóa thành công", "Success", 1);
             }

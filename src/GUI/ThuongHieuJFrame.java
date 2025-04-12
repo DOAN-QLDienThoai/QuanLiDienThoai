@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package GUI;
+import BUS.ThuongHieuBUS;
 import DAO.ThuongHieuDAO;
 import DTO.ThuongHieuDTO;
 import util.Func_class;
@@ -11,27 +12,26 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 public class ThuongHieuJFrame extends javax.swing.JFrame {
     private Func_class func = new Func_class();
-    private ArrayList<ThuongHieuDTO> listThuongHieu;
+    private ThuongHieuBUS thBus=new ThuongHieuBUS();
     public ThuongHieuJFrame() {
         initComponents();
         this.setLocationRelativeTo(null);
-        addDataTable();
         setUpTable();
     }
 
-    public void addDataTable() {
-        listThuongHieu = new ThuongHieuDAO().listThuongHieu();
+    public void loadDataTable(ArrayList<ThuongHieuDTO> listTH) {
         String[] colNames = {"Mã Thương Hiệu", "Tên thương hiệu"};
-        Object[][] rows = new Object[listThuongHieu.size()][colNames.length];
-        for (int i = 0; i < listThuongHieu.size(); i++) {
-            rows[i][0] = listThuongHieu.get(i).getMaThuongHieu();
-            rows[i][1] = listThuongHieu.get(i).getTenThuongHieu();
+        Object[][] rows = new Object[listTH.size()][colNames.length];
+        for (int i = 0; i < listTH.size(); i++) {
+            rows[i][0] = listTH.get(i).getMaThuongHieu();
+            rows[i][1] = listTH.get(i).getTenThuongHieu();
         }
         DefaultTableModel model = new DefaultTableModel(rows, colNames);
         table_thuongHieu.setModel(model);
     }
 
     public void setUpTable() {
+        loadDataTable(thBus.listTH());
         func.setUpTable(table_thuongHieu);
         func.centerTable(table_thuongHieu);
     }
@@ -204,17 +204,14 @@ public class ThuongHieuJFrame extends javax.swing.JFrame {
             return;
         }
         String tenThuongHieu = jtf_nameTH.getText();
-        listThuongHieu=new ThuongHieuDAO().listThuongHieu();
-        for(ThuongHieuDTO th : listThuongHieu){
-            if(th.getTenThuongHieu().equalsIgnoreCase(tenThuongHieu)){
-                JOptionPane.showMessageDialog(null,"Thương hiệu đã tồn tại","Error",0);
-                return;
-            }
+        if (thBus.checkDup(tenThuongHieu)) {
+            thBus.insertThuongHieu(tenThuongHieu);
+            loadDataTable(thBus.listTH());
+            func.centerTable(table_thuongHieu);
+            jtf_nameTH.setText("");
+            return;
         }
-        new ThuongHieuDAO().insertThuongHieu(new ThuongHieuDTO(tenThuongHieu));
-        addDataTable();
-        func.centerTable(table_thuongHieu);
-        jtf_nameTH.setText("");
+        JOptionPane.showMessageDialog(null, "Thương hiệu đã tồn tại", "Error", 0);
     }//GEN-LAST:event_btn_addMouseClicked
 
     private void btn_updateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_updateMouseClicked
@@ -223,15 +220,16 @@ public class ThuongHieuJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Bạn chưa chọn Thương Hiệu để cập nhật", "Error", 0);
             return;
         }
-        int maThuongHieu = (int) table_thuongHieu.getValueAt(vitriRow, 0);
-        String tenThuongHieuOld = table_thuongHieu.getValueAt(vitriRow, 1).toString();
+        int maThuongHieu =Integer.parseInt(table_thuongHieu.getValueAt(vitriRow, 0).toString());
         String tenThuongHieu = jtf_nameTH.getText();
-        if (!tenThuongHieuOld.equalsIgnoreCase(tenThuongHieu)) {
-            new ThuongHieuDAO().updateThuongHieu(new ThuongHieuDTO(maThuongHieu, tenThuongHieu));
-            addDataTable();
+        if(thBus.checkDup(tenThuongHieu)){
+            thBus.updateThuongHieu(new ThuongHieuDTO(maThuongHieu, tenThuongHieu));
+            loadDataTable(thBus.listTH());
             func.centerTable(table_thuongHieu);
             jtf_nameTH.setText("");
+            return;
         }
+        JOptionPane.showMessageDialog(null,"Thương hiệu đã tồn tại","Error",0);
     }//GEN-LAST:event_btn_updateMouseClicked
 
     private void table_thuongHieuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_thuongHieuMouseClicked
@@ -252,8 +250,8 @@ public class ThuongHieuJFrame extends javax.swing.JFrame {
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE);
         if (confirm == JOptionPane.YES_OPTION) {
-            new ThuongHieuDAO().deleteThuongHieu(maThuongHieu);
-            addDataTable();
+            thBus.deleteThuongHieu(maThuongHieu);
+            loadDataTable(thBus.listTH());
             func.centerTable(table_thuongHieu);
         }
     }//GEN-LAST:event_btn_deleteMouseClicked

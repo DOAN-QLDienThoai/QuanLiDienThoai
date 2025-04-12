@@ -22,6 +22,7 @@ public class RomDAO {
             ps.setInt(1,rom.getDungLuongRom());
             if(ps.executeUpdate()>0){
                 JOptionPane.showMessageDialog(null,"Thêm rom thành công","Success",1);
+                return 1;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -37,6 +38,7 @@ public class RomDAO {
             ps.setInt(2,rom.getMaRom());
             if(ps.executeUpdate()>0){
                 JOptionPane.showMessageDialog(null,"Cập nhật rom thành công","Success",1);
+                return 1;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,6 +53,7 @@ public class RomDAO {
             ps.setInt(1,maRom);
             if(ps.executeUpdate()>0){
                 JOptionPane.showMessageDialog(null,"Xóa Rom thành công","Success",1);
+                return 1;
             }
         } catch (Exception e) {
             e.printStackTrace();

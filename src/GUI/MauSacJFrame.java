@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import BUS.MauSacBUS;
 import DAO.MauSacDAO;
 import DTO.MauSacDTO;
 import util.Func_class;
@@ -12,16 +13,14 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 public class MauSacJFrame extends javax.swing.JFrame {
     private Func_class func = new Func_class();
-    private ArrayList<MauSacDTO> listMS;
+    private MauSacBUS msBus=new MauSacBUS();
     public MauSacJFrame() {
         initComponents();
         this.setLocationRelativeTo(null);
-        addDataTable();
         setUpTable();
     }
 
-    public void addDataTable() {
-        listMS = new MauSacDAO().listMS();
+    public void loadDataTable(ArrayList<MauSacDTO> listMS) {
         String[] colNames = {"Mã Màu", "Tên màu"};
         Object[][] rows = new Object[listMS.size()][colNames.length];
         for (int i = 0; i < listMS.size(); i++) {
@@ -33,6 +32,7 @@ public class MauSacJFrame extends javax.swing.JFrame {
     }
 
     public void setUpTable() {
+        loadDataTable(msBus.listMS());
         func.setUpTable(table_mausac);
         func.centerTable(table_mausac);
     }
@@ -205,18 +205,14 @@ public class MauSacJFrame extends javax.swing.JFrame {
             return;
         }
         String tenMau = jtf_tenmau.getText();
-        listMS=new MauSacDAO().listMS();
-        for(MauSacDTO ms : listMS){
-            if(ms.getTenMau().equalsIgnoreCase(tenMau)){
-                JOptionPane.showMessageDialog(null,"Màu đã tồn tại","Error",0);
-                return;
-            }
+        if(msBus.checkDup(tenMau)){
+            msBus.insertMauSac(tenMau);
+            loadDataTable(msBus.listMS());
+            func.centerTable(table_mausac);
+            jtf_tenmau.setText("");
+            return;
         }
-        MauSacDTO mau= new MauSacDTO(tenMau);
-        new MauSacDAO().insertMauSac(mau);
-        addDataTable();
-        func.centerTable(table_mausac);
-        jtf_tenmau.setText("");
+        JOptionPane.showMessageDialog(null,"Màu đã tồn tại","Error",0);
     }//GEN-LAST:event_btn_addMouseClicked
 
     private void btn_updateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_updateMouseClicked
@@ -226,14 +222,15 @@ public class MauSacJFrame extends javax.swing.JFrame {
             return;
         }
         int maMau = (int) table_mausac.getValueAt(vitriRow, 0);
-        String tenMauOld = table_mausac.getValueAt(vitriRow, 1).toString();
         String tenMau = jtf_tenmau.getText();
-        if (!tenMauOld.equalsIgnoreCase(tenMau)) {
-            new MauSacDAO().updateMS(new MauSacDTO(maMau, tenMau));
-            addDataTable();
+        if (msBus.checkDup(tenMau)) {
+            msBus.updateMauSac(new MauSacDTO(maMau, tenMau));
+            loadDataTable(msBus.listMS());
             func.centerTable(table_mausac);
             jtf_tenmau.setText("");
+            return;
         }
+        JOptionPane.showMessageDialog(null,"Màu đã tồn tại","Error",0);
     }//GEN-LAST:event_btn_updateMouseClicked
 
     private void table_mausacMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_mausacMouseClicked
@@ -248,14 +245,14 @@ public class MauSacJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Bạn chưa chọn màu để xóa ", "Error", 0);
             return;
         }
-        int maMau =(int) table_mausac.getValueAt(vitriRow, 0);
+        int maMau =Integer.parseInt(table_mausac.getValueAt(vitriRow, 0).toString());
         int confirm = JOptionPane.showConfirmDialog(null,"Bạn có chắc chắn muốn xóa màu này không?", 
                 "Xác nhận xóa",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE);
         if (confirm == JOptionPane.YES_OPTION) {
-            new MauSacDAO().deleteMS(maMau);
-            addDataTable();
+            msBus.deleteMauSac(maMau);
+            loadDataTable(msBus.listMS());
             func.centerTable(table_mausac);
         }
     }//GEN-LAST:event_btn_deleteMouseClicked

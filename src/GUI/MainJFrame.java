@@ -4,6 +4,9 @@
  */
 package GUI;
 
+import BUS.DienThoaiBUS;
+import BUS.NhaCungCapBUS;
+import BUS.NhanVienBUS;
 import DAO.DienThoaiDAO;
 import DAO.HeDieuHanhDAO;
 import DAO.KhachHangDAO;
@@ -50,33 +53,22 @@ public class MainJFrame extends javax.swing.JFrame {
     JButton currentActiveBtn = null;
     private Func_class func = new Func_class();
     private Border etchedBorder = BorderFactory.createEtchedBorder();
+    private NhanVienBUS nhanvienBUS;
+    private NhaCungCapBUS nhacungcapBUS;
+    private DienThoaiBUS dienthoaiBUS;
     private HashMap<String,Integer> mapHDH;
     private HashMap<String,Integer> mapThuongHieu;
     private ArrayList<DienThoaiDTO> listDT=new DienThoaiDAO().listDT();
     private ArrayList<NhaCungCapDTO> listNCC=new NhaCungCapDAO().listNCC();
-    private ArrayList<NhanVienDTO> listNV=new NhanVienDAO().listNV();
     private ArrayList<DienThoaiDTO> listDTFilter=new ArrayList<>();
     private ArrayList<NhaCungCapDTO> listNCCFilter=new ArrayList<>();
-    private ArrayList<NhanVienDTO> listNVFilter=new ArrayList<>();
     public MainJFrame() {
         initComponents();
         this.setLocationRelativeTo(null);
-        func.addDataTableDienThoai(listDT,table_dt);
-        func.addDataTableNV(listNV, table_nv);
-        func.addDataTableNCC(listNCC, table_ncc);
-        khoitaoChooseFilterDT();
-        khoitaoChooserFilterNCC();
-        khoitaoChooseFilterNV();
-        khoitaoJPanel();
-        khoitaoButtonInMenu();
-        actionJButtonMenu();
-        styleAllButtonMenu(); // 👉 thêm dòng này để làm đẹp nút menu
-        showPanel(jpn_dt);
-        setBackgroundJButton(btn_dt);
-        setShadowforJPN();
-        setCusorPointer();
-        setUpTable();
-        setIconForJlabel();
+        nhanvienBUS=new NhanVienBUS();
+        nhacungcapBUS=new NhaCungCapBUS();
+        dienthoaiBUS=new DienThoaiBUS();
+        khoiTao();
         cbb_search_kh.removeAllItems();
         cbb_search_kh.addItem("Tất cả");
         cbb_search_kh.addItem("Mã khách hàng");
@@ -102,10 +94,27 @@ public class MainJFrame extends javax.swing.JFrame {
         txt_search_kh.getDocument().addDocumentListener(new DocumentListener() {
         public void insertUpdate(DocumentEvent e) { searchKhachHang(); }
         public void removeUpdate(DocumentEvent e) { searchKhachHang(); }
-         public void changedUpdate(DocumentEvent e) {}
+        public void changedUpdate(DocumentEvent e) {}
         });
     }
-    
+    public void khoiTao(){
+        func.addDataTableDienThoai(listDT,table_dt);
+        func.addDataTableNV(nhanvienBUS.listNV(), table_nv);
+        func.addDataTableNCC(listNCC, table_ncc);
+        khoitaoChooseFilterDT();
+        khoitaoChooserFilterNCC();
+        khoitaoChooseFilterNV();
+        khoitaoJPanel();
+        khoitaoButtonInMenu();
+        actionJButtonMenu();
+        styleAllButtonMenu(); // 👉 thêm dòng này để làm đẹp nút menu
+        showPanel(jpn_dt);
+        setBackgroundJButton(btn_dt);
+        setShadowforJPN();
+        setCusorPointer();
+        setUpTable();
+        setIconForJlabel();
+    }
     //Hàm khởi tạo lựa chọn cách lọc điện thoại
     public void khoitaoChooseFilterDT(){
         String[] filtersDT={"Tất cả","Tên điện thoại","Hệ điều hành","Thương hiệu","Chip xử lý"};
@@ -1749,44 +1758,38 @@ public class MainJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Bạn chưa chọn nhân viên để xóa", "Error", 0);
             return;
         }
-        String maNV = table_nv.getValueAt(vitriRow, 0).toString();
+        int maNV =Integer.parseInt(table_nv.getValueAt(vitriRow, 0).toString());
         int confirm=JOptionPane.showConfirmDialog(null,"Bạn có chắc chắn muốn xóa không","Xóa nhân viên",
                 JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE);
         if(confirm==JOptionPane.YES_OPTION)
-            new NhanVienDAO().deleteNhanVien(maNV);
-        listNV=new NhanVienDAO().listNV();
-        func.addDataTableNV(listNV, table_nv);
+            nhanvienBUS.deleteNhanVien(maNV);
+        func.addDataTableNV(nhanvienBUS.listNV(), table_nv);
         func.centerTable(table_nv);
     }//GEN-LAST:event_jlabel_delete_nvMouseClicked
 
     private void btn_ramMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_ramMouseClicked
         RAMJFrame ram = new RAMJFrame();
         ram.setVisible(true);
-        ram.setLocationRelativeTo(null);
     }//GEN-LAST:event_btn_ramMouseClicked
 
     private void btn_romMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_romMouseClicked
         ROMJFrame rom = new ROMJFrame();
         rom.setVisible(true);
-        rom.setLocationRelativeTo(null);
     }//GEN-LAST:event_btn_romMouseClicked
 
     private void btn_mausacMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_mausacMouseClicked
         MauSacJFrame ms = new MauSacJFrame();
         ms.setVisible(true);
-        ms.setLocationRelativeTo(null);
     }//GEN-LAST:event_btn_mausacMouseClicked
 
     private void btn_hdhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_hdhMouseClicked
         HeDieuHanhJFrame hdh = new HeDieuHanhJFrame();
         hdh.setVisible(true);
-        hdh.setLocationRelativeTo(null);
     }//GEN-LAST:event_btn_hdhMouseClicked
 
     private void btn_thuongHieuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_thuongHieuMouseClicked
         ThuongHieuJFrame th = new ThuongHieuJFrame();
         th.setVisible(true);
-        th.setLocationRelativeTo(null);
     }//GEN-LAST:event_btn_thuongHieuMouseClicked
 
     private void jlabel_add_dtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_add_dtMouseClicked
@@ -1830,7 +1833,7 @@ public class MainJFrame extends javax.swing.JFrame {
         String sdt = table_ncc.getValueAt(vitriRow, 3).toString();
         String email = table_ncc.getValueAt(vitriRow, 4).toString();
         NhaCungCapDTO ncc=new NhaCungCapDTO(maNCC, tenNCC, address, sdt, email);
-        EditNhaCungCapJFrame editNCCJFrame = new EditNhaCungCapJFrame( ncc,this);
+        EditNhaCungCapJFrame editNCCJFrame = new EditNhaCungCapJFrame(ncc,this);
         editNCCJFrame.setVisible(true);
         editNCCJFrame.setLocationRelativeTo(null);
     }//GEN-LAST:event_jlabel_update_nccMouseClicked
@@ -1838,113 +1841,16 @@ public class MainJFrame extends javax.swing.JFrame {
    
     //Hàm tìm kiếm nhà cung cấp
     private void jlabel_look_nccMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_look_nccMouseClicked
-        String choose_combobox=combobox_find_ncc.getSelectedItem().toString();
+        String type=combobox_find_ncc.getSelectedItem().toString();
         String find_text=jtf_find_ncc.getText().toLowerCase();
-        listNCC=new NhaCungCapDAO().listNCC();
-        if(choose_combobox.equals("Tất cả")){
-            listNCCFilter.clear();
-            for(NhaCungCapDTO ncc : listNCC){
-                String tenNCC=ncc.getName().toLowerCase();
-                String sdt=ncc.getSDT().toLowerCase();
-                String email=ncc.getEmail().toLowerCase();
-                String address=ncc.getAddress().toLowerCase();
-                if(tenNCC.contains(find_text)||email.contains(find_text)||sdt.contains(find_text)||address.contains(find_text))
-                    listNCCFilter.add(ncc);
-            }
-        }
-        else if(choose_combobox.equals("Tên nhà cung cấp")){
-            listNCCFilter.clear();
-            for(NhaCungCapDTO ncc :listNCC){
-                String tenNCC=ncc.getName().toLowerCase();
-                if(tenNCC.contains(find_text))
-                    listNCCFilter.add(ncc);
-            }
-        }
-        else if(choose_combobox.equals("Số điện thoại")){
-            listNCCFilter.clear();
-            for(NhaCungCapDTO ncc :listNCC){
-                String sdt=ncc.getSDT().toLowerCase();
-                if(sdt.contains(find_text))
-                    listNCCFilter.add(ncc);
-            }
-        }
-        else if(choose_combobox.equals("Email")){
-            listNCCFilter.clear();
-            for(NhaCungCapDTO ncc :listNCC){
-                String email=ncc.getEmail().toLowerCase();
-                if(email.contains(find_text))
-                    listNCCFilter.add(ncc);
-            }
-        }
-        else{
-            listNCCFilter.clear();
-            for(NhaCungCapDTO ncc :listNCC){
-                String address=ncc.getAddress().toLowerCase();
-                if(address.contains(find_text))
-                    listNCCFilter.add(ncc);
-            }
-        }
-        func.addDataTableNCC(listNCCFilter, table_ncc);
+        func.addDataTableNCC(nhacungcapBUS.timKiem(find_text,type), table_ncc);
         func.centerTable(table_ncc);
     }//GEN-LAST:event_jlabel_look_nccMouseClicked
     //Hàm tìm kiếm điện thoại
     private void jlabel_look_dtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_look_dtMouseClicked
-        String choose_combobox = combobox_find_dt.getSelectedItem().toString();
+        String type = combobox_find_dt.getSelectedItem().toString();
         String find_text = jtf_find_dt.getText().toLowerCase();
-        listDT = new DienThoaiDAO().listDT();
-        if (choose_combobox.equals("Tất cả")) {
-            listDTFilter.clear();
-            mapHDH = new HeDieuHanhDAO().listMapHDH();
-            mapThuongHieu = new ThuongHieuDAO().listMapThuongHieu();
-            for (DienThoaiDTO dt : listDT) {
-                String tenDT = dt.getTenDT().toLowerCase();
-                String tenHDH = func.getKey(mapHDH, dt.getHeDieuHanh()).toLowerCase();
-                String tenThuongHieu = func.getKey(mapThuongHieu, dt.getThuongHieu()).toLowerCase();
-                String chipXuLy = dt.getChipXuLy().toLowerCase();
-                String dungLuongPin = String.valueOf(dt.getDungLuongPin()).toLowerCase();
-                String kichThuocMan = String.valueOf(dt.getKichThuocMan()).toLowerCase();
-                String maDT = String.valueOf(dt.getMaDT()).toLowerCase();
-                if (tenDT.contains(find_text)|| tenHDH.contains(find_text)|| tenThuongHieu.contains(find_text)|| chipXuLy.contains(find_text)|| dungLuongPin.contains(find_text)|| kichThuocMan.contains(find_text)|| maDT.contains(find_text)) 
-                    listDTFilter.add(dt);
-            }
-        }
-        else if (choose_combobox.equals("Hệ điều hành")) {
-            listDTFilter.clear();
-            mapHDH = new HeDieuHanhDAO().listMapHDH();
-            for (DienThoaiDTO dt : listDT) {
-                String tenHDH = func.getKey(mapHDH, dt.getHeDieuHanh());
-                if (tenHDH.toLowerCase().contains(find_text)) {
-                    listDTFilter.add(dt);
-                }
-            }
-        }
-        else if(choose_combobox.equals("Thương hiệu")){
-            listDTFilter.clear();
-            mapThuongHieu = new ThuongHieuDAO().listMapThuongHieu();
-            for (DienThoaiDTO dt : listDT) {
-                String tenThuongHieu = func.getKey(mapThuongHieu, dt.getThuongHieu());
-                if (tenThuongHieu.toLowerCase().contains(find_text)) {
-                    listDTFilter.add(dt);
-                }
-            }
-        }
-        else if(choose_combobox.equals("Tên điện thoại")){
-            listDTFilter.clear();
-            for (DienThoaiDTO dt : listDT) {
-                if (dt.getTenDT().toLowerCase().contains(find_text)) {
-                    listDTFilter.add(dt);
-                }
-            }
-        }
-        else if(choose_combobox.equals("Chip xử lý")){
-            listDTFilter.clear();
-            for (DienThoaiDTO dt : listDT) {
-                if (dt.getChipXuLy().toLowerCase().contains(find_text)) {
-                    listDTFilter.add(dt);
-                }
-            }
-        }
-        func.addDataTableDienThoai(listDTFilter, table_dt);
+        func.addDataTableDienThoai(dienthoaiBUS.timKiem(find_text,type), table_dt);
         func.centerTable(table_dt);
     }//GEN-LAST:event_jlabel_look_dtMouseClicked
     
@@ -2011,8 +1917,8 @@ public class MainJFrame extends javax.swing.JFrame {
         int confirm=JOptionPane.showConfirmDialog(null,"Bạn có chắc muốn xóa phiên bản này không","Xác nhận xóa",
                 JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
         if(confirm==JOptionPane.YES_OPTION){
-            new DienThoaiDAO().deleteDienThoai(maDT);
-            func.addDataTableDienThoai(new DienThoaiDAO().listDT(), table_dt);
+            dienthoaiBUS.deleteDienThoai(maDT);
+            func.addDataTableDienThoai(dienthoaiBUS.listDT(), table_dt);
             func.centerTable(table_dt);
         }
     }//GEN-LAST:event_jlabel_delete_dtMouseClicked
@@ -2149,53 +2055,8 @@ public class MainJFrame extends javax.swing.JFrame {
     //Hàm tìm kiếm nhân viên
     private void jlabel_look_nvMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_look_nvMouseClicked
         String choose_combobox = combobox_find_nv.getSelectedItem().toString();
-        String find_text = jtf_find_nv.getText().toLowerCase();
-        listNV = new NhanVienDAO().listNV();
-        if (choose_combobox.equals("Tất cả")) {
-            listNVFilter.clear();
-            for (NhanVienDTO nv : listNV) {
-                String hoTen = nv.getHoTen().toLowerCase();
-                String sdt = nv.getSDT().toLowerCase();
-                String gioiTinh = nv.getGioiTinh().toLowerCase();
-                String ngaySinh = String.valueOf(nv.getNgaySinh()).toLowerCase();
-                if (hoTen.contains(find_text) || sdt.contains(find_text) || gioiTinh.contains(find_text) || ngaySinh.contains(find_text)) {
-                    listNVFilter.add(nv);
-                }
-            }
-        } else if (choose_combobox.equals("Tên nhân viên")) {
-            listNVFilter.clear();
-            for (NhanVienDTO nv : listNV) {
-                String hoTen = nv.getHoTen().toLowerCase();
-                if (hoTen.contains(find_text)) {
-                    listNVFilter.add(nv);
-                }
-            }
-        } else if (choose_combobox.equals("Số điện thoại")) {
-            listNVFilter.clear();
-            for (NhanVienDTO nv : listNV) {
-                String sdt = nv.getSDT().toLowerCase();
-                if (sdt.contains(find_text)) {
-                    listNVFilter.add(nv);
-                }
-            }
-        } else if (choose_combobox.equals("Email")) {
-            listNVFilter.clear();
-            for (NhanVienDTO nv : listNV) {
-                String gioiTinh = nv.getGioiTinh().toLowerCase();
-                if (gioiTinh.contains(find_text)) {
-                    listNVFilter.add(nv);
-                }
-            }
-        } else {
-            listNVFilter.clear();
-            for (NhanVienDTO nv : listNV) {
-                String ngaySinh = String.valueOf(nv.getNgaySinh()).toLowerCase();
-                if (ngaySinh.contains(find_text)) {
-                    listNVFilter.add(nv);
-                }
-            }
-        }
-        func.addDataTableNV(listNVFilter, table_nv);
+        String text = jtf_find_nv.getText();
+        func.addDataTableNV(nhanvienBUS.timKiem(text,choose_combobox), table_nv);
         func.centerTable(table_nv);
     }//GEN-LAST:event_jlabel_look_nvMouseClicked
 
@@ -2229,8 +2090,7 @@ public class MainJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jlabel_refresh_nccMouseClicked
 
     private void jlabel_refresh_nvMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_refresh_nvMouseClicked
-        listNV=new NhanVienDAO().listNV();
-        func.addDataTableNV(listNV, table_nv);
+        func.addDataTableNV(nhanvienBUS.listNV(), table_nv);
         func.centerTable(table_nv);
     }//GEN-LAST:event_jlabel_refresh_nvMouseClicked
     //Hàm lấy bảng nhân viên

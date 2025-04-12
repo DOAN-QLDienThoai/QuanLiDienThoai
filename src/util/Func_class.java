@@ -5,8 +5,6 @@
 package util;
 
 import DAO.HeDieuHanhDAO;
-import DAO.NhaCungCapDAO;
-import DAO.NhanVienDAO;
 import DAO.ThuongHieuDAO;
 import DTO.DienThoaiDTO;
 import DTO.NhaCungCapDTO;
@@ -25,7 +23,6 @@ import java.util.Map;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.filechooser.FileNameExtensionFilter;

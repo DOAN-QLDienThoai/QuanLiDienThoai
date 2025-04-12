@@ -22,6 +22,7 @@ public class ThuongHieuDAO {
             ps.setString(1,th.getTenThuongHieu());
             if(ps.executeUpdate()>0){
                 JOptionPane.showMessageDialog(null,"Thêm thương hiệu thành công","Success",1);
+                return 1;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -37,6 +38,7 @@ public class ThuongHieuDAO {
             ps.setInt(2,th.getMaThuongHieu());
             if(ps.executeUpdate()>0){
                 JOptionPane.showMessageDialog(null,"Cập nhật thương hiệu thành công","Success",1);
+                return 1;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,6 +53,7 @@ public class ThuongHieuDAO {
             ps.setInt(1,maThuongHieu);
             if(ps.executeUpdate()>0){
                 JOptionPane.showMessageDialog(null,"Xóa thương hiệu thành công","Success",1);
+                return 1;
             }
         } catch (Exception e) {
             e.printStackTrace();

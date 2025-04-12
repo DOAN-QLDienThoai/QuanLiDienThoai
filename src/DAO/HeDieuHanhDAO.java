@@ -23,6 +23,7 @@ public class HeDieuHanhDAO {
             ps.setString(1, hdh.getTenHDH());
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Thêm hệ điều hành thành công", "Success", 1);
+                return 1;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -39,6 +40,7 @@ public class HeDieuHanhDAO {
             ps.setInt(2, hdh.getMaHDH());
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Cập nhật thành công", "Success", 1);
+                return 1;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -54,6 +56,7 @@ public class HeDieuHanhDAO {
             ps.setInt(1, maHDH);
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Xóa thành công", "Success", 1);
+                return 1;
             }
         } catch (Exception e) {
             e.printStackTrace();

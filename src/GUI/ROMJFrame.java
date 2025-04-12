@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import BUS.RomBUS;
 import DAO.RomDAO;
 import DTO.RomDTO;
 import util.Func_class;
@@ -17,14 +18,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ROMJFrame extends javax.swing.JFrame {
     private Func_class func = new Func_class();
-    private ArrayList<RomDTO> listRom;
+    private RomBUS romBus=new RomBUS();
     public ROMJFrame() {
         initComponents();
         this.setLocationRelativeTo(null);
-        addDataTable();
         setUpTable();
     }
-    public void addDataTable() {
+    public void loadDataTable(ArrayList<RomDTO> listRom) {
         listRom = new RomDAO().listRom();
         String[] colNames = {"Mã Rom", "Dung lượng rom"};
         Object[][] rows = new Object[listRom.size()][colNames.length];
@@ -37,6 +37,7 @@ public class ROMJFrame extends javax.swing.JFrame {
     }
 
     public void setUpTable() {
+        loadDataTable(romBus.listROM());
         func.setUpTable(table_rom);
         func.centerTable(table_rom);
     }
@@ -209,18 +210,14 @@ public class ROMJFrame extends javax.swing.JFrame {
             return;
         }
         int dungLuongRom = Integer.parseInt(jtf_dlr.getText());
-        listRom=new RomDAO().listRom();
-        for(RomDTO ram : listRom){
-            if(ram.getDungLuongRom()==dungLuongRom){
-                JOptionPane.showMessageDialog(null,"Rom đã tồn tại","Error",0);
-                return;
-            }
+        if (romBus.checkDup(dungLuongRom)) {
+            romBus.insertRom(dungLuongRom);
+            loadDataTable(romBus.listROM());
+            func.centerTable(table_rom);
+            jtf_dlr.setText("");
+            return;
         }
-        RomDTO rom = new RomDTO( dungLuongRom);
-        new RomDAO().insertRom(rom);
-        addDataTable();
-        func.centerTable(table_rom);
-        jtf_dlr.setText("");
+        JOptionPane.showMessageDialog(null, "ROM đã tồn tại", "Error", 0);
     }//GEN-LAST:event_btn_addMouseClicked
 
     private void btn_updateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_updateMouseClicked
@@ -230,14 +227,15 @@ public class ROMJFrame extends javax.swing.JFrame {
             return;
         }
         int maRom = (int) table_rom.getValueAt(vitriRow, 0);
-        int dungLuongRomOld = Integer.parseInt(table_rom.getValueAt(vitriRow, 1).toString());
         int dungLuongRom = Integer.parseInt(jtf_dlr.getText());
-        if (dungLuongRomOld != dungLuongRom) {
-            new RomDAO().updateRom(new RomDTO(maRom, dungLuongRom));
-            addDataTable();
+        if(romBus.checkDup(dungLuongRom)){
+            romBus.updateRom(new RomDTO(maRom,dungLuongRom));
+            loadDataTable(romBus.listROM());
             func.centerTable(table_rom);
             jtf_dlr.setText("");
+            return;
         }
+        JOptionPane.showMessageDialog(null, "ROM đã tồn tại", "Error", 0);
     }//GEN-LAST:event_btn_updateMouseClicked
 
     private void table_romMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_romMouseClicked
@@ -258,8 +256,8 @@ public class ROMJFrame extends javax.swing.JFrame {
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE);
         if (confirm == JOptionPane.YES_OPTION) {
-            new RomDAO().deleteRom(maRom);
-            addDataTable();
+            romBus.deleteRom(maRom);
+            loadDataTable(romBus.listROM());
             func.centerTable(table_rom);
         }
     }//GEN-LAST:event_btn_deleteMouseClicked

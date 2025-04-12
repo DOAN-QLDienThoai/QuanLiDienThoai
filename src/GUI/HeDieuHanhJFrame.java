@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import BUS.HeDieuHanhBUS;
 import DAO.HeDieuHanhDAO;
 import DTO.HeDieuHanhDTO;
 import util.Func_class;
@@ -17,15 +18,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class HeDieuHanhJFrame extends javax.swing.JFrame {
     private Func_class func = new Func_class();
-    private ArrayList<HeDieuHanhDTO> listHDH;
+    private HeDieuHanhBUS hdhBus=new HeDieuHanhBUS();
     public HeDieuHanhJFrame() {
         initComponents();
         this.setLocationRelativeTo(null);
-        addDataTable();
         setUpTable();
     }
-    public void addDataTable() {
-        listHDH = new HeDieuHanhDAO().listHDH();
+    public void loadDataTable(ArrayList<HeDieuHanhDTO> listHDH) {
         String[] colNames = {"Mã Hệ Điều Hành", "Tên Hệ Điều Hành"};
         Object[][] rows = new Object[listHDH.size()][colNames.length];
         for (int i = 0; i < listHDH.size(); i++) {
@@ -35,8 +34,8 @@ public class HeDieuHanhJFrame extends javax.swing.JFrame {
         DefaultTableModel model = new DefaultTableModel(rows, colNames);
         table_hdh.setModel(model);
     }
-
     public void setUpTable() {
+        loadDataTable(hdhBus.listHDH());
         func.setUpTable(table_hdh);
         func.centerTable(table_hdh);
     }
@@ -209,17 +208,14 @@ public class HeDieuHanhJFrame extends javax.swing.JFrame {
             return;
         }
         String tenHDH = jtf_tenhdh.getText();
-        listHDH=new HeDieuHanhDAO().listHDH();
-        for(HeDieuHanhDTO hdh : listHDH){
-            if(hdh.getTenHDH().equalsIgnoreCase(tenHDH)){
-                JOptionPane.showMessageDialog(null,"Hệ điều hành đã tồn tại","Error",0);
-                return;
-            }
+        if (hdhBus.checkDup(tenHDH)) {
+            hdhBus.insertHeDieuHanh(tenHDH);
+            loadDataTable(hdhBus.listHDH());
+            func.centerTable(table_hdh);
+            jtf_tenhdh.setText("");
+            return;
         }
-        new HeDieuHanhDAO().insertHeDieuHanh(new HeDieuHanhDTO(tenHDH));
-        addDataTable();
-        func.centerTable(table_hdh);
-        jtf_tenhdh.setText("");
+        JOptionPane.showMessageDialog(null,"Hệ điều hành đã tồn tại","Error",0);
     }//GEN-LAST:event_btn_addMouseClicked
 
     private void btn_updateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_updateMouseClicked
@@ -229,14 +225,15 @@ public class HeDieuHanhJFrame extends javax.swing.JFrame {
             return;
         }
         int maHDH = Integer.parseInt(table_hdh.getValueAt(vitriRow, 0).toString());
-        String tenHDHOld = table_hdh.getValueAt(vitriRow, 1).toString();
         String tenHDH = jtf_tenhdh.getText();
-        if (!tenHDHOld.equalsIgnoreCase(tenHDH)) {
-            new HeDieuHanhDAO().updateHDH(new HeDieuHanhDTO(maHDH, tenHDH));
-            addDataTable();
+        if (hdhBus.checkDup(tenHDH)) {
+            hdhBus.updateHeDieuHanh(new HeDieuHanhDTO(maHDH, tenHDH));
+            loadDataTable(hdhBus.listHDH());
             func.centerTable(table_hdh);
             jtf_tenhdh.setText("");
+            return;
         }
+        JOptionPane.showMessageDialog(null, "Hệ điều hành đã tồn tại", "Error", 0);
     }//GEN-LAST:event_btn_updateMouseClicked
 
     private void table_hdhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_hdhMouseClicked
@@ -257,8 +254,8 @@ public class HeDieuHanhJFrame extends javax.swing.JFrame {
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE);
         if (confirm == JOptionPane.YES_OPTION) {
-            new HeDieuHanhDAO().deleteHDH(maHDH);
-            addDataTable();
+            hdhBus.deleteThuongHieu(maHDH);
+            loadDataTable(hdhBus.listHDH());
             func.centerTable(table_hdh);
         }
     }//GEN-LAST:event_btn_deleteMouseClicked

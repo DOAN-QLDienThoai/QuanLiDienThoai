@@ -4,6 +4,7 @@
  */
 package GUI;
 
+import BUS.RamBUS;
 import DAO.RamDAO;
 import DTO.RamDTO;
 import util.Func_class;
@@ -17,16 +18,13 @@ import javax.swing.table.DefaultTableModel;
  */
 public class RAMJFrame extends javax.swing.JFrame {
     private Func_class func = new Func_class();
-    private ArrayList<RamDTO> listRam;
+    private RamBUS ramBus=new RamBUS();
     public RAMJFrame() {
         initComponents();
         this.setLocationRelativeTo(null);
-        addDataTable();
         setUpTable();
     }
-
-    public void addDataTable() {
-        ArrayList<RamDTO> listRam = new RamDAO().listRam();
+    public void loadDataTable(ArrayList<RamDTO> listRam) {
         String[] colNames = {"Mã Ram", "Dung lượng ram"};
         Object[][] rows = new Object[listRam.size()][colNames.length];
         for (int i = 0; i < listRam.size(); i++) {
@@ -38,6 +36,7 @@ public class RAMJFrame extends javax.swing.JFrame {
     }
 
     public void setUpTable() {
+        loadDataTable(ramBus.listRAM());
         func.setUpTable(table_ram);
         func.centerTable(table_ram);
     }
@@ -209,18 +208,14 @@ public class RAMJFrame extends javax.swing.JFrame {
             return;
         }
         int dungLuongRam = Integer.parseInt(jtf_dlr.getText());
-        listRam=new RamDAO().listRam();
-        for(RamDTO ram : listRam){
-            if(ram.getDungLuongRam()==dungLuongRam){
-                JOptionPane.showMessageDialog(null,"Ram đã tồn tại","Error",0);
-                return;
-            }
+        if (ramBus.checkDup(dungLuongRam)) {
+            ramBus.insertRam(dungLuongRam);
+            loadDataTable(ramBus.listRAM());
+            func.centerTable(table_ram);
+            jtf_dlr.setText("");
+            return;
         }
-        RamDTO ram = new RamDTO(dungLuongRam);
-        new RamDAO().insertRam(ram);
-        addDataTable();
-        func.centerTable(table_ram);
-        jtf_dlr.setText("");
+        JOptionPane.showMessageDialog(null, "Ram đã tồn tại", "Error", 0);
     }//GEN-LAST:event_btn_addMouseClicked
 
     private void btn_updateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_updateMouseClicked
@@ -230,14 +225,15 @@ public class RAMJFrame extends javax.swing.JFrame {
             return;
         }
         int maRam = Integer.parseInt(table_ram.getValueAt(vitriRow, 0).toString());
-        int dungLuongRamOld = Integer.parseInt(table_ram.getValueAt(vitriRow, 1).toString());
         int dungLuongRam = Integer.parseInt(jtf_dlr.getText());
-        if (dungLuongRamOld != dungLuongRam) {
-            new RamDAO().updateRam(new RamDTO(maRam, dungLuongRam));
-            addDataTable();
+        if(ramBus.checkDup(dungLuongRam)){
+            ramBus.updateRam(new RamDTO(maRam,dungLuongRam));
+            loadDataTable(ramBus.listRAM());
             func.centerTable(table_ram);
             jtf_dlr.setText("");
+            return;
         }
+        JOptionPane.showMessageDialog(null,"Dung lượng ram đã tồn tại","Error",0);
     }//GEN-LAST:event_btn_updateMouseClicked
 
     private void table_ramMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_ramMouseClicked
@@ -252,14 +248,14 @@ public class RAMJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Bạn chưa chọn Ram để xóa ", "Error", 0);
             return;
         }
-        int maRam = (int) table_ram.getValueAt(vitriRow, 0);
+        int maRam = Integer.parseInt(table_ram.getValueAt(vitriRow, 0).toString());
         int confirm = JOptionPane.showConfirmDialog(null,"Bạn có chắc chắn muốn xóa RAM này không?", 
                 "Xác nhận xóa",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE);
         if (confirm == JOptionPane.YES_OPTION) {
-            new RamDAO().deleteMS(maRam);
-            addDataTable();
+            ramBus.deleteRam(maRam);
+            loadDataTable(ramBus.listRAM());
             func.centerTable(table_ram);
         }
     }//GEN-LAST:event_btn_deleteMouseClicked

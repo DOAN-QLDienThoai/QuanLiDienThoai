@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 
 public class DienThoaiDAO {
 
-    public void insertDienThoai(DienThoaiDTO dt) {
+    public int insertDienThoai(DienThoaiDTO dt) {
         try {
             String sqlAdd = "INSERT INTO DienThoai(tenDT,maHDH,maThuongHieu,chipXuLy,dungLuongPin,kichThuocMan,hinhAnh,trangThai) "
                     + "VALUES (?,?,?,?,?,?,?,1)";
@@ -26,10 +26,13 @@ public class DienThoaiDAO {
             ps.setDouble(6, dt.getKichThuocMan());
             ps.setString(7, dt.getHinhAnh());
             ps.executeUpdate();
+            if(ps.executeUpdate()>0)
+                return 1;
             ps.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return 0;
     }
 
     public int updateDienThoai(DienThoaiDTO dt) {

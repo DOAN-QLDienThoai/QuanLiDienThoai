@@ -22,6 +22,7 @@ public class MauSacDAO {
             ps.setString(1,ms.getTenMau());
             if(ps.executeUpdate()>0){
                 JOptionPane.showMessageDialog(null,"Thêm màu sắc thành công","Success",1);
+                return 1;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -37,6 +38,7 @@ public class MauSacDAO {
             ps.setInt(2,ms.getMaMau() );
             if(ps.executeUpdate()>0){
                 JOptionPane.showMessageDialog(null,"Cập nhật màu sắc thành công","Success",1);
+                return 1;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -51,6 +53,7 @@ public class MauSacDAO {
             ps.setInt(1,maMau);
             if(ps.executeUpdate()>0){
                 JOptionPane.showMessageDialog(null,"Xóa màu sắc thành công","Success",1);
+                return 1;
             }
         } catch (Exception e) {
             e.printStackTrace();

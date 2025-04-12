@@ -3,8 +3,6 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package DAO;
-
-import DTO.MauSacDTO;
 import DTO.RamDTO;
 import util.ConnectedDatabase;
 import java.sql.PreparedStatement;
@@ -23,6 +21,7 @@ public class RamDAO {
             ps.setInt(1,ram.getDungLuongRam());
             if(ps.executeUpdate()>0){
                 JOptionPane.showMessageDialog(null,"Thêm ram thành công","Success",1);
+                return 1;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -38,13 +37,14 @@ public class RamDAO {
             ps.setInt(2,ram.getMaRam());
             if(ps.executeUpdate()>0){
                 JOptionPane.showMessageDialog(null,"Cập nhật ram thành công","Success",1);
+                return 1;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return 0;
     }
-    public int deleteMS(int maRam){
+    public int deleteRam(int maRam){
         String sqlDeleteRam="UPDATE Ram SET trangThai=0 WHERE maRam=? ";
         PreparedStatement ps;
         try {
@@ -52,6 +52,7 @@ public class RamDAO {
             ps.setInt(1,maRam);
             if(ps.executeUpdate()>0){
                 JOptionPane.showMessageDialog(null,"Xóa Ram thành công","Success",1);
+                return 1;
             }
         } catch (Exception e) {
             e.printStackTrace();
