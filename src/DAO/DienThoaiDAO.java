@@ -25,7 +25,6 @@ public class DienThoaiDAO {
             ps.setInt(5, dt.getDungLuongPin());
             ps.setDouble(6, dt.getKichThuocMan());
             ps.setString(7, dt.getHinhAnh());
-            ps.executeUpdate();
             if(ps.executeUpdate()>0)
                 return 1;
             ps.close();
