@@ -22,6 +22,7 @@ public class AddNhaCungCapDialog extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         this.nccPanel=nccPanel;
+        this.setLocationRelativeTo(null);
     }
     public int check_Add_ncc(){
         if (this.jtf_name_ncc.getText().equals("")) {

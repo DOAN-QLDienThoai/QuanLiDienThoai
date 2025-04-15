@@ -376,7 +376,7 @@ public class EditDienThoaiDialog extends javax.swing.JDialog {
             }
             DienThoaiDTO dienThoai = new DienThoaiDTO(tenDT, maHDH, maThuongHieu, chip, dungLuongPin, kichThuocMan, hinhAnh);
             dienThoai.setMaDT(dt.getMaDT());
-            new DienThoaiDAO().updateDienThoai(dienThoai);
+            dtBus.updateDienThoai(dienThoai);
             func.addDataTableDienThoai(dtBus.listDT(),dtPanel.getTableDienThoai());
             func.centerTable(dtPanel.getTableDienThoai());
         }

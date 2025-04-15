@@ -8,7 +8,6 @@ import BUS.DienThoaiBUS;
 import BUS.PhienBanDienThoaiBUS;
 import DAO.DienThoaiDAO;
 import DAO.MauSacDAO;
-import DAO.PhienBanDienThoaiDAO;
 import DAO.RamDAO;
 import DAO.RomDAO;
 import DTO.DienThoaiDTO;

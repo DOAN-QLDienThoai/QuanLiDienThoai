@@ -39,6 +39,7 @@ public class PanelNhapPhieuNhap extends javax.swing.JPanel {
     public PanelNhapPhieuNhap(Main main) {
         initComponents();
         this.main=main;
+        System.out.println("GUI.Panel.PanelNhapPhieuNhap.<init>()");
         PanelPhieuNhap pn=new PanelPhieuNhap(main);
         khoiTao();
     }

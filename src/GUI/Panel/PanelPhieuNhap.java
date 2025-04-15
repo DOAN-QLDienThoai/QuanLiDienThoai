@@ -317,6 +317,7 @@ public class PanelPhieuNhap extends javax.swing.JPanel {
     private void jlabel_add_pnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_add_pnMouseClicked
         main.getPanelPhieuNhap().setVisible(false);
         main.getPanelNhapPN().setVisible(true);
+        main.getPanelNhapPN().setUpTable();
     }//GEN-LAST:event_jlabel_add_pnMouseClicked
 
 
