@@ -110,7 +110,8 @@ public class DienThoaiDAO {
                 int dungLuongPin = rs.getInt("dungLuongPin");
                 double kichThuocMan = rs.getDouble("kichThuocMan");
                 String hinhanh = rs.getString("hinhanh");
-                listDT.add(new DienThoaiDTO(maDT, tenDT, heDieuHanh, thuongHieu, chipXuLy, dungLuongPin, kichThuocMan, hinhanh));
+                int soLuongTon=rs.getInt("soLuongTon");
+                listDT.add(new DienThoaiDTO(maDT, tenDT, heDieuHanh, thuongHieu, chipXuLy, dungLuongPin, kichThuocMan, hinhanh,soLuongTon));
             }
         } catch (Exception e) {
             e.printStackTrace();

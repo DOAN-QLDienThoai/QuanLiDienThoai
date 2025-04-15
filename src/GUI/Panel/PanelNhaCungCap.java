@@ -30,6 +30,9 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
     private NhaCungCapBUS nccBus=new NhaCungCapBUS();
     public PanelNhaCungCap() {
         initComponents();
+        khoiTao();
+    }
+    public void khoiTao(){
         setCusorPointer();
         setUpTable();
         khoitaoChooserFilterNCC();

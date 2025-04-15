@@ -271,7 +271,7 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
 
     private void jlabel_add_pxjlabel_add_pxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_add_pxjlabel_add_pxMouseClicked
         main.getPanelNhapPX().setVisible(true);
-        main.getPanelNhap().setVisible(false);
+        main.getPanelPhieuXuat().setVisible(false);
     }//GEN-LAST:event_jlabel_add_pxjlabel_add_pxMouseClicked
 
     private void jlabel_delete_pxjlabel_delete_pxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_delete_pxjlabel_delete_pxMouseClicked

@@ -180,6 +180,7 @@ public class EditKhachHangDialog extends javax.swing.JDialog {
             System.out.println("Đã gọi updateKhachHang()");
             khPanel.addDataTableKhachHang();
             System.out.println("Đã gọi addDataTableKhachHang()");
+            khPanel.addDataTableKhachHang();
             func.centerTable(khPanel.getTableKhachHang());
             JOptionPane.showMessageDialog(null, "Cập nhật khách hàng thành công!");
             dispose();

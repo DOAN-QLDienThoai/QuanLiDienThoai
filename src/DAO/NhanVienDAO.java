@@ -34,6 +34,7 @@ public class NhanVienDAO {
             ps.setString(4, nv.getSDT());
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Thêm nhân viên thành công");
+                return 1;
             }
         } catch (SQLException ex) {
             Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -55,6 +56,7 @@ public class NhanVienDAO {
             ps.setInt(5, nv.getMaNV());
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Cập nhật thông tin nhân viên thành công", "Success", 1);
+                return 1;           
             }
         } catch (SQLException ex) {
             Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -71,6 +73,7 @@ public class NhanVienDAO {
             ps.setInt(1, maNV);
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Xóa thành công", "Success", 1);
+                return 1;
             }
         } catch (SQLException ex) {
             Logger.getLogger(NhanVienDAO.class.getName()).log(Level.SEVERE, null, ex);

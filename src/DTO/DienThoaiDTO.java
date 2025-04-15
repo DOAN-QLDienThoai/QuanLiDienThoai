@@ -17,7 +17,7 @@ public class DienThoaiDTO {
     private int dungLuongPin;
     private double kichThuocMan;
     private String hinhAnh;
-
+    private int soLuongTon;
     // Constructor không tham số
     public DienThoaiDTO() {
     }
@@ -34,7 +34,8 @@ public class DienThoaiDTO {
         this.hinhAnh = hinhAnh;
     }
     public DienThoaiDTO(int maDT,String tenDT, int maHDH,int maThuongHieu, 
-                        String chipXuLy, int dungLuongPin, double kichThuocMan, String hinhAnh) {
+                        String chipXuLy, int dungLuongPin, double kichThuocMan, String hinhAnh,
+                        int soLuongTon) {
         this.maDT=maDT;
         this.tenDT = tenDT;
         this.maHDH = maHDH;
@@ -43,6 +44,7 @@ public class DienThoaiDTO {
         this.dungLuongPin = dungLuongPin;
         this.kichThuocMan = kichThuocMan;
         this.hinhAnh = hinhAnh;
+        this.soLuongTon=soLuongTon;
     }
 
     // Getter và Setter
@@ -101,12 +103,16 @@ public class DienThoaiDTO {
     public void setKichThuocMan(double kichThuocMan) {
         this.kichThuocMan = kichThuocMan;
     }
-
     public String getHinhAnh() { // Getter cho hình ảnh
         return hinhAnh;
     }
-
     public void setHinhAnh(String hinhAnh) { // Setter cho hình ảnh
         this.hinhAnh = hinhAnh;
+    }
+    public int getSoLuongTon(){
+        return this.soLuongTon;
+    }
+    public void setSoLuongTon(int soLuongTon){
+        this.soLuongTon=soLuongTon;
     }
 }

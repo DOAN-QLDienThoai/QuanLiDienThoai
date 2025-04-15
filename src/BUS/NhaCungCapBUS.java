@@ -13,24 +13,51 @@ import java.util.ArrayList;
  * @author kiman
  */
 public class NhaCungCapBUS {
-    private NhaCungCapDAO NhaCungCapDAO;
+    private NhaCungCapDAO nccDao=new NhaCungCapDAO();
+    private ArrayList<NhaCungCapDTO> listNCC=new ArrayList<>();
     public NhaCungCapBUS(){
-        this.NhaCungCapDAO=new NhaCungCapDAO();
+        this.listNCC=nccDao.listNCC();
     }
     public int insertNhaCungCap(NhaCungCapDTO ncc){
-        return NhaCungCapDAO.insertNhaCungCap(ncc);
+        int check=nccDao.insertNhaCungCap(ncc);
+        if(check==1){
+            listNCC=nccDao.listNCC();
+        }
+        return check;
     }
     public int updateNhaCungCap(NhaCungCapDTO ncc){
-        return NhaCungCapDAO.updateNhaCungCap(ncc);
+        int check=nccDao.updateNhaCungCap(ncc);
+        if(check==1){
+            listNCC=nccDao.listNCC();
+        }
+        return check;
     }
     public int deleteNhaCungCap(int maNCC){
-        return NhaCungCapDAO.deleteNhaCungCap(maNCC);
+        int check=nccDao.deleteNhaCungCap(maNCC);
+        if(check==1){
+            listNCC=nccDao.listNCC();
+        }
+        return check;
+    }
+    public int getIndexByID(int maNCC){
+        int i=0;
+        int vitri=-1;
+        while(i<listNCC.size()&&vitri==-1){
+            if(listNCC().get(i).getmaNCC()==maNCC){
+                vitri=i;
+            }else{
+                i++;
+            }
+        }
+        return vitri;
+    }
+    public String getTenNCCByID(int maNCC){
+        return listNCC.get(getIndexByID(maNCC)).getName();
     }
     public ArrayList<NhaCungCapDTO> listNCC(){
-        return NhaCungCapDAO.listNCC();
+        return listNCC;
     }
     public ArrayList<NhaCungCapDTO> timKiem(String text,String type){
-        ArrayList<NhaCungCapDTO> listNCC=NhaCungCapDAO.listNCC();
         ArrayList<NhaCungCapDTO> listNCCFilter=new ArrayList<>();
         String find_text=text.toLowerCase();
         for(NhaCungCapDTO ncc : listNCC){

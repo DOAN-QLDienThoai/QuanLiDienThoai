@@ -53,6 +53,14 @@ public class RamBUS {
     public int getDungLuongRambyID(int maRam){
         return listRAM.get(getIndexByID(maRam)).getDungLuongRam();
     }
+    public int getIDByDungLuongRam(int dungLuongRam) {
+        for (RamDTO ram : listRAM) {
+            if (ram.getDungLuongRam() == dungLuongRam) {
+                return ram.getMaRam();
+            }
+        }
+        return -1; // nếu không tìm thấy
+    }
     public boolean checkDup(int dungLuongRam){
         boolean check=true;
         int i=0;

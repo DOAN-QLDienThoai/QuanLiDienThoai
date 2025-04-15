@@ -25,6 +25,7 @@ public class NhaCungCapDAO {
             ps.setString(4, ncc.getEmail());
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Thêm nhà cung cấp thành công", "Success", 1);
+                return 1;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -45,6 +46,7 @@ public class NhaCungCapDAO {
             ps.setInt(5, ncc.getmaNCC());
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Update thành công", "Success", 1);
+                return 1;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -61,6 +63,7 @@ public class NhaCungCapDAO {
             ps.setInt(1, maNCC);
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Xóa thành công", "Success", 1);
+                return 1;
             }
         } catch (Exception e) {
             e.printStackTrace();

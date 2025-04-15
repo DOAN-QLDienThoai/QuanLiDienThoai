@@ -8,6 +8,7 @@ import GUI.Panel.PanelDienThoai;
 import GUI.Panel.PanelKhachHang;
 import GUI.Panel.PanelNhanVien;
 import GUI.Panel.PanelNhaCungCap;
+import GUI.Panel.PanelNhapPhieuNhap;
 import GUI.Panel.PanelNhapPhieuXuat;
 import GUI.Panel.PanelPhieuNhap;
 import GUI.Panel.PanelPhieuXuat;
@@ -36,7 +37,8 @@ public class Main extends javax.swing.JFrame {
     PanelThuocTinh thuoctinh=new PanelThuocTinh();
     PanelKhachHang khachhang=new PanelKhachHang();
     PanelThongKe tk=new PanelThongKe();
-    PanelPhieuNhap pn=new PanelPhieuNhap();
+    PanelPhieuNhap pn=new PanelPhieuNhap(this);
+    PanelNhapPhieuNhap nhapphieunhap=new PanelNhapPhieuNhap(this);
     PanelPhieuXuat phieuxuat=new PanelPhieuXuat(this);
     PanelNhapPhieuXuat nhapphieuxuat=new PanelNhapPhieuXuat(this);
     JButton[] btns = new JButton[8];
@@ -44,10 +46,7 @@ public class Main extends javax.swing.JFrame {
     Border etchedBorder = BorderFactory.createEtchedBorder();
     public Main() {
         initComponents();
-        actionJButtonMenu();
-        khoitaoButtonInMenu();
-        styleAllButtonMenu();
-        setIconForJButton();
+        khoiTao();
         main.add(dt);
         main.add(thuoctinh);
         main.add(nv);
@@ -57,6 +56,7 @@ public class Main extends javax.swing.JFrame {
         main.add(nhapphieuxuat);
         main.add(tk);
         main.add(pn);
+        main.add(nhapphieunhap);
         dt.setVisible(false);
         thuoctinh.setVisible(false);
         nv.setVisible(false);
@@ -64,6 +64,14 @@ public class Main extends javax.swing.JFrame {
         khachhang.setVisible(false);
         phieuxuat.setVisible(false);
         nhapphieuxuat.setVisible(false);
+        pn.setVisible(false);
+        nhapphieunhap.setVisible(false);
+    }
+    public void khoiTao(){
+        actionJButtonMenu();
+        khoitaoButtonInMenu();
+        styleAllButtonMenu();
+        setIconForJButton();
     }
     public void khoitaoButtonInMenu() {
         btns[0] = btn_nv;
@@ -83,10 +91,16 @@ public class Main extends javax.swing.JFrame {
         btn_kh.setIcon(new FlatSVGIcon("./resources/icon/khachhang.svg", 0.035f));
         btn_px.setIcon(new FlatSVGIcon("./resources/icon/phieuxuat.svg", 0.035f));
     }
+    public PanelNhapPhieuNhap getPanelNhapPN(){
+        return this.nhapphieunhap;
+    }
+    public PanelPhieuNhap getPanelPhieuNhap(){
+        return this.pn;
+    }
     public PanelNhapPhieuXuat getPanelNhapPX(){
         return this.nhapphieuxuat;
     }
-    public PanelPhieuXuat getPanelNhap(){
+    public PanelPhieuXuat getPanelPhieuXuat(){
         return this.phieuxuat;
     }
     public PanelNhaCungCap getPanelNhaCungCap(){
@@ -330,6 +344,7 @@ public class Main extends javax.swing.JFrame {
         ncc.setVisible(false);
         khachhang.setVisible(false);
         phieuxuat.setVisible(false);
+        nhapphieunhap.setVisible(false);
     }//GEN-LAST:event_btn_thuoctinhActionPerformed
     public void actionJButtonMenu() {
         Component[] cpns = jpanel_menu_bottom.getComponents();
@@ -355,6 +370,7 @@ public class Main extends javax.swing.JFrame {
         nhapphieuxuat.setVisible(false);
         tk.setVisible(false);
         pn.setVisible(false);
+        nhapphieunhap.setVisible(false);
     }//GEN-LAST:event_btn_nvActionPerformed
 
     private void btn_pxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pxActionPerformed
@@ -367,6 +383,7 @@ public class Main extends javax.swing.JFrame {
         nhapphieuxuat.setVisible(false);
         tk.setVisible(false);
         pn.setVisible(false);
+        nhapphieunhap.setVisible(false);
     }//GEN-LAST:event_btn_pxActionPerformed
 
     private void btn_dtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_dtActionPerformed
@@ -378,6 +395,7 @@ public class Main extends javax.swing.JFrame {
         phieuxuat.setVisible(false);
         nhapphieuxuat.setVisible(false);
         tk.setVisible(false);
+        nhapphieunhap.setVisible(false);
         pn.setVisible(false);
     }//GEN-LAST:event_btn_dtActionPerformed
 
@@ -391,6 +409,7 @@ public class Main extends javax.swing.JFrame {
         nhapphieuxuat.setVisible(false);
         tk.setVisible(false);
         pn.setVisible(false);
+        nhapphieunhap.setVisible(false);
     }//GEN-LAST:event_btn_nccActionPerformed
 
     private void btn_khActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_khActionPerformed
@@ -403,6 +422,7 @@ public class Main extends javax.swing.JFrame {
         nhapphieuxuat.setVisible(false);
         tk.setVisible(false);
         pn.setVisible(false);
+        nhapphieunhap.setVisible(false);
     }//GEN-LAST:event_btn_khActionPerformed
 
     private void btn_pnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pnActionPerformed
@@ -415,6 +435,7 @@ public class Main extends javax.swing.JFrame {
         nhapphieuxuat.setVisible(false);
         tk.setVisible(false);
         pn.setVisible(true);
+        nhapphieunhap.setVisible(false);
     }//GEN-LAST:event_btn_pnActionPerformed
 
     private void btn_tkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tkActionPerformed
@@ -427,6 +448,7 @@ public class Main extends javax.swing.JFrame {
         nhapphieuxuat.setVisible(false);
         tk.setVisible(true);
         pn.setVisible(false);
+        nhapphieunhap.setVisible(false);
     }//GEN-LAST:event_btn_tkActionPerformed
 
     /**

@@ -34,6 +34,13 @@ public class MauSacBUS {
         }
         return vitri;
     }
+    public int getIDByTenMau(String tenMau){
+        for(MauSacDTO ms : listMS){
+            if(ms.getTenMau().equals(tenMau))
+                return ms.getMaMau();
+        }
+        return -1;
+    }
     public int insertMauSac(String tenMau){
         int check=msDao.insertMauSac(new MauSacDTO(tenMau));
         if(check==1){

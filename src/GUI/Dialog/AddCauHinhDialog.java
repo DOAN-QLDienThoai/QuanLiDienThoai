@@ -4,6 +4,8 @@
  */
 package GUI.Dialog;
 
+import BUS.DienThoaiBUS;
+import BUS.PhienBanDienThoaiBUS;
 import DAO.DienThoaiDAO;
 import DAO.MauSacDAO;
 import DAO.PhienBanDienThoaiDAO;
@@ -25,11 +27,15 @@ import util.Func_class;
  * @author kiman
  */
 public class AddCauHinhDialog extends javax.swing.JDialog {
-private static ArrayList<PhienBanDienThoaiDTO> listPBDTTemp = new ArrayList<>();
+
+    private static ArrayList<PhienBanDienThoaiDTO> listPBDTTemp = new ArrayList<>();
     private DienThoaiDTO dt;
     private Func_class func = new Func_class();
     private PanelDienThoai dtPanel;
     private AddDienThoaiDialog dtDialog;
+    DienThoaiBUS dtBus = new DienThoaiBUS();
+    PhienBanDienThoaiBUS pbBus = new PhienBanDienThoaiBUS();
+
     public AddCauHinhDialog(java.awt.Frame parent, boolean modal, DienThoaiDTO dt, PanelDienThoai dtPanel, AddDienThoaiDialog dtDialog) {
         super(parent, modal);
         initComponents();
@@ -42,8 +48,9 @@ private static ArrayList<PhienBanDienThoaiDTO> listPBDTTemp = new ArrayList<>();
         setUpTable();
         this.setLocationRelativeTo(null);
     }
+
     public void addDatatable() {
-        String[] colNames = {"STT","Ram", "Rom", "Màu Sắc", "Giá nhập", "Giá xuất"};
+        String[] colNames = {"STT", "Ram", "Rom", "Màu Sắc", "Giá nhập", "Giá xuất"};
         Object[][] rows = new Object[listPBDTTemp.size()][colNames.length];
         int index = 0;
         for (PhienBanDienThoaiDTO pb : listPBDTTemp) {
@@ -78,7 +85,7 @@ private static ArrayList<PhienBanDienThoaiDTO> listPBDTTemp = new ArrayList<>();
                 }
             }
             // Cập nhật giá trị vào bảng
-            rows[index][0]=index;
+            rows[index][0] = index;
             rows[index][1] = String.valueOf(dungLuongRam);
             rows[index][2] = String.valueOf(dungLuongRom);
             rows[index][3] = tenMau;
@@ -88,13 +95,15 @@ private static ArrayList<PhienBanDienThoaiDTO> listPBDTTemp = new ArrayList<>();
         }
         DefaultTableModel model = new DefaultTableModel(rows, colNames);
         table_cauHinh.setModel(model);
-        func.centerTable(table_cauHinh);  
+        func.centerTable(table_cauHinh);
     }
+
     public void setUpTable() {
         this.addDatatable();
         func.setUpTable(table_cauHinh);
         func.centerTable(table_cauHinh);
     }
+
     public void fillCbbMauSac() {
         HashMap<String, Integer> mapMS = new MauSacDAO().listMapMS();
         cbb_ms.setBackground(Color.WHITE);
@@ -102,6 +111,7 @@ private static ArrayList<PhienBanDienThoaiDTO> listPBDTTemp = new ArrayList<>();
             cbb_ms.addItem(ms);
         }
     }
+
     public void fillCbbRam() {
         HashMap<Integer, Integer> mapRam = new RamDAO().listMapRam();
         cbb_ram.setBackground(Color.WHITE);
@@ -109,6 +119,7 @@ private static ArrayList<PhienBanDienThoaiDTO> listPBDTTemp = new ArrayList<>();
             cbb_ram.addItem(String.valueOf(ram));
         }
     }
+
     public void fillCbbRom() {
         HashMap<Integer, Integer> mapRom = new RomDAO().listMapRom();
         cbb_rom.setBackground(Color.WHITE);
@@ -116,21 +127,24 @@ private static ArrayList<PhienBanDienThoaiDTO> listPBDTTemp = new ArrayList<>();
             cbb_rom.addItem(String.valueOf(rom));
         }
     }
-    public int checkCauHinh(){
-        if(jtf_gia_nhap.getText().equals("")){
-            JOptionPane.showMessageDialog(null,"Vui lòng nhập giá nhập","Error",0);
+
+    public int checkCauHinh() {
+        if (jtf_gia_nhap.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập giá nhập", "Error", 0);
             return 0;
         }
-        if(jtf_gia_xuat.getText().equals("")){
-            JOptionPane.showMessageDialog(null,"Vui lòng nhập giá xuất","Error",0);
+        if (jtf_gia_xuat.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Vui lòng nhập giá xuất", "Error", 0);
             return 0;
         }
         return 1;
     }
-    public void resetGia(){
+
+    public void resetGia() {
         jtf_gia_nhap.setText("");
         jtf_gia_xuat.setText("");
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -377,11 +391,11 @@ private static ArrayList<PhienBanDienThoaiDTO> listPBDTTemp = new ArrayList<>();
 
     private void table_cauHinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_cauHinhMouseClicked
         int vitriRow = table_cauHinh.getSelectedRow();
-        int dungLuongRam=Integer.parseInt(table_cauHinh.getValueAt(vitriRow,1).toString());
-        int dungLuongRom=Integer.parseInt(table_cauHinh.getValueAt(vitriRow,2).toString());
-        String tenMau=table_cauHinh.getValueAt(vitriRow,3).toString();
-        double giaNhap=Double.parseDouble(table_cauHinh.getValueAt(vitriRow, 4).toString());
-        double giaXuat=Double.parseDouble(table_cauHinh.getValueAt(vitriRow, 5).toString());
+        int dungLuongRam = Integer.parseInt(table_cauHinh.getValueAt(vitriRow, 1).toString());
+        int dungLuongRom = Integer.parseInt(table_cauHinh.getValueAt(vitriRow, 2).toString());
+        String tenMau = table_cauHinh.getValueAt(vitriRow, 3).toString();
+        double giaNhap = Double.parseDouble(table_cauHinh.getValueAt(vitriRow, 4).toString());
+        double giaXuat = Double.parseDouble(table_cauHinh.getValueAt(vitriRow, 5).toString());
         cbb_ram.setSelectedItem(String.valueOf(dungLuongRam));
         cbb_rom.setSelectedItem(String.valueOf(dungLuongRom));
         cbb_ms.setSelectedItem(tenMau);
@@ -416,7 +430,7 @@ private static ArrayList<PhienBanDienThoaiDTO> listPBDTTemp = new ArrayList<>();
             JOptionPane.showMessageDialog(null, "Bạn chưa chọn đối tượng để thêm", "Error", 0);
             return;
         }
-        PhienBanDienThoaiDTO phienBanUpdate=listPBDTTemp.get(vitriRow);
+        PhienBanDienThoaiDTO phienBanUpdate = listPBDTTemp.get(vitriRow);
         HashMap<Integer, Integer> mapRam = new RamDAO().listMapRam();
         int selectedRam = Integer.parseInt(cbb_ram.getSelectedItem().toString()); // Chuyển String -> Integer
         int maRam = mapRam.getOrDefault(selectedRam, -1);
@@ -427,8 +441,8 @@ private static ArrayList<PhienBanDienThoaiDTO> listPBDTTemp = new ArrayList<>();
         System.out.println(maRom);
         HashMap<String, Integer> mapMS = new MauSacDAO().listMapMS();
         int maMau = mapMS.get(cbb_ms.getSelectedItem().toString());
-        double giaNhap=Double.parseDouble(jtf_gia_nhap.getText());
-        double giaXuat=Double.parseDouble(jtf_gia_xuat.getText());
+        double giaNhap = Double.parseDouble(jtf_gia_nhap.getText());
+        double giaXuat = Double.parseDouble(jtf_gia_xuat.getText());
         phienBanUpdate.setRam(maRam);
         phienBanUpdate.setRom(maRom);
         phienBanUpdate.setMausac(maMau);
@@ -440,19 +454,19 @@ private static ArrayList<PhienBanDienThoaiDTO> listPBDTTemp = new ArrayList<>();
     }//GEN-LAST:event_btn_update_cauHinhMouseClicked
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
-        int vitriRow=table_cauHinh.getSelectedRow();
-        if(vitriRow==-1){
-            JOptionPane.showMessageDialog(null,"Bạn chọn phiên bản để xóa","Error",0);
+        int vitriRow = table_cauHinh.getSelectedRow();
+        if (vitriRow == -1) {
+            JOptionPane.showMessageDialog(null, "Bạn chọn phiên bản để xóa", "Error", 0);
             return;
         }
-        int index=Integer.parseInt(table_cauHinh.getValueAt(vitriRow,0).toString());
-        for(PhienBanDienThoaiDTO pb : listPBDTTemp){
-            if(index==vitriRow){
-                int confirm = JOptionPane.showConfirmDialog(null,"Bạn có chắc chắn muốn xóa phiên bản này không?",
-                    "Xác nhận xóa",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.WARNING_MESSAGE);
-                if(confirm== JOptionPane.YES_OPTION){
+        int index = Integer.parseInt(table_cauHinh.getValueAt(vitriRow, 0).toString());
+        for (PhienBanDienThoaiDTO pb : listPBDTTemp) {
+            if (index == vitriRow) {
+                int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa phiên bản này không?",
+                        "Xác nhận xóa",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.WARNING_MESSAGE);
+                if (confirm == JOptionPane.YES_OPTION) {
                     listPBDTTemp.remove(pb);
                     addDatatable();
                     func.centerTable(table_cauHinh);
@@ -473,15 +487,14 @@ private static ArrayList<PhienBanDienThoaiDTO> listPBDTTemp = new ArrayList<>();
             JOptionPane.showMessageDialog(this, "Bạn chưa thêm cấu hình!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         } else {
-            new DienThoaiDAO().insertDienThoai(dt);
-            func.addDataTableDienThoai(new DienThoaiDAO().listDT(),dtPanel.getTableDienThoai());
+            dtBus.insertDienThoai(dt);
+            func.addDataTableDienThoai(dtBus.listDT(), dtPanel.getTableDienThoai());
             func.centerTable(dtPanel.getTableDienThoai());
             int maDT = new DienThoaiDAO().getID();
             for (PhienBanDienThoaiDTO pb : listPBDTTemp) {
-                System.out.println("Mã Điện Thoại : " + maDT);
                 pb.setMaDT(maDT);
                 try {
-                    new PhienBanDienThoaiDAO().insertPhienBan(pb);
+                    pbBus.insertPhienBanDienThoai(pb);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

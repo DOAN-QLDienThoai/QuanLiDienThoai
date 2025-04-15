@@ -53,6 +53,14 @@ public class RomBUS {
     public int getDungLuongRombyID(int maRom){
         return listROM.get(getIndexByID(maRom)).getDungLuongRom();
     }
+    public int getIDByDungLuongRom(int dungLuongRom) {
+        for (RomDTO rom : listROM) {
+            if (rom.getDungLuongRom() == dungLuongRom) {
+                return rom.getMaRom();
+            }
+        }
+        return -1; // nếu không tìm thấy
+    }
     public boolean checkDup(int dungLuongRom){
         boolean check=true;
         int i=0;

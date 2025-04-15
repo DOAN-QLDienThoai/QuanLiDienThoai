@@ -13,25 +13,44 @@ import java.util.ArrayList;
  * @author kiman
  */
 public class DienThoaiBUS {
-    private DienThoaiDAO DienThoaiDAO;
+    private DienThoaiDAO dtDao=new DienThoaiDAO();
+    public static ArrayList<DienThoaiDTO> listDT=new ArrayList<>();
     public DienThoaiBUS(){
-        DienThoaiDAO=new DienThoaiDAO();
+        this.listDT=dtDao.listDT();
     }
     public int insertDienThoai(DienThoaiDTO dt){
-        return DienThoaiDAO.insertDienThoai(dt);
+        int check=dtDao.insertDienThoai(dt);
+        if(check==1){
+            listDT=dtDao.listDT();
+        }
+        return check;
     }
     public int updateDienThoai(DienThoaiDTO dt){
-        return DienThoaiDAO.updateDienThoai(dt);
+        int check=dtDao.updateDienThoai(dt);
+        if(check==1){
+            listDT=dtDao.listDT();
+        }
+        return check;
     }
     public int deleteDienThoai(int maDT){
-        return DienThoaiDAO.deleteDienThoai(maDT);
+        int check=dtDao.deleteDienThoai(maDT);
+        if(check==1){
+            listDT=dtDao.listDT();
+        }
+        return check;
     }
     public ArrayList<DienThoaiDTO> listDT(){
-        return DienThoaiDAO.listDT();
+        return listDT;
+    }
+    public int getIDbyIndex(int index) {
+        ArrayList<DienThoaiDTO> list = listDT(); // lấy danh sách điện thoại
+        if (index >= 0 && index < list.size()) {
+            return list.get(index).getMaDT();
+        }
+        return -1; // hoặc ném exception nếu cần
     }
     public ArrayList<DienThoaiDTO> timKiem(String text,String type){
         String find_text=text.toLowerCase();
-        ArrayList<DienThoaiDTO> listDT=DienThoaiDAO.listDT();
         ArrayList<DienThoaiDTO> listDTFilter=new ArrayList<>();
         for(DienThoaiDTO dt : listDT){
             String maDT=String.valueOf(dt.getMaDT()).toLowerCase();

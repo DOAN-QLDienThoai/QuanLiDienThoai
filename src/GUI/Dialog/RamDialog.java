@@ -23,6 +23,8 @@ public class RamDialog extends javax.swing.JDialog {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setLocationRelativeTo(null);
+        setUpTable();
+        
     }
     public void loadDataTable(ArrayList<RamDTO> listRam) {
         String[] colNames = {"Mã Ram", "Dung lượng ram"};

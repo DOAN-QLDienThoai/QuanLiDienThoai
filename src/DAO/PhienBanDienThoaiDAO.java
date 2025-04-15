@@ -91,4 +91,52 @@ public class PhienBanDienThoaiDAO {
         }
         return listPB;
     }
+    
+    //Lấy danh sách cấu hình
+    public ArrayList<String> getArrayListCauHinhByMaDT(int maDT) {
+        ArrayList<String> danhSachCauHinh = new ArrayList<>();
+        String sql = "SELECT r.dungLuongRam AS ram, rom.dungLuongRom AS rom, m.tenMau "
+                + "FROM PhienBanDienThoai pbdt "
+                + "JOIN Ram r ON pbdt.maRam = r.maRam "
+                + "JOIN Rom rom ON pbdt.maRom = rom.maRom "
+                + "JOIN MauSac m ON pbdt.maMau = m.maMau "
+                + "WHERE pbdt.maDT = ?";
+        PreparedStatement ps;
+        try {
+            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            ps.setInt(1,maDT);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String ram = rs.getString("ram");
+                String rom = rs.getString("rom");
+                String mauSac = rs.getString("tenMau");
+                String cauHinh = ram + "-" + rom + "-" + mauSac;
+                danhSachCauHinh.add(cauHinh);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return danhSachCauHinh;
+    }
+    //Lấy giá nhập điện thoại dựa trên maDT,maRam,maRom,maMau
+    public double getGiaNhapByCauHinh(int maDT, int maRam, int maRom, int maMau) {
+        double giaNhap = 0.0;
+        String sql = "SELECT giaNhap FROM PhienBanDienThoai WHERE maDT = ? AND maRam = ? AND maRom = ? AND maMau = ?";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps=ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            ps.setInt(1, maDT);
+            ps.setInt(2, maRam);
+            ps.setInt(3, maRom);
+            ps.setInt(4, maMau);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                giaNhap = rs.getDouble("giaNhap");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return giaNhap;
+    }
 }

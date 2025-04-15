@@ -12,6 +12,7 @@ import DTO.DienThoaiDTO;
 import GUI.Dialog.AddDienThoaiDialog;
 import GUI.Dialog.DetailsDienThoaiDialog;
 import GUI.Dialog.EditDienThoaiDialog;
+import GUI.GUIFrame.Main;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
 import java.awt.Frame;
@@ -34,6 +35,9 @@ public class PanelDienThoai extends javax.swing.JPanel {
     private DienThoaiBUS dtBus=new DienThoaiBUS();
     public PanelDienThoai() {
         initComponents();
+        khoiTao();
+    }
+    public void khoiTao(){
         setUpTable();
         setIconForJlabel();
         setCusorPointer();
@@ -351,7 +355,7 @@ public class PanelDienThoai extends javax.swing.JPanel {
         int dungLuongPin=Integer.parseInt(table_dt.getValueAt(vitriRow,5).toString().replaceAll("mAh",""));
         double kichThuocMan=Double.parseDouble(table_dt.getValueAt(vitriRow, 6).toString().replaceAll("inch",""));
         String hinhAnh=new DienThoaiDAO().getHinhAnh(maDT);
-        DienThoaiDTO dt=new DienThoaiDTO(maDT,tenDT,maHDH,maThuongHieu,tenChip, dungLuongPin, kichThuocMan,hinhAnh);
+        DienThoaiDTO dt=new DienThoaiDTO(maDT,tenDT,maHDH,maThuongHieu,tenChip, dungLuongPin, kichThuocMan,hinhAnh,0);
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         new EditDienThoaiDialog((Frame) parentWindow, true,dt,this).setVisible(true);
     }//GEN-LAST:event_jlabel_update_dtMouseClicked
@@ -386,7 +390,7 @@ public class PanelDienThoai extends javax.swing.JPanel {
         int dungLuongPin = Integer.parseInt(table_dt.getValueAt(vitriRow, 5).toString().replaceAll("mAh", ""));
         double kichThuocMan = Double.parseDouble(table_dt.getValueAt(vitriRow, 6).toString().replaceAll("inch", ""));
         String hinhAnh = new DienThoaiDAO().getHinhAnh(maDT);
-        DienThoaiDTO dt = new DienThoaiDTO(maDT, tenDT, maHDH, maThuongHieu, tenChip, dungLuongPin, kichThuocMan, hinhAnh);
+        DienThoaiDTO dt = new DienThoaiDTO(maDT, tenDT, maHDH, maThuongHieu, tenChip, dungLuongPin, kichThuocMan, hinhAnh,0);
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         new DetailsDienThoaiDialog((Frame) parentWindow, true, dt).setVisible(true);
     }//GEN-LAST:event_jlabel_chiTiet_dtMouseClicked

@@ -13,24 +13,51 @@ import java.util.ArrayList;
  * @author kiman
  */
 public class NhanVienBUS {
-    private NhanVienDAO NhanVienDAO;
+    private NhanVienDAO nvDao=new NhanVienDAO();
+    private ArrayList<NhanVienDTO> listNV=new ArrayList<>();
     public NhanVienBUS(){
-        NhanVienDAO=new NhanVienDAO();
+        this.listNV=nvDao.listNV();
     }
     public int insertNhanVien(NhanVienDTO nv){
-        return NhanVienDAO.insertNhanVien(nv);
+        int check=nvDao.insertNhanVien(nv);
+        if(check==1){
+            listNV=nvDao.listNV();
+        }
+        return check;
     }
     public int updateNhanVien(NhanVienDTO nv){
-        return NhanVienDAO.updateNhanVien(nv);
+        int check=nvDao.updateNhanVien(nv);
+        if(check==1){
+            listNV=nvDao.listNV();
+        }
+        return check;
     }
     public int deleteNhanVien(int maNV){
-        return NhanVienDAO.deleteNhanVien(maNV);
+        int check=nvDao.deleteNhanVien(maNV);
+        if(check==1){
+            listNV=nvDao.listNV();
+        }
+        return check;
+    }
+    public int getIndexByID(int maNV){
+        int i=0;
+        int vitri=-1;
+        while(i<listNV.size()&&vitri==-1){
+            if(listNV.get(i).getMaNV()==maNV){
+                vitri=i;
+            }else{
+                i++;
+            }
+        }
+        return vitri;
+    }
+    public String getTenNCCByID(int maNV){
+        return listNV.get(getIndexByID(maNV)).getHoTen();
     }
     public ArrayList<NhanVienDTO> listNV(){
-        return NhanVienDAO.listNV();
+        return listNV;
     }
     public ArrayList<NhanVienDTO> timKiem(String text,String type){
-        ArrayList<NhanVienDTO> listNV=NhanVienDAO.listNV();
         ArrayList<NhanVienDTO> listNVFilter=new ArrayList<>();
         String text_find=text.toLowerCase();
         for(NhanVienDTO nv : listNV){

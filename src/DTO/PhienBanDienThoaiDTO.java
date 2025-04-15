@@ -16,7 +16,7 @@ public class PhienBanDienThoaiDTO {
     private int maMau;
     private double giaNhap;
     private double giaXuat;
-
+    private int soLuongTon;
     // Constructor không tham số
     public PhienBanDienThoaiDTO() {}
 

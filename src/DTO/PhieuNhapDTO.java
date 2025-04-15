@@ -7,54 +7,47 @@ package DTO;
 import java.util.Date;
 
 public class PhieuNhapDTO {
-    private String maPhieuNhap;
-    private Date ngayNhap;
-    private double tongTien;
-    private String nhaCungCap_id;
-    private String nhanVien_id;
-    private int trangThai;
+    private int maPN;
+    private Date thoigian;
+    private long tongtien;
+    private int maNCC;
+    private int maNV;
     public PhieuNhapDTO(){}
-    public PhieuNhapDTO(String maPhieuNhap,Date ngayNhap,double tongTien,String nhaCungCap_id,int trangThai){
-        this.maPhieuNhap=maPhieuNhap;
-        this.ngayNhap=ngayNhap;
-        this.tongTien=tongTien;
-        this.nhaCungCap_id=nhaCungCap_id;
-        this.trangThai=trangThai;
+    public PhieuNhapDTO(int maPN,Date thoigian,long tongtien,int maNCC,int maNV){
+        this.maPN=maPN;
+        this.thoigian=thoigian;
+        this.tongtien=tongtien;
+        this.maNCC=maNCC;
+        this.maNV=maNV;
+    }    
+    public int getMaPhieuNhap(){
+        return this.maPN;
     }
-    public String getMaPhieuNhap(){
-        return this.maPhieuNhap;
-    }
-    public void setMaPhieuNhap(String maPhieuString){
-        this.maPhieuNhap=maPhieuString;
+    public void setMaPhieuNhap(int maPhieuint){
+        this.maPN=maPhieuint;
     }
     public Date getNgayNhap(){
-        return this.ngayNhap;
+        return this.thoigian;
     }
-    public void setNgayNhap(Date ngayNhap){
-        this.ngayNhap=ngayNhap;
+    public void setNgayNhap(Date thoigian){
+        this.thoigian=thoigian;
     }
-    public double getTongTien(){
-        return this.tongTien;
+    public long getTongTien(){
+        return this.tongtien;
     }
-    public void setTongTien(double tongTien){
-        this.tongTien=tongTien;
+    public void setTongTien(long tongtien){
+        this.tongtien=tongtien;
     }
-    public int getTrangThai(){
-        return this.trangThai;
+    public int getNhaCungCap(){
+        return this.maNCC;
     }
-    public void setTrangThai(int trangThai){
-        this.trangThai=trangThai;
+    public void setNhaCungCap(int maNCC){
+        this.maNCC=maNCC;
     }
-    public String getNhaCungCap(){
-        return this.nhaCungCap_id;
+    public int getNhanVien(){
+        return this.maNV;
     }
-    public void setNhaCungCap(String nhaCungCap_id){
-        this.nhaCungCap_id=nhaCungCap_id;
-    }
-    public String getNhanVien(){
-        return this.nhanVien_id;
-    }
-    public void setNhanVien(String nhanVien_id){
-        this.nhanVien_id=nhanVien_id;
+    public void setNhanVien(int maNV){
+        this.maNV=maNV;
     }
 }

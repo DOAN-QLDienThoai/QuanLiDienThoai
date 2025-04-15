@@ -15,8 +15,7 @@ public class PanelNhapPhieuXuat extends javax.swing.JPanel {
         private Main main;
 
     public PanelNhapPhieuXuat(Main main) {
-                this.main = main;
-
+        this.main = main;
         initComponents();
         PanelPhieuXuat phieuXuat = new PanelPhieuXuat(main);
     }
