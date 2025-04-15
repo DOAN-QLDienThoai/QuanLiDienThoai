@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.sql.ResultSet;
+import java.sql.Connection;
 
 public class DienThoaiDAO {
 
@@ -138,4 +139,42 @@ public class DienThoaiDAO {
         }
         return hinhAnh;
     }
+    public DienThoaiDTO layTheoMa(String maDT) {
+    DienThoaiDTO dt = null;
+    try {
+        Connection conn = ConnectedDatabase.getConnectedDB();
+        String sql = "SELECT d.maDT, d.tenDT, d.chipXuLy, d.soLuongTon, d.giaXuat, " +
+                     "r.dungLuongRam, ro.dungLuongRom, m.tenMau " +
+                     "FROM dienthoai d " +
+                     "JOIN phienbandienthoai p ON d.maDT = p.maDT " +
+                     "JOIN ram r ON p.maRam = r.maRam " +
+                     "JOIN rom ro ON p.maRom = ro.maRom " +
+                     "JOIN mausac m ON p.maMau = m.maMau " +
+                     "WHERE d.maDT = ? LIMIT 1";
+
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        stmt.setString(1, maDT);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            dt = new DienThoaiDTO();
+            dt.setMaDT(rs.getInt("maDT"));
+            dt.setTenDT(rs.getString("tenDT"));
+            dt.setChipXuLy(rs.getString("chipXuLy"));
+            dt.setGiaXuat(rs.getDouble("giaXuat"));
+            dt.setSoLuongTon(rs.getInt("soLuongTon"));
+            dt.setRam(rs.getInt("dungLuongRam"));
+            dt.setRom(rs.getInt("dungLuongRom"));
+            dt.setMauSac(rs.getString("tenMau"));
+        }
+        rs.close();
+        stmt.close();
+        conn.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return dt;
+}
+
+
+
 }

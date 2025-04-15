@@ -110,7 +110,7 @@ public class PhienBanDienThoaiDAO {
                 String ram = rs.getString("ram");
                 String rom = rs.getString("rom");
                 String mauSac = rs.getString("tenMau");
-                String cauHinh = ram + "-" + rom + "-" + mauSac;
+                String cauHinh = rom + "GB - " + ram + "GB - " + mauSac;
                 danhSachCauHinh.add(cauHinh);
             }
         } catch (Exception e) {
@@ -139,4 +139,31 @@ public class PhienBanDienThoaiDAO {
         }
         return giaNhap;
     }
+    public PhienBanDienThoaiDTO getTheoCauHinh(int maDT, int maRam, int maRom, int maMau) {
+    PhienBanDienThoaiDTO variant = null;
+    String sql = "SELECT * FROM PhienBanDienThoai WHERE maDT = ? AND maRam = ? AND maRom = ? AND maMau = ?";
+    try {
+        PreparedStatement ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+        ps.setInt(1, maDT);
+        ps.setInt(2, maRam);
+        ps.setInt(3, maRom);
+        ps.setInt(4, maMau);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            variant = new PhienBanDienThoaiDTO(
+                rs.getInt("maPhienBan"),
+                rs.getInt("maDT"),
+                rs.getInt("maRam"),
+                rs.getInt("maRom"),
+                rs.getInt("maMau"),
+                rs.getDouble("giaNhap"),
+                rs.getDouble("giaXuat")
+            );
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return variant;
+}
+
 }

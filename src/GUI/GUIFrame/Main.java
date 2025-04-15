@@ -380,6 +380,7 @@ public class Main extends javax.swing.JFrame {
         ncc.setVisible(false);
         khachhang.setVisible(false);
         phieuxuat.setVisible(true);
+        nhapphieuxuat.loadTableSanPham(); // ✅ Gọi lại để load dữ liệu mới
         nhapphieuxuat.setVisible(false);
         tk.setVisible(false);
         pn.setVisible(false);

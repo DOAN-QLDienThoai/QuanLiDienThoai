@@ -18,6 +18,10 @@ public class DienThoaiDTO {
     private double kichThuocMan;
     private String hinhAnh;
     private int soLuongTon;
+    private double giaXuat;
+    private int ram;
+    private int rom;
+    private String mauSac;
     // Constructor không tham số
     public DienThoaiDTO() {
     }
@@ -48,6 +52,33 @@ public class DienThoaiDTO {
     }
 
     // Getter và Setter
+    public double getGiaXuat() {
+        return giaXuat;
+    }
+
+    public void setGiaXuat(double giaXuat) {
+        this.giaXuat = giaXuat;
+    }
+    public int getRam() { 
+        return ram; 
+    }
+    public void setRam(int ram) { 
+        this.ram = ram; 
+    }
+
+    public int getRom() { 
+        return rom; 
+    }
+    public void setRom(int rom) { 
+        this.rom = rom; 
+    }
+
+    public String getMauSac() { 
+        return mauSac; 
+    }
+    public void setMauSac(String mauSac) { 
+        this.mauSac = mauSac; 
+    }
     public int getMaDT() {
         return maDT;
     }

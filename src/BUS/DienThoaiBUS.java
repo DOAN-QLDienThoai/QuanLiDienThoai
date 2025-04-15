@@ -42,6 +42,9 @@ public class DienThoaiBUS {
     public ArrayList<DienThoaiDTO> listDT(){
         return listDT;
     }
+    public DienThoaiDTO layThongTinTheoMa(String maDT) {
+    return new DienThoaiDAO().layTheoMa(maDT);
+    }
     public int getIDbyIndex(int index) {
         ArrayList<DienThoaiDTO> list = listDT(); // lấy danh sách điện thoại
         if (index >= 0 && index < list.size()) {

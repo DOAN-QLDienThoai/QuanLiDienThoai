@@ -96,4 +96,11 @@ public class PhienBanDienThoaiDTO {
     public void setGiaXuat(double giaXuat) {
         this.giaXuat = giaXuat;
     }
+    public int getSoLuongTon() {
+        return soLuongTon;
+    }
+
+    public void setSoLuongTon(int soLuongTon) {
+        this.soLuongTon = soLuongTon;
+    }
 }

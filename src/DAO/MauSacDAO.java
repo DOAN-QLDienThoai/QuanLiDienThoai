@@ -96,4 +96,20 @@ public class MauSacDAO {
         }
         return mapMS;
     }
+    public int getMaMauByTen(String tenMau) {
+            int maMau = -1;
+         String sql = "SELECT maMau FROM MauSac WHERE tenMau = ?";
+            try {
+                PreparedStatement ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+                ps.setString(1, tenMau);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    maMau = rs.getInt("maMau");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return maMau;
+    }
+
 }
