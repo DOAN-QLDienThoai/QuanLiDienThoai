@@ -35,14 +35,39 @@ public class PhienBanDienThoaiBUS {
         }
         return check;
     }
-    public int deletePhienBanDienThoai(int maPB){
-        int check=pbDao.deletePhienBan(maPB);
+    public int deletePhienBanDienThoai(int maPB) {
+        int check = pbDao.deletePhienBan(maPB);
+        if (check == 1) {
+            listPB = pbDao.listPhienBan();
+        }
+        return check;
+    }
+
+    public ArrayList<String> getCauHinhByMaDT(int maDT) {
+        return pbDao.getArrayListCauHinhByMaDT(maDT);
+    }
+    public int updateSoLuongTon(int maPB,int soLuong){
+        int check=pbDao.updateSoLuongTonPhienBan(maPB, soLuong);
         if(check==1){
             listPB=pbDao.listPhienBan();
         }
         return check;
     }
-    public ArrayList<String> getCauHinhByMaDT(int maDT){
-        return pbDao.getArrayListCauHinhByMaDT(maDT);
+    public boolean checkDupAdd(ArrayList<PhienBanDienThoaiDTO> listPBTemp, PhienBanDienThoaiDTO pb) {
+        for (PhienBanDienThoaiDTO item : listPBTemp) {
+            if (item.isSameConFig(pb)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean checkDupEdit(ArrayList<PhienBanDienThoaiDTO> listPBTemp, PhienBanDienThoaiDTO pb) {
+        for (PhienBanDienThoaiDTO item : listPBTemp) {
+            if (item.isSameFullConFig(pb)) {
+                return false;
+            }
+        }
+        return true;
     }
 }

@@ -92,7 +92,22 @@ public class DienThoaiDAO {
         }
         return id;
     }
-
+    public int updateSoLuongTonDienThoai(int maPhienBan, int soLuongNhap) {
+        String sql = "UPDATE DienThoai SET soLuongTon = soLuongTon + ? "
+                + "WHERE maDT = (SELECT maDT FROM PhienBanDienThoai WHERE maPhienBan = ?)";
+        PreparedStatement ps;
+        try {
+            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            ps.setInt(1, soLuongNhap);
+            ps.setInt(2, maPhienBan);
+            if (ps.executeUpdate() > 0) {
+                return 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
     public ArrayList<DienThoaiDTO> listDT() {
         ArrayList<DienThoaiDTO> listDT = new ArrayList<>();
         String sqlListDT = "SELECT * FROM DienThoai WHERE trangThai=1";

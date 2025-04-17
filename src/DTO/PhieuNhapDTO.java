@@ -7,23 +7,23 @@ package DTO;
 import java.util.Date;
 
 public class PhieuNhapDTO {
-    private int maPN;
-    private Date thoigian;
-    private long tongtien;
+    private String maPN;
     private int maNCC;
     private int maNV;
+    private Date thoigian;
+    private double tongtien;
     public PhieuNhapDTO(){}
-    public PhieuNhapDTO(int maPN,Date thoigian,long tongtien,int maNCC,int maNV){
+    public PhieuNhapDTO(String maPN,int maNV,int maNCC,Date thoigian,double tongtien){
         this.maPN=maPN;
+        this.maNV=maNV;
+        this.maNCC=maNCC;
         this.thoigian=thoigian;
         this.tongtien=tongtien;
-        this.maNCC=maNCC;
-        this.maNV=maNV;
     }    
-    public int getMaPhieuNhap(){
+    public String getMaPhieuNhap(){
         return this.maPN;
     }
-    public void setMaPhieuNhap(int maPhieuint){
+    public void setMaPhieuNhap(String maPhieuint){
         this.maPN=maPhieuint;
     }
     public Date getNgayNhap(){
@@ -32,10 +32,10 @@ public class PhieuNhapDTO {
     public void setNgayNhap(Date thoigian){
         this.thoigian=thoigian;
     }
-    public long getTongTien(){
+    public double getTongTien(){
         return this.tongtien;
     }
-    public void setTongTien(long tongtien){
+    public void setTongTien(double tongtien){
         this.tongtien=tongtien;
     }
     public int getNhaCungCap(){

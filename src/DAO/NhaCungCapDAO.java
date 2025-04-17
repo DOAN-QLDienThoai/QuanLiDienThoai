@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -92,5 +93,23 @@ public class NhaCungCapDAO {
             Logger.getLogger(NhaCungCapDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return listNcc;
+    }
+    public HashMap<String, Integer> mapNhaCungCap() {
+        HashMap<String, Integer> mapNCC = new HashMap<>();
+        String sql = "SELECT * FROM NhaCungCap WHERE trangThai = 1";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int maNCC = rs.getInt("maNCC");
+                String tenNCC = rs.getString("tenNCC");
+                mapNCC.put(tenNCC, maNCC);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return mapNCC;
     }
 }

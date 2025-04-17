@@ -5,7 +5,10 @@
 package GUI.Dialog;
 
 import BUS.DienThoaiBUS;
+import BUS.MauSacBUS;
 import BUS.PhienBanDienThoaiBUS;
+import BUS.RamBUS;
+import BUS.RomBUS;
 import DAO.DienThoaiDAO;
 import DAO.MauSacDAO;
 import DAO.RamDAO;
@@ -26,7 +29,6 @@ import util.Func_class;
  * @author kiman
  */
 public class AddCauHinhDialog extends javax.swing.JDialog {
-
     private static ArrayList<PhienBanDienThoaiDTO> listPBDTTemp = new ArrayList<>();
     private DienThoaiDTO dt;
     private Func_class func = new Func_class();
@@ -34,7 +36,9 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
     private AddDienThoaiDialog dtDialog;
     DienThoaiBUS dtBus = new DienThoaiBUS();
     PhienBanDienThoaiBUS pbBus = new PhienBanDienThoaiBUS();
-
+    RamBUS ramBus=new RamBUS();
+    RomBUS romBUS=new RomBUS();
+    MauSacBUS msBus=new MauSacBUS();
     public AddCauHinhDialog(java.awt.Frame parent, boolean modal, DienThoaiDTO dt, PanelDienThoai dtPanel, AddDienThoaiDialog dtDialog) {
         super(parent, modal);
         initComponents();
@@ -390,6 +394,9 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
 
     private void table_cauHinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_cauHinhMouseClicked
         int vitriRow = table_cauHinh.getSelectedRow();
+        if(vitriRow==-1){
+            return;
+        }
         int dungLuongRam = Integer.parseInt(table_cauHinh.getValueAt(vitriRow, 1).toString());
         int dungLuongRom = Integer.parseInt(table_cauHinh.getValueAt(vitriRow, 2).toString());
         String tenMau = table_cauHinh.getValueAt(vitriRow, 3).toString();
@@ -415,41 +422,45 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
             int maMau = mapMS.get(cbb_ms.getSelectedItem().toString());
             double giaNhap = Double.parseDouble(jtf_gia_nhap.getText());
             double giaXuat = Double.parseDouble(jtf_gia_xuat.getText());
-            PhienBanDienThoaiDTO pb = new PhienBanDienThoaiDTO(0, 0, maRam, maRom, maMau, giaNhap, giaXuat);
-            listPBDTTemp.add(pb);
-            resetGia();
-            this.addDatatable();
-            func.centerTable(table_cauHinh);
+            PhienBanDienThoaiDTO pb = new PhienBanDienThoaiDTO(0, dt.getMaDT(), maRam, maRom, maMau, giaNhap, giaXuat);
+            if (pbBus.checkDupAdd(listPBDTTemp, pb)) {
+                listPBDTTemp.add(pb);
+                resetGia();
+                this.addDatatable();
+                func.centerTable(table_cauHinh);
+                return;
+            }
+            JOptionPane.showMessageDialog(null, "Cấu hình đã tồn tại", "Error", 0);
         }
     }//GEN-LAST:event_btn_add_cauHinhMouseClicked
 
     private void btn_update_cauHinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_update_cauHinhMouseClicked
         int vitriRow = table_cauHinh.getSelectedRow();
         if (vitriRow == -1) {
-            JOptionPane.showMessageDialog(null, "Bạn chưa chọn đối tượng để thêm", "Error", 0);
+            JOptionPane.showMessageDialog(null, "Bạn chưa chọn cấu hình để update", "Error", 0);
             return;
         }
         PhienBanDienThoaiDTO phienBanUpdate = listPBDTTemp.get(vitriRow);
-        HashMap<Integer, Integer> mapRam = new RamDAO().listMapRam();
         int selectedRam = Integer.parseInt(cbb_ram.getSelectedItem().toString()); // Chuyển String -> Integer
-        int maRam = mapRam.getOrDefault(selectedRam, -1);
-        System.out.println(maRam);
-        HashMap<Integer, Integer> mapRom = new RomDAO().listMapRom();
+        int maRam = ramBus.getIDByDungLuongRam(selectedRam);
         int selectedRom = Integer.parseInt(cbb_rom.getSelectedItem().toString()); // Chuyển String -> Integer
-        int maRom = mapRom.getOrDefault(selectedRom, -1);
-        System.out.println(maRom);
-        HashMap<String, Integer> mapMS = new MauSacDAO().listMapMS();
-        int maMau = mapMS.get(cbb_ms.getSelectedItem().toString());
+        int maRom = romBUS.getIDByDungLuongRom(selectedRom);
+        int maMau = msBus.getIDByTenMau(cbb_ms.getSelectedItem().toString());
         double giaNhap = Double.parseDouble(jtf_gia_nhap.getText());
         double giaXuat = Double.parseDouble(jtf_gia_xuat.getText());
-        phienBanUpdate.setRam(maRam);
-        phienBanUpdate.setRom(maRom);
-        phienBanUpdate.setMausac(maMau);
-        phienBanUpdate.setGiaNhap(giaNhap);
-        phienBanUpdate.setGiaXuat(giaXuat);
-        addDatatable();
-        func.centerTable(table_cauHinh);
-        resetGia();
+        PhienBanDienThoaiDTO pbNew=new PhienBanDienThoaiDTO(0,phienBanUpdate.getMaDT(),maRam,maRom,maMau,giaNhap,giaXuat);
+        if (pbBus.checkDupEdit(listPBDTTemp,pbNew)) {
+            phienBanUpdate.setRam(maRam);
+            phienBanUpdate.setRom(maRom);
+            phienBanUpdate.setMausac(maMau);
+            phienBanUpdate.setGiaNhap(giaNhap);
+            phienBanUpdate.setGiaXuat(giaXuat);
+            addDatatable();
+            func.centerTable(table_cauHinh);
+            resetGia();
+            return;
+        }
+        JOptionPane.showMessageDialog(null, "Cấu hình đã tồn tại", "Error", 0);
     }//GEN-LAST:event_btn_update_cauHinhMouseClicked
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked

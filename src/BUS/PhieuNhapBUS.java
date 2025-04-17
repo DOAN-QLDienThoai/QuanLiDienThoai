@@ -18,34 +18,37 @@ public class PhieuNhapBUS {
     private NhaCungCapBUS nccBus=new NhaCungCapBUS();
     private NhanVienBUS nvBus=new NhanVienBUS();
     public PhieuNhapBUS(){
-        this.listPN=pnDao.ListPN();
+    }
+     public ArrayList<PhieuNhapDTO> listPN(){
+        this.listPN=pnDao.listPN();
+        return listPN;
     }
     public int insertPhieuNhap(PhieuNhapDTO pn){
         int check=pnDao.insertPhieuNhapDienThoai(pn);
         if(check==1){
-            listPN=pnDao.ListPN();
+            listPN=pnDao.listPN();
         }
         return check;
     }
-    public int updateNhanVien(PhieuNhapDTO pn){
+    public int updatePhieuNhap(PhieuNhapDTO pn){
         int check=pnDao.updatePhieuNhap(pn);
         if(check==1){
-            listPN=pnDao.ListPN();
+            listPN=pnDao.listPN();
         }
         return check;
     }
-    public int deleteNhanVien(int maPN){
+    public int deletePhieuNhap(String maPN){
         int check=pnDao.deletePhieuNhap(maPN);
         if(check==1){
-            listPN=pnDao.ListPN();
+            listPN=pnDao.listPN();
         }
         return check;
     }
-    public int getIndexByID(int maPN){
+    public int getIndexByID(String maPN){
         int i=0;
         int vitri=-1;
         while(i<listPN.size()&&vitri==-1){
-            if(listPN.get(i).getMaPhieuNhap()==maPN){
+            if(listPN.get(i).getMaPhieuNhap().equals(maPN)){
                 vitri=i;
             }else{
                 i++;
@@ -53,19 +56,21 @@ public class PhieuNhapBUS {
         }
         return vitri;
     }
-    
-    public ArrayList<PhieuNhapDTO> listPN(){
-        return listPN;
+    public PhieuNhapDTO getPhieuNhapByID(String maPN){
+        return pnDao.getPhieuNhapByMaPN(maPN);
+    }
+    public ArrayList<PhieuNhapDTO> listPNFull(){
+        return pnDao.listPNFull();
     }
     public ArrayList<PhieuNhapDTO> timKiem(String text,String type){
         ArrayList<PhieuNhapDTO> listPNFilter=new ArrayList<>();
         String text_find=text.toLowerCase();
         for(PhieuNhapDTO pn : listPN){
-            String maPN=String.valueOf(pn.getMaPhieuNhap()).toLowerCase();
+            String maPN=pn.getMaPhieuNhap().toLowerCase();
             String ngayNhap=String.valueOf(pn.getNgayNhap()).toLowerCase();
             String tongTien=String.valueOf(pn.getTongTien()).toLowerCase();
             String tenNCC=nccBus.getTenNCCByID(pn.getNhaCungCap()).toLowerCase();
-            String tenNV=nvBus.getTenNCCByID(pn.getNhanVien()).toLowerCase();
+            String tenNV=nvBus.getTenNVByID(pn.getNhanVien()).toLowerCase();
             switch (type){
                 case "Tất cả":
                     if(maPN.contains(text_find)||ngayNhap.contains(text_find)

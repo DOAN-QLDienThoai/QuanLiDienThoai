@@ -9,14 +9,14 @@ package DTO;
  * @author phant
  */
 public class ChiTietPhieuNhapDTO {
-    private int maPN;
+    private String maPN;
     private int maPhienBan;
     private int soluong;
-    private int dongia;
+    private double dongia;
     private String hinhthucnhap;
     public ChiTietPhieuNhapDTO(){
     }
-    public ChiTietPhieuNhapDTO(int maPN,int maPhienBan, int soluong, int dongia,String hinhthucnhap) {
+    public ChiTietPhieuNhapDTO(String maPN,int maPhienBan, int soluong, double dongia,String hinhthucnhap) {
         this.maPN = maPN;
         this.maPhienBan = maPhienBan;
         this.soluong = soluong;
@@ -33,19 +33,19 @@ public class ChiTietPhieuNhapDTO {
     }
 
     
-    public int getMaPhieuNhap() {
+    public String getMaPhieuNhap() {
         return maPN;
     }
 
-    public void setMaPhieuNhap(int maPN) {
+    public void setMaPhieuNhap(String maPN) {
         this.maPN = maPN;
     }
 
-    public int getMasp() {
+    public int getMaPB() {
         return maPhienBan;
     }
 
-    public void setMasp(int maPhienBan) {
+    public void setMaPB(int maPhienBan) {
         this.maPhienBan = maPhienBan;
     }
     
@@ -57,11 +57,11 @@ public class ChiTietPhieuNhapDTO {
         this.soluong = soluong;
     }
 
-    public int getDongia() {
+    public double getDongia() {
         return dongia;
     }
 
-    public void setDongia(int dongia) {
+    public void setDongia(double dongia) {
         this.dongia = dongia;
     }
 }

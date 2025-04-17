@@ -7,6 +7,7 @@ package BUS;
 import DAO.NhaCungCapDAO;
 import DTO.NhaCungCapDTO;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  *

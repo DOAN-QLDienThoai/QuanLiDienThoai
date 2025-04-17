@@ -10,10 +10,8 @@ package DAO;
  */
 import DTO.ChiTietPhieuNhapDTO;
 import util.ConnectedDatabase;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
-import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -22,15 +20,15 @@ import java.util.logging.Logger;
 public class ChiTietPhieuNhapDAO {
     public int insertChiTietPhieuNhap(ChiTietPhieuNhapDTO ctpn){
         try{
-            String sqlAdd = "INSERT INTO ctphieunhap(maPhienBan,soluong,dongia,hinhthucnhap) "
-                    + "VALUES (?,?,?,?) ";
+            String sqlAdd = "INSERT INTO ChiTietPhieuNhap(maPN,maPhienBan,soluong,dongia,hinhthucnhap) "
+                    + "VALUES (?,?,?,?,?) ";
             PreparedStatement ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlAdd);
-            ps.setInt(1, ctpn.getMasp());
-            ps.setInt(2, ctpn.getSoluong());
-            ps.setInt(3, ctpn.getDongia());
-            ps.setString(4, ctpn.getHinhthucnhap());
+            ps.setString(1, ctpn.getMaPhieuNhap());
+            ps.setInt(2, ctpn.getMaPB());
+            ps.setInt(3, ctpn.getSoluong());
+            ps.setDouble(4, ctpn.getDongia());
+            ps.setString(5, ctpn.getHinhthucnhap());
             if(ps.executeUpdate() > 0) {
-                JOptionPane.showMessageDialog(null, "Tao chi tiet phieu nhap thanh cong", "Success", 1);
                 return 1;
             }
         } catch (Exception ex) {
@@ -38,36 +36,35 @@ public class ChiTietPhieuNhapDAO {
         }
         return 0;
     }
-    public int DeleteChiTietPhieuNhap(int maPN){
+    public int deleteChiTietPhieuNhap(String maPN,int maPhienBan){
         try{
-            String sqlDelete = "DELETE FROM ctphieunhap "
-                    + "WHERE maPN=?";
+            String sqlDelete = "DELETE FROM ChiTietPhieuNhap "
+                    + "WHERE maPN=? AND maPhienBan=?";
             PreparedStatement ps;
             ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlDelete);
-            ps.setInt(1, maPN);
-            if (ps.executeUpdate() > 0)
-            {
-                JOptionPane.showMessageDialog(null, "Xóa chi tiet phiếu nhập thành công", "Success", 1);
+            ps.setString(1, maPN);
+            ps.setInt(1, maPhienBan);
+            if (ps.executeUpdate() > 0){
                 return 1;
-            } 
+            }
         } catch (SQLException ex){
                 Logger.getLogger(ChiTietPhieuNhapDAO.class.getName()).log(Level.SEVERE, null ,ex);
                 }
         return 0;
     }
-    public int UpdateChiTietPhieuNhap(ChiTietPhieuNhapDTO ctpn){
+    public int updateChiTietPhieuNhap(ChiTietPhieuNhapDTO ctpn){
         try {
-            String sqlUpdate = "UPDATE ctphieunhap "
-                    + "SET maPhienBan=?,soluong=?,dongia=?,hinhthucnhap=? "
-                    + "WHERE maPN=?";
+            String sqlUpdate = "UPDATE ChiTietPhieuNhap "
+                    + "SET soluong=?,dongia=?,hinhthucnhap=? "
+                    + "WHERE maPN=? AND maPhienBan=?";
             PreparedStatement ps;
             ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlUpdate);
-            ps.setInt(1, ctpn.getMasp());
-            ps.setInt(2, ctpn.getSoluong());
-            ps.setInt(3, ctpn.getDongia());
-            ps.setString(4, ctpn.getHinhthucnhap());
+            ps.setInt(1, ctpn.getSoluong());
+            ps.setDouble(2, ctpn.getDongia());
+            ps.setString(3, ctpn.getHinhthucnhap());
+            ps.setString(4,ctpn.getMaPhieuNhap());
+            ps.setInt(5,ctpn.getMaPB());
             if(ps.executeUpdate() > 0){
-                JOptionPane.showMessageDialog(null, "Cap nhat thong tin phieu nhap thanh cong", "Success", 1);
                 return 1;
             }
         } catch (Exception ex) {
@@ -75,19 +72,40 @@ public class ChiTietPhieuNhapDAO {
         }
         return 0;
     }
-    public ArrayList<ChiTietPhieuNhapDTO> ListCTPN() {
+    public ArrayList<ChiTietPhieuNhapDTO> listCTPN() {
         ArrayList<ChiTietPhieuNhapDTO> ListCTPN = new ArrayList<>();
-        String sqlListCTPN = "SELECT * FROM ctphieunhap WHERE maPN=?";
+        String sqlListCTPN = "SELECT * FROM ChiTietPhieuNhap ";
         PreparedStatement ps;
         ResultSet rs;
         try {
             ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlListCTPN);
             rs = ps.executeQuery();
             while(rs.next()) {
-                int maPN = rs.getInt("maPN");
+                String maPN = rs.getString("maPN");
                 int maPhienBan = rs.getInt("maPhienBan");
                 int soluong = rs.getInt("soluong");
-                int dongia = rs.getInt("dongia");
+                double dongia = rs.getDouble("dongia");
+                String hinhthucnhap = rs.getString("hinhthucnhap");
+                ListCTPN.add(new ChiTietPhieuNhapDTO(maPN,maPhienBan,soluong,dongia,hinhthucnhap));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ChiTietPhieuNhapDAO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return ListCTPN;
+    }
+    public ArrayList<ChiTietPhieuNhapDTO> listCTPNByMaPN(String maPN) {
+        ArrayList<ChiTietPhieuNhapDTO> ListCTPN = new ArrayList<>();
+        String sqlListCTPN = "SELECT * FROM ChiTietPhieuNhap WHERE maPN=?";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlListCTPN);
+            ps.setString(1,maPN);
+            rs = ps.executeQuery();
+            while(rs.next()) {
+                int maPhienBan = rs.getInt("maPhienBan");
+                int soluong = rs.getInt("soluong");
+                double dongia = rs.getDouble("dongia");
                 String hinhthucnhap = rs.getString("hinhthucnhap");
                 ListCTPN.add(new ChiTietPhieuNhapDTO(maPN,maPhienBan,soluong,dongia,hinhthucnhap));
             }

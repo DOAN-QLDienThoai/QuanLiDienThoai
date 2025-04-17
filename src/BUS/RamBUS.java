@@ -32,6 +32,14 @@ public class RamBUS {
         }
         return vitri;
     }
+    public int getIDByDungLuongRam(int dungLuongRam){
+        for(RamDTO ram:listRAM){
+            if(ram.getDungLuongRam()==dungLuongRam){
+                return ram.getMaRam();
+            }
+        }
+        return -1;
+    }
     public int insertRam(int dungLuongRam){
         int check=ramDao.insertRam(new RamDTO(dungLuongRam));
         if(check==1)
@@ -52,14 +60,6 @@ public class RamBUS {
     }
     public int getDungLuongRambyID(int maRam){
         return listRAM.get(getIndexByID(maRam)).getDungLuongRam();
-    }
-    public int getIDByDungLuongRam(int dungLuongRam) {
-        for (RamDTO ram : listRAM) {
-            if (ram.getDungLuongRam() == dungLuongRam) {
-                return ram.getMaRam();
-            }
-        }
-        return -1; // nếu không tìm thấy
     }
     public boolean checkDup(int dungLuongRam){
         boolean check=true;

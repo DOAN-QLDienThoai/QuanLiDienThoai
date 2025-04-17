@@ -96,4 +96,13 @@ public class PhienBanDienThoaiDTO {
     public void setGiaXuat(double giaXuat) {
         this.giaXuat = giaXuat;
     }
+    public boolean isSameConFig(PhienBanDienThoaiDTO other) {
+        return maDT==other.maDT
+                &&maRam == other.maRam
+                && maRom == other.maRom
+                && maMau == other.maMau;  // so sánh theo thuộc tính cần thiết
+    }
+    public boolean isSameFullConFig(PhienBanDienThoaiDTO other){
+        return isSameConFig(other) && giaNhap==other.giaNhap&&giaXuat==other.giaXuat;
+    }
 }

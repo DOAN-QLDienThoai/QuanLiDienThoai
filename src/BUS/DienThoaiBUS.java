@@ -16,7 +16,10 @@ public class DienThoaiBUS {
     private DienThoaiDAO dtDao=new DienThoaiDAO();
     public static ArrayList<DienThoaiDTO> listDT=new ArrayList<>();
     public DienThoaiBUS(){
+    }
+    public ArrayList<DienThoaiDTO> listDT(){
         this.listDT=dtDao.listDT();
+        return listDT;
     }
     public int insertDienThoai(DienThoaiDTO dt){
         int check=dtDao.insertDienThoai(dt);
@@ -39,8 +42,28 @@ public class DienThoaiBUS {
         }
         return check;
     }
-    public ArrayList<DienThoaiDTO> listDT(){
-        return listDT;
+    public int updateSoLuongTon(int maPB,int soLuong){
+        int check=dtDao.updateSoLuongTonDienThoai(maPB, soLuong);
+        if(check==1){
+            listDT=dtDao.listDT();
+        }
+        return check;
+    }
+    public int getIndexByID(int maDT){
+        int i=0;
+        int vitri=-1;
+        while(i<listDT.size()){
+            if(listDT.get(i).getMaDT()==maDT&&vitri==-1){
+                vitri=i;
+            }
+            else{
+                i++;
+            }
+        }
+        return vitri;
+    }
+    public String getTenDTByID(int maDT){
+        return listDT.get(getIndexByID(maDT)).getTenDT();
     }
     public int getIDbyIndex(int index) {
         ArrayList<DienThoaiDTO> list = listDT(); // lấy danh sách điện thoại

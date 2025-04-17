@@ -90,6 +90,7 @@ public class Main extends javax.swing.JFrame {
         btn_nv.setIcon(new FlatSVGIcon("./resources/icon/nhanvien.svg", 0.5f));
         btn_kh.setIcon(new FlatSVGIcon("./resources/icon/khachhang.svg", 0.035f));
         btn_px.setIcon(new FlatSVGIcon("./resources/icon/phieuxuat.svg", 0.035f));
+        btn_pn.setIcon(new FlatSVGIcon("./resources/icon/phieunhap.svg", 0.27f));
     }
     public PanelNhapPhieuNhap getPanelNhapPN(){
         return this.nhapphieunhap;
