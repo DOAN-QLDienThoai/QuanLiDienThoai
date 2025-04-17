@@ -96,6 +96,7 @@ public class PhienBanDienThoaiDTO {
     public void setGiaXuat(double giaXuat) {
         this.giaXuat = giaXuat;
     }
+<<<<<<< HEAD
     public boolean isSameConFig(PhienBanDienThoaiDTO other) {
         return maDT==other.maDT
                 &&maRam == other.maRam
@@ -104,5 +105,13 @@ public class PhienBanDienThoaiDTO {
     }
     public boolean isSameFullConFig(PhienBanDienThoaiDTO other){
         return isSameConFig(other) && giaNhap==other.giaNhap&&giaXuat==other.giaXuat;
+=======
+    public int getSoLuongTon() {
+        return soLuongTon;
+    }
+
+    public void setSoLuongTon(int soLuongTon) {
+        this.soLuongTon = soLuongTon;
+>>>>>>> 2dbd9b3cae783cccde1fa061b76c3545a61abeb4
     }
 }

@@ -65,6 +65,9 @@ public class DienThoaiBUS {
     public String getTenDTByID(int maDT){
         return listDT.get(getIndexByID(maDT)).getTenDT();
     }
+    public DienThoaiDTO layThongTinTheoMa(String maDT) {
+    return new DienThoaiDAO().layTheoMa(maDT);
+    }
     public int getIDbyIndex(int index) {
         ArrayList<DienThoaiDTO> list = listDT(); // lấy danh sách điện thoại
         if (index >= 0 && index < list.size()) {
