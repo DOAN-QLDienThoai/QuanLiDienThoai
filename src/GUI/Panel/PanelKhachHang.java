@@ -188,7 +188,7 @@ public class PanelKhachHang extends javax.swing.JPanel {
         jlabel_add_kh1.setIcon(new FlatSVGIcon("./resources/icon/add.svg", 0.06f));
         jlabel_update_kh1.setIcon(new FlatSVGIcon("./resources/icon/update.svg", 0.85f));
         jlabel_delete_kh1.setIcon(new FlatSVGIcon("./resources/icon/delete.svg", 0.75f));
-        jlabel_detail_kh1.setIcon(new FlatSVGIcon("./resources/icon/details.svg", 0.5f));
+        jlabel_detail_kh1.setIcon(new FlatSVGIcon("./resources/icon/details.svg", 0.45f));
         jlabel_excel_kh1.setIcon(new FlatSVGIcon("./resources/icon/excel.svg", 0.5f));
     }
     public void setUpTable(){

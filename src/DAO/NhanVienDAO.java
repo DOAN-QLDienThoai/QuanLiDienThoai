@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.sql.Connection;
 
 
 /**
@@ -104,6 +105,22 @@ public class NhanVienDAO {
         }
         return listNV;
     }
-    
+    public ArrayList<String> layTatCaMaNhanVien() {
+    ArrayList<String> ds = new ArrayList<>();
+    try {
+        Connection conn = ConnectedDatabase.getConnectedDB();
+        String sql = "SELECT maNV FROM nhanvien";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            ds.add(rs.getString("maNV"));
+        }
+        ConnectedDatabase.closeConnectedDB(conn);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return ds;
+}
+
     
 }

@@ -173,6 +173,7 @@ public class Main extends javax.swing.JFrame {
         btn_dt = new javax.swing.JButton();
         btn_kh = new javax.swing.JButton();
         btn_px = new javax.swing.JButton();
+        btn_tc = new javax.swing.JButton();
         btn_pn = new javax.swing.JButton();
         btn_tk = new javax.swing.JButton();
         jpanel_menu_top1 = new javax.swing.JPanel();
@@ -180,7 +181,6 @@ public class Main extends javax.swing.JFrame {
         main = new javax.swing.JLayeredPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1230, 650));
 
         jpanel_menu_bottom.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -238,6 +238,15 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        btn_tc.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btn_tc.setText("Trang chủ");
+        btn_tc.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+        btn_tc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_tcActionPerformed(evt);
+            }
+        });
+
         btn_pn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btn_pn.setText("Phiếu Nhập");
         btn_pn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -292,7 +301,8 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(btn_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_px, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_pn, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btn_pn, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btn_tc, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpanel_menu_bottomLayout.setVerticalGroup(
@@ -300,6 +310,8 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jpanel_menu_bottomLayout.createSequentialGroup()
                 .addComponent(jpanel_menu_top1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_tc, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12)
                 .addComponent(btn_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btn_thuoctinh, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -459,6 +471,10 @@ public class Main extends javax.swing.JFrame {
         nhapphieunhap.setVisible(false);
     }//GEN-LAST:event_btn_tkActionPerformed
 
+    private void btn_tcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tcActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btn_tcActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -504,6 +520,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton btn_nv;
     private javax.swing.JButton btn_pn;
     private javax.swing.JButton btn_px;
+    private javax.swing.JButton btn_tc;
     private javax.swing.JButton btn_thuoctinh;
     private javax.swing.JButton btn_tk;
     private javax.swing.JLabel img_store1;
