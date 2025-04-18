@@ -223,5 +223,27 @@ public int getMaRomTheoDungLuong(int dungLuong) {
     }
     return -1;
 }
+    public String[] layCauHinhBangPhienBan(int maPhienBan) {
+    String[] cauHinh = new String[3]; // ROM - RAM - Màu
+    String sql = "SELECT r.dungLuongRam AS ram, rom.dungLuongRom AS rom, m.tenMau " +
+                 "FROM phienbandienthoai p " +
+                 "JOIN ram r ON p.maRam = r.maRam " +
+                 "JOIN rom rom ON p.maRom = rom.maRom " +
+                 "JOIN mausac m ON p.maMau = m.maMau " +
+                 "WHERE p.maPhienBan = ?";
+    try (Connection conn = ConnectedDatabase.getConnectedDB();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, maPhienBan);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            cauHinh[0] = rs.getString("rom");     // ROM
+            cauHinh[1] = rs.getString("ram");     // RAM
+            cauHinh[2] = rs.getString("tenMau");  // Màu sắc
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return cauHinh;
+}
 
 }

@@ -1,8 +1,11 @@
 package DAO;
 
+import DTO.ChiTietPhieuXuatDTO;
+import java.util.ArrayList;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.ResultSet;
 import util.ConnectedDatabase;
 
 public class ChiTietPhieuXuatDAO {
@@ -32,4 +35,29 @@ public class ChiTietPhieuXuatDAO {
         }
         return false;
     }
+    public ArrayList<ChiTietPhieuXuatDTO> layChiTietTheoMaPhieu(String maPX) {
+    ArrayList<ChiTietPhieuXuatDTO> ds = new ArrayList<>();
+    String sql = "SELECT ct.maPhienBan, dt.tenDT AS tenSanPham, ct.soluong, ct.dongia " +
+                 "FROM chitietphieuxuat ct " +
+                 "JOIN phienbandienthoai pb ON ct.maPhienBan = pb.maPhienBan " +
+                 "JOIN dienthoai dt ON pb.maDT = dt.maDT " +
+                 "WHERE ct.maPX = ?";
+    try (Connection conn = ConnectedDatabase.getConnectedDB();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, maPX);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            ChiTietPhieuXuatDTO ct = new ChiTietPhieuXuatDTO();
+            ct.setMaPhienBan(rs.getInt("maPhienBan"));
+            ct.setTenSanPham(rs.getString("tenSanPham")); // ✅ Thêm dòng này
+            ct.setSoLuong(rs.getInt("soluong"));
+            ct.setDonGia(rs.getDouble("dongia"));
+            ds.add(ct);
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return ds;
+}
+
 }

@@ -5,6 +5,12 @@
 package GUI.Panel;
 
 import GUI.GUIFrame.Main;
+import DAO.PhieuXuatDAO;
+import DAO.ChiTietPhieuXuatDAO;
+import DAO.KhachHangDAO;
+import DTO.PhieuXuatDTO;
+import DTO.ChiTietPhieuXuatDTO;
+import GUI.Dialog.DetailPhieuXuatDialog;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import util.Func_class;
 import javax.swing.table.DefaultTableModel;
@@ -36,12 +42,12 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
     }
     public void setIconForJLabel(){
         jlabel_add_px.setIcon(new FlatSVGIcon("./resources/icon/add.svg", 0.06f));
-        jlabel_update_px.setIcon(new FlatSVGIcon("./resources/icon/update.svg", 0.85f));
+        jlabel_detail_px.setIcon(new FlatSVGIcon("./resources/icon/details.svg", 0.45f));
         jlabel_delete_px.setIcon(new FlatSVGIcon("./resources/icon/delete.svg", 0.75f));
     }
     public void setCursorPointer(){
         func.cursorPointer(jlabel_add_px);
-        func.cursorPointer(jlabel_update_px);
+        func.cursorPointer(jlabel_detail_px);
         func.cursorPointer(jlabel_delete_px);
     }
     
@@ -51,7 +57,7 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
 
         jpn_px1 = new javax.swing.JPanel();
         jpanel_chucNang_px = new javax.swing.JPanel();
-        jlabel_update_px = new javax.swing.JLabel();
+        jlabel_detail_px = new javax.swing.JLabel();
         jlabel_add_px = new javax.swing.JLabel();
         jlabel_delete_px = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -74,9 +80,9 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
 
         jpn_px1.setPreferredSize(new java.awt.Dimension(1030, 625));
 
-        jlabel_update_px.addMouseListener(new java.awt.event.MouseAdapter() {
+        jlabel_detail_px.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jlabel_update_pxjlabel_update_pxMouseClicked(evt);
+                jlabel_detail_pxjlabel_update_pxMouseClicked(evt);
             }
         });
 
@@ -100,8 +106,8 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
                 .addGap(16, 16, 16)
                 .addComponent(jlabel_add_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jlabel_update_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jlabel_detail_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jlabel_delete_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(19, Short.MAX_VALUE))
         );
@@ -112,7 +118,7 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
                 .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jlabel_add_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlabel_delete_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlabel_update_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jlabel_detail_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
@@ -279,9 +285,41 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jlabel_update_pxjlabel_update_pxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_update_pxjlabel_update_pxMouseClicked
+    private void jlabel_detail_pxjlabel_update_pxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_detail_pxjlabel_update_pxMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jlabel_update_pxjlabel_update_pxMouseClicked
+         int selectedRow = table_px.getSelectedRow();
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Vui lòng chọn phiếu xuất để xem chi tiết!");
+        return;
+    }
+
+    String maPX = table_px.getValueAt(selectedRow, 1).toString();
+
+    // Tạo dialog
+    DetailPhieuXuatDialog dialog = new DetailPhieuXuatDialog();
+
+    // Lấy dữ liệu phiếu xuất
+    PhieuXuatDTO px = new PhieuXuatDAO().layPhieuXuatTheoMa(maPX);
+    if (px == null) return;
+
+    dialog.setMaPhieu(px.getMaPX());
+    dialog.setNhanVien(px.getMaNV());
+    dialog.setThoiGian(px.getThoiGian());
+    dialog.setKhachHang(new KhachHangDAO().layTenKhachHangTheoMa(px.getMaKH()));
+    // Lấy chi tiết phiếu xuất
+    ArrayList<ChiTietPhieuXuatDTO> dsCT = new ChiTietPhieuXuatDAO().layChiTietTheoMaPhieu(px.getMaPX());
+    dialog.loadChiTiet(dsCT);
+
+    // Show dialog
+    javax.swing.JDialog d = new javax.swing.JDialog();
+    d.setTitle("Chi tiết phiếu xuất");
+    d.setContentPane(dialog);
+    d.pack();
+    d.setLocationRelativeTo(null);
+    d.setModal(true);
+    d.setVisible(true);
+        
+    }//GEN-LAST:event_jlabel_detail_pxjlabel_update_pxMouseClicked
 
     private void jlabel_add_pxjlabel_add_pxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_add_pxjlabel_add_pxMouseClicked
         main.getPanelNhapPX().setVisible(true);
@@ -337,7 +375,7 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
         model.addRow(new Object[]{
             stt++,
             px.getMaPX(),
-            px.getMaKH(), // hoặc thay bằng tên KH nếu join
+            new DAO.KhachHangDAO().layTenKhachHangTheoMa(px.getMaKH()),
             px.getMaNV(),
             px.getThoiGian().toString().replace("T", " "),
             df.format(px.getTongTien()) + "đ"
@@ -360,7 +398,7 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel jlabel_add_px;
     private javax.swing.JLabel jlabel_delete_px;
-    private javax.swing.JLabel jlabel_update_px;
+    private javax.swing.JLabel jlabel_detail_px;
     private javax.swing.JPanel jpanel_chucNang_px;
     private javax.swing.JPanel jpn_px1;
     private javax.swing.JButton reset_px;

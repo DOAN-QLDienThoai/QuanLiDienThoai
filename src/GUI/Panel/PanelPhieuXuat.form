@@ -103,8 +103,8 @@
                       <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
                       <Component id="jlabel_add_px" min="-2" pref="50" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jlabel_update_px" min="-2" pref="50" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="jlabel_detail_px" min="-2" pref="50" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="jlabel_delete_px" min="-2" pref="50" max="-2" attributes="0"/>
                       <EmptySpace pref="19" max="32767" attributes="0"/>
                   </Group>
@@ -117,7 +117,7 @@
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jlabel_add_px" alignment="0" min="-2" pref="50" max="-2" attributes="0"/>
                           <Component id="jlabel_delete_px" alignment="0" min="-2" pref="50" max="-2" attributes="0"/>
-                          <Component id="jlabel_update_px" alignment="0" min="-2" pref="50" max="-2" attributes="0"/>
+                          <Component id="jlabel_detail_px" alignment="0" min="-2" pref="50" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace pref="24" max="32767" attributes="0"/>
                   </Group>
@@ -125,9 +125,9 @@
             </DimensionLayout>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JLabel" name="jlabel_update_px">
+            <Component class="javax.swing.JLabel" name="jlabel_detail_px">
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jlabel_update_pxjlabel_update_pxMouseClicked"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jlabel_detail_pxjlabel_update_pxMouseClicked"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jlabel_add_px">

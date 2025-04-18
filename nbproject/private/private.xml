@@ -7,6 +7,7 @@
             <file>file:/C:/Users/LE%20MINH%20HUY/OneDrive/Desktop/Java/QuanLiDienThoai/src/DTO/DienThoaiDTO.java</file>
             <file>file:/C:/Users/LE%20MINH%20HUY/OneDrive/Desktop/Java/QuanLiDienThoai/src/DTO/PhienBanDienThoaiDTO.java</file>
             <file>file:/C:/Users/LE%20MINH%20HUY/OneDrive/Desktop/Java/QuanLiDienThoai/src/DAO/RomDAO.java</file>
+            <file>file:/C:/Users/LE%20MINH%20HUY/OneDrive/Desktop/Java/QuanLiDienThoai/src/GUI/Dialog/DetailPhieuXuatDialog.java</file>
             <file>file:/C:/Users/LE%20MINH%20HUY/OneDrive/Desktop/Java/QuanLiDienThoai/src/GUI/Dialog/ChooseKhachHangPX.java</file>
             <file>file:/C:/Users/LE%20MINH%20HUY/OneDrive/Desktop/Java/QuanLiDienThoai/src/BUS/KhachHangBUS.java</file>
             <file>file:/C:/Users/LE%20MINH%20HUY/OneDrive/Desktop/Java/QuanLiDienThoai/src/DAO/DienThoaiDAO.java</file>
@@ -28,6 +29,7 @@
             <file>file:/C:/Users/LE%20MINH%20HUY/OneDrive/Desktop/Java/QuanLiDienThoai/src/DTO/PhieuXuatDTO.java</file>
             <file>file:/C:/Users/LE%20MINH%20HUY/OneDrive/Desktop/Java/QuanLiDienThoai/src/BUS/DienThoaiBUS.java</file>
             <file>file:/C:/Users/LE%20MINH%20HUY/OneDrive/Desktop/Java/QuanLiDienThoai/src/DAO/ChiTietPhieuXuatDAO.java</file>
+            <file>file:/C:/Users/LE%20MINH%20HUY/OneDrive/Desktop/Java/QuanLiDienThoai/src/DTO/ChiTietPhieuXuatDTO.java</file>
             <file>file:/C:/Users/LE%20MINH%20HUY/OneDrive/Desktop/Java/QuanLiDienThoai/src/GUI/GUIFrame/Main.java</file>
         </group>
     </open-files>

@@ -108,6 +108,27 @@ public class PhieuXuatDAO {
             }
         }
     }
+    public PhieuXuatDTO layPhieuXuatTheoMa(String maPX) {
+    String sql = "SELECT * FROM phieuxuat WHERE maPX = ?";
+    try (Connection conn = ConnectedDatabase.getConnectedDB();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, maPX);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            return new PhieuXuatDTO(
+                rs.getString("maPX"),
+                rs.getString("thoigian"),
+                rs.getString("maNV"),
+                rs.getString("maKH"),
+                rs.getDouble("tongTien"),
+                rs.getInt("trangThai")
+            );
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return null;
+}
 
 
 }
