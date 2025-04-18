@@ -21,7 +21,7 @@ public class PhienBanDienThoaiDTO {
     public PhienBanDienThoaiDTO() {}
 
     // Constructor đầy đủ tham số
-    public PhienBanDienThoaiDTO(int maPhienBan,int maDT, int maRam, int maRom, int maMau, double giaNhap, double giaXuat) {
+    public PhienBanDienThoaiDTO(int maPhienBan,int maDT, int maRam, int maRom, int maMau, double giaNhap, double giaXuat,int soLuongTon) {
         this.maPhienBan=maPhienBan;
         this.maDT = maDT;
         this.maRam=maRam;
@@ -29,15 +29,17 @@ public class PhienBanDienThoaiDTO {
         this.maMau=maMau;
         this.giaNhap = giaNhap;
         this.giaXuat = giaXuat;
+        this.soLuongTon=soLuongTon;
     }
     //Constructor không chứa khóa chính(khóa chính tự động tăng)
-    public PhienBanDienThoaiDTO( int maDT, int maRam, int maRom, int maMau, double giaNhap, double giaXuat) {
+    public PhienBanDienThoaiDTO( int maDT, int maRam, int maRom, int maMau, double giaNhap, double giaXuat,int soLuongTon) {
         this.maDT = maDT;
         this.maRam=maRam;
         this.maRom=maRom;
         this.maMau=maMau;
         this.giaNhap = giaNhap;
         this.giaXuat = giaXuat;
+        this.soLuongTon=soLuongTon;
     }
 
     // Getter và Setter
@@ -103,4 +105,5 @@ public class PhienBanDienThoaiDTO {
     public void setSoLuongTon(int soLuongTon) {
         this.soLuongTon = soLuongTon;
     }
+    
 }

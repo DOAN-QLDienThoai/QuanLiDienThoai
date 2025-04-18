@@ -415,7 +415,8 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
             int maMau = mapMS.get(cbb_ms.getSelectedItem().toString());
             double giaNhap = Double.parseDouble(jtf_gia_nhap.getText());
             double giaXuat = Double.parseDouble(jtf_gia_xuat.getText());
-            PhienBanDienThoaiDTO pb = new PhienBanDienThoaiDTO(0, 0, maRam, maRom, maMau, giaNhap, giaXuat);
+            int soLuongTon = 0;
+            PhienBanDienThoaiDTO pb = new PhienBanDienThoaiDTO(0, 0, maRam, maRom, maMau, giaNhap, giaXuat,soLuongTon);
             listPBDTTemp.add(pb);
             resetGia();
             this.addDatatable();

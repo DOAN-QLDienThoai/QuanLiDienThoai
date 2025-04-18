@@ -7,6 +7,7 @@ package DAO;
 import DTO.PhienBanDienThoaiDTO;
 import javax.swing.JOptionPane;
 import java.sql.PreparedStatement;
+import java.sql.Connection;
 import util.ConnectedDatabase;
 import java.util.ArrayList;
 import java.sql.ResultSet;
@@ -84,7 +85,8 @@ public class PhienBanDienThoaiDAO {
                 int maMau = rs.getInt("maMau");
                 double giaNhap = rs.getDouble("giaNhap");
                 double giaXuat = rs.getDouble("giaXuat");
-                listPB.add(new PhienBanDienThoaiDTO(maPhienBan,maDT, maRam, maRom,maMau, giaNhap, giaXuat));
+                int soLuongTon = 0;
+                listPB.add(new PhienBanDienThoaiDTO(maPhienBan,maDT, maRam, maRom,maMau, giaNhap, giaXuat,soLuongTon));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -157,13 +159,69 @@ public class PhienBanDienThoaiDAO {
                 rs.getInt("maRom"),
                 rs.getInt("maMau"),
                 rs.getDouble("giaNhap"),
-                rs.getDouble("giaXuat")
+                rs.getDouble("giaXuat"),
+                rs.getInt("soLuongTon")
             );
         }
     } catch (Exception e) {
         e.printStackTrace();
     }
     return variant;
+}
+    public boolean capNhatSoLuongTonSauXuat(int maPhienBan, int soLuongTru) {
+        String sql = "UPDATE phienbandienthoai SET soLuongTon = soLuongTon - ? WHERE maPhienBan = ?";
+        try (Connection conn = ConnectedDatabase.getConnectedDB();
+            PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, soLuongTru);
+            ps.setInt(2, maPhienBan);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    public int getMaPhienBanTheoChiTiet(String maSP, String maRam, String maRom, String mauSac) {
+    int ma = -1;
+    String sql = "SELECT maPhienBan FROM phienbandienthoai WHERE maDT = ? AND maRam = ? AND maRom = ? AND maMau = (SELECT maMau FROM mausac WHERE tenMau = ?)";
+    try (Connection conn = ConnectedDatabase.getConnectedDB();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, Integer.parseInt(maSP));
+        ps.setInt(2, Integer.parseInt(maRam));
+        ps.setInt(3, Integer.parseInt(maRom));
+        ps.setString(4, mauSac);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) ma = rs.getInt("maPhienBan");
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return ma;
+}
+    // Lấy mã RAM từ dung lượng
+public int getMaRamTheoDungLuong(int dungLuong) {
+    String sql = "SELECT maRam FROM ram WHERE dungLuongRam = ?";
+    try (Connection conn = ConnectedDatabase.getConnectedDB();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, dungLuong);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) return rs.getInt("maRam");
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return -1;
+}
+
+// Lấy mã ROM từ dung lượng
+public int getMaRomTheoDungLuong(int dungLuong) {
+    String sql = "SELECT maRom FROM rom WHERE dungLuongRom = ?";
+    try (Connection conn = ConnectedDatabase.getConnectedDB();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setInt(1, dungLuong);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) return rs.getInt("maRom");
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return -1;
 }
 
 }

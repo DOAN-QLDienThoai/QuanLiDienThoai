@@ -31,6 +31,7 @@ import javax.swing.border.Border;
  * @author kiman
  */
 public class Main extends javax.swing.JFrame {
+    private String maNhanVien;
     PanelNhanVien nv=new PanelNhanVien();
     PanelNhaCungCap ncc=new PanelNhaCungCap();
     PanelDienThoai dt=new PanelDienThoai();
@@ -111,6 +112,12 @@ public class Main extends javax.swing.JFrame {
     }
     public PanelDienThoai getPanelDT(){
         return this.dt;
+    }
+    public void setMaNhanVien(String maNV) {
+    this.maNhanVien = maNV;
+    }
+    public String getMaNhanVien() {
+        return this.maNhanVien;
     }
     public void setBackgroundJButton(JButton btn) {
         for (JButton menuitem : btns) {

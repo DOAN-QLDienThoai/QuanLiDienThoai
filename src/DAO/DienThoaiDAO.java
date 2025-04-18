@@ -143,7 +143,7 @@ public class DienThoaiDAO {
     DienThoaiDTO dt = null;
     try {
         Connection conn = ConnectedDatabase.getConnectedDB();
-        String sql = "SELECT d.maDT, d.tenDT, d.chipXuLy, d.soLuongTon, d.giaXuat, " +
+        String sql = "SELECT d.maDT, d.tenDT, d.chipXuLy, p.soLuongTon, p.giaXuat, " +
                      "r.dungLuongRam, ro.dungLuongRom, m.tenMau " +
                      "FROM dienthoai d " +
                      "JOIN phienbandienthoai p ON d.maDT = p.maDT " +

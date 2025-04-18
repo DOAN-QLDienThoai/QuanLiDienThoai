@@ -7,6 +7,10 @@ package GUI.Panel;
 import GUI.GUIFrame.Main;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import util.Func_class;
+import javax.swing.table.DefaultTableModel;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,12 +19,16 @@ import util.Func_class;
 public class PanelPhieuXuat extends javax.swing.JPanel {
     private Func_class func=new Func_class();
     private Main main;
+    private javax.swing.JTable jTablePhieuXuat;
+
     public PanelPhieuXuat(Main main) {
         initComponents();
         this.main=main;
+        this.jTablePhieuXuat = table_px;
         setCursorPointer();
         setIconForJLabel();
         setUpTable();
+        loadDanhSachPhieuXuat();
     }
     public void setUpTable(){
         func.centerTable(table_px);
@@ -36,6 +44,7 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
         func.cursorPointer(jlabel_update_px);
         func.cursorPointer(jlabel_delete_px);
     }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -281,6 +290,19 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
 
     private void jlabel_delete_pxjlabel_delete_pxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_delete_pxjlabel_delete_pxMouseClicked
         // TODO add your handling code here:
+         int selectedRow = table_px.getSelectedRow();
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Hãy chọn một phiếu xuất để xóa!");
+        return;
+    }
+
+    String maPX = table_px.getValueAt(selectedRow, 1).toString(); // cột mã phiếu xuất
+
+    int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xoá phiếu xuất " + maPX + "?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+    if (confirm == JOptionPane.YES_OPTION) {
+        new DAO.PhieuXuatDAO().xoaPhieuXuatVaCapNhatTonKho(maPX); // Gọi DAO
+        loadDanhSachPhieuXuat(); // Refresh lại bảng sau khi xóa
+    }
     }//GEN-LAST:event_jlabel_delete_pxjlabel_delete_pxMouseClicked
 
     private void reset_pxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reset_pxActionPerformed
@@ -291,6 +313,37 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_search_pxActionPerformed
 
+    public void themPhieuXuatVaoBang(String maPX, String tenKH, String tenNV, String thoiGian, double tongTien) {
+    DefaultTableModel model = (DefaultTableModel) jTablePhieuXuat.getModel();
+    int stt = model.getRowCount() + 1;
+    DecimalFormat df = new DecimalFormat("#,###");
+    model.addRow(new Object[]{
+        stt,
+        maPX,
+        tenKH,
+        tenNV,
+        thoiGian,
+        df.format(tongTien) + "đ"
+    });
+}
+    public void loadDanhSachPhieuXuat() {
+    ArrayList<DTO.PhieuXuatDTO> danhSach = new DAO.PhieuXuatDAO().layTatCaPhieuXuat();
+    DefaultTableModel model = (DefaultTableModel) table_px.getModel();
+    model.setRowCount(0); // Xoá dữ liệu cũ
+
+    int stt = 1;
+    java.text.DecimalFormat df = new java.text.DecimalFormat("#,###");
+    for (DTO.PhieuXuatDTO px : danhSach) {
+        model.addRow(new Object[]{
+            stt++,
+            px.getMaPX(),
+            px.getMaKH(), // hoặc thay bằng tên KH nếu join
+            px.getMaNV(),
+            px.getThoiGian().toString().replace("T", " "),
+            df.format(px.getTongTien()) + "đ"
+        });
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbb_search_px;
