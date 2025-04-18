@@ -69,7 +69,7 @@ public class Func_class {
         table.setShowVerticalLines(false);
         table.setShowHorizontalLines(true);
         table.setFillsViewportHeight(true);
-        Font font_hearderTable=new Font("Arial",Font.BOLD,15);
+        Font font_hearderTable=new Font("Arial",Font.BOLD,13);
         table.getTableHeader().setFont(font_hearderTable);
     }
     public void cursorPointer(JLabel label){
