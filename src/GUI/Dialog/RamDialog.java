@@ -21,6 +21,7 @@ public class RamDialog extends javax.swing.JDialog {
     public RamDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setTitle("Ram");
         this.setLocationRelativeTo(null);
         this.setLocationRelativeTo(null);
         setUpTable();

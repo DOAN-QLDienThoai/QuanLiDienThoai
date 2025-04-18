@@ -5,7 +5,6 @@
 package GUI.Dialog;
 
 import BUS.DienThoaiBUS;
-import DAO.DienThoaiDAO;
 import DAO.HeDieuHanhDAO;
 import DAO.PhienBanDienThoaiDAO;
 import DAO.ThuongHieuDAO;

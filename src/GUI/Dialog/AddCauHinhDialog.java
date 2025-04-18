@@ -29,11 +29,11 @@ import util.Func_class;
  * @author kiman
  */
 public class AddCauHinhDialog extends javax.swing.JDialog {
-    private static ArrayList<PhienBanDienThoaiDTO> listPBDTTemp = new ArrayList<>();
-    private DienThoaiDTO dt;
-    private Func_class func = new Func_class();
-    private PanelDienThoai dtPanel;
-    private AddDienThoaiDialog dtDialog;
+    public static ArrayList<PhienBanDienThoaiDTO> listPBDTTemp = new ArrayList<>();
+    DienThoaiDTO dt;
+    Func_class func = new Func_class();
+    PanelDienThoai dtPanel;
+    AddDienThoaiDialog dtDialog;
     DienThoaiBUS dtBus = new DienThoaiBUS();
     PhienBanDienThoaiBUS pbBus = new PhienBanDienThoaiBUS();
     RamBUS ramBus=new RamBUS();
@@ -41,17 +41,25 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
     MauSacBUS msBus=new MauSacBUS();
     public AddCauHinhDialog(java.awt.Frame parent, boolean modal, DienThoaiDTO dt, PanelDienThoai dtPanel, AddDienThoaiDialog dtDialog) {
         super(parent, modal);
+        this.setTitle("Thêm cấu hình");
         initComponents();
         this.dt = dt;
         this.dtPanel = dtPanel;
         this.dtDialog = dtDialog;
+        khoiTao();
+        this.setLocationRelativeTo(null);
+    }
+    public void khoiTao(){
         fillCbbRam();
         fillCbbRom();
         fillCbbMauSac();
         setUpTable();
-        this.setLocationRelativeTo(null);
+        notAllowText();
     }
-
+    public void notAllowText(){
+        func.notAllowText(jtf_gia_nhap);
+        func.notAllowText(jtf_gia_xuat);
+    }
     public void addDatatable() {
         String[] colNames = {"STT", "Ram", "Rom", "Màu Sắc", "Giá nhập", "Giá xuất"};
         Object[][] rows = new Object[listPBDTTemp.size()][colNames.length];
@@ -92,8 +100,8 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
             rows[index][1] = String.valueOf(dungLuongRam);
             rows[index][2] = String.valueOf(dungLuongRom);
             rows[index][3] = tenMau;
-            rows[index][4] = pb.getGiaNhap();
-            rows[index][5] = pb.getGiaXuat();
+            rows[index][4] = String.format("%,.0f", pb.getGiaNhap());
+            rows[index][5] = String.format("%,.0f", pb.getGiaXuat());
             index++;
         }
         DefaultTableModel model = new DefaultTableModel(rows, colNames);
@@ -147,7 +155,22 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
         jtf_gia_nhap.setText("");
         jtf_gia_xuat.setText("");
     }
-
+    public boolean checkGiaNhapGiaXuat(double giaNhap,double giaXuat){
+        boolean check=true;
+        if(giaNhap>giaXuat){
+            JOptionPane.showMessageDialog(null,"Giá nhập phải lớn hơn giá xuất","Error",0);
+            check=false;
+        }
+        if(giaNhap<0){
+            JOptionPane.showMessageDialog(null,"Giá nhập không được âm","Error",0);
+            check=false;
+        }
+        if(giaXuat<0){
+            JOptionPane.showMessageDialog(null,"Giá xuất không được âm","Error",0);
+            check=false;
+        }
+        return check;
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -168,7 +191,7 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
         jPanel2 = new javax.swing.JPanel();
         btn_add_cauHinh = new javax.swing.JButton();
         btn_update_cauHinh = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        btn_delete = new javax.swing.JButton();
         btn_make_new = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         btn_add_dien_thoai = new javax.swing.JButton();
@@ -280,11 +303,11 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
             }
         });
 
-        jButton3.setBackground(new java.awt.Color(255, 0, 0));
-        jButton3.setText("Xóa Cấu Hình");
-        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+        btn_delete.setBackground(new java.awt.Color(255, 0, 0));
+        btn_delete.setText("Xóa Cấu Hình");
+        btn_delete.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton3MouseClicked(evt);
+                btn_deleteMouseClicked(evt);
             }
         });
 
@@ -305,7 +328,7 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btn_add_cauHinh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btn_update_cauHinh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_delete, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btn_make_new, javax.swing.GroupLayout.DEFAULT_SIZE, 127, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -317,7 +340,7 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
                 .addGap(18, 18, 18)
                 .addComponent(btn_update_cauHinh, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btn_delete, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btn_make_new, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(26, Short.MAX_VALUE))
@@ -400,13 +423,13 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
         int dungLuongRam = Integer.parseInt(table_cauHinh.getValueAt(vitriRow, 1).toString());
         int dungLuongRom = Integer.parseInt(table_cauHinh.getValueAt(vitriRow, 2).toString());
         String tenMau = table_cauHinh.getValueAt(vitriRow, 3).toString();
-        double giaNhap = Double.parseDouble(table_cauHinh.getValueAt(vitriRow, 4).toString());
-        double giaXuat = Double.parseDouble(table_cauHinh.getValueAt(vitriRow, 5).toString());
+        double giaNhap = Double.parseDouble(table_cauHinh.getValueAt(vitriRow, 4).toString().replaceAll(",",""));
+        double giaXuat = Double.parseDouble(table_cauHinh.getValueAt(vitriRow, 5).toString().replaceAll(",",""));
         cbb_ram.setSelectedItem(String.valueOf(dungLuongRam));
         cbb_rom.setSelectedItem(String.valueOf(dungLuongRom));
         cbb_ms.setSelectedItem(tenMau);
-        jtf_gia_nhap.setText(String.valueOf(giaNhap));
-        jtf_gia_xuat.setText(String.valueOf(giaXuat));
+        jtf_gia_nhap.setText(String.format("%,.0f",giaNhap));
+        jtf_gia_xuat.setText(String.format("%,.0f",giaXuat));
     }//GEN-LAST:event_table_cauHinhMouseClicked
 
     private void btn_add_cauHinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_add_cauHinhMouseClicked
@@ -420,17 +443,19 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
             int maRom = mapRom.getOrDefault(selectedRom, -1);
             HashMap<String, Integer> mapMS = new MauSacDAO().listMapMS();
             int maMau = mapMS.get(cbb_ms.getSelectedItem().toString());
-            double giaNhap = Double.parseDouble(jtf_gia_nhap.getText());
-            double giaXuat = Double.parseDouble(jtf_gia_xuat.getText());
-            PhienBanDienThoaiDTO pb = new PhienBanDienThoaiDTO(0, dt.getMaDT(), maRam, maRom, maMau, giaNhap, giaXuat);
-            if (pbBus.checkDupAdd(listPBDTTemp, pb)) {
-                listPBDTTemp.add(pb);
-                resetGia();
-                this.addDatatable();
-                func.centerTable(table_cauHinh);
-                return;
+            double giaNhap = Double.parseDouble(jtf_gia_nhap.getText().replaceAll(",", ""));
+            double giaXuat = Double.parseDouble(jtf_gia_xuat.getText().replaceAll(",", ""));
+            if (checkGiaNhapGiaXuat(giaNhap, giaXuat)) {
+                PhienBanDienThoaiDTO pb = new PhienBanDienThoaiDTO(0, dt.getMaDT(), maRam, maRom, maMau, giaNhap, giaXuat);
+                if (pbBus.checkDupAdd(listPBDTTemp, pb)) {
+                    listPBDTTemp.add(pb);
+                    resetGia();
+                    this.addDatatable();
+                    func.centerTable(table_cauHinh);
+                    return;
+                }
+                JOptionPane.showMessageDialog(null, "Cấu hình đã tồn tại", "Error", 0);
             }
-            JOptionPane.showMessageDialog(null, "Cấu hình đã tồn tại", "Error", 0);
         }
     }//GEN-LAST:event_btn_add_cauHinhMouseClicked
 
@@ -446,44 +471,42 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
         int selectedRom = Integer.parseInt(cbb_rom.getSelectedItem().toString()); // Chuyển String -> Integer
         int maRom = romBUS.getIDByDungLuongRom(selectedRom);
         int maMau = msBus.getIDByTenMau(cbb_ms.getSelectedItem().toString());
-        double giaNhap = Double.parseDouble(jtf_gia_nhap.getText());
-        double giaXuat = Double.parseDouble(jtf_gia_xuat.getText());
-        PhienBanDienThoaiDTO pbNew=new PhienBanDienThoaiDTO(0,phienBanUpdate.getMaDT(),maRam,maRom,maMau,giaNhap,giaXuat);
-        if (pbBus.checkDupEdit(listPBDTTemp,pbNew)) {
-            phienBanUpdate.setRam(maRam);
-            phienBanUpdate.setRom(maRom);
-            phienBanUpdate.setMausac(maMau);
-            phienBanUpdate.setGiaNhap(giaNhap);
-            phienBanUpdate.setGiaXuat(giaXuat);
-            addDatatable();
-            func.centerTable(table_cauHinh);
-            resetGia();
-            return;
+        double giaNhap = Double.parseDouble(jtf_gia_nhap.getText().replaceAll(",", ""));
+        double giaXuat = Double.parseDouble(jtf_gia_xuat.getText().replaceAll(",", ""));
+        if (checkGiaNhapGiaXuat(giaNhap, giaXuat)) {
+            PhienBanDienThoaiDTO pbNew = new PhienBanDienThoaiDTO(0, phienBanUpdate.getMaDT(), maRam, maRom, maMau, giaNhap, giaXuat);
+            if (pbBus.checkDupEdit(listPBDTTemp, pbNew)) {
+                phienBanUpdate.setRam(maRam);
+                phienBanUpdate.setRom(maRom);
+                phienBanUpdate.setMausac(maMau);
+                phienBanUpdate.setGiaNhap(giaNhap);
+                phienBanUpdate.setGiaXuat(giaXuat);
+                addDatatable();
+                func.centerTable(table_cauHinh);
+                resetGia();
+                return;
+            }
+            JOptionPane.showMessageDialog(null, "Cấu hình đã tồn tại", "Error", 0);
         }
-        JOptionPane.showMessageDialog(null, "Cấu hình đã tồn tại", "Error", 0);
     }//GEN-LAST:event_btn_update_cauHinhMouseClicked
 
-    private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MouseClicked
+    private void btn_deleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_deleteMouseClicked
         int vitriRow = table_cauHinh.getSelectedRow();
         if (vitriRow == -1) {
             JOptionPane.showMessageDialog(null, "Bạn chọn phiên bản để xóa", "Error", 0);
             return;
         }
-        int index = Integer.parseInt(table_cauHinh.getValueAt(vitriRow, 0).toString());
-        for (PhienBanDienThoaiDTO pb : listPBDTTemp) {
-            if (index == vitriRow) {
-                int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa phiên bản này không?",
-                        "Xác nhận xóa",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.WARNING_MESSAGE);
-                if (confirm == JOptionPane.YES_OPTION) {
-                    listPBDTTemp.remove(pb);
-                    addDatatable();
-                    func.centerTable(table_cauHinh);
-                }
-            }
+        PhienBanDienThoaiDTO pb = listPBDTTemp.get(vitriRow);
+        int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa phiên bản này không?",
+                "Xác nhận xóa",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
+        if (confirm == JOptionPane.YES_OPTION) {
+            listPBDTTemp.remove(pb);
+            addDatatable();
+            func.centerTable(table_cauHinh);
         }
-    }//GEN-LAST:event_jButton3MouseClicked
+    }//GEN-LAST:event_btn_deleteMouseClicked
 
     private void btn_make_newMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_make_newMouseClicked
         resetGia();
@@ -523,13 +546,13 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_add_cauHinh;
     private javax.swing.JButton btn_add_dien_thoai;
+    private javax.swing.JButton btn_delete;
     private javax.swing.JButton btn_make_new;
     private javax.swing.JButton btn_return;
     private javax.swing.JButton btn_update_cauHinh;
     private javax.swing.JComboBox<String> cbb_ms;
     private javax.swing.JComboBox<String> cbb_ram;
     private javax.swing.JComboBox<String> cbb_rom;
-    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

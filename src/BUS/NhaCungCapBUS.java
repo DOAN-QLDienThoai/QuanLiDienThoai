@@ -7,7 +7,6 @@ package BUS;
 import DAO.NhaCungCapDAO;
 import DTO.NhaCungCapDTO;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  *
@@ -17,7 +16,10 @@ public class NhaCungCapBUS {
     private NhaCungCapDAO nccDao=new NhaCungCapDAO();
     private ArrayList<NhaCungCapDTO> listNCC=new ArrayList<>();
     public NhaCungCapBUS(){
-        this.listNCC=nccDao.listNCC();
+    }
+    public ArrayList<NhaCungCapDTO> listNCC(){
+        listNCC=nccDao.listNCC();
+        return listNCC;
     }
     public int insertNhaCungCap(NhaCungCapDTO ncc){
         int check=nccDao.insertNhaCungCap(ncc);
@@ -52,11 +54,12 @@ public class NhaCungCapBUS {
         }
         return vitri;
     }
-    public String getTenNCCByID(int maNCC){
-        return listNCC.get(getIndexByID(maNCC)).getName();
-    }
-    public ArrayList<NhaCungCapDTO> listNCC(){
-        return listNCC;
+    public String getTenNCCByID(int maNCC) {
+        int index = getIndexByID(maNCC);
+        if (index == -1) {
+            return null;
+        }
+        return listNCC.get(index).getName();
     }
     public ArrayList<NhaCungCapDTO> timKiem(String text,String type){
         ArrayList<NhaCungCapDTO> listNCCFilter=new ArrayList<>();

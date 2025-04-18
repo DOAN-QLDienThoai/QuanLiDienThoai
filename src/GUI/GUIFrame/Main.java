@@ -91,6 +91,7 @@ public class Main extends javax.swing.JFrame {
         btn_kh.setIcon(new FlatSVGIcon("./resources/icon/khachhang.svg", 0.035f));
         btn_px.setIcon(new FlatSVGIcon("./resources/icon/phieuxuat.svg", 0.035f));
         btn_pn.setIcon(new FlatSVGIcon("./resources/icon/phieunhap.svg", 0.27f));
+        btn_tk.setIcon(new FlatSVGIcon("./resources/icon/static.svg", 0.3f));
     }
     public PanelNhapPhieuNhap getPanelNhapPN(){
         return this.nhapphieunhap;
@@ -437,6 +438,7 @@ public class Main extends javax.swing.JFrame {
         nhapphieuxuat.setVisible(false);
         tk.setVisible(false);
         pn.setVisible(true);
+        pn.setUpTable();
         nhapphieunhap.setVisible(false);
     }//GEN-LAST:event_btn_pnActionPerformed
 

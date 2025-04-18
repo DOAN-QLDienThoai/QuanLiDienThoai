@@ -22,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import org.jdesktop.swingx.prompt.PromptSupport;
 import util.DropShadowBorder;
 import util.Func_class;
 
@@ -30,8 +31,8 @@ import util.Func_class;
  * @author kiman
  */
 public class PanelDienThoai extends javax.swing.JPanel {
-    private Func_class func=new Func_class();
-    private DienThoaiBUS dtBus=new DienThoaiBUS();
+    Func_class func=new Func_class();
+    DienThoaiBUS dtBus=new DienThoaiBUS();
     public PanelDienThoai() {
         initComponents();
         khoiTao();
@@ -42,9 +43,15 @@ public class PanelDienThoai extends javax.swing.JPanel {
         setCusorPointer();
         setShadowforJPN();
         khoitaoChooseFilterDT();
+        setTextHidden();
     }
     public JTable getTableDienThoai(){
         return this.table_dt;
+    }
+    public void setTextHidden(){
+        PromptSupport.setPrompt("Tìm kiếm nhanh", jtf_find_dt);
+        PromptSupport.setForeground(Color.GRAY, jtf_find_dt);
+        PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.SHOW_PROMPT, jtf_find_dt);
     }
     //Hàm khởi tạo lựa chọn cách lọc điện thoại
     public void khoitaoChooseFilterDT() {
@@ -77,7 +84,7 @@ public class PanelDienThoai extends javax.swing.JPanel {
     }
     public void setCusorPointer() {
         List<JLabel> jlabels =List.of(jlabel_add_dt,jlabel_update_dt,jlabel_delete_dt,jlabel_refresh
-        ,jlabel_excel,jlabel_chiTiet_dt);
+        ,jlabel_excel,jlabel_chiTiet_dt,jlabel_look_dt);
         for(JLabel label : jlabels )
             func.cursorPointer(label);
     }
@@ -402,6 +409,7 @@ public class PanelDienThoai extends javax.swing.JPanel {
     }//GEN-LAST:event_jlabel_look_dtMouseClicked
 
     private void jlabel_refreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_refreshMouseClicked
+        jtf_find_dt.setText("");
         func.addDataTableDienThoai(dtBus.listDT(), table_dt);
         func.centerTable(table_dt);
     }//GEN-LAST:event_jlabel_refreshMouseClicked

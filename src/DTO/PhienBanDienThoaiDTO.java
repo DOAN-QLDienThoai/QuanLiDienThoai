@@ -9,6 +9,7 @@ package DTO;
  * @author kiman
  */
 public class PhienBanDienThoaiDTO {
+
     private int maPhienBan;
     private int maDT;
     private int maRam;
@@ -17,25 +18,28 @@ public class PhienBanDienThoaiDTO {
     private double giaNhap;
     private double giaXuat;
     private int soLuongTon;
+
     // Constructor không tham số
-    public PhienBanDienThoaiDTO() {}
+    public PhienBanDienThoaiDTO() {
+    }
 
     // Constructor đầy đủ tham số
-    public PhienBanDienThoaiDTO(int maPhienBan,int maDT, int maRam, int maRom, int maMau, double giaNhap, double giaXuat) {
-        this.maPhienBan=maPhienBan;
+    public PhienBanDienThoaiDTO(int maPhienBan, int maDT, int maRam, int maRom, int maMau, double giaNhap, double giaXuat) {
+        this.maPhienBan = maPhienBan;
         this.maDT = maDT;
-        this.maRam=maRam;
-        this.maRom=maRom;
-        this.maMau=maMau;
+        this.maRam = maRam;
+        this.maRom = maRom;
+        this.maMau = maMau;
         this.giaNhap = giaNhap;
         this.giaXuat = giaXuat;
     }
+
     //Constructor không chứa khóa chính(khóa chính tự động tăng)
-    public PhienBanDienThoaiDTO( int maDT, int maRam, int maRom, int maMau, double giaNhap, double giaXuat) {
+    public PhienBanDienThoaiDTO(int maDT, int maRam, int maRom, int maMau, double giaNhap, double giaXuat) {
         this.maDT = maDT;
-        this.maRam=maRam;
-        this.maRom=maRom;
-        this.maMau=maMau;
+        this.maRam = maRam;
+        this.maRom = maRom;
+        this.maMau = maMau;
         this.giaNhap = giaNhap;
         this.giaXuat = giaXuat;
     }
@@ -70,7 +74,7 @@ public class PhienBanDienThoaiDTO {
     }
 
     public void setRom(int maRom) {
-        this.maRom=maRom;
+        this.maRom = maRom;
     }
 
     public int getmaMau() {
@@ -96,22 +100,23 @@ public class PhienBanDienThoaiDTO {
     public void setGiaXuat(double giaXuat) {
         this.giaXuat = giaXuat;
     }
-<<<<<<< HEAD
+
     public boolean isSameConFig(PhienBanDienThoaiDTO other) {
-        return maDT==other.maDT
-                &&maRam == other.maRam
+        return maDT == other.maDT
+                && maRam == other.maRam
                 && maRom == other.maRom
                 && maMau == other.maMau;  // so sánh theo thuộc tính cần thiết
     }
-    public boolean isSameFullConFig(PhienBanDienThoaiDTO other){
-        return isSameConFig(other) && giaNhap==other.giaNhap&&giaXuat==other.giaXuat;
-=======
+
+    public boolean isSameFullConFig(PhienBanDienThoaiDTO other) {
+        return isSameConFig(other) && giaNhap == other.giaNhap && giaXuat == other.giaXuat;
+    }
+
     public int getSoLuongTon() {
         return soLuongTon;
     }
 
     public void setSoLuongTon(int soLuongTon) {
         this.soLuongTon = soLuongTon;
->>>>>>> 2dbd9b3cae783cccde1fa061b76c3545a61abeb4
     }
 }

@@ -19,11 +19,17 @@ import java.awt.Frame;
 import java.awt.Window;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import org.jdesktop.swingx.prompt.PromptSupport;
 import util.Func_class;
 
 /**
@@ -40,19 +46,33 @@ public class PanelPhieuNhap extends javax.swing.JPanel {
     Main main;
     public PanelPhieuNhap(Main main) {
         initComponents();
+        System.out.println("GUI.Panel.PanelPhieuNhap.<init>()");
         khoiTao();
         this.main=main;
     }
     public void khoiTao(){
         setUpTable();
+        locPrice();
         setIconForJLabel();
         setCursorPointer();
         fillComboboxTimKiem();
+        setTextHidden();
     }
     public void setUpTable(){
         loadDataPhieuNhap(pnBus.listPN());
         func.setUpTable(table_pn);
         func.centerTable(table_pn);
+    }
+    public void setTextHidden(){
+        PromptSupport.setPrompt("Tìm kiếm nhanh", jtf_search_dt);
+        PromptSupport.setForeground(Color.GRAY, jtf_search_dt);
+        PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.SHOW_PROMPT, jtf_search_dt);
+        PromptSupport.setPrompt("Giá từ", jtf_giaTu);
+        PromptSupport.setForeground(Color.GRAY, jtf_giaTu);
+        PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.SHOW_PROMPT, jtf_giaTu);
+        PromptSupport.setPrompt("Giá đến", jtf_giaDen);
+        PromptSupport.setForeground(Color.GRAY, jtf_giaDen);
+        PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.SHOW_PROMPT, jtf_giaDen);
     }
     public void setIconForJLabel(){
         jlabel_add_pn.setIcon(new FlatSVGIcon("./resources/icon/add.svg", 0.05f));
@@ -69,9 +89,9 @@ public class PanelPhieuNhap extends javax.swing.JPanel {
     }
     public void fillComboboxTimKiem(){
         String[] strs={"Tất cả","Mã phiếu nhập","Nhà cung cấp","Nhân viên","Thời gian","Tổng tiền"};
-        combobox_timKiem.setBackground(Color.WHITE);
+        combobox_searchDT.setBackground(Color.WHITE);
         for(String str:strs){
-            combobox_timKiem.addItem(str);
+            combobox_searchDT.addItem(str);
         }
     }
     public void loadDataPhieuNhap(ArrayList<PhieuNhapDTO> listPN){
@@ -106,6 +126,99 @@ public class PanelPhieuNhap extends javax.swing.JPanel {
         newID = String.format("PN%03d", maxID + 1);
         return newID;
     }
+    public void locPrice() {
+        DocumentListener listener = new DocumentListener() {
+        public void insertUpdate(DocumentEvent e) {
+            locTheoGia();
+        }
+
+        public void removeUpdate(DocumentEvent e) {
+            locTheoGia();
+        }
+
+        public void changedUpdate(DocumentEvent e) {
+            locTheoGia();
+        }
+    };
+
+    jtf_giaTu.getDocument().addDocumentListener(listener);
+    jtf_giaDen.getDocument().addDocumentListener(listener);
+    jtf_search_dt.getDocument().addDocumentListener(listener);
+    }
+    private void locTheoGia() {
+        String keyword = jtf_search_dt.getText().trim().toLowerCase();
+        String selectedFilter = (String) combobox_searchDT.getSelectedItem();
+
+        String textTu = jtf_giaTu.getText().trim();
+        String textDen = jtf_giaDen.getText().trim();
+
+        double min = 0;
+        double max = Double.MAX_VALUE;
+
+        try {
+            if (!textTu.isEmpty()) {
+                min = Double.parseDouble(textTu);
+            }
+            if (!textDen.isEmpty()) {
+                max = Double.parseDouble(textDen);
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Giá nhập không hợp lệ!");
+            return;
+        }
+
+        final double giaTu = min;
+        final double giaDen = max;
+
+        DefaultTableModel model = (DefaultTableModel) table_pn.getModel();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        table_pn.setRowSorter(sorter);
+
+        List<RowFilter<Object, Object>> filters = new ArrayList<>();
+
+        // --- Lọc theo từ khóa ---
+        if (!keyword.isEmpty()) {
+            if ("Tất cả".equalsIgnoreCase(selectedFilter)) {
+                filters.add(RowFilter.regexFilter("(?i)" + keyword)); // tất cả cột
+            } else {
+                int columnIndex = switch (selectedFilter) {
+                    case "Mã phiếu nhập" ->
+                        0;
+                    case "Nhà cung cấp" ->
+                        1;
+                    case "Nhân viên" ->
+                        2;
+                    case "Thời gian" ->
+                        3;
+                    default ->
+                        -1;
+                };
+                if (columnIndex >= 0) {
+                    filters.add(RowFilter.regexFilter("(?i)" + keyword, columnIndex));
+                }
+            }
+        }
+
+        // --- Lọc theo giá ---
+        int columnGia = 4; // cột chứa giá trị giá
+        filters.add(new RowFilter<Object, Object>() {
+            @Override
+            public boolean include(RowFilter.Entry<? extends Object, ? extends Object> entry) {
+                try {
+                    String giaStr = entry.getValue(columnGia).toString().replaceAll("[^\\d]", "");
+                    if (giaStr.isEmpty()) {
+                        return false;
+                    }
+                    double gia = Double.parseDouble(giaStr);
+                    return gia >= giaTu && gia <= giaDen;
+                } catch (Exception e) {
+                    return false;
+                }
+            }
+        });
+
+        sorter.setRowFilter(RowFilter.andFilter(filters));
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -120,16 +233,15 @@ public class PanelPhieuNhap extends javax.swing.JPanel {
         jlabel_add_pn = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
-        combobox_timKiem = new javax.swing.JComboBox<>();
-        jtf_find_pn = new javax.swing.JTextField();
+        combobox_searchDT = new javax.swing.JComboBox<>();
+        jtf_search_dt = new javax.swing.JTextField();
         jlabel_refresh = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
         jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jLabel31 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        jtf_giaTu = new javax.swing.JTextField();
         jLabel32 = new javax.swing.JLabel();
-        jTextField3 = new javax.swing.JTextField();
+        jtf_giaDen = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         table_pn = new javax.swing.JTable();
 
@@ -219,34 +331,27 @@ public class PanelPhieuNhap extends javax.swing.JPanel {
             }
         });
 
-        jButton5.setText("Ok");
-
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
         jPanel6Layout.setHorizontalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(combobox_timKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(combobox_searchDT, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jtf_find_pn, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38)
+                .addComponent(jtf_search_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jlabel_refresh, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(16, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jlabel_refresh, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(combobox_timKiem, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtf_find_pn, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jButton5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(combobox_searchDT, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtf_search_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlabel_refresh, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -265,8 +370,10 @@ public class PanelPhieuNhap extends javax.swing.JPanel {
 
         jPanel8.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo giá"));
 
+        jLabel31.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel31.setText("Từ");
 
+        jLabel32.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel32.setText("Đến");
 
         javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
@@ -277,22 +384,22 @@ public class PanelPhieuNhap extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(jLabel31)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jtf_giaTu, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel32)
                 .addGap(18, 18, 18)
-                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addComponent(jtf_giaDen, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtf_giaTu, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel32)
                     .addComponent(jLabel31)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jtf_giaDen, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
@@ -347,6 +454,9 @@ public class PanelPhieuNhap extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jlabel_refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jlabel_refreshActionPerformed
+        jtf_giaDen.setText("");
+        jtf_giaTu.setText("");
+        jtf_search_dt.setText("");
         loadDataPhieuNhap(pnBus.listPN());
         func.setUpTable(table_pn);
         func.centerTable(table_pn);
@@ -404,8 +514,7 @@ public class PanelPhieuNhap extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> combobox_timKiem;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JComboBox<String> combobox_searchDT;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel30;
@@ -417,14 +526,14 @@ public class PanelPhieuNhap extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
     private javax.swing.JLabel jlabel_add_pn;
     private javax.swing.JLabel jlabel_chiTiet_pn;
     private javax.swing.JLabel jlabel_delete_pn;
     private javax.swing.JLabel jlabel_excel_pn;
     private javax.swing.JButton jlabel_refresh;
-    private javax.swing.JTextField jtf_find_pn;
+    private javax.swing.JTextField jtf_giaDen;
+    private javax.swing.JTextField jtf_giaTu;
+    private javax.swing.JTextField jtf_search_dt;
     private javax.swing.JTable table_pn;
     // End of variables declaration//GEN-END:variables
 }

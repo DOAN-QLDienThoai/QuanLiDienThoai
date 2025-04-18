@@ -22,6 +22,7 @@ public class RomDialog extends javax.swing.JDialog {
     public RomDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setTitle("Rom");
         this.setLocationRelativeTo(null);
         setUpTable();
     }

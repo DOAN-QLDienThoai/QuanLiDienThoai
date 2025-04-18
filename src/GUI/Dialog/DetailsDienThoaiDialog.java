@@ -4,8 +4,10 @@
  */
 package GUI.Dialog;
 
+import BUS.HeDieuHanhBUS;
+import BUS.PhienBanDienThoaiBUS;
+import BUS.ThuongHieuBUS;
 import DAO.HeDieuHanhDAO;
-import DAO.PhienBanDienThoaiDAO;
 import DAO.ThuongHieuDAO;
 import DTO.DienThoaiDTO;
 import DTO.PhienBanDienThoaiDTO;
@@ -26,36 +28,47 @@ import util.Func_class;
  * @author kiman
  */
 public class DetailsDienThoaiDialog extends javax.swing.JDialog {
-    private DienThoaiDTO dt;
-    private HashMap<String, Integer> mapHDH;
-    private HashMap<String,Integer> mapThuongHieu;
-    private Func_class func=new Func_class();
-    private ArrayList<PhienBanDienThoaiDTO> listPBDTTemp=new ArrayList<>();
-    private ArrayList<PhienBanDienThoaiDTO> listPBDT;
-    private String url_img;
+    DienThoaiDTO dt;
+    HashMap<String, Integer> mapHDH;
+    HashMap<String,Integer> mapThuongHieu;
+    PhienBanDienThoaiBUS pbBus=new PhienBanDienThoaiBUS();
+    ThuongHieuDAO thDao=new ThuongHieuDAO();
+    HeDieuHanhDAO hdhDao=new HeDieuHanhDAO();
+    Func_class func=new Func_class();
+    ArrayList<PhienBanDienThoaiDTO> listPBDTTemp=new ArrayList<>();
+    ArrayList<PhienBanDienThoaiDTO> listPBDT;
+    String url_img;
     public DetailsDienThoaiDialog(java.awt.Frame parent, boolean modal,DienThoaiDTO dt) {
         super(parent, modal);
         initComponents();
+        this.dt = dt;
         this.setTitle("Xem chi tiết điện thoại");
         this.setLocationRelativeTo(null);
+        khoiTao();
+        
+    }
+    public void khoiTao() {
         fillComboboxHDH();
         fillComboboxThuongHieu();
-        this.dt = dt;
         jtf_tenDT.setText(dt.getTenDT());
-        mapHDH = new HeDieuHanhDAO().listMapHDH();
-        String tenHDH=func.getKey(mapHDH, dt.getHeDieuHanh());
+        jtf_tenDT.setEditable(false);
+        mapHDH = hdhDao.listMapHDH();
+        String tenHDH = func.getKey(mapHDH, dt.getHeDieuHanh());
         cbb_HDH.setSelectedItem(tenHDH);
-        mapThuongHieu=new ThuongHieuDAO().listMapThuongHieu();
-        String tenThuongHieu=func.getKey(mapThuongHieu,dt.getThuongHieu());
+        mapThuongHieu = thDao.listMapThuongHieu();
+        String tenThuongHieu = func.getKey(mapThuongHieu, dt.getThuongHieu());
         cbb_ThuongHieu.setSelectedItem(tenThuongHieu);
         jtf_chip.setText(dt.getChipXuLy());
+        jtf_chip.setEditable(false);
         jtf_dungLuongPin.setText(String.valueOf(dt.getDungLuongPin()));
+        jtf_dungLuongPin.setEditable(false);
         jtf_kichThuocMan.setText(String.valueOf(dt.getKichThuocMan()));
-        func.disPlayImage(jlabel_hinhAnh.getWidth(),jlabel_hinhAnh.getHeight(),dt.getHinhAnh(), jlabel_hinhAnh);
+        jtf_kichThuocMan.setEditable(false);
+        func.disPlayImage(jlabel_hinhAnh.getWidth(), jlabel_hinhAnh.getHeight(), dt.getHinhAnh(), jlabel_hinhAnh);
     }
      //Hàm khởi tạo giá trị vào combobox thương hiệu
     public void fillComboboxThuongHieu(){
-        mapThuongHieu=new ThuongHieuDAO().listMapThuongHieu();
+        mapThuongHieu=thDao.listMapThuongHieu();
         cbb_ThuongHieu.setBackground(Color.WHITE);
         for(String th : mapThuongHieu.keySet()){
             cbb_ThuongHieu.addItem(th);
@@ -63,7 +76,7 @@ public class DetailsDienThoaiDialog extends javax.swing.JDialog {
     }
     //Hàm khởi tạo giá trị vào combobox hệ điều hành
     public void fillComboboxHDH(){
-        mapHDH=new HeDieuHanhDAO().listMapHDH();
+        mapHDH=hdhDao.listMapHDH();
         cbb_HDH.setBackground(Color.WHITE);
         for(String hdh : mapHDH.keySet()){
             cbb_HDH.addItem(hdh);
@@ -123,7 +136,7 @@ public class DetailsDienThoaiDialog extends javax.swing.JDialog {
         jPanel1.setBackground(new java.awt.Color(102, 102, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Chỉnh Sửa Điện Thoại");
+        jLabel1.setText("Chi Tiết Điện Thoại");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -132,7 +145,7 @@ public class DetailsDienThoaiDialog extends javax.swing.JDialog {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(343, 343, 343)
                 .addComponent(jLabel1)
-                .addContainerGap(337, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -290,13 +303,16 @@ public class DetailsDienThoaiDialog extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(317, 317, 317)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(317, 317, 317)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -331,7 +347,7 @@ public class DetailsDienThoaiDialog extends javax.swing.JDialog {
         int maDT=dt.getMaDT();
         if(!listPBDTTemp.isEmpty())
         listPBDTTemp.clear();
-        listPBDT=new PhienBanDienThoaiDAO().listPhienBan();
+        listPBDT=pbBus.listPB();
         for(PhienBanDienThoaiDTO pb : listPBDT){
             if(pb.getMaDT()==maDT){
                 listPBDTTemp.add(pb);

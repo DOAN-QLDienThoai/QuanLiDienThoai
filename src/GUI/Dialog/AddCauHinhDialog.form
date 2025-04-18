@@ -231,7 +231,7 @@
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="btn_add_cauHinh" alignment="0" max="32767" attributes="0"/>
                       <Component id="btn_update_cauHinh" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jButton3" alignment="0" max="32767" attributes="0"/>
+                      <Component id="btn_delete" alignment="0" max="32767" attributes="0"/>
                       <Component id="btn_make_new" alignment="0" pref="127" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
@@ -246,7 +246,7 @@
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btn_update_cauHinh" min="-2" pref="34" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="jButton3" min="-2" pref="33" max="-2" attributes="0"/>
+                  <Component id="btn_delete" min="-2" pref="33" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btn_make_new" min="-2" pref="35" max="-2" attributes="0"/>
                   <EmptySpace pref="26" max="32767" attributes="0"/>
@@ -277,7 +277,7 @@
             <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btn_update_cauHinhMouseClicked"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton3">
+        <Component class="javax.swing.JButton" name="btn_delete">
           <Properties>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="0" green="0" red="ff" type="rgb"/>
@@ -285,7 +285,7 @@
             <Property name="text" type="java.lang.String" value="X&#xf3;a C&#x1ea5;u H&#xec;nh"/>
           </Properties>
           <Events>
-            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButton3MouseClicked"/>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btn_deleteMouseClicked"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btn_make_new">

@@ -21,6 +21,7 @@ public class ThuongHieuDialog extends javax.swing.JDialog {
     public ThuongHieuDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setTitle("Thương hiệu");
         this.setLocationRelativeTo(null);
         setUpTable();
     }

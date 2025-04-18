@@ -3,13 +3,10 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/kiman/OneDrive/Máy%20tính/QLDT/QuanLiDienThoai/src/DAO/ChiTietPhieuNhapDAO.java</file>
             <file>file:/C:/Users/kiman/OneDrive/Máy%20tính/QLDT/QuanLiDienThoai/src/GUI/GUIFrame/Main.java</file>
-            <file>file:/C:/Users/kiman/OneDrive/Máy%20tính/QLDT/QuanLiDienThoai/src/GUI/Panel/PanelNhapPhieuNhap.java</file>
-            <file>file:/C:/Users/kiman/OneDrive/Máy%20tính/QLDT/QuanLiDienThoai/src/GUI/Panel/PanelDienThoai.java</file>
-            <file>file:/C:/Users/kiman/OneDrive/Máy%20tính/QLDT/QuanLiDienThoai/src/BUS/ChiTietPhieuNhapBUS.java</file>
-            <file>file:/C:/Users/kiman/OneDrive/Máy%20tính/QLDT/QuanLiDienThoai/src/GUI/Panel/PanelPhieuNhap.java</file>
-            <file>file:/C:/Users/kiman/OneDrive/Máy%20tính/QLDT/QuanLiDienThoai/src/GUI/Dialog/DetailsPhieuNhapDialog.java</file>
+            <file>file:/C:/Users/kiman/OneDrive/Máy%20tính/QLDT/QuanLiDienThoai/src/GUI/Dialog/AddCauHinhDialog.java</file>
+            <file>file:/C:/Users/kiman/OneDrive/Máy%20tính/QLDT/QuanLiDienThoai/src/GUI/Dialog/AddKhachHangDialog.java</file>
+            <file>file:/C:/Users/kiman/OneDrive/Máy%20tính/QLDT/QuanLiDienThoai/src/GUI/Dialog/EditCauHinhDialog.java</file>
         </group>
     </open-files>
 </project-private>

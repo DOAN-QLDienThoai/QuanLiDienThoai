@@ -4,6 +4,7 @@
  */
 package GUI.Dialog;
 
+import BUS.PhienBanDienThoaiBUS;
 import DAO.MauSacDAO;
 import DAO.PhienBanDienThoaiDAO;
 import DAO.RamDAO;
@@ -24,11 +25,12 @@ import util.Func_class;
  * @author kiman
  */
 public class EditCauHinhDialog extends javax.swing.JDialog {
-    private DienThoaiDTO dt=new DienThoaiDTO();
-    private Func_class func = new Func_class();
-    private PanelDienThoai dtPanel;
-    private ArrayList<PhienBanDienThoaiDTO> listPBDTTemp;
-    private int maDT;
+    DienThoaiDTO dt=new DienThoaiDTO();
+    Func_class func = new Func_class();
+    PanelDienThoai dtPanel;
+    ArrayList<PhienBanDienThoaiDTO> listPBDTTemp;
+    PhienBanDienThoaiBUS pbBus=new PhienBanDienThoaiBUS();
+    int maDT;
     public EditCauHinhDialog(java.awt.Frame parent, boolean modal, int maDT, ArrayList<PhienBanDienThoaiDTO> listPBDTTemp, PanelDienThoai dtPanel) {
         super(parent, modal);
         initComponents();
@@ -37,12 +39,14 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
         this.dtPanel = dtPanel;
         this.listPBDTTemp = listPBDTTemp;
         dt.setMaDT(maDT);
+        khoiTao();
+    }
+    public void khoiTao(){
         fillComboboxRam();
         fillComboboxRom();
         fillComboboxMauSac();
         setUpTable();
     }
-
     public void setUpTable() {
         this.addDatatable();
         func.setUpTable(table_cauHinh);
@@ -124,11 +128,11 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
             }
             // Cập nhật giá trị vào bảng
             rows[index][0] = index;
-            rows[index][1] = String.valueOf(dungLuongRam);
-            rows[index][2] = String.valueOf(dungLuongRom);
+            rows[index][1] = dungLuongRam;
+            rows[index][2] = dungLuongRom;
             rows[index][3] = tenMau;
-            rows[index][4] = pb.getGiaNhap();
-            rows[index][5] = pb.getGiaXuat();
+            rows[index][4] = String.format("%,.0f",pb.getGiaNhap());
+            rows[index][5] = String.format("%,.0f",pb.getGiaXuat());
             index++;
         }
         DefaultTableModel model = new DefaultTableModel(rows, colNames);
@@ -380,13 +384,13 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
         int dungLuongRam=Integer.parseInt(table_cauHinh.getValueAt(vitriRow,1).toString());
         int dungLuongRom=Integer.parseInt(table_cauHinh.getValueAt(vitriRow,2).toString());
         String tenMau=table_cauHinh.getValueAt(vitriRow,3).toString();
-        double giaNhap=Double.parseDouble(table_cauHinh.getValueAt(vitriRow, 4).toString());
-        double giaXuat=Double.parseDouble(table_cauHinh.getValueAt(vitriRow, 5).toString());
+        double giaNhap=Double.parseDouble(table_cauHinh.getValueAt(vitriRow, 4).toString().replaceAll(",",""));
+        double giaXuat=Double.parseDouble(table_cauHinh.getValueAt(vitriRow, 5).toString().replaceAll(",",""));
         cbb_ram.setSelectedItem(String.valueOf(dungLuongRam));
         cbb_rom.setSelectedItem(String.valueOf(dungLuongRom));
         cbb_ms.setSelectedItem(tenMau);
-        jtf_gia_nhap.setText(String.valueOf(giaNhap));
-        jtf_gia_xuat.setText(String.valueOf(giaXuat));
+        jtf_gia_nhap.setText(String.format("%,.0f",giaNhap));
+        jtf_gia_xuat.setText(String.format("%,.0f",giaXuat));
     }//GEN-LAST:event_table_cauHinhMouseClicked
 
     private void btn_add_cauHinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_add_cauHinhMouseClicked
@@ -400,17 +404,38 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
             int maRom = mapRom.getOrDefault(selectedRom, -1);
             HashMap<String, Integer> mapMS = new MauSacDAO().listMapMS();
             int maMau = mapMS.get(cbb_ms.getSelectedItem().toString());
-            double giaNhap = Double.parseDouble(jtf_gia_nhap.getText());
-            double giaXuat = Double.parseDouble(jtf_gia_xuat.getText());
-            PhienBanDienThoaiDTO pb = new PhienBanDienThoaiDTO(dt.getMaDT(), maRam, maRom, maMau, giaNhap, giaXuat);
-            listPBDTTemp.add(pb);
-            new PhienBanDienThoaiDAO().insertPhienBan(pb);
-            resetGia();
-            addDatatable();
-            func.centerTable(table_cauHinh);
+            double giaNhap = Double.parseDouble(jtf_gia_nhap.getText().replaceAll(",", ""));
+            double giaXuat = Double.parseDouble(jtf_gia_xuat.getText().replaceAll(",", ""));
+            if (checkGiaNhapGiaXuat(giaNhap, giaXuat)) {
+                PhienBanDienThoaiDTO pb = new PhienBanDienThoaiDTO(dt.getMaDT(), maRam, maRom, maMau, giaNhap, giaXuat);
+                if (pbBus.checkDupAdd(listPBDTTemp, pb)) {
+                    listPBDTTemp.add(pb);
+                    new PhienBanDienThoaiDAO().insertPhienBan(pb);
+                    resetGia();
+                    addDatatable();
+                    func.centerTable(table_cauHinh);
+                    return;
+                }
+                JOptionPane.showMessageDialog(null, "Cấu hình đã tồn tại", "Error", 0);
+            }
         }
     }//GEN-LAST:event_btn_add_cauHinhMouseClicked
-
+    public boolean checkGiaNhapGiaXuat(double giaNhap, double giaXuat) {
+        boolean check = true;
+        if (giaNhap > giaXuat) {
+            JOptionPane.showMessageDialog(null, "Giá nhập phải lớn hơn giá xuất", "Error", 0);
+            check = false;
+        }
+        if (giaNhap < 0) {
+            JOptionPane.showMessageDialog(null, "Giá nhập không được âm", "Error", 0);
+            check = false;
+        }
+        if (giaXuat < 0) {
+            JOptionPane.showMessageDialog(null, "Giá xuất không được âm", "Error", 0);
+            check = false;
+        }
+        return check;
+    }
     private void btn_update_cauHinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_update_cauHinhMouseClicked
         int vitriRow = table_cauHinh.getSelectedRow();
         if (vitriRow == -1) {
@@ -426,17 +451,23 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
         int maRom = mapRom.getOrDefault(selectedRom, -1);
         HashMap<String, Integer> mapMS = new MauSacDAO().listMapMS();
         int maMau = mapMS.get(cbb_ms.getSelectedItem().toString());
-        double giaNhap = Double.parseDouble(jtf_gia_nhap.getText());
-        double giaXuat = Double.parseDouble(jtf_gia_xuat.getText());
-        phienBanUpdate.setRam(maRam);
-        phienBanUpdate.setRom(maRom);
-        phienBanUpdate.setMausac(maMau);
-        phienBanUpdate.setGiaNhap(giaNhap);
-        phienBanUpdate.setGiaXuat(giaXuat);
-        new PhienBanDienThoaiDAO().updatePhienBan(phienBanUpdate);
-        addDatatable();
-        func.centerTable(table_cauHinh);
-        resetGia();
+        double giaNhap = Double.parseDouble(jtf_gia_nhap.getText().replaceAll(",", ""));
+        double giaXuat = Double.parseDouble(jtf_gia_xuat.getText().replaceAll(",", ""));
+        if (checkGiaNhapGiaXuat(giaNhap, giaXuat)) {
+            PhienBanDienThoaiDTO pbNew = new PhienBanDienThoaiDTO(0, phienBanUpdate.getMaDT(), maRam, maRom, maMau, giaNhap, giaXuat);
+            if (pbBus.checkDupEdit(listPBDTTemp, pbNew)) {
+                phienBanUpdate.setRam(maRam);
+                phienBanUpdate.setRom(maRom);
+                phienBanUpdate.setMausac(maMau);
+                phienBanUpdate.setGiaNhap(giaNhap);
+                phienBanUpdate.setGiaXuat(giaXuat);
+                addDatatable();
+                func.centerTable(table_cauHinh);
+                resetGia();
+                return;
+            }
+            JOptionPane.showMessageDialog(null, "Cấu hình đã tồn tại", "Error", 0);
+        }
     }//GEN-LAST:event_btn_update_cauHinhMouseClicked
 
     private void btn_delete_cauHinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_delete_cauHinhMouseClicked

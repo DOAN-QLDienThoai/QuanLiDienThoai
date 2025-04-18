@@ -18,6 +18,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import org.jdesktop.swingx.prompt.PromptSupport;
 import util.DropShadowBorder;
 import util.Func_class;
 
@@ -26,8 +27,8 @@ import util.Func_class;
  * @author kiman
  */
 public class PanelNhaCungCap extends javax.swing.JPanel {
-    private Func_class func=new Func_class();
-    private NhaCungCapBUS nccBus=new NhaCungCapBUS();
+    Func_class func=new Func_class();
+    NhaCungCapBUS nccBus=new NhaCungCapBUS();
     public PanelNhaCungCap() {
         initComponents();
         khoiTao();
@@ -38,6 +39,12 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
         khoitaoChooserFilterNCC();
         setShadowforJPN();
         setIconForJlabel();
+        setTextHidden();
+    }
+    public void setTextHidden(){
+        PromptSupport.setPrompt("Tìm kiếm nhanh", jtf_find_ncc);
+        PromptSupport.setForeground(Color.GRAY, jtf_find_ncc);
+        PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.SHOW_PROMPT, jtf_find_ncc);
     }
     public void setIconForJlabel() {
         jlabel_add_ncc.setIcon(new FlatSVGIcon("./resources/icon/add.svg", 0.06f));
@@ -70,7 +77,7 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
     //Hàm thêm biểu tượng chuột vào cái jlabel
     public void setCusorPointer() {
         List<JLabel> jlabels =List.of(jlabel_add_ncc
-        ,jlabel_update_ncc,jlabel_delete_ncc,jlabel_chiTiet_ncc,jlabel_refresh_ncc);
+        ,jlabel_update_ncc,jlabel_delete_ncc,jlabel_chiTiet_ncc,jlabel_refresh_ncc,jlabel_look_ncc);
         for(JLabel label : jlabels )
             func.cursorPointer(label);
     }
@@ -356,7 +363,7 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
         String sdt=table_ncc.getValueAt(vitriRow,3).toString();
         String email=table_ncc.getValueAt(vitriRow,4).toString();
         NhaCungCapDTO ncc=new NhaCungCapDTO(tenNCC, address, sdt, email);
-         Window parentWindow = SwingUtilities.getWindowAncestor(this);
+        Window parentWindow = SwingUtilities.getWindowAncestor(this);
         new DetailsNhaCungCapDialog((Frame) parentWindow, true,ncc).setVisible(true);
     }//GEN-LAST:event_jlabel_chiTiet_nccMouseClicked
 
@@ -376,6 +383,7 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
     }//GEN-LAST:event_jlabel_look_nccMouseClicked
 
     private void jlabel_refresh_nccMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_refresh_nccMouseClicked
+        jtf_find_ncc.setText("");
         func.addDataTableNCC(nccBus.listNCC(), table_ncc);
         func.centerTable(table_ncc);
     }//GEN-LAST:event_jlabel_refresh_nccMouseClicked

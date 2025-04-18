@@ -34,6 +34,7 @@ public class AddDienThoaiDialog extends javax.swing.JDialog {
     private PanelDienThoai dtPanel;
     public AddDienThoaiDialog(java.awt.Frame parent, boolean modal,PanelDienThoai dtPanel) {
         super(parent, modal);
+        this.setTitle("Thêm điện thoại");
         initComponents();
         this.dtPanel=dtPanel;
         fillCbbThuongHieu();

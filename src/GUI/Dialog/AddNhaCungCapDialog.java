@@ -206,6 +206,7 @@ public class AddNhaCungCapDialog extends javax.swing.JDialog {
             nccBus.insertNhaCungCap(ncc);
             func.addDataTableNCC(nccBus.listNCC(),nccPanel.getTableNhaCungCap());
             func.centerTable(nccPanel.getTableNhaCungCap());
+            this.dispose();
         }
     }//GEN-LAST:event_btn_add_nccMouseClicked
 

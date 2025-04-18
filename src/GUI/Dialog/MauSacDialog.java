@@ -21,6 +21,7 @@ public class MauSacDialog extends javax.swing.JDialog {
     public MauSacDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setTitle("Màu sắc");
         this.setLocationRelativeTo(null);
         setUpTable();
     }

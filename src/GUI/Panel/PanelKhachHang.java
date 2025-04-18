@@ -8,7 +8,6 @@ import DAO.KhachHangDAO;
 import DTO.KhachHangDTO;
 import GUI.Dialog.AddKhachHangDialog;
 import GUI.Dialog.DetailsKhachHangDialog;
-import GUI.Dialog.DetailsNhaCungCapDialog;
 import GUI.Dialog.EditKhachHangDialog;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;

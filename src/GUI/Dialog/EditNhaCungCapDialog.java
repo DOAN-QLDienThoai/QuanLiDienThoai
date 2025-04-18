@@ -21,6 +21,7 @@ public class EditNhaCungCapDialog extends javax.swing.JDialog {
     private NhaCungCapDTO ncc;
     public EditNhaCungCapDialog(java.awt.Frame parent, boolean modal,NhaCungCapDTO ncc,PanelNhaCungCap nccPanel) {
         super(parent, modal);
+        this.setTitle("Chỉnh sửa nhà cung cấp");
         initComponents();
         this.ncc=ncc;
         this.nccPanel=nccPanel;
@@ -196,6 +197,7 @@ public class EditNhaCungCapDialog extends javax.swing.JDialog {
             nccBus.updateNhaCungCap(ncc);
             func.addDataTableNCC(nccBus.listNCC(),nccPanel.getTableNhaCungCap());
             func.centerTable(nccPanel.getTableNhaCungCap());
+            this.dispose();
         }
     }//GEN-LAST:event_btn_edit_nccMouseClicked
 

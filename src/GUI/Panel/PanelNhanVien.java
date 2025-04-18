@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import org.jdesktop.swingx.prompt.PromptSupport;
 import util.Func_class;
 
 /**
@@ -30,16 +31,26 @@ public class PanelNhanVien extends javax.swing.JPanel {
     private NhanVienBUS nhanvienBUS=new NhanVienBUS();
     public PanelNhanVien() {
         initComponents();
+        khoiTao();
+    }
+    public void khoiTao(){
         khoitaoChooseFilterNV();
         setIconForJLabel();
         setUpTable();
+        setTextHidden();
+        setCusorPointer();
     }
     public JTable getTableNhanVien(){
         return this.table_nv;
     }
+    public void setTextHidden(){
+        PromptSupport.setPrompt("Tìm kiếm nhanh", jtf_find_nv);
+        PromptSupport.setForeground(Color.GRAY, jtf_find_nv);
+        PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.SHOW_PROMPT, jtf_find_nv);
+    }
     public void setCusorPointer() {
         List<JLabel> jlabels =List.of(jlabel_add_nv,jlabel_update_nv,jlabel_delete_nv
-        ,jlabel_nhap_excel_nv,jlabel_chitiet_nv,jlabel_xuat_excel_nv,jlabel_refresh_nv);
+        ,jlabel_nhap_excel_nv,jlabel_chitiet_nv,jlabel_xuat_excel_nv,jlabel_refresh_nv,jlabel_look_nv);
         for(JLabel label : jlabels )
             func.cursorPointer(label);
     }
@@ -375,6 +386,7 @@ public class PanelNhanVien extends javax.swing.JPanel {
     }//GEN-LAST:event_jlabel_look_nvMouseClicked
 
     private void jlabel_refresh_nvMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_refresh_nvMouseClicked
+        jtf_find_nv.setText("");
         func.addDataTableNV(nhanvienBUS.listNV(), table_nv);
         func.centerTable(table_nv);
     }//GEN-LAST:event_jlabel_refresh_nvMouseClicked

@@ -21,6 +21,7 @@ public class HeDieuHanhDialog extends javax.swing.JDialog {
     public HeDieuHanhDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.setTitle("Hệ điều hành");
         this.setLocationRelativeTo(null);
         setUpTable();
     }

@@ -216,6 +216,7 @@ public class AddNhanVienDialog extends javax.swing.JDialog {
             ArrayList<NhanVienDTO> listNV=new NhanVienDAO().listNV();
             func.addDataTableNV(listNV,nvPanel.getTableNhanVien());
             func.centerTable(nvPanel.getTableNhanVien());
+            this.dispose();
         }
     }//GEN-LAST:event_btn_addMouseClicked
 

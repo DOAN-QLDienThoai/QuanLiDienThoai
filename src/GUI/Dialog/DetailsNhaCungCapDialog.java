@@ -15,7 +15,7 @@ public class DetailsNhaCungCapDialog extends javax.swing.JDialog {
     public DetailsNhaCungCapDialog(java.awt.Frame parent, boolean modal,NhaCungCapDTO ncc) {
         super(parent, modal);
         initComponents();
-        this.setTitle("Chi tiết nhà cung cấp");
+        this.setTitle("Xem chi tiết nhà cung cấp");
         this.setLocationRelativeTo(null);
         jtf_name_ncc.setText(ncc.getName());
         jtf_name_ncc.setEditable(false);
