@@ -131,5 +131,44 @@ public class KhachHangDAO {
             e.printStackTrace();
         }
         return ngayThamGia;
+    }   
+    public String layTenKhachHangTheoMa(String maKH) {
+    String tenKH = "";
+    String sql = "SELECT tenKH FROM khachhang WHERE maKH = ?";
+    try (Connection conn = ConnectedDatabase.getConnectedDB();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+        ps.setString(1, maKH);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            tenKH = rs.getString("tenKH");
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+    return tenKH;
+    }
+    public KhachHangDTO layKhachHangTheoTen(String tenKH) {
+    KhachHangDTO kh = null;
+    String sql = "SELECT * FROM KhachHang WHERE tenKH = ?";
+    try (Connection conn = ConnectedDatabase.getConnectedDB();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+
+        ps.setString(1, tenKH);
+        ResultSet rs = ps.executeQuery();
+
+        if (rs.next()) {
+            kh = new KhachHangDTO();
+            kh.setID(rs.getString("maKH"));
+            kh.setName(rs.getString("tenKH"));
+            kh.setAddress(rs.getString("diachiKH"));
+            kh.setSDT(rs.getString("sdtKH"));
+            kh.setNgayThamGia(rs.getDate("ngayThamGia"));
+        }
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return kh;
+}
+
 }

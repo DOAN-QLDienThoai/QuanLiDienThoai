@@ -5,8 +5,18 @@
 package GUI.Panel;
 
 import GUI.GUIFrame.Main;
+import DAO.PhieuXuatDAO;
+import DAO.ChiTietPhieuXuatDAO;
+import DAO.KhachHangDAO;
+import DTO.PhieuXuatDTO;
+import DTO.ChiTietPhieuXuatDTO;
+import GUI.Dialog.DetailPhieuXuatDialog;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import util.Func_class;
+import javax.swing.table.DefaultTableModel;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,12 +25,16 @@ import util.Func_class;
 public class PanelPhieuXuat extends javax.swing.JPanel {
     private Func_class func=new Func_class();
     private Main main;
+    private javax.swing.JTable jTablePhieuXuat;
+
     public PanelPhieuXuat(Main main) {
         initComponents();
         this.main=main;
+        this.jTablePhieuXuat = table_px;
         setCursorPointer();
         setIconForJLabel();
         setUpTable();
+        loadDanhSachPhieuXuat();
     }
     public void setUpTable(){
         func.centerTable(table_px);
@@ -28,21 +42,22 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
     }
     public void setIconForJLabel(){
         jlabel_add_px.setIcon(new FlatSVGIcon("./resources/icon/add.svg", 0.06f));
-        jlabel_update_px.setIcon(new FlatSVGIcon("./resources/icon/update.svg", 0.85f));
+        jlabel_detail_px.setIcon(new FlatSVGIcon("./resources/icon/details.svg", 0.45f));
         jlabel_delete_px.setIcon(new FlatSVGIcon("./resources/icon/delete.svg", 0.75f));
     }
     public void setCursorPointer(){
         func.cursorPointer(jlabel_add_px);
-        func.cursorPointer(jlabel_update_px);
+        func.cursorPointer(jlabel_detail_px);
         func.cursorPointer(jlabel_delete_px);
     }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jpn_px1 = new javax.swing.JPanel();
         jpanel_chucNang_px = new javax.swing.JPanel();
-        jlabel_update_px = new javax.swing.JLabel();
+        jlabel_detail_px = new javax.swing.JLabel();
         jlabel_add_px = new javax.swing.JLabel();
         jlabel_delete_px = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -65,9 +80,9 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
 
         jpn_px1.setPreferredSize(new java.awt.Dimension(1030, 625));
 
-        jlabel_update_px.addMouseListener(new java.awt.event.MouseAdapter() {
+        jlabel_detail_px.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jlabel_update_pxjlabel_update_pxMouseClicked(evt);
+                jlabel_detail_pxjlabel_update_pxMouseClicked(evt);
             }
         });
 
@@ -91,8 +106,8 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
                 .addGap(16, 16, 16)
                 .addComponent(jlabel_add_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jlabel_update_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jlabel_detail_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jlabel_delete_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(19, Short.MAX_VALUE))
         );
@@ -103,7 +118,7 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
                 .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jlabel_add_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlabel_delete_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlabel_update_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jlabel_detail_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
 
@@ -270,9 +285,41 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jlabel_update_pxjlabel_update_pxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_update_pxjlabel_update_pxMouseClicked
+    private void jlabel_detail_pxjlabel_update_pxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_detail_pxjlabel_update_pxMouseClicked
         // TODO add your handling code here:
-    }//GEN-LAST:event_jlabel_update_pxjlabel_update_pxMouseClicked
+         int selectedRow = table_px.getSelectedRow();
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Vui lòng chọn phiếu xuất để xem chi tiết!");
+        return;
+    }
+
+    String maPX = table_px.getValueAt(selectedRow, 1).toString();
+
+    // Tạo dialog
+    DetailPhieuXuatDialog dialog = new DetailPhieuXuatDialog();
+
+    // Lấy dữ liệu phiếu xuất
+    PhieuXuatDTO px = new PhieuXuatDAO().layPhieuXuatTheoMa(maPX);
+    if (px == null) return;
+
+    dialog.setMaPhieu(px.getMaPX());
+    dialog.setNhanVien(px.getMaNV());
+    dialog.setThoiGian(px.getThoiGian());
+    dialog.setKhachHang(new KhachHangDAO().layTenKhachHangTheoMa(px.getMaKH()));
+    // Lấy chi tiết phiếu xuất
+    ArrayList<ChiTietPhieuXuatDTO> dsCT = new ChiTietPhieuXuatDAO().layChiTietTheoMaPhieu(px.getMaPX());
+    dialog.loadChiTiet(dsCT);
+
+    // Show dialog
+    javax.swing.JDialog d = new javax.swing.JDialog();
+    d.setTitle("Chi tiết phiếu xuất");
+    d.setContentPane(dialog);
+    d.pack();
+    d.setLocationRelativeTo(null);
+    d.setModal(true);
+    d.setVisible(true);
+        
+    }//GEN-LAST:event_jlabel_detail_pxjlabel_update_pxMouseClicked
 
     private void jlabel_add_pxjlabel_add_pxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_add_pxjlabel_add_pxMouseClicked
         main.getPanelNhapPX().setVisible(true);
@@ -281,6 +328,19 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
 
     private void jlabel_delete_pxjlabel_delete_pxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_delete_pxjlabel_delete_pxMouseClicked
         // TODO add your handling code here:
+         int selectedRow = table_px.getSelectedRow();
+    if (selectedRow == -1) {
+        JOptionPane.showMessageDialog(this, "Hãy chọn một phiếu xuất để xóa!");
+        return;
+    }
+
+    String maPX = table_px.getValueAt(selectedRow, 1).toString(); // cột mã phiếu xuất
+
+    int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xoá phiếu xuất " + maPX + "?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+    if (confirm == JOptionPane.YES_OPTION) {
+        new DAO.PhieuXuatDAO().xoaPhieuXuatVaCapNhatTonKho(maPX); // Gọi DAO
+        loadDanhSachPhieuXuat(); // Refresh lại bảng sau khi xóa
+    }
     }//GEN-LAST:event_jlabel_delete_pxjlabel_delete_pxMouseClicked
 
     private void reset_pxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reset_pxActionPerformed
@@ -291,6 +351,37 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_search_pxActionPerformed
 
+    public void themPhieuXuatVaoBang(String maPX, String tenKH, String tenNV, String thoiGian, double tongTien) {
+    DefaultTableModel model = (DefaultTableModel) jTablePhieuXuat.getModel();
+    int stt = model.getRowCount() + 1;
+    DecimalFormat df = new DecimalFormat("#,###");
+    model.addRow(new Object[]{
+        stt,
+        maPX,
+        tenKH,
+        tenNV,
+        thoiGian,
+        df.format(tongTien) + "đ"
+    });
+}
+    public void loadDanhSachPhieuXuat() {
+    ArrayList<DTO.PhieuXuatDTO> danhSach = new DAO.PhieuXuatDAO().layTatCaPhieuXuat();
+    DefaultTableModel model = (DefaultTableModel) table_px.getModel();
+    model.setRowCount(0); // Xoá dữ liệu cũ
+
+    int stt = 1;
+    java.text.DecimalFormat df = new java.text.DecimalFormat("#,###");
+    for (DTO.PhieuXuatDTO px : danhSach) {
+        model.addRow(new Object[]{
+            stt++,
+            px.getMaPX(),
+            new DAO.KhachHangDAO().layTenKhachHangTheoMa(px.getMaKH()),
+            px.getMaNV(),
+            px.getThoiGian().toString().replace("T", " "),
+            df.format(px.getTongTien()) + "đ"
+        });
+    }
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbb_search_px;
@@ -307,7 +398,7 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel jlabel_add_px;
     private javax.swing.JLabel jlabel_delete_px;
-    private javax.swing.JLabel jlabel_update_px;
+    private javax.swing.JLabel jlabel_detail_px;
     private javax.swing.JPanel jpanel_chucNang_px;
     private javax.swing.JPanel jpn_px1;
     private javax.swing.JButton reset_px;

@@ -46,7 +46,6 @@ public class PanelPhieuNhap extends javax.swing.JPanel {
     Main main;
     public PanelPhieuNhap(Main main) {
         initComponents();
-        System.out.println("GUI.Panel.PanelPhieuNhap.<init>()");
         khoiTao();
         this.main=main;
     }
@@ -101,6 +100,7 @@ public class PanelPhieuNhap extends javax.swing.JPanel {
             rows[i][0]=listPN.get(i).getMaPhieuNhap();
             int maNCC=listPN.get(i).getNhaCungCap();
             rows[i][1]=nccBus.getTenNCCByID(maNCC);
+            System.out.println(nccBus.getTenNCCByID(maNCC));
             int maNV=listPN.get(i).getNhanVien();
             rows[i][2]=nvBus.getTenNVByID(maNV);
             rows[i][3]=listPN.get(i).getNgayNhap();

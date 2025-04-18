@@ -43,10 +43,11 @@ public class NhaCungCapBUS {
         return check;
     }
     public int getIndexByID(int maNCC){
+        listNCC=nccDao.listNCC();
         int i=0;
         int vitri=-1;
         while(i<listNCC.size()&&vitri==-1){
-            if(listNCC().get(i).getmaNCC()==maNCC){
+            if(listNCC.get(i).getmaNCC()==maNCC){
                 vitri=i;
             }else{
                 i++;
@@ -55,8 +56,10 @@ public class NhaCungCapBUS {
         return vitri;
     }
     public String getTenNCCByID(int maNCC) {
+        listNCC=nccDao.listNCC();
         int index = getIndexByID(maNCC);
         if (index == -1) {
+            System.out.println("sai roi hahahah");
             return null;
         }
         return listNCC.get(index).getName();
