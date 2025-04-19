@@ -302,12 +302,19 @@ public class PanelKhachHang extends javax.swing.JPanel {
         jlabel_delete_kh1 = new javax.swing.JLabel();
         jlabel_detail_kh1 = new javax.swing.JLabel();
         jlabel_excel_kh1 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         reset_kh = new javax.swing.JButton();
         txt_search_kh = new javax.swing.JTextField();
         cbb_search_kh = new javax.swing.JComboBox<>();
         jScrollPane4 = new javax.swing.JScrollPane();
         table_kh = new javax.swing.JTable();
+
+        setBackground(new java.awt.Color(255, 255, 255));
 
         jpanel_chucNang_kh1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -341,21 +348,49 @@ public class PanelKhachHang extends javax.swing.JPanel {
             }
         });
 
+        jLabel1.setText("Thêm");
+
+        jLabel2.setText("Sửa");
+
+        jLabel3.setText("Xóa");
+
+        jLabel4.setText("Chi tiết");
+
+        jLabel5.setText("Xuất Excel");
+
         javax.swing.GroupLayout jpanel_chucNang_kh1Layout = new javax.swing.GroupLayout(jpanel_chucNang_kh1);
         jpanel_chucNang_kh1.setLayout(jpanel_chucNang_kh1Layout);
         jpanel_chucNang_kh1Layout.setHorizontalGroup(
             jpanel_chucNang_kh1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpanel_chucNang_kh1Layout.createSequentialGroup()
+            .addGroup(jpanel_chucNang_kh1Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addComponent(jlabel_add_kh1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jpanel_chucNang_kh1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlabel_add_kh1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jpanel_chucNang_kh1Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel1)))
                 .addGap(18, 18, 18)
-                .addComponent(jlabel_update_kh1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jpanel_chucNang_kh1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlabel_update_kh1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpanel_chucNang_kh1Layout.createSequentialGroup()
+                        .addComponent(jLabel2)
+                        .addGap(16, 16, 16)))
                 .addGap(18, 18, 18)
-                .addComponent(jlabel_delete_kh1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jpanel_chucNang_kh1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlabel_delete_kh1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpanel_chucNang_kh1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(13, 13, 13)))
                 .addGap(18, 18, 18)
-                .addComponent(jlabel_detail_kh1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jpanel_chucNang_kh1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlabel_detail_kh1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jpanel_chucNang_kh1Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel4)))
                 .addGap(18, 18, 18)
-                .addComponent(jlabel_excel_kh1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jpanel_chucNang_kh1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5)
+                    .addComponent(jlabel_excel_kh1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
         jpanel_chucNang_kh1Layout.setVerticalGroup(
@@ -368,7 +403,19 @@ public class PanelKhachHang extends javax.swing.JPanel {
                     .addComponent(jlabel_delete_kh1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlabel_add_kh1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlabel_detail_kh1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(22, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpanel_chucNang_kh1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpanel_chucNang_kh1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jLabel1))
+                    .addGroup(jpanel_chucNang_kh1Layout.createSequentialGroup()
+                        .addGroup(jpanel_chucNang_kh1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addGroup(jpanel_chucNang_kh1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabel5)
+                                .addComponent(jLabel4))
+                            .addComponent(jLabel2))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -427,14 +474,14 @@ public class PanelKhachHang extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(64, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jpanel_chucNang_kh1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 950, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(74, 74, 74))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -445,7 +492,7 @@ public class PanelKhachHang extends javax.swing.JPanel {
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(53, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -571,6 +618,11 @@ public class PanelKhachHang extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbb_search_kh;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel jlabel_add_kh1;

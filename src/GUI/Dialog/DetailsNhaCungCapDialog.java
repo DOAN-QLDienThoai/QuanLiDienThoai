@@ -50,6 +50,7 @@ public class DetailsNhaCungCapDialog extends javax.swing.JDialog {
         jtf_address_ncc = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Chi tiết nhà cung cấp");
 
         jPanel2.setBackground(new java.awt.Color(51, 102, 255));
 

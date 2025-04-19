@@ -42,6 +42,8 @@ public class AddKhachHangDialog extends javax.swing.JDialog {
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Thêm khách hàng");
+        setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 204));
         jPanel1.setForeground(new java.awt.Color(255, 255, 255));

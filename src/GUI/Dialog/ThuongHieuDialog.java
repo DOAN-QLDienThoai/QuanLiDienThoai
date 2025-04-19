@@ -57,6 +57,7 @@ public class ThuongHieuDialog extends javax.swing.JDialog {
         btn_delete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Thương hiệu");
 
         jPanel1.setBackground(new java.awt.Color(102, 204, 255));
 

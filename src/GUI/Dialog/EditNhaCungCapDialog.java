@@ -68,6 +68,7 @@ public class EditNhaCungCapDialog extends javax.swing.JDialog {
         btn_close_ncc = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Chỉnh sửa nhà cung cấp");
 
         jPanel1.setBackground(new java.awt.Color(51, 153, 255));
 

@@ -23,6 +23,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
+import javax.swing.UIManager;
+
 
 
 
@@ -47,6 +49,11 @@ public class Main extends javax.swing.JFrame {
     Border etchedBorder = BorderFactory.createEtchedBorder();
     public Main() {
         initComponents();
+        UIManager.put("Component.arc", 10);
+        UIManager.put("TextComponent.arc", 10);
+        UIManager.put("ComboBox.arc", 10);
+        UIManager.put("Button.arc", 10);
+
         khoiTao();
         main.add(dt);
         main.add(thuoctinh);
@@ -330,7 +337,7 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        main.setPreferredSize(new java.awt.Dimension(1030, 630));
+        main.setPreferredSize(new java.awt.Dimension(1000, 630));
         main.setLayout(new java.awt.CardLayout());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -341,13 +348,13 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jpanel_menu_bottom, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(main, javax.swing.GroupLayout.DEFAULT_SIZE, 752, Short.MAX_VALUE))
+                .addComponent(main, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jpanel_menu_bottom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jpanel_menu_bottom, javax.swing.GroupLayout.DEFAULT_SIZE, 630, Short.MAX_VALUE)
                     .addComponent(main, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -399,7 +406,7 @@ public class Main extends javax.swing.JFrame {
         ncc.setVisible(false);
         khachhang.setVisible(false);
         phieuxuat.setVisible(true);
-        nhapphieuxuat.loadTableSanPham(); // ✅ Gọi lại để load dữ liệu mới
+        nhapphieuxuat.loadTableSanPham();
         nhapphieuxuat.setVisible(false);
         tk.setVisible(false);
         pn.setVisible(false);

@@ -20,8 +20,25 @@ import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.JFileChooser;
-import javax.swing.BorderFactory;
 import java.awt.Dimension;
+import javax.swing.SwingConstants;
+import java.awt.Component;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.Color;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JComboBox;
+import javax.swing.JList;
+import javax.swing.plaf.basic.BasicArrowButton;
+import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.JTextField;
+import util.CustomScrollBarUI;
+import javax.swing.JScrollPane;
+import util.RoundedBorder;
+
 
 
 
@@ -33,6 +50,8 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
     private Func_class func=new Func_class();
     private Main main;
     private javax.swing.JTable jTablePhieuXuat;
+    private int hoverIndex = -1;
+
 
     public PanelPhieuXuat(Main main) {
         initComponents();
@@ -76,17 +95,21 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
             public void changedUpdate(DocumentEvent e) { filterPhieuXuat(); }
         });
     }
-    public void setUpTable(){
+    public void setUpTable() {
         func.centerTable(table_px);
         func.setUpTable(table_px);
+
         // Bật lưới với màu xám nhạt
         table_px.setShowGrid(true);
         table_px.setGridColor(new java.awt.Color(240, 240, 240));
         table_px.setIntercellSpacing(new java.awt.Dimension(0, 1)); // chỉ đường ngang
         table_px.setBorder(null);
         jScrollPane3.setBorder(null);
+        jScrollPane3.getVerticalScrollBar().setPreferredSize(new Dimension(8, Integer.MAX_VALUE));
+        jScrollPane3.getVerticalScrollBar().setUI(new CustomScrollBarUI());
+        jScrollPane3.getHorizontalScrollBar().setUI(new CustomScrollBarUI());
 
-        // Căn giữa header bảng và định dạng đẹp
+        // Header
         javax.swing.table.JTableHeader header = table_px.getTableHeader();
         header.setDefaultRenderer(new javax.swing.table.DefaultTableCellRenderer() {
             @Override
@@ -101,13 +124,39 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
                 return label;
             }
         });
-
         header.setReorderingAllowed(false);
+
+        // 🔽 Thêm đoạn này để dòng được chọn có màu xám
+        javax.swing.table.TableCellRenderer customRenderer = new javax.swing.table.DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(javax.swing.JTable table, Object value,
+                                                           boolean isSelected, boolean hasFocus,
+                                                           int row, int column) {
+                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                label.setHorizontalAlignment(SwingConstants.CENTER);
+                label.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+                if (isSelected) {
+                    label.setBackground(new Color(192, 192, 192)); // Xám khi được chọn
+                    label.setForeground(Color.WHITE);
+                } else {
+                    label.setBackground(Color.WHITE);
+                    label.setForeground(Color.BLACK);
+                }
+                return label;
+            }
+        };
+
+// 🔁 Gán renderer này cho từng cột
+for (int i = 0; i < table_px.getColumnCount(); i++) {
+    table_px.getColumnModel().getColumn(i).setCellRenderer(customRenderer);
+}
+
     }
+
     public void setIconForJLabel(){
         jlabel_add_px.setIcon(new FlatSVGIcon("./resources/icon/add.svg", 0.06f));
         jlabel_detail_px.setIcon(new FlatSVGIcon("./resources/icon/details.svg", 0.45f));
-        jlabel_delete_px.setIcon(new FlatSVGIcon("./resources/icon/delete.svg", 0.75f));
+        jlabel_delete_px.setIcon(new FlatSVGIcon("./resources/icon/huyphieu.svg", 0.06f));
         jlabel_excel_px.setIcon(new FlatSVGIcon("./resources/icon/excel.svg", 0.5f));
     }
     public void setCursorPointer(){
@@ -127,6 +176,10 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
         jlabel_add_px = new javax.swing.JLabel();
         jlabel_delete_px = new javax.swing.JLabel();
         jlabel_excel_px = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         table_px = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
@@ -147,9 +200,13 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
 
+        setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(907, 607));
 
+        jpn_px1.setBackground(new java.awt.Color(255, 255, 255));
         jpn_px1.setPreferredSize(new java.awt.Dimension(1030, 625));
+
+        jpanel_chucNang_px.setBackground(new java.awt.Color(255, 255, 255));
 
         jlabel_detail_px.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -175,20 +232,40 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
             }
         });
 
+        jLabel7.setText("Thêm");
+
+        jLabel8.setText("Chi tiết");
+
+        jLabel9.setText("Hủy phiếu");
+
+        jLabel10.setText("Xuất Excel");
+
         javax.swing.GroupLayout jpanel_chucNang_pxLayout = new javax.swing.GroupLayout(jpanel_chucNang_px);
         jpanel_chucNang_px.setLayout(jpanel_chucNang_pxLayout);
         jpanel_chucNang_pxLayout.setHorizontalGroup(
             jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpanel_chucNang_pxLayout.createSequentialGroup()
+            .addGroup(jpanel_chucNang_pxLayout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addComponent(jlabel_add_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlabel_add_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jpanel_chucNang_pxLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel7)))
                 .addGap(18, 18, 18)
-                .addComponent(jlabel_detail_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jlabel_delete_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jlabel_excel_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlabel_detail_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jpanel_chucNang_pxLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel8)))
+                .addGap(18, 18, 18)
+                .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlabel_delete_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addGap(18, 18, 18)
+                .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlabel_excel_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
         jpanel_chucNang_pxLayout.setVerticalGroup(
             jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -199,7 +276,14 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
                     .addComponent(jlabel_add_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlabel_delete_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlabel_detail_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel9)
+                        .addComponent(jLabel10)
+                        .addComponent(jLabel8))
+                    .addComponent(jLabel7))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         table_px.setModel(new javax.swing.table.DefaultTableModel(
@@ -232,8 +316,10 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
                 .addComponent(jpanel_chucNang_px, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addContainerGap(45, Short.MAX_VALUE))
         );
+
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         reset_px.setText("Làm mới");
         reset_px.addActionListener(new java.awt.event.ActionListener() {
@@ -318,13 +404,9 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
                             .addComponent(jLabel5)
                             .addComponent(jLabel6))
                         .addGap(0, 106, Short.MAX_VALUE))
-                    .addComponent(jTextField1))
+                    .addComponent(jTextField1)
+                    .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
-                    .addContainerGap()))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -347,16 +429,13 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
                 .addComponent(jdatechooser_ngaytaopx2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jLabel3)
-                .addGap(54, 54, 54)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(106, 106, 106))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addContainerGap(318, Short.MAX_VALUE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(166, 166, 166)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -364,7 +443,7 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(546, Short.MAX_VALUE)
+                .addContainerGap(548, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(37, 37, 37))
             .addGroup(layout.createSequentialGroup()
@@ -594,51 +673,161 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Lỗi khi xuất Excel!");
         }
     }
-    private void customComboBoxUI(javax.swing.JComboBox<?> comboBox) {
-        comboBox.setBackground(java.awt.Color.WHITE);
+    private void customComboBoxUI(JComboBox<?> comboBox) {
+        comboBox.setBackground(Color.WHITE);
+        comboBox.setForeground(Color.BLACK);
         comboBox.setFocusable(false);
         comboBox.setOpaque(true);
-        comboBox.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
-        comboBox.setUI(new javax.swing.plaf.basic.BasicComboBoxUI() {
+        comboBox.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        comboBox.setBorder(BorderFactory.createLineBorder(Color.WHITE, 1, true));
+        comboBox.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        comboBox.setRenderer(new DefaultListCellRenderer() {
             @Override
-            protected javax.swing.JButton createArrowButton() {
-                javax.swing.plaf.basic.BasicArrowButton arrow = new javax.swing.plaf.basic.BasicArrowButton(
-                        javax.swing.plaf.basic.BasicArrowButton.SOUTH,
-                        java.awt.Color.WHITE, // background
-                        java.awt.Color.WHITE,  // shadow
-                        java.awt.Color.BLACK, // darkShadow
-                        java.awt.Color.WHITE // highlight
-                );
-                arrow.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, false, false); // không dùng isSelected
+                label.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+                label.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+                if (index == hoverIndex) {
+                    label.setBackground(new Color(192, 192, 192));
+                    label.setForeground(Color.WHITE);
+                } else {
+                    label.setBackground(Color.WHITE);
+                    label.setForeground(Color.BLACK);
+                }
+                return label;
+            }
+        });
+        comboBox.setUI(new BasicComboBoxUI() {
+            @Override
+            protected JButton createArrowButton() {
+                JButton arrow = new BasicArrowButton(SwingConstants.SOUTH,
+                        Color.WHITE, Color.WHITE, Color.BLACK, Color.WHITE);
+                arrow.setBorder(BorderFactory.createEmptyBorder());
                 return arrow;
             }
-        });        
+        });
+        comboBox.setEditable(true);  // Bắt buộc để truy cập editor component
+
+                // Cập nhật màu nền và chữ cho phần hiển thị hiện tại
+        if (comboBox.getEditor().getEditorComponent() instanceof JTextField) {
+            JTextField editor = (JTextField) comboBox.getEditor().getEditorComponent();
+            editor.setBackground(Color.WHITE);
+            editor.setForeground(Color.BLACK);
+            editor.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        }
+        comboBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                comboBox.setBackground(new Color(250, 250, 250));
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                comboBox.setBackground(Color.WHITE);
+            }
+        });
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            Object comp = comboBox.getUI().getAccessibleChild(comboBox, 0);
+            if (comp instanceof javax.swing.plaf.basic.ComboPopup popup) {
+                JScrollPane scrollPane = (JScrollPane) popup.getList().getParent().getParent();
+                scrollPane.getVerticalScrollBar().setUI(new CustomScrollBarUI());
+                scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(8, Integer.MAX_VALUE));
+            }
+        });
+        comboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            @Override public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent e) {
+                JList<?> list = getPopupList(comboBox);
+                if (list != null) {
+                    list.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+                        @Override
+                        public void mouseMoved(java.awt.event.MouseEvent e) {
+                            int index = list.locationToIndex(e.getPoint());
+                            if (index != hoverIndex) {
+                                hoverIndex = index;
+                                list.repaint();
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent e) {}
+            @Override public void popupMenuCanceled(javax.swing.event.PopupMenuEvent e) {}
+        });
+
     }
+
     private void setupUIComponents() {
-        // ComboBox giao diện
-        customComboBoxUI(jComboBox6);
-        customComboBoxUI(jComboBox7);
-        customComboBoxUI(cbb_search_px);
+        RoundedBorder roundedBorder = new RoundedBorder(10); // bo góc 15px
 
-        // Giao diện TextField tìm kiếm
-        txt_search_px.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
-        txt_search_px.setBackground(java.awt.Color.WHITE);
-        txt_search_px.setForeground(java.awt.Color.BLACK);
-        txt_search_px.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200)));
-        txt_search_px.setToolTipText("Nhập nội dung tìm kiếm...");
-        txt_search_px.setText(""); 
+        // ComboBox
+        JComboBox<?>[] comboBoxes = { jComboBox6, jComboBox7, cbb_search_px };
+        for (JComboBox<?> comboBox : comboBoxes) {
+            customComboBoxUI(comboBox); // vẫn gọi hàm custom UI cũ
+            comboBox.setBorder(roundedBorder);
+        }
 
-        // Giao diện Button "Làm mới"
+        // TextFields
+        JTextField[] textFields = { txt_search_px, jTextField1, jTextField2 };
+        for (JTextField tf : textFields) {
+            tf.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+            tf.setBackground(Color.WHITE);
+            tf.setForeground(Color.BLACK);
+            tf.setBorder(roundedBorder);
+        }
         reset_px.setFocusPainted(false);
         reset_px.setContentAreaFilled(false);
         reset_px.setOpaque(true);
-        reset_px.setBackground(java.awt.Color.WHITE);
-        reset_px.setForeground(java.awt.Color.BLACK);
-        reset_px.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(200, 200, 200), 1, true));
-        reset_px.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        reset_px.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
-        reset_px.setIcon(new FlatSVGIcon("./resources/icon/refresh.svg", 0.4f));
+        reset_px.setBackground(Color.WHITE);
+        reset_px.setForeground(Color.BLACK);
+        reset_px.setBorder(roundedBorder);
+        reset_px.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        reset_px.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        reset_px.setIcon(new FlatSVGIcon("./resources/icon/refresh.svg", 0.3f));
         reset_px.setIconTextGap(10);
+        // Bo góc cho JTextField bên trong JDateChooser
+        JTextField dateEditor1 = ((JTextField) jdatechooser_ngaytaopx1.getDateEditor().getUiComponent());
+        dateEditor1.setBorder(new RoundedBorder(15));
+        dateEditor1.setBackground(Color.WHITE);
+        dateEditor1.setOpaque(true);
+        dateEditor1.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+
+        JTextField dateEditor2 = ((JTextField) jdatechooser_ngaytaopx2.getDateEditor().getUiComponent());
+        dateEditor2.setBorder(new RoundedBorder(15));
+        dateEditor2.setBackground(Color.WHITE);
+        dateEditor2.setOpaque(true);
+        dateEditor2.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        for (Component c : jdatechooser_ngaytaopx1.getComponents()) {
+            if (c instanceof JButton btn) {
+                btn.setBackground(new Color(240, 240, 240));
+                btn.setBorder(new RoundedBorder(15));
+                btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                btn.setFocusable(false);
+                btn.setContentAreaFilled(true);
+                btn.setOpaque(true);
+                btn.setIcon(new FlatSVGIcon("./resources/icon/calendar.svg", 0.03f));
+            }
+        }
+        for (Component c : jdatechooser_ngaytaopx2.getComponents()) {
+            if (c instanceof JButton btn) {
+                btn.setBackground(new Color(240, 240, 240));
+                btn.setBorder(new RoundedBorder(15));
+                btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+                btn.setFocusable(false);
+                btn.setContentAreaFilled(true);
+                btn.setOpaque(true);
+                btn.setIcon(new FlatSVGIcon("./resources/icon/calendar.svg", 0.03f));
+            }
+        }
+        jdatechooser_ngaytaopx1.setBorder(BorderFactory.createEmptyBorder());
+        jdatechooser_ngaytaopx2.setBorder(BorderFactory.createEmptyBorder());
+    }
+        private JList<?> getPopupList(JComboBox<?> comboBox) {
+        Object comp = comboBox.getUI().getAccessibleChild(comboBox, 0);
+        if (comp instanceof javax.swing.plaf.basic.ComboPopup popup) {
+            return popup.getList();
+        }
+        return null;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -646,11 +835,15 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> jComboBox6;
     private javax.swing.JComboBox<String> jComboBox7;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane3;

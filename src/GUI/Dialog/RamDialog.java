@@ -59,6 +59,7 @@ public class RamDialog extends javax.swing.JDialog {
         btn_delete = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("RAM");
 
         jPanel1.setBackground(new java.awt.Color(102, 204, 255));
 

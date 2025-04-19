@@ -165,6 +165,7 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
         btn_return = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Chỉnh sửa cấu hình");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 

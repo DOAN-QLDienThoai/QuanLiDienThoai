@@ -130,6 +130,7 @@ public class EditDienThoaiDialog extends javax.swing.JDialog {
         jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Chỉnh sửa điện thoại");
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 255));
 

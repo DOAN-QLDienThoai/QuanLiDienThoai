@@ -119,6 +119,7 @@ public class DetailsDienThoaiDialog extends javax.swing.JDialog {
         btn_view_cauHinh = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Chi tiết điện thoại");
 
         jPanel1.setBackground(new java.awt.Color(102, 102, 255));
 

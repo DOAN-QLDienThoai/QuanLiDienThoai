@@ -171,6 +171,7 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
         btn_return = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Thêm cấu hình điện thoại");
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 

@@ -119,6 +119,7 @@ public class AddDienThoaiDialog extends javax.swing.JDialog {
         btn_exit = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Thêm điện thoại");
 
         jpn_container.setBackground(new java.awt.Color(204, 204, 255));
 
