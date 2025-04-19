@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 18, 2025 at 12:06 PM
+-- Generation Time: Apr 19, 2025 at 02:04 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -57,7 +57,50 @@ INSERT INTO `chitietphieuxuat` (`maPX`, `maPhienBan`, `soluong`, `dongia`) VALUE
 ('PX1', 50, 1, 16500000),
 ('PX1', 49, 1, 15500000),
 ('PX1', 40, 1, 13000000),
-('PX2', 3, 1, 20000000);
+('PX2', 3, 1, 20000000),
+('PX4', 29, 1, 18000000),
+('PX5', 50, 1, 16500000),
+('PX6', 49, 1, 15500000),
+('PX7', 40, 1, 13000000),
+('PX8', 3, 1, 20000000),
+('PX9', 29, 1, 18000000),
+('PX10', 50, 1, 16500000),
+('PX11', 49, 1, 15500000),
+('PX12', 40, 1, 13000000),
+('PX13', 3, 1, 20000000),
+('PX14', 29, 1, 18000000),
+('PX15', 50, 1, 16500000),
+('PX16', 49, 1, 15500000),
+('PX17', 40, 1, 13000000),
+('PX18', 3, 1, 20000000),
+('PX19', 29, 1, 18000000),
+('PX20', 3, 1, 20000000),
+('PX21', 3, 1, 20000000),
+('PX22', 29, 1, 18000000),
+('PX23', 50, 1, 16500000),
+('PX24', 49, 1, 15500000),
+('PX25', 50, 1, 16500000),
+('PX26', 40, 1, 13000000),
+('PX27', 3, 1, 20000000),
+('PX28', 29, 1, 18000000),
+('PX29', 49, 1, 15500000),
+('PX30', 50, 1, 16500000),
+('PX31', 3, 1, 20000000),
+('PX32', 40, 1, 13000000),
+('PX33', 29, 1, 18000000),
+('PX34', 40, 2, 13000000),
+('PX34', 33, 2, 14000000),
+('PX34', 30, 2, 15000000),
+('PX35', 29, 4, 18000000),
+('PX35', 32, 1, 12000000),
+('PX35', 33, 1, 14000000),
+('PX35', 26, 1, 16000000),
+('PX35', 30, 1, 15000000),
+('PX35', 24, 1, 18000000),
+('PX35', 3, 1, 20000000),
+('PX36', 28, 1, 16500000),
+('PX37', 21, 1, 21000000),
+('PX37', 24, 1, 18000000);
 
 -- --------------------------------------------------------
 
@@ -139,9 +182,38 @@ CREATE TABLE `khachhang` (
 INSERT INTO `khachhang` (`maKh`, `tenKh`, `sdtKh`, `diachiKh`, `ngayThamGia`) VALUES
 ('KH001', 'Nguyễn Văn A', '0912345678', '123 Lê Lợi, Quận 1, TP.HCM', '2023-01-15'),
 ('KH002', 'Trần Thị B', '0938765432', '456 Trần Hưng Đạo, Quận 5, TP.HCM', '2023-03-22'),
-('KH003', 'Lê Văn C', '0987123456', '789 Nguyễn Trãi, Quận 10, TP.HCM', '2024-05-09'),
 ('KH004', 'Phạm Thị D', '0905123123', '12 Nguyễn Huệ, Quận 1, TP.HCM', '2022-11-30'),
-('KH005', 'Hồ Văn E', '0909090909', '99 Lý Thường Kiệt, Quận Tân Bình, TP.HCM', '2024-08-01');
+('KH005', 'Hồ Văn E', '0909090909', '99 Lý Thường Kiệt, Quận Tân Bình, TP.HCM', '2024-08-01'),
+('KH006', 'Nguyễn Thị F', '0900000006', '12 Nguyễn Văn Linh, TP.HCM', '2023-06-01'),
+('KH007', 'Lê Văn G', '0900000007', '34 Cộng Hòa, Tân Bình', '2023-06-02'),
+('KH008', 'Trần Thị H', '0900000008', '56 Nguyễn Oanh, Gò Vấp', '2023-06-03'),
+('KH009', 'Phạm Văn I', '0900000009', '78 Nguyễn Kiệm, Phú Nhuận', '2023-06-04'),
+('KH010', 'Vũ Thị K', '0900000010', '90 Trường Chinh, Tân Phú', '2023-06-05'),
+('KH011', 'Hoàng Văn L', '0900000011', '12 Lê Lai, Quận 1', '2023-06-06'),
+('KH012', 'Nguyễn Văn M', '0900000012', '45 Lý Tự Trọng, Quận 1', '2023-06-07'),
+('KH013', 'Trần Văn N', '0900000013', '89 Pasteur, Quận 3', '2023-06-08'),
+('KH014', 'Lê Thị O', '0900000014', '100 Lê Thánh Tôn, Quận 1', '2023-06-09'),
+('KH015', 'Ngô Văn P', '0900000015', '11 Phạm Hùng, Bình Chánh', '2023-06-10'),
+('KH016', 'Bùi Thị Q', '0900000016', '88 Hùng Vương, Quận 5', '2023-06-11'),
+('KH017', 'Đặng Văn R', '0900000017', '21 Lý Thường Kiệt, Tân Bình', '2023-06-12'),
+('KH018', 'Dương Thị S', '0900000018', '33 Trần Hưng Đạo, Quận 5', '2023-06-13'),
+('KH019', 'Võ Văn T', '0900000019', '72 Điện Biên Phủ, Bình Thạnh', '2023-06-14'),
+('KH020', 'Lý Thị U', '0900000020', '64 Nguyễn Văn Đậu, Bình Thạnh', '2023-06-15'),
+('KH021', 'Đỗ Văn V', '0900000021', '18 Võ Văn Ngân, Thủ Đức', '2023-06-16'),
+('KH022', 'Phạm Thị X', '0900000022', '56 Lê Đức Thọ, Gò Vấp', '2023-06-17'),
+('KH023', 'Trịnh Văn Y', '0900000023', '19 Nguyễn Trãi, Quận 1', '2023-06-18'),
+('KH024', 'Lâm Thị Z', '0900000024', '83 Xô Viết Nghệ Tĩnh, Bình Thạnh', '2023-06-19'),
+('KH025', 'Nguyễn Văn A1', '0900000025', '20 Phan Văn Trị, Gò Vấp', '2023-06-20'),
+('KH026', 'Trần Thị B1', '0900000026', '43 Cách Mạng Tháng 8, Q10', '2023-06-21'),
+('KH027', 'Lê Văn C1', '0900000027', '55 Nguyễn Du, Quận 1', '2023-06-22'),
+('KH028', 'Phạm Thị D1', '0900000028', '67 Tôn Đức Thắng, Q1', '2023-06-23'),
+('KH029', 'Hồ Văn E1', '0900000029', '98 Nam Kỳ Khởi Nghĩa, Q3', '2023-06-24'),
+('KH030', 'Ngô Thị F1', '0900000030', '74 Nguyễn Huệ, Quận 1', '2023-06-25'),
+('KH031', 'Đoàn Văn G1', '0900000031', '38 Trần Phú, Q5', '2023-06-26'),
+('KH032', 'Bùi Thị H1', '0900000032', '62 Nguyễn Thiện Thuật, Q3', '2023-06-27'),
+('KH033', 'Đặng Văn I1', '0900000033', '50 Phan Xích Long, Phú Nhuận', '2023-06-28'),
+('KH034', 'Dương Thị K1', '0900000034', '37 Hoàng Diệu, Q4', '2023-06-29'),
+('KH035', 'Võ Văn L1', '0900000035', '14 Nguyễn Đình Chiểu, Q1', '2023-06-30');
 
 -- --------------------------------------------------------
 
@@ -268,23 +340,23 @@ CREATE TABLE `phienbandienthoai` (
 --
 
 INSERT INTO `phienbandienthoai` (`maPhienBan`, `maDT`, `maRam`, `maRom`, `maMau`, `giaNhap`, `giaXuat`, `soLuongTon`) VALUES
-(3, 1, 4, 3, 1, 17000000.00, 20000000.00, 51),
+(3, 1, 4, 3, 1, 17000000.00, 20000000.00, 52),
 (4, 1, 5, 4, 2, 19000000.00, 22000000.00, 31),
 (5, 2, 6, 13, 5, 1000000.00, 2000000.00, 0),
-(20, 3, 1, 4, 1, 18000000.00, 20000000.00, 30),
+(20, 3, 1, 4, 1, 18000000.00, 20000000.00, 31),
 (21, 3, 2, 2, 2, 19000000.00, 21000000.00, 20),
 (22, 4, 2, 4, 3, 20000000.00, 23000000.00, 41),
 (23, 4, 3, 5, 4, 22000000.00, 25000000.00, 30),
-(24, 5, 3, 5, 2, 16000000.00, 18000000.00, 35),
+(24, 5, 3, 5, 2, 16000000.00, 18000000.00, 38),
 (25, 5, 4, 2, 1, 17000000.00, 19000000.00, 20),
-(26, 6, 2, 4, 1, 13000000.00, 16000000.00, 25),
+(26, 6, 2, 4, 1, 13000000.00, 16000000.00, 26),
 (27, 6, 2, 5, 4, 14000000.00, 17000000.00, 25),
-(28, 7, 3, 4, 2, 13500000.00, 16500000.00, 31),
-(29, 8, 1, 3, 5, 14500000.00, 18000000.00, 20),
+(28, 7, 3, 4, 2, 13500000.00, 16500000.00, 32),
+(29, 8, 1, 3, 5, 14500000.00, 18000000.00, 22),
 (30, 9, 2, 4, 3, 12000000.00, 15000000.00, 41),
 (31, 9, 3, 5, 4, 12500000.00, 16000000.00, 30),
 (32, 10, 2, 4, 2, 9500000.00, 12000000.00, 61),
-(33, 11, 3, 4, 1, 11500000.00, 14000000.00, 25),
+(33, 11, 3, 4, 1, 11500000.00, 14000000.00, 44),
 (34, 3, 1, 4, 1, 18000000.00, 20000000.00, 30),
 (35, 3, 2, 2, 2, 19000000.00, 21000000.00, 25),
 (36, 3, 3, 3, 3, 20000000.00, 22000000.00, 20),
@@ -312,7 +384,7 @@ INSERT INTO `phienbandienthoai` (`maPhienBan`, `maDT`, `maRam`, `maRom`, `maMau`
 (58, 11, 2, 2, 3, 9500000.00, 11000000.00, 30),
 (59, 11, 3, 5, 4, 10000000.00, 11500000.00, 25),
 (60, 11, 3, 6, 5, 10500000.00, 12000000.00, 20),
-(61, 12, 2, 2, 1, 14000000.00, 15500000.00, 40),
+(61, 12, 2, 2, 1, 14000000.00, 15500000.00, 80),
 (62, 12, 2, 5, 2, 15000000.00, 16500000.00, 30),
 (63, 12, 3, 6, 3, 16000000.00, 17500000.00, 20);
 
@@ -353,7 +425,42 @@ CREATE TABLE `phieuxuat` (
 INSERT INTO `phieuxuat` (`maPX`, `thoigian`, `maNV`, `maKh`, `tongtien`, `trangthai`) VALUES
 ('PX1', '2025-04-18 16:58:06', 'NV001', 'KH003', 63000000, 1),
 ('PX2', '2025-04-18 16:58:15', 'NV001', 'KH002', 20000000, 1),
-('PX3', '2025-04-18 16:58:24', 'NV001', 'KH001', 23000000, 0);
+('PX3', '2025-04-18 16:58:24', 'NV001', 'KH001', 23000000, 0),
+('PX4', '2025-04-18 17:00:00', 'NV001', 'KH001', 30000000, 1),
+('PX5', '2025-04-18 17:02:00', 'NV001', 'KH002', 18000000, 1),
+('PX6', '2025-04-18 17:03:00', 'NV001', 'KH003', 24500000, 1),
+('PX7', '2025-04-18 17:04:00', 'NV001', 'KH001', 11000000, 1),
+('PX8', '2025-04-18 17:05:00', 'NV001', 'KH002', 36000000, 1),
+('PX9', '2025-04-18 17:06:00', 'NV001', 'KH003', 19800000, 1),
+('PX10', '2025-04-18 17:07:00', 'NV001', 'KH001', 44000000, 1),
+('PX11', '2025-04-18 17:08:00', 'NV001', 'KH002', 21500000, 1),
+('PX12', '2025-04-18 17:09:00', 'NV001', 'KH003', 33000000, 1),
+('PX13', '2025-04-18 17:10:00', 'NV001', 'KH001', 27500000, 1),
+('PX14', '2025-04-18 17:11:00', 'NV001', 'KH002', 31000000, 1),
+('PX15', '2025-04-18 17:12:00', 'NV001', 'KH003', 19500000, 1),
+('PX16', '2025-04-18 17:13:00', 'NV001', 'KH001', 16000000, 1),
+('PX17', '2025-04-18 17:14:00', 'NV001', 'KH002', 43000000, 1),
+('PX18', '2025-04-18 17:15:00', 'NV001', 'KH003', 22500000, 1),
+('PX19', '2025-04-18 17:35:00', 'NV002', 'KH002', 18000000, 1),
+('PX20', '2025-04-18 17:36:00', 'NV002', 'KH002', 20000000, 1),
+('PX21', '2025-04-18 17:37:00', 'NV001', 'KH001', 20000000, 1),
+('PX22', '2025-04-18 17:38:00', 'NV002', 'KH001', 18000000, 1),
+('PX23', '2025-04-18 17:39:00', 'NV001', 'KH003', 16500000, 1),
+('PX24', '2025-04-18 17:40:00', 'NV002', 'KH002', 15500000, 1),
+('PX25', '2025-04-18 17:41:00', 'NV001', 'KH001', 16500000, 1),
+('PX26', '2025-04-18 17:42:00', 'NV002', 'KH003', 13000000, 1),
+('PX27', '2025-04-18 17:43:00', 'NV001', 'KH001', 20000000, 1),
+('PX28', '2025-04-18 17:44:00', 'NV002', 'KH003', 18000000, 1),
+('PX29', '2025-04-18 17:45:00', 'NV001', 'KH002', 15500000, 1),
+('PX30', '2025-04-18 17:46:00', 'NV002', 'KH001', 16500000, 1),
+('PX31', '2025-04-18 17:47:00', 'NV001', 'KH003', 20000000, 1),
+('PX32', '2025-04-18 17:48:00', 'NV002', 'KH001', 13000000, 1),
+('PX33', '2025-04-18 17:49:00', 'NV001', 'KH002', 18000000, 1),
+('PX34', '2025-04-19 14:42:48', 'NV001', 'KH021', 84000000, 1),
+('PX35', '2025-04-19 18:21:31', 'NV001', 'KH022', 167000000, 1),
+('PX36', '2025-04-19 18:29:16', 'NV001', 'KH009', 16500000, 1),
+('PX37', '2025-04-19 18:52:52', 'NV001', 'KH009', 39000000, 1),
+('PX38', '2025-04-19 19:00:03', 'NV001', 'KH004', 1048500000, 0);
 
 -- --------------------------------------------------------
 
@@ -479,172 +586,6 @@ ALTER TABLE `hedieuhanh`
 --
 ALTER TABLE `khachhang`
   ADD PRIMARY KEY (`maKh`);
-
---
--- Indexes for table `mausac`
---
-ALTER TABLE `mausac`
-  ADD PRIMARY KEY (`maMau`);
-
---
--- Indexes for table `nhacungcap`
---
-ALTER TABLE `nhacungcap`
-  ADD PRIMARY KEY (`maNCC`);
-
---
--- Indexes for table `nhanvien`
---
-ALTER TABLE `nhanvien`
-  ADD PRIMARY KEY (`maNV`);
-
---
--- Indexes for table `phienbandienthoai`
---
-ALTER TABLE `phienbandienthoai`
-  ADD PRIMARY KEY (`maPhienBan`),
-  ADD KEY `maDT` (`maDT`),
-  ADD KEY `maRam` (`maRam`),
-  ADD KEY `maRom` (`maRom`),
-  ADD KEY `maMau` (`maMau`);
-
---
--- Indexes for table `phieunhap`
---
-ALTER TABLE `phieunhap`
-  ADD PRIMARY KEY (`maPN`),
-  ADD KEY `maNCC` (`maNCC`),
-  ADD KEY `maNV` (`maNV`);
-
---
--- Indexes for table `phieuxuat`
---
-ALTER TABLE `phieuxuat`
-  ADD PRIMARY KEY (`maPX`),
-  ADD KEY `maNV` (`maNV`),
-  ADD KEY `maKh` (`maKh`);
-
---
--- Indexes for table `ram`
---
-ALTER TABLE `ram`
-  ADD PRIMARY KEY (`maRam`);
-
---
--- Indexes for table `rom`
---
-ALTER TABLE `rom`
-  ADD PRIMARY KEY (`maRom`);
-
---
--- Indexes for table `thuonghieu`
---
-ALTER TABLE `thuonghieu`
-  ADD PRIMARY KEY (`maThuongHieu`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `dienthoai`
---
-ALTER TABLE `dienthoai`
-  MODIFY `maDT` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
-
---
--- AUTO_INCREMENT for table `hedieuhanh`
---
-ALTER TABLE `hedieuhanh`
-  MODIFY `maHDH` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `mausac`
---
-ALTER TABLE `mausac`
-  MODIFY `maMau` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
-
---
--- AUTO_INCREMENT for table `nhacungcap`
---
-ALTER TABLE `nhacungcap`
-  MODIFY `maNCC` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
-
---
--- AUTO_INCREMENT for table `phienbandienthoai`
---
-ALTER TABLE `phienbandienthoai`
-  MODIFY `maPhienBan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
-
---
--- AUTO_INCREMENT for table `phieunhap`
---
-ALTER TABLE `phieunhap`
-  MODIFY `maPN` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `ram`
---
-ALTER TABLE `ram`
-  MODIFY `maRam` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
-
---
--- AUTO_INCREMENT for table `rom`
---
-ALTER TABLE `rom`
-  MODIFY `maRom` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
-
---
--- AUTO_INCREMENT for table `thuonghieu`
---
-ALTER TABLE `thuonghieu`
-  MODIFY `maThuongHieu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
-
---
--- Constraints for dumped tables
---
-
---
--- Constraints for table `chitietphieunhap`
---
-ALTER TABLE `chitietphieunhap`
-  ADD CONSTRAINT `chitietphieunhap_ibfk_1` FOREIGN KEY (`maPN`) REFERENCES `phieunhap` (`maPN`),
-  ADD CONSTRAINT `chitietphieunhap_ibfk_2` FOREIGN KEY (`maPhienBan`) REFERENCES `phienbandienthoai` (`maPhienBan`);
-
---
--- Constraints for table `chitietphieuxuat`
---
-ALTER TABLE `chitietphieuxuat`
-  ADD CONSTRAINT `chitietphieuxuat_ibfk_1` FOREIGN KEY (`maPX`) REFERENCES `phieuxuat` (`maPX`),
-  ADD CONSTRAINT `chitietphieuxuat_ibfk_2` FOREIGN KEY (`maPhienBan`) REFERENCES `phienbandienthoai` (`maPhienBan`);
-
---
--- Constraints for table `dienthoai`
---
-ALTER TABLE `dienthoai`
-  ADD CONSTRAINT `dienthoai_ibfk_1` FOREIGN KEY (`maHDH`) REFERENCES `hedieuhanh` (`maHDH`),
-  ADD CONSTRAINT `dienthoai_ibfk_2` FOREIGN KEY (`maThuongHieu`) REFERENCES `thuonghieu` (`maThuongHieu`);
-
---
--- Constraints for table `phienbandienthoai`
---
-ALTER TABLE `phienbandienthoai`
-  ADD CONSTRAINT `phienbandienthoai_ibfk_1` FOREIGN KEY (`maDT`) REFERENCES `dienthoai` (`maDT`),
-  ADD CONSTRAINT `phienbandienthoai_ibfk_2` FOREIGN KEY (`maRam`) REFERENCES `ram` (`maRam`),
-  ADD CONSTRAINT `phienbandienthoai_ibfk_3` FOREIGN KEY (`maRom`) REFERENCES `rom` (`maRom`),
-  ADD CONSTRAINT `phienbandienthoai_ibfk_4` FOREIGN KEY (`maMau`) REFERENCES `mausac` (`maMau`);
-
---
--- Constraints for table `phieunhap`
---
-ALTER TABLE `phieunhap`
-  ADD CONSTRAINT `phieunhap_ibfk_1` FOREIGN KEY (`maNCC`) REFERENCES `nhacungcap` (`maNCC`);
-
---
--- Constraints for table `phieuxuat`
---
-ALTER TABLE `phieuxuat`
-  ADD CONSTRAINT `phieuxuat_ibfk_2` FOREIGN KEY (`maKh`) REFERENCES `khachhang` (`maKh`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
