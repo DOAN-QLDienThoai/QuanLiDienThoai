@@ -23,14 +23,11 @@ import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollBar;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -45,6 +42,16 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import util.Func_class;
+import util.RoundedBorder;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.plaf.basic.BasicArrowButton;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.SwingConstants;
+import javax.swing.JTextField;
 
 /**
  *
@@ -52,8 +59,12 @@ import util.Func_class;
  */
 public class PanelKhachHang extends javax.swing.JPanel {
     private Func_class func = new Func_class();
+    private int hoverIndex = -1;
+
     public PanelKhachHang() {
         initComponents();
+        setupUIComponents();
+        customComboBoxUI(cbb_search_kh);
         setUpTable();
         setIconForJLabel();
         setCursorPointer();
@@ -63,33 +74,6 @@ public class PanelKhachHang extends javax.swing.JPanel {
         cbb_search_kh.addItem("Tên khách hàng");
         cbb_search_kh.addItem("Địa chỉ");
         cbb_search_kh.addItem("Số điện thoại");
-        // Thiết lập giao diện hiện đại cho ComboBox
-        cbb_search_kh.setBackground(Color.WHITE); // nền trắng
-        cbb_search_kh.setForeground(Color.BLACK); // chữ đen
-        cbb_search_kh.setFocusable(false); // bỏ viền focus xanh 
-        cbb_search_kh.setPreferredSize(new Dimension(130, 35)); // kích thước chuẩn theo ảnh
-        cbb_search_kh.setOpaque(true);
-        cbb_search_kh.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        txt_search_kh.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
-        txt_search_kh.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        txt_search_kh.setPreferredSize(new Dimension(170, 30)); // chỉnh đẹp
-        txt_search_kh.setPreferredSize(new Dimension(300, 100)); // chiều rộng
-        txt_search_kh.setBackground(Color.WHITE); // nền trắng
-        txt_search_kh.setForeground(Color.BLACK); // màu chữ
-        txt_search_kh.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200))); // viền xám nhạt
-        txt_search_kh.setToolTipText("Nhập nội dung tìm kiếm..."); // như placeholder
-        reset_kh.setText("Làm mới");
-        reset_kh.setFocusPainted(false);
-        reset_kh.setContentAreaFilled(false); // Nền trong suốt
-        reset_kh.setOpaque(true);
-        reset_kh.setBackground(Color.WHITE);
-        reset_kh.setForeground(Color.BLACK);
-        reset_kh.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200), 1, true)); // Bo góc + viền xám nhẹ
-        reset_kh.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        reset_kh.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        reset_kh.setIcon(new FlatSVGIcon("./resources/icon/refresh.svg", 0.4f));
-        reset_kh.setIconTextGap(10); // khoảng cách icon và chữ
-
         txt_search_kh.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent e) {
@@ -107,7 +91,6 @@ public class PanelKhachHang extends javax.swing.JPanel {
             }
         });
     }
-
     public JTable getTableKhachHang(){
         return table_kh;
     }
@@ -129,15 +112,16 @@ public class PanelKhachHang extends javax.swing.JPanel {
             });
         }
         table_kh.setModel(model);
+        table_kh.setSelectionBackground(new Color(230, 230, 230));
+        table_kh.setSelectionForeground(Color.BLACK);      
         JScrollBar verticalBar = jScrollPane4.getVerticalScrollBar();
-        verticalBar.setPreferredSize(new Dimension(8, Integer.MAX_VALUE)); // chiều ngang thanh cuộn
+        verticalBar.setPreferredSize(new Dimension(8, Integer.MAX_VALUE)); 
         verticalBar.setUI(new BasicScrollBarUI() {
             @Override
             protected void configureScrollBarColors() {
-                this.thumbColor = new Color(180, 180, 180); // màu thanh kéo
-                this.trackColor = new Color(245, 245, 245); // màu nền thanh cuộn
+                this.thumbColor = new Color(180, 180, 180);
+                this.trackColor = new Color(245, 245, 245); 
             }
-
             @Override
             protected JButton createDecreaseButton(int orientation) {
                 return createZeroButton();
@@ -154,34 +138,28 @@ public class PanelKhachHang extends javax.swing.JPanel {
                 return button;
             }
         });
-
-        // Thiết lập style cho tiêu đề bảng
         JTableHeader header = table_kh.getTableHeader();
         header.setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
                     boolean isSelected, boolean hasFocus, int row, int column) {
-
                 JLabel label = new JLabel(value.toString());
-                label.setFont(label.getFont().deriveFont(Font.BOLD)); // chữ đậm
-                label.setHorizontalAlignment(SwingConstants.CENTER); // căn giữa
+                label.setFont(label.getFont().deriveFont(Font.BOLD)); 
+                label.setHorizontalAlignment(SwingConstants.CENTER);
                 label.setOpaque(true);
-                label.setBackground(new Color(245, 245, 245)); // nền xám nhạt
-                label.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5)); // padding
-
+                label.setBackground(new Color(245, 245, 245)); 
+                label.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5)); 
                 return label;
             }
         });
         func.centerTable(table_kh);
-        // Định dạng hiển thị kiểu "phẳng đẹp" như ảnh bạn gửi:
         table_kh.getTableHeader().setReorderingAllowed(false);
         table_kh.getTableHeader().setResizingAllowed(false);
-
-        table_kh.setShowGrid(true); // bật lưới
-        table_kh.setGridColor(new Color(240, 240, 240)); // màu lưới nhạt (xám sáng)
-        table_kh.setIntercellSpacing(new Dimension(0, 1)); // chỉ có đường ngang
-        table_kh.setBorder(null); // không viền table
-        jScrollPane4.setBorder(null); // không viền khung cuộn
+        table_kh.setShowGrid(true); 
+        table_kh.setGridColor(new Color(240, 240, 240)); 
+        table_kh.setIntercellSpacing(new Dimension(0, 1));
+        table_kh.setBorder(null);
+        jScrollPane4.setBorder(null); 
         System.out.println("Đã cập nhật model table_kh với " + dsKH.size() + " dòng.");
     }
     public void setIconForJLabel() {
@@ -214,14 +192,10 @@ public class PanelKhachHang extends javax.swing.JPanel {
             sorter.setRowFilter(null);
             return;
         }
-
-        // Nếu chọn "Tất cả" thì tìm trong tất cả cột
         if ("Tất cả".equalsIgnoreCase(selectedFilter)) {
             sorter.setRowFilter(RowFilter.regexFilter("(?i)" + keyword));
             return;
         }
-
-        // Còn lại thì lọc theo cột cụ thể
         int columnIndex = switch (selectedFilter) {
             case "Mã khách hàng" ->
                 0;
@@ -234,7 +208,6 @@ public class PanelKhachHang extends javax.swing.JPanel {
             default ->
                 -1;
         };
-
         if (columnIndex >= 0) {
             sorter.setRowFilter(RowFilter.regexFilter("(?i)" + keyword, columnIndex));
         } else {
@@ -245,12 +218,10 @@ public class PanelKhachHang extends javax.swing.JPanel {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Chọn nơi lưu file Excel");
         fileChooser.setSelectedFile(new File("DanhSachKhachHang.xlsx"));
-
         int userSelection = fileChooser.showSaveDialog(this);
         if (userSelection != JFileChooser.APPROVE_OPTION) {
             return;
         }
-
         File fileToSave = fileChooser.getSelectedFile();
         String filePath = fileToSave.getAbsolutePath();
         if (!filePath.endsWith(".xlsx")) {
@@ -259,15 +230,11 @@ public class PanelKhachHang extends javax.swing.JPanel {
         System.out.println("Đường dẫn lưu file: " + fileToSave.getAbsolutePath());
         try (Workbook workbook = new XSSFWorkbook()) {
             Sheet sheet = workbook.createSheet("KhachHang");
-
-            // Header
             Row header = sheet.createRow(0);
             for (int i = 0; i < table_kh.getColumnCount(); i++) {
                 Cell cell = header.createCell(i);
                 cell.setCellValue(table_kh.getColumnName(i));
             }
-
-            // Data
             for (int row = 0; row < table_kh.getRowCount(); row++) {
                 Row excelRow = sheet.createRow(row + 1);
                 for (int col = 0; col < table_kh.getColumnCount(); col++) {
@@ -276,16 +243,12 @@ public class PanelKhachHang extends javax.swing.JPanel {
                     cell.setCellValue(value != null ? value.toString() : "");
                 }
             }
-
-            // Auto resize
             for (int i = 0; i < table_kh.getColumnCount(); i++) {
                 sheet.autoSizeColumn(i);
             }
-
             FileOutputStream fos = new FileOutputStream(fileToSave);
             workbook.write(fos);
             fos.close();
-
             JOptionPane.showMessageDialog(this, "Xuất Excel thành công!");
         } catch (Exception e) {
             e.printStackTrace();
@@ -375,13 +338,11 @@ public class PanelKhachHang extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpanel_chucNang_kh1Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addGap(16, 16, 16)))
-                .addGap(18, 18, 18)
                 .addGroup(jpanel_chucNang_kh1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jlabel_delete_kh1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpanel_chucNang_kh1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(13, 13, 13)))
-                .addGap(18, 18, 18)
                 .addGroup(jpanel_chucNang_kh1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jlabel_detail_kh1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jpanel_chucNang_kh1Layout.createSequentialGroup()
@@ -440,9 +401,9 @@ public class PanelKhachHang extends javax.swing.JPanel {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addGap(21, 21, 21)
                 .addComponent(cbb_search_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txt_search_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(reset_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -450,13 +411,13 @@ public class PanelKhachHang extends javax.swing.JPanel {
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(27, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cbb_search_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(reset_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_search_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(reset_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(26, Short.MAX_VALUE))
+                    .addComponent(cbb_search_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(15, 15, 15))
         );
 
         table_kh.setModel(new javax.swing.table.DefaultTableModel(
@@ -467,6 +428,7 @@ public class PanelKhachHang extends javax.swing.JPanel {
                 "Mã khách hàng", "Tên khách hàng", "Địa chỉ", "Số điện thoại"
             }
         ));
+        table_kh.setPreferredSize(new java.awt.Dimension(962, 591));
         jScrollPane4.setViewportView(table_kh);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -552,7 +514,7 @@ public class PanelKhachHang extends javax.swing.JPanel {
             String ngayStr = table_kh.getModel().getValueAt(modelIndex, 4).toString();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             java.util.Date utilDate = sdf.parse(ngayStr);
-            java.sql.Date ngayThamGia = new java.sql.Date(utilDate.getTime()); // ✅ Convert here
+            java.sql.Date ngayThamGia = new java.sql.Date(utilDate.getTime()); 
             KhachHangDTO kh = new KhachHangDTO(id, name, address, sdt, ngayThamGia);
             Window parentWindow = SwingUtilities.getWindowAncestor(this);
         new DetailsKhachHangDialog((Frame) parentWindow, true,kh).setVisible(true);
@@ -614,7 +576,112 @@ public class PanelKhachHang extends javax.swing.JPanel {
     private void txt_search_khActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_search_khActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_search_khActionPerformed
+    private void customComboBoxUI(JComboBox<?> comboBox) {
+    comboBox.setBackground(Color.WHITE);
+    comboBox.setForeground(Color.BLACK);
+    comboBox.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+    comboBox.setOpaque(false);
+comboBox.setEditable(true);  
 
+if (comboBox.getEditor().getEditorComponent() instanceof JTextField editor) {
+    editor.setBackground(Color.WHITE);
+    editor.setForeground(Color.BLACK);
+    editor.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+}
+
+    comboBox.setBorder(new RoundedBorder(10));
+    comboBox.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+    comboBox.setRenderer(new DefaultListCellRenderer() {
+        @Override
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+            label.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+            label.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+            label.setOpaque(true);
+            if (index == hoverIndex) {
+    label.setBackground(new Color(192, 192, 192));
+    label.setForeground(Color.WHITE);
+} else {
+    label.setBackground(Color.WHITE);
+    label.setForeground(Color.BLACK);
+}
+
+            label.setForeground(Color.BLACK);
+            return label;
+        }
+    });
+
+    comboBox.setUI(new BasicComboBoxUI() {
+        @Override
+        protected JButton createArrowButton() {
+            JButton arrow = new BasicArrowButton(SwingConstants.SOUTH);
+            arrow.setBorder(BorderFactory.createEmptyBorder());
+            arrow.setBackground(Color.WHITE);
+            return arrow;
+        }
+    });
+    comboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+    @Override public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent e) {
+        JList<?> list = getPopupList(comboBox);
+        if (list != null) {
+            list.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+                @Override
+                public void mouseMoved(java.awt.event.MouseEvent e) {
+                    int index = list.locationToIndex(e.getPoint());
+                    if (index != hoverIndex) {
+                        hoverIndex = index;
+                        list.repaint();
+                    }
+                }
+            });
+        }
+    }
+    @Override public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent e) {}
+    @Override public void popupMenuCanceled(javax.swing.event.PopupMenuEvent e) {}
+});
+
+}
+
+    private void setupUIComponents() {
+    RoundedBorder roundedBorder = new RoundedBorder(10);
+
+    // ComboBox bo góc
+    JComboBox<?>[] comboBoxes = { cbb_search_kh };
+    for (JComboBox<?> comboBox : comboBoxes) {
+        customComboBoxUI(comboBox);
+        comboBox.setBorder(roundedBorder);
+    }
+
+    // TextField bo góc
+    JTextField[] textFields = { txt_search_kh };
+    for (JTextField tf : textFields) {
+        tf.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        tf.setBackground(Color.WHITE);
+        tf.setForeground(Color.BLACK);
+        tf.setBorder(roundedBorder);
+    }
+    
+    // Button "Làm mới" bo góc
+    reset_kh.setFocusPainted(false);
+    reset_kh.setContentAreaFilled(false);
+    reset_kh.setOpaque(true);
+    reset_kh.setBackground(Color.WHITE);
+    reset_kh.setForeground(Color.BLACK);
+    reset_kh.setBorder(roundedBorder);
+    reset_kh.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    reset_kh.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+    reset_kh.setIcon(new FlatSVGIcon("./resources/icon/refresh.svg", 0.3f));
+    reset_kh.setIconTextGap(10);
+}
+
+    private JList<?> getPopupList(JComboBox<?> comboBox) {
+    Object comp = comboBox.getUI().getAccessibleChild(comboBox, 0);
+    if (comp instanceof javax.swing.plaf.basic.ComboPopup popup) {
+        return popup.getList();
+    }
+    return null;
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbb_search_kh;

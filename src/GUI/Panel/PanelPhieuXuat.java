@@ -21,14 +21,9 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.JFileChooser;
 import java.awt.Dimension;
-import javax.swing.SwingConstants;
 import java.awt.Component;
 import java.awt.Cursor;
-import java.awt.Font;
-import java.awt.Color;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.plaf.basic.BasicArrowButton;
@@ -38,6 +33,14 @@ import javax.swing.JTextField;
 import util.CustomScrollBarUI;
 import javax.swing.JScrollPane;
 import util.RoundedBorder;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+import javax.swing.JLabel;
+import javax.swing.BorderFactory;
+import java.awt.Color;
+import javax.swing.JTable;
 
 
 
@@ -96,47 +99,48 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
         });
     }
     public void setUpTable() {
-        func.centerTable(table_px);
-        func.setUpTable(table_px);
-
-        // Bật lưới với màu xám nhạt
+        DefaultTableModel model = new DefaultTableModel(
+            new Object[][]{},
+            new String[] { "STT", "Mã phiếu xuất", "Khách hàng", "Nhân viên nhập", "Thời gian", "Tổng tiền" }
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        table_px.setModel(model);
         table_px.setShowGrid(true);
         table_px.setGridColor(new java.awt.Color(240, 240, 240));
-        table_px.setIntercellSpacing(new java.awt.Dimension(0, 1)); // chỉ đường ngang
+        table_px.setIntercellSpacing(new java.awt.Dimension(0, 1));
         table_px.setBorder(null);
         jScrollPane3.setBorder(null);
         jScrollPane3.getVerticalScrollBar().setPreferredSize(new Dimension(8, Integer.MAX_VALUE));
         jScrollPane3.getVerticalScrollBar().setUI(new CustomScrollBarUI());
         jScrollPane3.getHorizontalScrollBar().setUI(new CustomScrollBarUI());
-
-        // Header
-        javax.swing.table.JTableHeader header = table_px.getTableHeader();
-        header.setDefaultRenderer(new javax.swing.table.DefaultTableCellRenderer() {
+        JTableHeader header = table_px.getTableHeader();
+        header.setDefaultRenderer(new DefaultTableCellRenderer() {
             @Override
-            public java.awt.Component getTableCellRendererComponent(javax.swing.JTable table, Object value,
-                    boolean isSelected, boolean hasFocus, int row, int column) {
-                javax.swing.JLabel label = new javax.swing.JLabel(value.toString());
-                label.setFont(label.getFont().deriveFont(java.awt.Font.BOLD));
-                label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                                                           boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel label = new JLabel(value.toString());
+                label.setFont(label.getFont().deriveFont(Font.BOLD));
+                label.setHorizontalAlignment(SwingConstants.CENTER);
                 label.setOpaque(true);
-                label.setBackground(new java.awt.Color(245, 245, 245)); // nền xám nhạt
-                label.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 5, 10, 5)); // padding
+                label.setBackground(new Color(245, 245, 245));
+                label.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
                 return label;
             }
         });
         header.setReorderingAllowed(false);
-
-        // 🔽 Thêm đoạn này để dòng được chọn có màu xám
-        javax.swing.table.TableCellRenderer customRenderer = new javax.swing.table.DefaultTableCellRenderer() {
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer() {
             @Override
-            public Component getTableCellRendererComponent(javax.swing.JTable table, Object value,
-                                                           boolean isSelected, boolean hasFocus,
-                                                           int row, int column) {
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                                                           boolean isSelected, boolean hasFocus, int row, int column) {
                 JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 label.setHorizontalAlignment(SwingConstants.CENTER);
                 label.setFont(new Font("Segoe UI", Font.PLAIN, 13));
                 if (isSelected) {
-                    label.setBackground(new Color(192, 192, 192)); // Xám khi được chọn
+                    label.setBackground(new Color(192, 192, 192));
                     label.setForeground(Color.WHITE);
                 } else {
                     label.setBackground(Color.WHITE);
@@ -145,14 +149,12 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
                 return label;
             }
         };
-
-// 🔁 Gán renderer này cho từng cột
-for (int i = 0; i < table_px.getColumnCount(); i++) {
-    table_px.getColumnModel().getColumn(i).setCellRenderer(customRenderer);
-}
-
+        for (int i = 0; i < table_px.getColumnCount(); i++) {
+            table_px.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+        table_px.setShowVerticalLines(false); 
+        table_px.setShowHorizontalLines(true); 
     }
-
     public void setIconForJLabel(){
         jlabel_add_px.setIcon(new FlatSVGIcon("./resources/icon/add.svg", 0.06f));
         jlabel_detail_px.setIcon(new FlatSVGIcon("./resources/icon/details.svg", 0.45f));
@@ -165,7 +167,6 @@ for (int i = 0; i < table_px.getColumnCount(); i++) {
         func.cursorPointer(jlabel_delete_px);
         func.cursorPointer(jlabel_excel_px);
     }
-    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -180,8 +181,6 @@ for (int i = 0; i < table_px.getColumnCount(); i++) {
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        table_px = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         reset_px = new javax.swing.JButton();
         txt_search_px = new javax.swing.JTextField();
@@ -199,6 +198,8 @@ for (int i = 0; i < table_px.getColumnCount(); i++) {
         jdatechooser_ngaytaopx1 = new com.toedter.calendar.JDateChooser();
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        table_px = new javax.swing.JTable();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(907, 607));
@@ -286,16 +287,6 @@ for (int i = 0; i < table_px.getColumnCount(); i++) {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        table_px.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "STT", "Mã phiếu xuất", "Khách hàng", "Nhân viên nhập", "Thời gian", "Tổng tiền"
-            }
-        ));
-        jScrollPane3.setViewportView(table_px);
-
         javax.swing.GroupLayout jpn_px1Layout = new javax.swing.GroupLayout(jpn_px1);
         jpn_px1.setLayout(jpn_px1Layout);
         jpn_px1Layout.setHorizontalGroup(
@@ -303,20 +294,14 @@ for (int i = 0; i < table_px.getColumnCount(); i++) {
             .addGroup(jpn_px1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jpanel_chucNang_px, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpn_px1Layout.createSequentialGroup()
-                .addContainerGap(188, Short.MAX_VALUE)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 754, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16))
+                .addContainerGap(646, Short.MAX_VALUE))
         );
         jpn_px1Layout.setVerticalGroup(
             jpn_px1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpn_px1Layout.createSequentialGroup()
                 .addGap(13, 13, 13)
                 .addComponent(jpanel_chucNang_px, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(45, Short.MAX_VALUE))
+                .addContainerGap(551, Short.MAX_VALUE))
         );
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
@@ -341,7 +326,7 @@ for (int i = 0; i < table_px.getColumnCount(); i++) {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(27, Short.MAX_VALUE)
                 .addComponent(cbb_search_px, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txt_search_px, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -438,22 +423,34 @@ for (int i = 0; i < table_px.getColumnCount(); i++) {
                 .addGap(106, 106, 106))
         );
 
+        table_px.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "STT", "Mã phiếu xuất", "Khách hàng", "Nhân viên nhập", "Thời gian", "Tổng tiền"
+            }
+        ));
+        jScrollPane3.setViewportView(table_px);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(548, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37))
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 754, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(34, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap(30, Short.MAX_VALUE)
                     .addComponent(jpn_px1, javax.swing.GroupLayout.PREFERRED_SIZE, 958, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addContainerGap(30, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -461,8 +458,10 @@ for (int i = 0; i < table_px.getColumnCount(); i++) {
                 .addGap(19, 19, 19)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(3, 3, 3)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(54, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -473,28 +472,28 @@ for (int i = 0; i < table_px.getColumnCount(); i++) {
 
     private void jlabel_detail_pxjlabel_update_pxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_detail_pxjlabel_update_pxMouseClicked
         // TODO add your handling code here:
-         int selectedRow = table_px.getSelectedRow();
-    if (selectedRow == -1) {
-        JOptionPane.showMessageDialog(this, "Vui lòng chọn phiếu xuất để xem chi tiết!");
-        return;
-    }
-    String maPX = table_px.getValueAt(selectedRow, 1).toString();
-    DetailPhieuXuatDialog dialog = new DetailPhieuXuatDialog();
-    PhieuXuatDTO px = new PhieuXuatDAO().layPhieuXuatTheoMa(maPX);
-    if (px == null) return;
-    dialog.setMaPhieu(px.getMaPX());
-    dialog.setNhanVien(px.getMaNV());
-    dialog.setThoiGian(px.getThoiGian());
-    dialog.setKhachHang(new KhachHangDAO().layTenKhachHangTheoMa(px.getMaKH()));
-    ArrayList<ChiTietPhieuXuatDTO> dsCT = new ChiTietPhieuXuatDAO().layChiTietTheoMaPhieu(px.getMaPX());
-    dialog.loadChiTiet(dsCT);
-    javax.swing.JDialog d = new javax.swing.JDialog();
-    d.setTitle("Chi tiết phiếu xuất");
-    d.setContentPane(dialog);
-    d.pack();
-    d.setLocationRelativeTo(null);
-    d.setModal(true);
-    d.setVisible(true);
+        int selectedRow = table_px.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn phiếu xuất để xem chi tiết!");
+            return;
+        }
+        String maPX = table_px.getValueAt(selectedRow, 1).toString();
+        DetailPhieuXuatDialog dialog = new DetailPhieuXuatDialog();
+        PhieuXuatDTO px = new PhieuXuatDAO().layPhieuXuatTheoMa(maPX);
+        if (px == null) return;
+        dialog.setMaPhieu(px.getMaPX());
+        dialog.setNhanVien(px.getMaNV());
+        dialog.setThoiGian(px.getThoiGian());
+        dialog.setKhachHang(new KhachHangDAO().layTenKhachHangTheoMa(px.getMaKH()));
+        ArrayList<ChiTietPhieuXuatDTO> dsCT = new ChiTietPhieuXuatDAO().layChiTietTheoMaPhieu(px.getMaPX());
+        dialog.loadChiTiet(dsCT);
+        javax.swing.JDialog d = new javax.swing.JDialog();
+        d.setTitle("Chi tiết phiếu xuất");
+        d.setContentPane(dialog);
+        d.pack();
+        d.setLocationRelativeTo(null);
+        d.setModal(true);
+        d.setVisible(true);
     }//GEN-LAST:event_jlabel_detail_pxjlabel_update_pxMouseClicked
 
     private void jlabel_add_pxjlabel_add_pxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_add_pxjlabel_add_pxMouseClicked
@@ -504,17 +503,17 @@ for (int i = 0; i < table_px.getColumnCount(); i++) {
 
     private void jlabel_delete_pxjlabel_delete_pxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_delete_pxjlabel_delete_pxMouseClicked
         // TODO add your handling code here:
-         int selectedRow = table_px.getSelectedRow();
-    if (selectedRow == -1) {
-        JOptionPane.showMessageDialog(this, "Hãy chọn một phiếu xuất để xóa!");
-        return;
-    }
-    String maPX = table_px.getValueAt(selectedRow, 1).toString(); 
-    int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xoá phiếu xuất " + maPX + "?", "Xác nhận", JOptionPane.YES_NO_OPTION);
-    if (confirm == JOptionPane.YES_OPTION) {
-        new DAO.PhieuXuatDAO().xoaPhieuXuatVaCapNhatTonKho(maPX); 
-        loadDanhSachPhieuXuat(); 
-    }
+        int selectedRow = table_px.getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this, "Hãy chọn một phiếu xuất để xóa!");
+            return;
+        }
+        String maPX = table_px.getValueAt(selectedRow, 1).toString(); 
+        int confirm = JOptionPane.showConfirmDialog(this, "Bạn có chắc chắn muốn xoá phiếu xuất " + maPX + "?", "Xác nhận", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            new DAO.PhieuXuatDAO().xoaPhieuXuatVaCapNhatTonKho(maPX); 
+            loadDanhSachPhieuXuat(); 
+        }
     }//GEN-LAST:event_jlabel_delete_pxjlabel_delete_pxMouseClicked
 
     private void reset_pxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reset_pxActionPerformed
@@ -561,8 +560,7 @@ for (int i = 0; i < table_px.getColumnCount(); i++) {
     public void loadDanhSachPhieuXuat() {
         ArrayList<DTO.PhieuXuatDTO> danhSach = new DAO.PhieuXuatDAO().layTatCaPhieuXuat();
         DefaultTableModel model = (DefaultTableModel) table_px.getModel();
-        model.setRowCount(0); // Xoá dữ liệu cũ
-
+        model.setRowCount(0); 
         int stt = 1;
         java.text.DecimalFormat df = new java.text.DecimalFormat("#,###");
         for (DTO.PhieuXuatDTO px : danhSach) {
@@ -641,19 +639,13 @@ for (int i = 0; i < table_px.getColumnCount(); i++) {
             fileChooser.setSelectedFile(new java.io.File("phieuxuat.xlsx"));
             int result = fileChooser.showSaveDialog(this);
             if (result != JFileChooser.APPROVE_OPTION) return;
-
             String filePath = fileChooser.getSelectedFile().getAbsolutePath();
-
             org.apache.poi.ss.usermodel.Workbook workbook = new org.apache.poi.xssf.usermodel.XSSFWorkbook();
             org.apache.poi.ss.usermodel.Sheet sheet = workbook.createSheet("Phiếu xuất");
-
-            // Tiêu đề
             org.apache.poi.ss.usermodel.Row header = sheet.createRow(0);
             for (int i = 0; i < table_px.getColumnCount(); i++) {
                 header.createCell(i).setCellValue(table_px.getColumnName(i));
             }
-
-            // Dữ liệu
             for (int i = 0; i < table_px.getRowCount(); i++) {
                 org.apache.poi.ss.usermodel.Row row = sheet.createRow(i + 1);
                 for (int j = 0; j < table_px.getColumnCount(); j++) {
@@ -661,7 +653,6 @@ for (int i = 0; i < table_px.getColumnCount(); i++) {
                     row.createCell(j).setCellValue(value != null ? value.toString() : "");
                 }
             }
-
             try (java.io.FileOutputStream out = new java.io.FileOutputStream(filePath)) {
                 workbook.write(out);
             }
@@ -706,9 +697,7 @@ for (int i = 0; i < table_px.getColumnCount(); i++) {
                 return arrow;
             }
         });
-        comboBox.setEditable(true);  // Bắt buộc để truy cập editor component
-
-                // Cập nhật màu nền và chữ cho phần hiển thị hiện tại
+        comboBox.setEditable(true);  
         if (comboBox.getEditor().getEditorComponent() instanceof JTextField) {
             JTextField editor = (JTextField) comboBox.getEditor().getEditorComponent();
             editor.setBackground(Color.WHITE);
@@ -720,7 +709,6 @@ for (int i = 0; i < table_px.getColumnCount(); i++) {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 comboBox.setBackground(new Color(250, 250, 250));
             }
-
             @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 comboBox.setBackground(Color.WHITE);
@@ -750,24 +738,17 @@ for (int i = 0; i < table_px.getColumnCount(); i++) {
                     });
                 }
             }
-
             @Override public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent e) {}
             @Override public void popupMenuCanceled(javax.swing.event.PopupMenuEvent e) {}
         });
-
     }
-
     private void setupUIComponents() {
-        RoundedBorder roundedBorder = new RoundedBorder(10); // bo góc 15px
-
-        // ComboBox
+        RoundedBorder roundedBorder = new RoundedBorder(10);
         JComboBox<?>[] comboBoxes = { jComboBox6, jComboBox7, cbb_search_px };
         for (JComboBox<?> comboBox : comboBoxes) {
-            customComboBoxUI(comboBox); // vẫn gọi hàm custom UI cũ
+            customComboBoxUI(comboBox); 
             comboBox.setBorder(roundedBorder);
         }
-
-        // TextFields
         JTextField[] textFields = { txt_search_px, jTextField1, jTextField2 };
         for (JTextField tf : textFields) {
             tf.setFont(new Font("Segoe UI", Font.PLAIN, 14));
@@ -785,13 +766,11 @@ for (int i = 0; i < table_px.getColumnCount(); i++) {
         reset_px.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         reset_px.setIcon(new FlatSVGIcon("./resources/icon/refresh.svg", 0.3f));
         reset_px.setIconTextGap(10);
-        // Bo góc cho JTextField bên trong JDateChooser
         JTextField dateEditor1 = ((JTextField) jdatechooser_ngaytaopx1.getDateEditor().getUiComponent());
         dateEditor1.setBorder(new RoundedBorder(15));
         dateEditor1.setBackground(Color.WHITE);
         dateEditor1.setOpaque(true);
         dateEditor1.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-
         JTextField dateEditor2 = ((JTextField) jdatechooser_ngaytaopx2.getDateEditor().getUiComponent());
         dateEditor2.setBorder(new RoundedBorder(15));
         dateEditor2.setBackground(Color.WHITE);
@@ -829,7 +808,6 @@ for (int i = 0; i < table_px.getColumnCount(); i++) {
         }
         return null;
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox<String> cbb_search_px;
     private javax.swing.JComboBox<String> jComboBox6;
