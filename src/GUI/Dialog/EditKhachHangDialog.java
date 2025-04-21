@@ -164,20 +164,22 @@ public class EditKhachHangDialog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Vui lòng nhập địa chỉ khách hàng");
             return;
         }
-        KhachHangDTO kh = new KhachHangDTO();
-        kh.setID(kh.getID());
-        kh.setName(this.txtTenKh.getText());
-        kh.setAddress(this.txtDiachiKh.getText());
+        KhachHangDTO khag = new KhachHangDTO();
+        
+        khag.setID(kh.getID());
+       
+        khag.setName(this.txtTenKh.getText());
+        khag.setAddress(this.txtDiachiKh.getText());
         String sdt = txtSdtKh.getText();
         if (sdt.length() != 10 || sdt.charAt(0) != '0') {
             JOptionPane.showMessageDialog(null, "Số điện thoại không hợp lệ", "Erorr", 0);
             return;
         } else {
-            kh.setSDT(sdt);
+            khag.setSDT(sdt);
         }
         KhachHangDAO khDAO = new KhachHangDAO();
         try {
-            khDAO.updateKhachHang(kh);
+            khDAO.updateKhachHang(khag);
             System.out.println("Đã gọi updateKhachHang()");
             khPanel.addDataTableKhachHang();
             System.out.println("Đã gọi addDataTableKhachHang()");

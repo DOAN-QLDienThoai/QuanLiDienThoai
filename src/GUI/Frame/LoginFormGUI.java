@@ -1,5 +1,6 @@
 package GUI.Frame;
 
+import BUS.NhanVienBUS;
 import DAO.TaiKhoanDAO;
 import DTO.TaiKhoanDTO;
 import javax.swing.JOptionPane;
@@ -15,6 +16,7 @@ import javax.swing.JOptionPane;
  * @author THANH HIEU
  */
 public class LoginFormGUI extends javax.swing.JFrame {
+    NhanVienBUS nvBus=new NhanVienBUS();
     public LoginFormGUI() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -178,7 +180,8 @@ public class LoginFormGUI extends javax.swing.JFrame {
         if (tk != null) {
             dao.capNhatTrangThaiDangNhap(tk.getMaNV(), true);
             System.out.println("Đăng Nhập Thanh Công ");
-            new Main().setVisible(true); // hoặc truyền tk nếu cần
+            String tenNV=nvBus.getTenNVByID(tk.getMaNV());
+            new Main(tenNV).setVisible(true); // hoặc truyền tk nếu cần
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Sai Tài Khoản Hoặc Mật Khẩu");

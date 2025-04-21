@@ -59,7 +59,6 @@ import javax.swing.JTextField;
 public class PanelKhachHang extends javax.swing.JPanel {
     private Func_class func = new Func_class();
     private int hoverIndex = -1;
-
     public PanelKhachHang() {
         initComponents();
         setupUIComponents();

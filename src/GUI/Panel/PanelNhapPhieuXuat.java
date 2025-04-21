@@ -230,7 +230,6 @@ public class PanelNhapPhieuXuat extends javax.swing.JPanel {
             }
         });
 
-        jTable1.setBackground(new java.awt.Color(255, 255, 255));
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -317,17 +316,17 @@ public class PanelNhapPhieuXuat extends javax.swing.JPanel {
                     .addComponent(jTextField5, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 337, Short.MAX_VALUE)
                     .addComponent(jTextField7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTextField3)
+                    .addComponent(jComboBox5, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTextField6)
                     .addGroup(jPanel8Layout.createSequentialGroup()
                         .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel9)
-                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel11)
-                            .addComponent(jLabel6))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jTextField3)
-                    .addComponent(jComboBox5, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTextField6))
+                            .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
@@ -358,7 +357,6 @@ public class PanelNhapPhieuXuat extends javax.swing.JPanel {
                 .addGap(11, 11, 11))
         );
 
-        jTable2.setBackground(new java.awt.Color(255, 255, 255));
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -426,7 +424,6 @@ public class PanelNhapPhieuXuat extends javax.swing.JPanel {
         jLabel4.setText("TỔNG TIỀN:");
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(0, 0, 0));
         jLabel8.setText("0đ");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -434,37 +431,28 @@ public class PanelNhapPhieuXuat extends javax.swing.JPanel {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTextField1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel1)
-                                    .addComponent(jLabel3))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jTextField12)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jTextField12)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextField11)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(jTextField11))))
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel8)
-                .addContainerGap(123, Short.MAX_VALUE))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -519,131 +507,131 @@ public class PanelNhapPhieuXuat extends javax.swing.JPanel {
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
         // TODO add your handling code here:
-          int selectedRow = jTable2.getSelectedRow();
-    if (selectedRow < 0) {
-        javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm để xóa ở bảng dưới!");
-        return;
-    }
-    DefaultTableModel modelCT = (DefaultTableModel) jTable2.getModel();
-    String maSP = modelCT.getValueAt(selectedRow, 1).toString(); 
-    DefaultTableModel modelSP = (DefaultTableModel) jTable1.getModel();
-    for (int i = 0; i < modelSP.getRowCount(); i++) {
-        if (modelSP.getValueAt(i, 0).toString().equals(maSP)) {
-            int soLuongTon = Integer.parseInt(modelSP.getValueAt(i, 2).toString());
-            modelSP.setValueAt(soLuongTon + 1, i, 2);
-            break;
+        int selectedRow = jTable2.getSelectedRow();
+        if (selectedRow < 0) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm để xóa ở bảng dưới!");
+            return;
         }
-    }
-    String maSPDangXem = jTextField3.getText().trim();
-    if (maSPDangXem.equals(maSP)) {
-        int sl = Integer.parseInt(jTextField7.getText().trim());
-        jTextField7.setText(String.valueOf(sl + 1));
-    }
-    modelCT.removeRow(selectedRow);
-    for (int i = 0; i < modelCT.getRowCount(); i++) {
-        modelCT.setValueAt(i + 1, i, 0); 
-    }
-    try {
-        double tong = 0;
+        DefaultTableModel modelCT = (DefaultTableModel) jTable2.getModel();
+        String maSP = modelCT.getValueAt(selectedRow, 1).toString();
+        DefaultTableModel modelSP = (DefaultTableModel) jTable1.getModel();
+        for (int i = 0; i < modelSP.getRowCount(); i++) {
+            if (modelSP.getValueAt(i, 0).toString().equals(maSP)) {
+                int soLuongTon = Integer.parseInt(modelSP.getValueAt(i, 2).toString());
+                modelSP.setValueAt(soLuongTon + 1, i, 2);
+                break;
+            }
+        }
+        String maSPDangXem = jTextField3.getText().trim();
+        if (maSPDangXem.equals(maSP)) {
+            int sl = Integer.parseInt(jTextField7.getText().trim());
+            jTextField7.setText(String.valueOf(sl + 1));
+        }
+        modelCT.removeRow(selectedRow);
         for (int i = 0; i < modelCT.getRowCount(); i++) {
-            double gia = Double.parseDouble(modelCT.getValueAt(i, 6).toString());
-            int sl = Integer.parseInt(modelCT.getValueAt(i, 7).toString());
-            tong += gia * sl;
+            modelCT.setValueAt(i + 1, i, 0);
         }
-        DecimalFormat df = new DecimalFormat("#,###");
-        jLabel8.setText(df.format(tong) + "đ");
-    } catch (Exception ex) {
-        System.out.println("Lỗi khi tính lại tổng tiền: " + ex.getMessage());
-    }
+        try {
+            double tong = 0;
+            for (int i = 0; i < modelCT.getRowCount(); i++) {
+                double gia = Double.parseDouble(modelCT.getValueAt(i, 6).toString());
+                int sl = Integer.parseInt(modelCT.getValueAt(i, 7).toString());
+                tong += gia * sl;
+            }
+            DecimalFormat df = new DecimalFormat("#,###");
+            jLabel8.setText(df.format(tong) + "đ");
+        } catch (Exception ex) {
+            System.out.println("Lỗi khi tính lại tổng tiền: " + ex.getMessage());
+        }
     }//GEN-LAST:event_jButton8ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-          new GUI.Dialog.ChooseKhachHangPX(this).setVisible(true);
+        new GUI.Dialog.ChooseKhachHangPX(this).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         // TODO add your handling code here:
-         int selectedRow = jTable1.getSelectedRow();
-    if (selectedRow < 0) {
-        JOptionPane.showMessageDialog(this, "Vui lòng chọn một sản phẩm trong bảng trên!");
-        return;
-    }
-    String maSP = jTextField3.getText().trim();
-    String tenSP = jTextField5.getText().trim();
-    String cauHinh = (String) jComboBox5.getSelectedItem();
-    if (cauHinh == null || cauHinh.equals("Chọn cấu hình...")) {
-        JOptionPane.showMessageDialog(this, "Vui lòng chọn cấu hình trước khi thêm sản phẩm!");
-        return;
-    }
-    String giaXuatText = jTextField6.getText().replace(".", "").replace(" đ", "").trim();
-    int soLuongTon = Integer.parseInt(jTextField7.getText().trim());
-    if (soLuongTon <= 0) {
-        JOptionPane.showMessageDialog(this, "Sản phẩm này đã hết hàng!");
-        return;
-    }
-    String[] parts = cauHinh.split(" - ");
-    if (parts.length != 3) {
-        JOptionPane.showMessageDialog(this, "Cấu hình không hợp lệ.");
-        return;
-    }
-    String rom = parts[0].replace("GB", "").trim();
-    String ram = parts[1].replace("GB", "").trim();
-    String mauSac = parts[2].trim();
-    DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
-    boolean daTonTai = false;
-    for (int i = 0; i < model.getRowCount(); i++) {
-        String maSP_T = model.getValueAt(i, 1).toString();
-        String ram_T = model.getValueAt(i, 3).toString();
-        String rom_T = model.getValueAt(i, 4).toString();
-        String mau_T = model.getValueAt(i, 5).toString();
-        if (maSP_T.equals(maSP) && ram_T.equals(ram) && rom_T.equals(rom) && mau_T.equals(mauSac)) {
-            int slCu = Integer.parseInt(model.getValueAt(i, 7).toString());
-            if (soLuongTon <= 0) {
-                JOptionPane.showMessageDialog(this, "Không đủ tồn kho để thêm!");
-                return;
-            }
-            model.setValueAt(slCu + 1, i, 7);
-            daTonTai = true;
-            break;
+        int selectedRow = jTable1.getSelectedRow();
+        if (selectedRow < 0) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một sản phẩm trong bảng trên!");
+            return;
         }
-    }
-    if (!daTonTai) {
-        int stt = model.getRowCount() + 1;
-        model.addRow(new Object[]{
-            stt,
-            maSP,
-            tenSP,
-            ram,
-            rom,
-            mauSac,
-            giaXuatText,
-            1
-        });
-    }
-    int newSLTon = soLuongTon - 1;
-    jTextField7.setText(String.valueOf(newSLTon));
-    DefaultTableModel modelSP = (DefaultTableModel) jTable1.getModel();
-    jTextField7.setText(String.valueOf(newSLTon));
-    for (int i = 0; i < modelSP.getRowCount(); i++) {
-        if (modelSP.getValueAt(i, 0).toString().equals(maSP)) {
-            int tongSL = Integer.parseInt(modelSP.getValueAt(i, 2).toString());
-            modelSP.setValueAt(tongSL - 1, i, 2); 
-            break;
+        String maSP = jTextField3.getText().trim();
+        String tenSP = jTextField5.getText().trim();
+        String cauHinh = (String) jComboBox5.getSelectedItem();
+        if (cauHinh == null || cauHinh.equals("Chọn cấu hình...")) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn cấu hình trước khi thêm sản phẩm!");
+            return;
         }
-    }
-    try {
-        double tong = 0;
+        String giaXuatText = jTextField6.getText().replace(".", "").replace(" đ", "").trim();
+        int soLuongTon = Integer.parseInt(jTextField7.getText().trim());
+        if (soLuongTon <= 0) {
+            JOptionPane.showMessageDialog(this, "Sản phẩm này đã hết hàng!");
+            return;
+        }
+        String[] parts = cauHinh.split(" - ");
+        if (parts.length != 3) {
+            JOptionPane.showMessageDialog(this, "Cấu hình không hợp lệ.");
+            return;
+        }
+        String rom = parts[0].replace("GB", "").trim();
+        String ram = parts[1].replace("GB", "").trim();
+        String mauSac = parts[2].trim();
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        boolean daTonTai = false;
         for (int i = 0; i < model.getRowCount(); i++) {
-            double gia = Double.parseDouble(model.getValueAt(i, 6).toString());
-            int sl = Integer.parseInt(model.getValueAt(i, 7).toString());
-            tong += gia * sl;
+            String maSP_T = model.getValueAt(i, 1).toString();
+            String ram_T = model.getValueAt(i, 3).toString();
+            String rom_T = model.getValueAt(i, 4).toString();
+            String mau_T = model.getValueAt(i, 5).toString();
+            if (maSP_T.equals(maSP) && ram_T.equals(ram) && rom_T.equals(rom) && mau_T.equals(mauSac)) {
+                int slCu = Integer.parseInt(model.getValueAt(i, 7).toString());
+                if (soLuongTon <= 0) {
+                    JOptionPane.showMessageDialog(this, "Không đủ tồn kho để thêm!");
+                    return;
+                }
+                model.setValueAt(slCu + 1, i, 7);
+                daTonTai = true;
+                break;
+            }
         }
-        DecimalFormat df = new DecimalFormat("#,###");
-        jLabel8.setText(df.format(tong) + "đ");
-    } catch (Exception ex) {
-        System.out.println("Lỗi tính tổng tiền: " + ex.getMessage());
-    }
+        if (!daTonTai) {
+            int stt = model.getRowCount() + 1;
+            model.addRow(new Object[]{
+                stt,
+                maSP,
+                tenSP,
+                ram,
+                rom,
+                mauSac,
+                giaXuatText,
+                1
+            });
+        }
+        int newSLTon = soLuongTon - 1;
+        jTextField7.setText(String.valueOf(newSLTon));
+        DefaultTableModel modelSP = (DefaultTableModel) jTable1.getModel();
+        jTextField7.setText(String.valueOf(newSLTon));
+        for (int i = 0; i < modelSP.getRowCount(); i++) {
+            if (modelSP.getValueAt(i, 0).toString().equals(maSP)) {
+                int tongSL = Integer.parseInt(modelSP.getValueAt(i, 2).toString());
+                modelSP.setValueAt(tongSL - 1, i, 2);
+                break;
+            }
+        }
+        try {
+            double tong = 0;
+            for (int i = 0; i < model.getRowCount(); i++) {
+                double gia = Double.parseDouble(model.getValueAt(i, 6).toString());
+                int sl = Integer.parseInt(model.getValueAt(i, 7).toString());
+                tong += gia * sl;
+            }
+            DecimalFormat df = new DecimalFormat("#,###");
+            jLabel8.setText(df.format(tong) + "đ");
+        } catch (Exception ex) {
+            System.out.println("Lỗi tính tổng tiền: " + ex.getMessage());
+        }
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed

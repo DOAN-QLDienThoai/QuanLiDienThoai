@@ -59,7 +59,6 @@ public class NhaCungCapBUS {
         listNCC=nccDao.listNCC();
         int index = getIndexByID(maNCC);
         if (index == -1) {
-            System.out.println("sai roi hahahah");
             return null;
         }
         return listNCC.get(index).getName();

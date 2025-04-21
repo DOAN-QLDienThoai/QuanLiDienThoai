@@ -51,8 +51,13 @@ public class NhanVienBUS {
         }
         return vitri;
     }
-    public String getTenNVByID(int maNV){
-        return listNV.get(getIndexByID(maNV)).getHoTen();
+    public String getTenNVByID(int maNV) {
+        listNV = nvDao.listNV();
+        int index = getIndexByID(maNV);
+        if (index == -1) {
+            return null;
+        }
+        return listNV.get(index).getHoTen();
     }
     public ArrayList<NhanVienDTO> listNV(){
         return listNV;

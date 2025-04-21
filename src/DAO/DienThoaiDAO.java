@@ -158,14 +158,14 @@ public class DienThoaiDAO {
     DienThoaiDTO dt = null;
     try {
         Connection conn = ConnectedDatabase.getConnectedDB();
-        String sql = "SELECT d.maDT, d.tenDT, d.chipXuLy, p.soLuongTon, p.giaXuat, " +
+        String sql = "SELECT TOP 1 d.maDT, d.tenDT, d.chipXuLy, p.soLuongTon, p.giaXuat, " +
                      "r.dungLuongRam, ro.dungLuongRom, m.tenMau " +
                      "FROM dienthoai d " +
                      "JOIN phienbandienthoai p ON d.maDT = p.maDT " +
                      "JOIN ram r ON p.maRam = r.maRam " +
                      "JOIN rom ro ON p.maRom = ro.maRom " +
                      "JOIN mausac m ON p.maMau = m.maMau " +
-                     "WHERE d.maDT = ? LIMIT 1";
+                     "WHERE d.maDT = ? ";
 
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setString(1, maDT);
