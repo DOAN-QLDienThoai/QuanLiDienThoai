@@ -3,9 +3,6 @@
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[1230, 650]"/>
-    </Property>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -27,10 +24,9 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
-              <EmptySpace max="-2" attributes="0"/>
               <Component id="jpanel_menu_bottom" min="-2" pref="215" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="main" pref="752" max="32767" attributes="0"/>
+              <Component id="main" min="-2" pref="994" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -58,19 +54,27 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="btn_tk" min="-2" pref="200" max="-2" attributes="0"/>
-                      <Component id="jpanel_menu_top1" alignment="0" min="-2" max="-2" attributes="0"/>
-                      <Component id="btn_thuoctinh" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
-                      <Component id="btn_nv" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
-                      <Component id="btn_ncc" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
-                      <Component id="btn_kh" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
-                      <Component id="btn_px" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
-                      <Component id="btn_pn" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
-                      <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="btn_trangChu" alignment="0" max="32767" attributes="0"/>
-                          <Component id="btn_dt" alignment="0" pref="200" max="32767" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="btn_tk" min="-2" pref="200" max="-2" attributes="0"/>
+                              <Component id="jpanel_menu_top1" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="btn_thuoctinh" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                              <Component id="btn_nv" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                              <Component id="btn_ncc" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                              <Component id="btn_kh" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                              <Component id="btn_px" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                              <Component id="btn_pn" alignment="0" min="-2" pref="200" max="-2" attributes="0"/>
+                              <Group type="103" alignment="0" groupAlignment="1" max="-2" attributes="0">
+                                  <Component id="btn_trangChu" alignment="0" max="32767" attributes="0"/>
+                                  <Component id="btn_dt" alignment="0" pref="200" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
+                          <Component id="btn_logout" min="-2" pref="125" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
@@ -99,6 +103,8 @@
                   <Component id="btn_pn" min="-2" pref="35" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btn_tk" min="-2" pref="36" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                  <Component id="btn_logout" min="-2" pref="32" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -249,6 +255,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_trangChuActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="btn_logout">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="&#x110;&#x103;ng xu&#x1ea5;t"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btn_logoutActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>

@@ -4,7 +4,7 @@
  */
 package GUI.Panel;
 
-import GUI.GUIFrame.Main;
+import GUI.Frame.Main;
 import DAO.PhieuXuatDAO;
 import DAO.ChiTietPhieuXuatDAO;
 import DAO.KhachHangDAO;

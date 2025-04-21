@@ -12,7 +12,7 @@ import BUS.PhieuNhapBUS;
 import DTO.ChiTietPhieuNhapDTO;
 import DTO.PhieuNhapDTO;
 import GUI.Dialog.DetailsPhieuNhapDialog;
-import GUI.GUIFrame.Main;
+import GUI.Frame.Main;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
 import java.awt.Frame;
@@ -448,8 +448,8 @@ public class PanelPhieuNhap extends javax.swing.JPanel {
                     .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 325, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(77, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 355, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(47, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

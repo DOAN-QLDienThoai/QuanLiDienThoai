@@ -226,7 +226,7 @@ public class PanelTrangChu extends javax.swing.JPanel {
         pn4Layout.setHorizontalGroup(
             pn4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pn4Layout.createSequentialGroup()
-                .addContainerGap(73, Short.MAX_VALUE)
+                .addContainerGap(99, Short.MAX_VALUE)
                 .addGroup(pn4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pn4Layout.createSequentialGroup()
                         .addComponent(jLabel8)
@@ -262,7 +262,7 @@ public class PanelTrangChu extends javax.swing.JPanel {
                 .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(pn2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pn4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(32, 32, 32))
+                .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -285,7 +285,7 @@ public class PanelTrangChu extends javax.swing.JPanel {
             .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, 977, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(0, 53, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGap(428, 428, 428)
                 .addComponent(jLabel1)

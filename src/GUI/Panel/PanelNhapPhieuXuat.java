@@ -9,7 +9,7 @@ import DAO.MauSacDAO;
 import DTO.PhienBanDienThoaiDTO;
 import DTO.DienThoaiDTO;
 import BUS.DienThoaiBUS;
-import GUI.GUIFrame.Main;
+import GUI.Frame.Main;
 import java.awt.Color;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;

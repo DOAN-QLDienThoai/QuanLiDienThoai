@@ -17,7 +17,7 @@ import DTO.ChiTietPhieuNhapDTO;
 import DTO.DienThoaiDTO;
 import DTO.NhaCungCapDTO;
 import DTO.PhieuNhapDTO;
-import GUI.GUIFrame.Main;
+import GUI.Frame.Main;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
 import java.awt.Dimension;
