@@ -14,6 +14,7 @@ import GUI.Panel.PanelPhieuNhap;
 import GUI.Panel.PanelPhieuXuat;
 import GUI.Panel.PanelThongKe;
 import GUI.Panel.PanelThuocTinh;
+import GUI.Panel.PanelTrangChu;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
 import java.awt.Component;
@@ -32,6 +33,7 @@ import javax.swing.border.Border;
  */
 public class Main extends javax.swing.JFrame {
     private String maNhanVien;
+    PanelTrangChu tt=new PanelTrangChu();
     PanelNhanVien nv=new PanelNhanVien();
     PanelNhaCungCap ncc=new PanelNhaCungCap();
     PanelDienThoai dt=new PanelDienThoai();
@@ -42,12 +44,13 @@ public class Main extends javax.swing.JFrame {
     PanelNhapPhieuNhap nhapphieunhap=new PanelNhapPhieuNhap(this);
     PanelPhieuXuat phieuxuat=new PanelPhieuXuat(this);
     PanelNhapPhieuXuat nhapphieuxuat=new PanelNhapPhieuXuat(this);
-    JButton[] btns = new JButton[8];
+    JButton[] btns = new JButton[9];
     JButton currentActiveBtn = null;
     Border etchedBorder = BorderFactory.createEtchedBorder();
     public Main() {
         initComponents();
         khoiTao();
+        main.add(tt);
         main.add(dt);
         main.add(thuoctinh);
         main.add(nv);
@@ -58,6 +61,7 @@ public class Main extends javax.swing.JFrame {
         main.add(tk);
         main.add(pn);
         main.add(nhapphieunhap);
+        tt.setVisible(false);
         dt.setVisible(false);
         thuoctinh.setVisible(false);
         nv.setVisible(false);
@@ -75,16 +79,18 @@ public class Main extends javax.swing.JFrame {
         setIconForJButton();
     }
     public void khoitaoButtonInMenu() {
-        btns[0] = btn_nv;
-        btns[1] = btn_thuoctinh;
-        btns[2] = btn_dt;
-        btns[3] = btn_ncc;
-        btns[4] = btn_kh;
-        btns[5] = btn_px;
-        btns[6]=btn_pn;
-        btns[7]=btn_tk;
+        btns[0]=btn_trangChu;
+        btns[1] = btn_nv;
+        btns[2] = btn_thuoctinh;
+        btns[3] = btn_dt;
+        btns[4] = btn_ncc;
+        btns[5] = btn_kh;
+        btns[6] = btn_px;
+        btns[7]=btn_pn;
+        btns[8]=btn_tk;
     }
     public void setIconForJButton(){
+        btn_trangChu.setIcon(new FlatSVGIcon("./resources/icon/home.svg", 0.35f));
         btn_dt.setIcon(new FlatSVGIcon("./resources/icon/phone.svg", 0.55f));
         btn_ncc.setIcon(new FlatSVGIcon("./resources/icon/ncc.svg", 0.55f));
         btn_thuoctinh.setIcon(new FlatSVGIcon("./resources/icon/thuoctinh.svg", 0.6f));
@@ -93,6 +99,9 @@ public class Main extends javax.swing.JFrame {
         btn_px.setIcon(new FlatSVGIcon("./resources/icon/phieuxuat.svg", 0.035f));
         btn_pn.setIcon(new FlatSVGIcon("./resources/icon/phieunhap.svg", 0.27f));
         btn_tk.setIcon(new FlatSVGIcon("./resources/icon/static.svg", 0.3f));
+    }
+    public PanelTrangChu getPanelTrangChu(){
+        return this.tt;
     }
     public PanelNhapPhieuNhap getPanelNhapPN(){
         return this.nhapphieunhap;
@@ -179,6 +188,7 @@ public class Main extends javax.swing.JFrame {
         btn_tk = new javax.swing.JButton();
         jpanel_menu_top1 = new javax.swing.JPanel();
         img_store1 = new javax.swing.JLabel();
+        btn_trangChu = new javax.swing.JButton();
         main = new javax.swing.JLayeredPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -279,6 +289,15 @@ public class Main extends javax.swing.JFrame {
                 .addComponent(img_store1, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE))
         );
 
+        btn_trangChu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btn_trangChu.setText("Trang Chủ");
+        btn_trangChu.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btn_trangChu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_trangChuActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jpanel_menu_bottomLayout = new javax.swing.GroupLayout(jpanel_menu_bottom);
         jpanel_menu_bottom.setLayout(jpanel_menu_bottomLayout);
         jpanel_menu_bottomLayout.setHorizontalGroup(
@@ -288,13 +307,15 @@ public class Main extends javax.swing.JFrame {
                 .addGroup(jpanel_menu_bottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btn_tk, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jpanel_menu_top1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_thuoctinh, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_nv, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btn_px, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_pn, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btn_pn, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jpanel_menu_bottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(btn_trangChu, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_dt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpanel_menu_bottomLayout.setVerticalGroup(
@@ -302,20 +323,22 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jpanel_menu_bottomLayout.createSequentialGroup()
                 .addComponent(jpanel_menu_top1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_trangChu, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_thuoctinh, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_nv, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_px, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_pn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_tk, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -370,6 +393,7 @@ public class Main extends javax.swing.JFrame {
         }
     }
     private void btn_nvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nvActionPerformed
+        tt.setVisible(false);
         dt.setVisible(false);
         thuoctinh.setVisible(false);
         nv.setVisible(true);
@@ -383,6 +407,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_nvActionPerformed
 
     private void btn_pxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pxActionPerformed
+        tt.setVisible(false);
         dt.setVisible(false);
         thuoctinh.setVisible(false);
         nv.setVisible(false);
@@ -397,6 +422,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_pxActionPerformed
 
     private void btn_dtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_dtActionPerformed
+        tt.setVisible(false);
         dt.setVisible(true);
         thuoctinh.setVisible(false);
         nv.setVisible(false);
@@ -410,6 +436,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_dtActionPerformed
 
     private void btn_nccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nccActionPerformed
+        tt.setVisible(false);
         dt.setVisible(false);
         thuoctinh.setVisible(false);
         nv.setVisible(false);
@@ -423,6 +450,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_nccActionPerformed
 
     private void btn_khActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_khActionPerformed
+        tt.setVisible(false);
         dt.setVisible(false);
         thuoctinh.setVisible(false);
         nv.setVisible(false);
@@ -436,6 +464,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_khActionPerformed
 
     private void btn_pnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pnActionPerformed
+        tt.setVisible(false);
         dt.setVisible(false);
         thuoctinh.setVisible(false);
         nv.setVisible(false);
@@ -450,6 +479,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_pnActionPerformed
 
     private void btn_tkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tkActionPerformed
+        tt.setVisible(false);
         dt.setVisible(false);
         thuoctinh.setVisible(false);
         nv.setVisible(false);
@@ -461,6 +491,20 @@ public class Main extends javax.swing.JFrame {
         pn.setVisible(false);
         nhapphieunhap.setVisible(false);
     }//GEN-LAST:event_btn_tkActionPerformed
+
+    private void btn_trangChuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_trangChuActionPerformed
+        tt.setVisible(true);
+        dt.setVisible(false);
+        thuoctinh.setVisible(false);
+        nv.setVisible(false);
+        ncc.setVisible(false);
+        khachhang.setVisible(false);
+        phieuxuat.setVisible(false);
+        nhapphieuxuat.setVisible(false);
+        tk.setVisible(false);
+        pn.setVisible(false);
+        nhapphieunhap.setVisible(false);
+    }//GEN-LAST:event_btn_trangChuActionPerformed
 
     /**
      * @param args the command line arguments
@@ -509,6 +553,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton btn_px;
     private javax.swing.JButton btn_thuoctinh;
     private javax.swing.JButton btn_tk;
+    private javax.swing.JButton btn_trangChu;
     private javax.swing.JLabel img_store1;
     private javax.swing.JPanel jpanel_menu_bottom;
     private javax.swing.JPanel jpanel_menu_top1;
