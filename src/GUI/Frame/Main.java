@@ -26,6 +26,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
+import javax.swing.UIManager;
+
 
 
 
@@ -51,6 +53,11 @@ public class Main extends javax.swing.JFrame {
     Border etchedBorder = BorderFactory.createEtchedBorder();
     public Main() {
         initComponents();
+        UIManager.put("Component.arc", 10);
+        UIManager.put("TextComponent.arc", 10);
+        UIManager.put("ComboBox.arc", 10);
+        UIManager.put("Button.arc", 10);
+
         khoiTao();
         main.add(tt);
         main.add(dt);
@@ -187,6 +194,7 @@ public class Main extends javax.swing.JFrame {
         btn_dt = new javax.swing.JButton();
         btn_kh = new javax.swing.JButton();
         btn_px = new javax.swing.JButton();
+        btn_tc = new javax.swing.JButton();
         btn_pn = new javax.swing.JButton();
         btn_tk = new javax.swing.JButton();
         jpanel_menu_top1 = new javax.swing.JPanel();
@@ -253,6 +261,15 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        // btn_tc.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        // btn_tc.setText("Trang chủ");
+        // btn_tc.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+        // btn_tc.addActionListener(new java.awt.event.ActionListener() {
+        //     public void actionPerformed(java.awt.event.ActionEvent evt) {
+        //         btn_tcActionPerformed(evt);
+        //     }
+        // });
+
         btn_pn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btn_pn.setText("Phiếu Nhập");
         btn_pn.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -314,6 +331,7 @@ public class Main extends javax.swing.JFrame {
             jpanel_menu_bottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpanel_menu_bottomLayout.createSequentialGroup()
                 .addGroup(jpanel_menu_bottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//<<<<<<< HEAD:src/GUI/Frame/Main.java
                     .addGroup(jpanel_menu_bottomLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jpanel_menu_bottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -331,6 +349,18 @@ public class Main extends javax.swing.JFrame {
                     .addGroup(jpanel_menu_bottomLayout.createSequentialGroup()
                         .addGap(39, 39, 39)
                         .addComponent(btn_logout, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
+// =======
+//                     .addComponent(btn_tk, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                     .addComponent(jpanel_menu_top1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                     .addComponent(btn_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                     .addComponent(btn_thuoctinh, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                     .addComponent(btn_nv, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                     .addComponent(btn_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                     .addComponent(btn_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                     .addComponent(btn_px, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                     .addComponent(btn_pn, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                     .addComponent(btn_tc, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+// >>>>>>> mhuy:src/GUI/GUIFrame/Main.java
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jpanel_menu_bottomLayout.setVerticalGroup(
@@ -338,8 +368,13 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jpanel_menu_bottomLayout.createSequentialGroup()
                 .addComponent(jpanel_menu_top1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+//<<<<<<< HEAD:src/GUI/Frame/Main.java
                 .addComponent(btn_trangChu, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+// =======
+//                 .addComponent(btn_tc, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                 .addGap(12, 12, 12)
+// >>>>>>> mhuy:src/GUI/GUIFrame/Main.java
                 .addComponent(btn_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_thuoctinh, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -360,7 +395,7 @@ public class Main extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        main.setPreferredSize(new java.awt.Dimension(1030, 630));
+        main.setPreferredSize(new java.awt.Dimension(1000, 630));
         main.setLayout(new java.awt.CardLayout());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -370,13 +405,17 @@ public class Main extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jpanel_menu_bottom, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+//<<<<<<< HEAD:src/GUI/Frame/Main.java
                 .addComponent(main, javax.swing.GroupLayout.PREFERRED_SIZE, 994, javax.swing.GroupLayout.PREFERRED_SIZE))
+// =======
+//                 .addComponent(main, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+// >>>>>>> mhuy:src/GUI/GUIFrame/Main.java
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jpanel_menu_bottom, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jpanel_menu_bottom, javax.swing.GroupLayout.DEFAULT_SIZE, 630, Short.MAX_VALUE)
                     .addComponent(main, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -430,7 +469,7 @@ public class Main extends javax.swing.JFrame {
         ncc.setVisible(false);
         khachhang.setVisible(false);
         phieuxuat.setVisible(true);
-        nhapphieuxuat.loadTableSanPham(); // ✅ Gọi lại để load dữ liệu mới
+        nhapphieuxuat.loadTableSanPham();
         nhapphieuxuat.setVisible(false);
         tk.setVisible(false);
         pn.setVisible(false);
@@ -508,6 +547,7 @@ public class Main extends javax.swing.JFrame {
         nhapphieunhap.setVisible(false);
     }//GEN-LAST:event_btn_tkActionPerformed
 
+//<<<<<<< HEAD:src/GUI/Frame/Main.java
     private void btn_trangChuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_trangChuActionPerformed
         tt.setVisible(true);
         dt.setVisible(false);
@@ -521,6 +561,41 @@ public class Main extends javax.swing.JFrame {
         pn.setVisible(false);
         nhapphieunhap.setVisible(false);
     }//GEN-LAST:event_btn_trangChuActionPerformed
+// =======
+//     private void btn_tcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tcActionPerformed
+//         // TODO add your handling code here:
+//     }//GEN-LAST:event_btn_tcActionPerformed
+
+//     /**
+//      * @param args the command line arguments
+//      */
+//     public static void main(String args[]) {
+//         /* Set the Nimbus look and feel */
+//         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//          */
+//         try {
+//             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                 if ("Nimbus".equals(info.getName())) {
+//                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                     break;
+//                 }
+//             }
+//         } catch (ClassNotFoundException ex) {
+//             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//         } catch (InstantiationException ex) {
+//             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//         } catch (IllegalAccessException ex) {
+//             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//             java.util.logging.Logger.getLogger(Main.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//         }
+//         //</editor-fold>
+//         //</editor-fold>
+//         //</editor-fold>
+//         //</editor-fold>
+// >>>>>>> mhuy:src/GUI/GUIFrame/Main.java
 
     private void btn_logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_logoutActionPerformed
         this.dispose();
@@ -538,6 +613,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton btn_nv;
     private javax.swing.JButton btn_pn;
     private javax.swing.JButton btn_px;
+    private javax.swing.JButton btn_tc;
     private javax.swing.JButton btn_thuoctinh;
     private javax.swing.JButton btn_tk;
     private javax.swing.JButton btn_trangChu;

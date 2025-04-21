@@ -71,6 +71,7 @@ public class EditNhanVienDialog extends javax.swing.JDialog {
         jdatechooser_ngaySinh = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Chỉnh sửa nhân viên");
 
         jPanel1.setBackground(new java.awt.Color(0, 153, 255));
 

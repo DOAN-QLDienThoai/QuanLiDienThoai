@@ -170,5 +170,21 @@ public class KhachHangDAO {
     }
     return kh;
 }
+    public ArrayList<String> layTatCaTenKhachHang() {
+    ArrayList<String> ds = new ArrayList<>();
+    try {
+        Connection conn = ConnectedDatabase.getConnectedDB();
+        String sql = "SELECT tenKH FROM khachhang";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            ds.add(rs.getString("tenKH"));
+        }
+        ConnectedDatabase.closeConnectedDB(conn);
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+    return ds;
+}
 
 }

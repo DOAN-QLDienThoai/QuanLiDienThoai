@@ -8,7 +8,6 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import DTO.ChiTietPhieuXuatDTO;
-import DTO.PhieuXuatDTO;
 import DTO.KhachHangDTO;
 import DAO.PhienBanDienThoaiDAO;
 import DAO.KhachHangDAO;
@@ -17,7 +16,9 @@ import java.io.FileOutputStream;
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.*;
 import java.io.File;
-
+import java.awt.Component;
+import java.awt.Color;
+import java.awt.Dimension;
 /**
  *
  * @author LE MINH HUY
@@ -29,55 +30,92 @@ public class DetailPhieuXuatDialog extends javax.swing.JPanel {
      */
     public DetailPhieuXuatDialog() {
         initComponents();
+        setupTable(); 
+        JTextField[] fields = {jTextField1, jTextField2, jTextField3, jTextField4};
+        for (JTextField tf : fields) {
+            tf.setEditable(false);               
+            tf.setFocusable(false);                       
+            tf.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+            tf.setBorder(null);                 
+            tf.setBackground(new java.awt.Color(240, 240, 240)); 
+        }
+        DefaultTableModel model = new DefaultTableModel(
+            new Object[][]{},
+            new String[]{"STT", "Mã SP", "Tên SP", "RAM", "ROM", "Màu sắc", "Số lượng", "Đơn giá"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; 
+            }
+        };
+        for (JTextField tf : fields) {
+            tf.setEditable(false);
+            tf.setFocusable(false);
+            tf.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+            tf.setBackground(new java.awt.Color(245, 245, 245));
+            tf.setBorder(BorderFactory.createEmptyBorder(5, 8, 5, 8)); 
+            tf.setPreferredSize(new java.awt.Dimension(220, 30));
+        }
+        jTable1.setModel(model);
+        for (int i = 0; i < jTable1.getColumnCount(); i++) {
+            jTable1.getColumnModel().getColumn(i).setCellRenderer(new javax.swing.table.DefaultTableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                    JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                    label.setHorizontalAlignment(SwingConstants.CENTER);
+                    label.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 13));
+                    if (isSelected) {
+                        label.setBackground(new java.awt.Color(0, 120, 215));
+                        label.setForeground(Color.WHITE);
+                    } else {
+                        label.setBackground(Color.WHITE);
+                        label.setForeground(Color.BLACK);
+                    }
+                    return label;
+                }
+            });
+        }
+        jTextField1.setEditable(false);
+        jTextField2.setEditable(false);
+        jTextField3.setEditable(false);
+        jTextField4.setEditable(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
-    public void actionPerformed(java.awt.event.ActionEvent evt) {
-        jButton2ActionPerformed(evt);
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+            });
+        }
+        public void setMaPhieu(String ma) {
+            jTextField1.setText(ma);
+        }
+        public void setNhanVien(String tenNV) {
+            jTextField2.setText(tenNV);
+        }
+        public void setThoiGian(String tg) {
+            jTextField3.setText(tg.replace("T", " "));
+        }
+        public void setKhachHang(String tenKH) {
+            jTextField4.setText(tenKH);
+        }
+        public void loadChiTiet(ArrayList<ChiTietPhieuXuatDTO> ds) {
+            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+            model.setRowCount(0);
+            DecimalFormat formatter = new DecimalFormat("#,###");
+            int stt = 1;
+            for (ChiTietPhieuXuatDTO ct : ds) {
+                String[] cauHinh = new PhienBanDienThoaiDAO().layCauHinhBangPhienBan(ct.getMaPhienBan());
+                model.addRow(new Object[]{
+                    stt++,
+                    ct.getMaPhienBan(),
+                    ct.getTenSanPham(),
+                    cauHinh[1],
+                    cauHinh[0], 
+                    cauHinh[2], 
+                    ct.getSoLuong(),
+                    formatter.format(ct.getDonGia()) + "đ"
+                });
+            }
     }
-});
-
-
-    }
-    public void setMaPhieu(String ma) {
-    jTextField1.setText(ma);
-}
-
-public void setNhanVien(String tenNV) {
-    jTextField2.setText(tenNV);
-}
-
-public void setThoiGian(String tg) {
-    jTextField3.setText(tg.replace("T", " "));
-}
-
-public void setKhachHang(String tenKH) {
-    jTextField4.setText(tenKH);
-}
-
-public void loadChiTiet(ArrayList<ChiTietPhieuXuatDTO> ds) {
-    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-    model.setRowCount(0);
-    DecimalFormat formatter = new DecimalFormat("#,###");
-    int stt = 1;
-    for (ChiTietPhieuXuatDTO ct : ds) {
-        String[] cauHinh = new PhienBanDienThoaiDAO().layCauHinhBangPhienBan(ct.getMaPhienBan());
-        model.addRow(new Object[]{
-            stt++,
-            ct.getMaPhienBan(),
-            ct.getTenSanPham(),
-            cauHinh[1], // RAM
-            cauHinh[0], // ROM
-            cauHinh[2], // Màu
-            ct.getSoLuong(),
-            formatter.format(ct.getDonGia()) + "đ"
-        });
-    }
-}
-
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -97,6 +135,8 @@ public void loadChiTiet(ArrayList<ChiTietPhieuXuatDTO> ds) {
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+
+        setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel1.setBackground(new java.awt.Color(0, 102, 255));
 
@@ -120,6 +160,8 @@ public void loadChiTiet(ArrayList<ChiTietPhieuXuatDTO> ds) {
                 .addComponent(jLabel1)
                 .addContainerGap(19, Short.MAX_VALUE))
         );
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel2.setText("Mã phiếu");
 
@@ -163,6 +205,8 @@ public void loadChiTiet(ArrayList<ChiTietPhieuXuatDTO> ds) {
         ));
         jScrollPane1.setViewportView(jTable1);
 
+        jButton1.setBackground(new java.awt.Color(0, 153, 255));
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("Xuất file PDF");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -170,6 +214,8 @@ public void loadChiTiet(ArrayList<ChiTietPhieuXuatDTO> ds) {
             }
         });
 
+        jButton2.setBackground(new java.awt.Color(255, 0, 51));
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
         jButton2.setText("Hủy bỏ");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -218,12 +264,12 @@ public void loadChiTiet(ArrayList<ChiTietPhieuXuatDTO> ds) {
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 206, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -238,7 +284,8 @@ public void loadChiTiet(ArrayList<ChiTietPhieuXuatDTO> ds) {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -261,179 +308,179 @@ public void loadChiTiet(ArrayList<ChiTietPhieuXuatDTO> ds) {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         try {
-    // Tạo cửa sổ chọn nơi lưu file
-JFileChooser fileChooser = new JFileChooser();
-fileChooser.setDialogTitle("Chọn nơi lưu file PDF");
-
-// Lấy thư mục hiện tại để kiểm tra số thứ tự file
-File currentDir = new File(System.getProperty("user.dir"));
-int nextNum = getNextPDFNumber(currentDir);  // bạn đặt hàm này bên ngoài
-
-// Gợi ý tên file tiếp theo
-fileChooser.setSelectedFile(new File(currentDir, "phieuxuat_" + nextNum + ".pdf"));
-
-int userSelection = fileChooser.showSaveDialog(this);
-if (userSelection != JFileChooser.APPROVE_OPTION) return;
-
-String filePath = fileChooser.getSelectedFile().getAbsolutePath();
-if (!filePath.toLowerCase().endsWith(".pdf")) {
-    filePath += ".pdf";
-}
-
-    Document document = new Document();
-    PdfWriter.getInstance(document, new FileOutputStream(filePath));
-    document.open();
-
-    // Font
-    BaseFont bf = BaseFont.createFont("resources/fonts/times.ttf", BaseFont.IDENTITY_H, true);
-    Font fontHeader = new Font(bf, 25, Font.BOLD);             // tiêu đề lớn
-    Font fontTitle = new Font(bf, 14, Font.BOLD);              // bảng, tổng
-    Font fontNormal = new Font(bf, 12);
-    Font fontItalic = new Font(bf, 12, Font.ITALIC);
-    Font fontBoldItalic = new Font(bf, 12, Font.BOLDITALIC);
-
-    // Tiêu đề trái và thời gian phải trên cùng một dòng
-    PdfPTable titleRow = new PdfPTable(2);
-    titleRow.setWidthPercentage(100);
-    titleRow.setWidths(new float[]{6f, 4f});
-
-    PdfPCell leftTitle = new PdfPCell(new Phrase("HỆ THỐNG QUẢN LÝ ĐIỆN THOẠI NHÓM 4", fontTitle));
-    leftTitle.setBorder(Rectangle.NO_BORDER);
-    leftTitle.setHorizontalAlignment(Element.ALIGN_LEFT);
-
-    String tgHienTai = java.time.LocalDateTime.now()
-            .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-    PdfPCell rightTime = new PdfPCell(new Phrase("Thời gian in phiếu: " + tgHienTai, fontNormal));
-    rightTime.setBorder(Rectangle.NO_BORDER);
-    rightTime.setHorizontalAlignment(Element.ALIGN_RIGHT);
-
-    titleRow.addCell(leftTitle);
-    titleRow.addCell(rightTime);
-
-    document.add(titleRow);
-    document.add(new Paragraph("\n", fontNormal)); // dòng trống
-
-    // Tiêu đề trung tâm
-    Paragraph title = new Paragraph("THÔNG TIN PHIẾU XUẤT", fontHeader);
-    title.setAlignment(Element.ALIGN_CENTER);
-    title.setSpacingAfter(15);
-    document.add(title);
-    document.add(new Paragraph("\n", fontNormal)); // dòng trống
-
-    // Lấy dữ liệu
-    String maPX = jTextField1.getText();
-    String tenKH = jTextField4.getText();
-    String tenNV = jTextField2.getText();
-    String tgNhap = jTextField3.getText();
-
-    // Lấy thông tin khách hàng từ DB
-    KhachHangDTO kh = new KhachHangDAO().layKhachHangTheoTen(tenKH);
-    String diachi = kh != null ? kh.getAddress() : "Không rõ";
-    String sdt = kh != null ? kh.getSDT() : "Không rõ";
-
-    // Thông tin phiếu
-    Paragraph thongtin = new Paragraph(String.format(
-        "Mã phiếu: %s\nKhách hàng: %s   -   %s\nSĐT: %s\nNgười thực hiện: %s\nThời gian nhập: %s\n\n",
-        maPX, tenKH, diachi, sdt, tenNV, tgNhap
-    ), fontNormal);
-    thongtin.setSpacingAfter(10);
-    document.add(thongtin);
-
-    // Bảng sản phẩm
-    PdfPTable table = new PdfPTable(6);
-    table.setWidths(new int[]{3, 3, 2, 2, 2, 3});
-    table.setWidthPercentage(100);
-
-    String[] headers = {"Tên sản phẩm", "Phiên bản", "Màu", "Giá", "Số lượng", "Tổng tiền"};
-    for (String col : headers) {
-        PdfPCell cell = new PdfPCell(new Phrase(col, fontTitle));
-        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        table.addCell(cell);
+        File defaultDir = new File(System.getProperty("user.home"), "Desktop");
+        int nextNum = getNextPDFNumber(defaultDir);
+        JFileChooser fileChooser = new JFileChooser(defaultDir);
+        fileChooser.setDialogTitle("Chọn nơi lưu file PDF");
+        fileChooser.setSelectedFile(new File("phieuxuat_" + nextNum + ".pdf"));
+        int userSelection = fileChooser.showSaveDialog(this);
+        if (userSelection != JFileChooser.APPROVE_OPTION) return;
+        File selectedFile = fileChooser.getSelectedFile();
+        String filePath = selectedFile.getAbsolutePath();
+        if (!filePath.toLowerCase().endsWith(".pdf")) {
+            filePath += ".pdf";
+        }
+        Document document = new Document();
+        PdfWriter.getInstance(document, new FileOutputStream(filePath));
+        document.open();
+        BaseFont bf = BaseFont.createFont("resources/fonts/times.ttf", BaseFont.IDENTITY_H, true);
+        Font fontHeader = new Font(bf, 25, Font.BOLD);             
+        Font fontTitle = new Font(bf, 14, Font.BOLD);        
+        Font fontNormal = new Font(bf, 12);
+        Font fontItalic = new Font(bf, 12, Font.ITALIC);
+        Font fontBoldItalic = new Font(bf, 12, Font.BOLDITALIC);
+        PdfPTable titleRow = new PdfPTable(2);
+        titleRow.setWidthPercentage(100);
+        titleRow.setWidths(new float[]{6f, 4f});
+        PdfPCell leftTitle = new PdfPCell(new Phrase("HỆ THỐNG QUẢN LÝ ĐIỆN THOẠI NHÓM 4", fontTitle));
+        leftTitle.setBorder(Rectangle.NO_BORDER);
+        leftTitle.setHorizontalAlignment(Element.ALIGN_LEFT);
+        String tgHienTai = java.time.LocalDateTime.now()
+                .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+        PdfPCell rightTime = new PdfPCell(new Phrase("Thời gian in phiếu: " + tgHienTai, fontNormal));
+        rightTime.setBorder(Rectangle.NO_BORDER);
+        rightTime.setHorizontalAlignment(Element.ALIGN_RIGHT);
+        titleRow.addCell(leftTitle);
+        titleRow.addCell(rightTime);
+        document.add(titleRow);
+        document.add(new Paragraph("\n", fontNormal));
+        Paragraph title = new Paragraph("THÔNG TIN PHIẾU XUẤT", fontHeader);
+        title.setAlignment(Element.ALIGN_CENTER);
+        title.setSpacingAfter(15);
+        document.add(title);
+        String maPX = jTextField1.getText();
+        String tenKH = jTextField4.getText();
+        String tenNV = jTextField2.getText();
+        String tgNhap = jTextField3.getText();
+        KhachHangDTO kh = new KhachHangDAO().layKhachHangTheoTen(tenKH);
+        String diachi = kh != null ? kh.getAddress() : "Không rõ";
+        String sdt = kh != null ? kh.getSDT() : "Không rõ";
+        Paragraph thongtin = new Paragraph(String.format(
+            "Mã phiếu: %s\nKhách hàng: %s   -   %s\nSĐT: %s\nNgười thực hiện: %s\nThời gian nhập: %s\n\n",
+            maPX, tenKH, diachi, sdt, tenNV, tgNhap
+        ), fontNormal);
+        thongtin.setSpacingAfter(10);
+        document.add(thongtin);
+        PdfPTable table = new PdfPTable(6);
+        table.setWidths(new int[]{3, 3, 2, 2, 2, 3});
+        table.setWidthPercentage(100);
+        String[] headers = {"Tên sản phẩm", "Phiên bản", "Màu", "Giá", "Số lượng", "Tổng tiền"};
+        for (String col : headers) {
+            PdfPCell cell = new PdfPCell(new Phrase(col, fontTitle));
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table.addCell(cell);
+        }
+        double tong = 0;
+        for (int i = 0; i < jTable1.getRowCount(); i++) {
+            String tenSP = jTable1.getValueAt(i, 2).toString();
+            String phienban = jTable1.getValueAt(i, 3) + " - " + jTable1.getValueAt(i, 4);
+            String mausac = jTable1.getValueAt(i, 5).toString();
+            int sl = Integer.parseInt(jTable1.getValueAt(i, 6).toString());
+            String giaStr = jTable1.getValueAt(i, 7).toString().replace(",", "").replace("đ", "");
+            double gia = Double.parseDouble(giaStr);
+            double thanhtien = gia * sl;
+            tong += thanhtien;
+            table.addCell(new Phrase(tenSP, fontNormal));
+            table.addCell(new Phrase(phienban, fontNormal));
+            table.addCell(new Phrase(mausac, fontNormal));
+            table.addCell(new Phrase(formatCurrency(gia), fontNormal));
+            table.addCell(new Phrase(String.valueOf(sl), fontNormal));
+            table.addCell(new Phrase(formatCurrency(thanhtien), fontNormal));
+        }
+        document.add(table);
+        Paragraph total = new Paragraph("\nTổng thành tiền: " + formatCurrency(tong), fontTitle);
+        total.setAlignment(Element.ALIGN_RIGHT);
+        document.add(total);
+        document.add(new Paragraph("\n\n\n", fontNormal));
+        PdfPTable tableKy = new PdfPTable(3);
+        tableKy.setWidthPercentage(100f);
+        PdfPCell[] cells = {
+            new PdfPCell(new Phrase("Người lập phiếu", fontBoldItalic)),
+            new PdfPCell(new Phrase("Người giao", fontBoldItalic)),
+            new PdfPCell(new Phrase("Khách hàng", fontBoldItalic)),
+            new PdfPCell(new Phrase("(Ký và ghi rõ họ tên)", fontNormal)),
+            new PdfPCell(new Phrase("(Ký và ghi rõ họ tên)", fontNormal)),
+            new PdfPCell(new Phrase("(Ký và ghi rõ họ tên)", fontNormal))
+        };
+        for (PdfPCell cell : cells) {
+            cell.setBorder(Rectangle.NO_BORDER);
+            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+            tableKy.addCell(cell);
+        }
+        document.add(tableKy);
+        document.close();
+        JOptionPane.showMessageDialog(this, "Xuất file PDF thành công!");
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Lỗi khi xuất PDF: " + e.getMessage());
     }
-
-    double tong = 0;
-    for (int i = 0; i < jTable1.getRowCount(); i++) {
-        String tenSP = jTable1.getValueAt(i, 2).toString();
-        String phienban = jTable1.getValueAt(i, 3) + " - " + jTable1.getValueAt(i, 4);
-        String mausac = jTable1.getValueAt(i, 5).toString();
-        int sl = Integer.parseInt(jTable1.getValueAt(i, 6).toString());
-        String giaStr = jTable1.getValueAt(i, 7).toString().replace(",", "").replace("đ", "");
-        double gia = Double.parseDouble(giaStr);
-        double thanhtien = gia * sl;
-        tong += thanhtien;
-
-        table.addCell(new Phrase(tenSP, fontNormal));
-        table.addCell(new Phrase(phienban, fontNormal));
-        table.addCell(new Phrase(mausac, fontNormal));
-        table.addCell(new Phrase(formatCurrency(gia), fontNormal));
-        table.addCell(new Phrase(String.valueOf(sl), fontNormal));
-        table.addCell(new Phrase(formatCurrency(thanhtien), fontNormal));
-    }
-
-    document.add(table);
-
-    // Tổng tiền
-    Paragraph total = new Paragraph("\nTổng thành tiền: " + formatCurrency(tong), fontTitle);
-    total.setAlignment(Element.ALIGN_RIGHT);
-    document.add(total);
-
-    // Khoảng trắng trước phần ký
-    document.add(new Paragraph("\n\n\n", fontNormal));
-
-    // Khu vực chữ ký
-    PdfPTable tableKy = new PdfPTable(3);
-    tableKy.setWidthPercentage(100f);
-
-    PdfPCell cell1 = new PdfPCell(new Phrase("Người lập phiếu", fontBoldItalic));
-    PdfPCell cell2 = new PdfPCell(new Phrase("Người giao", fontBoldItalic));
-    PdfPCell cell3 = new PdfPCell(new Phrase("Khách hàng", fontBoldItalic));
-
-    PdfPCell line1 = new PdfPCell(new Phrase("(Ký và ghi rõ họ tên)", fontNormal));
-    PdfPCell line2 = new PdfPCell(new Phrase("(Ký và ghi rõ họ tên)", fontNormal));
-    PdfPCell line3 = new PdfPCell(new Phrase("(Ký và ghi rõ họ tên)", fontNormal));
-
-    PdfPCell[] allCells = {cell1, cell2, cell3, line1, line2, line3};
-    for (PdfPCell cell : allCells) {
-        cell.setBorder(Rectangle.NO_BORDER);
-        cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-        tableKy.addCell(cell);
-    }
-
-    document.add(tableKy);
-    document.close();
-    JOptionPane.showMessageDialog(this, "Xuất file PDF thành công!");
-
-} catch (Exception e) {
-    e.printStackTrace();
-    JOptionPane.showMessageDialog(this, "Lỗi khi xuất PDF: " + e.getMessage());
-}
-
     }//GEN-LAST:event_jButton1ActionPerformed
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
-        SwingUtilities.getWindowAncestor(this).dispose(); // đóng dialog
+        SwingUtilities.getWindowAncestor(this).dispose();
     }
     private String formatCurrency(double amount) {
         DecimalFormat df = new DecimalFormat("#,###");
         return df.format(amount) + "đ";
     }
-    private int getNextPDFNumber(File folder) {
-    int count = 1;
-    File[] files = folder.listFiles();
-    if (files != null) {
-        for (File file : files) {
-            String name = file.getName();
-            if (name.matches("phieuxuat_\\d+\\.pdf")) {
-                int num = Integer.parseInt(name.replaceAll("\\D+", ""));
-                if (num >= count) {
-                    count = num + 1;
-                }
+   private int getNextPDFNumber(File folder) {
+        int max = 0;
+        File[] files = folder.listFiles((dir, name) -> name.matches("phieuxuat_\\d+\\.pdf"));
+        if (files != null) {
+            for (File f : files) {
+                String name = f.getName();
+                String numberPart = name.replaceAll("[^\\d]", "");
+                try {
+                    int num = Integer.parseInt(numberPart);
+                    if (num > max) max = num;
+                } catch (NumberFormatException ignored) {}
             }
         }
+        return max + 1;
     }
-    return count;
-}
-
-
+    private void setupTable() {
+     jTable1.setShowGrid(true);
+     jTable1.setGridColor(new java.awt.Color(240, 240, 240));
+     jTable1.setIntercellSpacing(new java.awt.Dimension(0, 1));
+     jTable1.setBorder(null);
+     jScrollPane1.setBorder(null);
+     jScrollPane1.getVerticalScrollBar().setPreferredSize(new Dimension(8, Integer.MAX_VALUE));
+     jScrollPane1.getVerticalScrollBar().setUI(new util.CustomScrollBarUI());
+     jScrollPane1.getHorizontalScrollBar().setUI(new util.CustomScrollBarUI());
+     javax.swing.table.JTableHeader header = jTable1.getTableHeader();
+     header.setDefaultRenderer(new javax.swing.table.DefaultTableCellRenderer() {
+         @Override
+         public java.awt.Component getTableCellRendererComponent(javax.swing.JTable table, Object value,
+                 boolean isSelected, boolean hasFocus, int row, int column) {
+             javax.swing.JLabel label = new javax.swing.JLabel(value.toString());
+             label.setFont(label.getFont().deriveFont(java.awt.Font.BOLD));
+             label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+             label.setOpaque(true);
+             label.setBackground(new java.awt.Color(245, 245, 245));
+             label.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 5, 10, 5));
+             return label;
+         }
+     });
+     header.setReorderingAllowed(false);
+     javax.swing.table.TableCellRenderer customRenderer = new javax.swing.table.DefaultTableCellRenderer() {
+         @Override
+         public Component getTableCellRendererComponent(javax.swing.JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+             JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+             label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+             label.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 13));
+             if (isSelected) {
+                 label.setBackground(new java.awt.Color(0, 120, 215)); 
+                 label.setForeground(Color.WHITE);
+             } else {
+                 label.setBackground(Color.WHITE);
+                 label.setForeground(Color.BLACK);
+             }
+             return label;
+         }
+     };
+     for (int i = 0; i < jTable1.getColumnCount(); i++) {
+         jTable1.getColumnModel().getColumn(i).setCellRenderer(customRenderer);
+     }
+ }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

@@ -10,6 +10,17 @@ import DTO.KhachHangDTO;
 import BUS.KhachHangBUS;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import java.awt.Font;
+import java.awt.Color;
+import javax.swing.JScrollPane;
+import javax.swing.BorderFactory;
+import java.awt.Dimension;
 
 /**
  *
@@ -24,6 +35,11 @@ public class ChooseKhachHangPX extends javax.swing.JFrame {
     public ChooseKhachHangPX(PanelNhapPhieuXuat parent) {
         this.parentPanel = parent;
         initComponents();
+        styleTable(jTable1);
+        jTextField1.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
+        jTextField1.setBackground(Color.WHITE);
+        jTextField1.setForeground(Color.GRAY); // Placeholder
+        jTextField1.setBorder(new util.RoundedBorder(10));
         loadDanhSachKhachHang();
         setLocationRelativeTo(null);
         jTextField1.setText("Tìm kiếm khách hàng...");
@@ -180,6 +196,61 @@ public class ChooseKhachHangPX extends javax.swing.JFrame {
             kh.getNgayThamGia()
         });
     }
+    }
+    private void styleTable(JTable table) {
+        table.setShowGrid(true);
+        table.setGridColor(new java.awt.Color(240, 240, 240));
+        table.setIntercellSpacing(new java.awt.Dimension(0, 1));
+        table.setRowHeight(30);
+        table.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 13));
+        table.setSelectionBackground(new java.awt.Color(192, 192, 192));
+        table.setSelectionForeground(java.awt.Color.WHITE);
+        table.setDefaultEditor(Object.class, null);
+        table.setFocusable(false);
+
+        JTableHeader header = table.getTableHeader();
+        header.setDefaultRenderer(new DefaultTableCellRenderer() {
+            @Override
+            public java.awt.Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel label = new JLabel(value.toString());
+                label.setFont(label.getFont().deriveFont(java.awt.Font.BOLD));
+                label.setHorizontalAlignment(SwingConstants.CENTER);
+                label.setOpaque(true);
+                label.setBackground(new java.awt.Color(245, 245, 245));
+                label.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
+                return label;
+            }
+        });
+        header.setReorderingAllowed(false);
+
+        TableCellRenderer renderer = new DefaultTableCellRenderer() {
+            @Override
+            public java.awt.Component getTableCellRendererComponent(JTable table, Object value,
+                    boolean isSelected, boolean hasFocus, int row, int column) {
+                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                label.setHorizontalAlignment(SwingConstants.CENTER);
+                label.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+                if (isSelected) {
+                    label.setBackground(new Color(192, 192, 192));
+                    label.setForeground(Color.WHITE);
+                } else {
+                    label.setBackground(Color.WHITE);
+                    label.setForeground(Color.BLACK);
+                }
+                return label;
+            }
+        };
+
+        for (int i = 0; i < table.getColumnCount(); i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(renderer);
+        }
+
+        JScrollPane scrollPane = (JScrollPane) table.getParent().getParent();
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(8, Integer.MAX_VALUE));
+        scrollPane.getVerticalScrollBar().setUI(new util.CustomScrollBarUI());
+        scrollPane.getHorizontalScrollBar().setUI(new util.CustomScrollBarUI());
     }
 
 

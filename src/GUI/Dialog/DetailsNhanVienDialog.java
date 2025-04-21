@@ -51,6 +51,7 @@ public class DetailsNhanVienDialog extends javax.swing.JDialog {
         jdateChooser_ngaySinh = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Chi tiết nhân viên");
 
         jPanel1.setBackground(new java.awt.Color(51, 102, 255));
 
@@ -171,8 +172,6 @@ public class DetailsNhanVienDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_btn_exit2MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_exit;
-    private javax.swing.JButton btn_exit1;
     private javax.swing.JButton btn_exit2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
