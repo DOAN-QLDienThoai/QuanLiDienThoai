@@ -28,7 +28,7 @@
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane3" min="-2" pref="754" max="-2" attributes="0"/>
-              <EmptySpace pref="34" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
@@ -429,7 +429,7 @@
                 <Column editable="true" title="STT" type="java.lang.Object"/>
                 <Column editable="true" title="M&#xe3; phi&#x1ebf;u xu&#x1ea5;t" type="java.lang.Object"/>
                 <Column editable="true" title="Kh&#xe1;ch h&#xe0;ng" type="java.lang.Object"/>
-                <Column editable="true" title="Nh&#xe2;n vi&#xea;n nh&#x1ead;p" type="java.lang.Object"/>
+                <Column editable="true" title="Nh&#xe2;n vi&#xea;n xu&#x1ea5;t" type="java.lang.Object"/>
                 <Column editable="true" title="Th&#x1edd;i gian" type="java.lang.Object"/>
                 <Column editable="true" title="T&#x1ed5;ng ti&#x1ec1;n" type="java.lang.Object"/>
               </Table>

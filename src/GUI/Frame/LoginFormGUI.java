@@ -181,7 +181,10 @@ public class LoginFormGUI extends javax.swing.JFrame {
             dao.capNhatTrangThaiDangNhap(tk.getMaNV(), true);
             System.out.println("Đăng Nhập Thanh Công ");
             String tenNV=nvBus.getTenNVByID(tk.getMaNV());
-            new Main(tenNV).setVisible(true); // hoặc truyền tk nếu cần
+            Main main = new Main(tenNV);
+            main.setMaNhanVien(String.valueOf(tk.getMaNV()));
+            main.setTenNhanVien(tenNV);          
+            main.setVisible(true);
             this.dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Sai Tài Khoản Hoặc Mật Khẩu");

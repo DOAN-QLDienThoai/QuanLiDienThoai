@@ -25,6 +25,8 @@ import javax.swing.plaf.basic.BasicComboBoxUI;
 import java.awt.*;
 import javax.swing.border.Border;
 import util.RoundedBorder;
+import java.sql.Connection;
+
 
 /**
  *
@@ -54,8 +56,8 @@ public class PanelNhapPhieuXuat extends javax.swing.JPanel {
             field.setBorder(inputBorder);
         }
         jTextField11.setText(taoMaPhieuXuatMoi());
-        String maNV = main.getMaNhanVien(); 
-        jTextField1.setText(maNV);
+        String tenNV = main.getTenNhanVien(); 
+        jTextField1.setText(tenNV);
         jComboBox5.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
         jComboBox5.setMinimumSize(new Dimension(0, 30));
         jComboBox5.setPrototypeDisplayValue("XXXXXXXXXX");
@@ -633,57 +635,90 @@ if (variant != null) {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        String maPX = jTextField11.getText().trim();
-        String nhanVien = "NV001"; 
-        String tenKH = jTextField12.getText().trim();
-        DefaultTableModel modelCT = (DefaultTableModel) jTable2.getModel();
-        if (tenKH.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn khách hàng!");
+           String maPX = jTextField11.getText().trim();
+    String tenNV = jTextField1.getText().trim();
+    String nhanVien = new DAO.NhanVienDAO().layMaNVTheoTen(tenNV);
+        if (nhanVien == null) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy mã nhân viên từ tên: " + tenNV);
             return;
-        }
-        if (modelCT.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(this, "Chưa có sản phẩm nào để xuất!");
-            return;
-        }
-        String tongTienStr = jLabel8.getText().replace("đ", "").replace(".", "").replace(",", "").trim();
-        double tongTien = Double.parseDouble(tongTienStr);
-        String thoiGian = java.time.LocalDateTime.now().toString();
-        DAO.PhieuXuatDAO pxDAO = new DAO.PhieuXuatDAO();
-        DAO.ChiTietPhieuXuatDAO ctpxDAO = new DAO.ChiTietPhieuXuatDAO();
-        PanelPhieuXuat phieuXuatPanel = main.getPanelPhieuXuat();
-        DAO.PhieuXuatDAO pxDao = new DAO.PhieuXuatDAO();
-        boolean themPhieu = pxDao.themPhieuXuat(maPX, nhanVien,maKhachHangDuocChon, thoiGian, tongTien);
-        if (!themPhieu) {
-            JOptionPane.showMessageDialog(this, "Không thể thêm phiếu xuất vào cơ sở dữ liệu!");
+    }
+    String tenKH = jTextField12.getText().trim();
+    DefaultTableModel modelCT = (DefaultTableModel) jTable2.getModel();
+
+    if (tenKH.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Vui lòng chọn khách hàng!");
         return;
     }
-        DAO.ChiTietPhieuXuatDAO ctpxDao = new DAO.ChiTietPhieuXuatDAO();
+
+    if (modelCT.getRowCount() == 0) {
+        JOptionPane.showMessageDialog(this, "Chưa có sản phẩm nào để xuất!");
+        return;
+    }
+
+    String tongTienStr = jLabel8.getText().replace("đ", "").replace(".", "").replace(",", "").trim();
+    double tongTien = Double.parseDouble(tongTienStr);
+    String thoiGian = java.time.LocalDateTime.now().toString();
+
+    DAO.PhieuXuatDAO pxDao = new DAO.PhieuXuatDAO();
+    DAO.ChiTietPhieuXuatDAO ctpxDao = new DAO.ChiTietPhieuXuatDAO();
+    DAO.PhienBanDienThoaiDAO dao = new DAO.PhienBanDienThoaiDAO();
+    PanelPhieuXuat phieuXuatPanel = main.getPanelPhieuXuat();
+
+    try {
+        Connection conn = util.ConnectedDatabase.getConnectedDB();
+        conn.setAutoCommit(false); // Bắt đầu transaction
+
+        boolean themPhieu = pxDao.themPhieuXuat(conn, maPX, nhanVien, maKhachHangDuocChon, thoiGian, tongTien);
+        if (!themPhieu) {
+            conn.rollback();
+            JOptionPane.showMessageDialog(this, "Không thể thêm phiếu xuất vào cơ sở dữ liệu!");
+            return;
+        }
+
         for (int i = 0; i < modelCT.getRowCount(); i++) {
             String maSP = modelCT.getValueAt(i, 1).toString();
-            String ram = modelCT.getValueAt(i, 3).toString();
-            String rom = modelCT.getValueAt(i, 4).toString();
+            String rom = modelCT.getValueAt(i, 3).toString();
+            String ram = modelCT.getValueAt(i, 4).toString();
             String mau = modelCT.getValueAt(i, 5).toString();
             int soLuong = Integer.parseInt(modelCT.getValueAt(i, 7).toString());
             double donGia = Double.parseDouble(modelCT.getValueAt(i, 6).toString());
-            DAO.PhienBanDienThoaiDAO dao = new DAO.PhienBanDienThoaiDAO();
+
             int dungLuongRam = Integer.parseInt(ram);
             int dungLuongRom = Integer.parseInt(rom);
             int maRam = dao.getMaRamTheoDungLuong(dungLuongRam);
             int maRom = dao.getMaRomTheoDungLuong(dungLuongRom);
             int maPhienBan = dao.getMaPhienBanTheoChiTiet(maSP, String.valueOf(maRam), String.valueOf(maRom), mau);
-              System.out.println("DEBUG maPhienBan = " + maPhienBan 
-        + " | maSP = " + maSP + ", ram = " + ram + ", rom = " + rom + ", màu = " + mau);
-            boolean ok = ctpxDao.themChiTiet(maPX, maPhienBan, soLuong, donGia);
+
+            System.out.println("DEBUG maPhienBan = " + maPhienBan 
+                + " | maSP = " + maSP + ", ram = " + ram + ", rom = " + rom + ", màu = " + mau);
+
+            if (maPhienBan == -1) {
+                conn.rollback();
+                JOptionPane.showMessageDialog(this, "Không tìm thấy phiên bản sản phẩm phù hợp!");
+                return;
+            }
+
+            boolean ok = ctpxDao.themChiTiet(conn, maPX, maPhienBan, soLuong, donGia);
+            System.out.println("✔ Đã thêm chi tiết PX: maPhienBan = " + maPhienBan + ", SL = " + soLuong + ", giá = " + donGia);
+
             if (!ok) {
+                conn.rollback();
                 JOptionPane.showMessageDialog(this, "Thêm chi tiết phiếu xuất thất bại!");
                 return;
             }
-            }
-            phieuXuatPanel.themPhieuXuatVaoBang(maPX, tenKH, nhanVien, thoiGian, tongTien);
-            JOptionPane.showMessageDialog(this, "Xuất hàng thành công!");
-            main.getPanelPhieuXuat().setVisible(true);
-            this.setVisible(false);
+        }
+
+        conn.commit(); // Thành công thì lưu lại toàn bộ
+        JOptionPane.showMessageDialog(this, "Xuất hàng thành công!");
+        String tenNhanVien = jTextField1.getText().trim();
+        phieuXuatPanel.themPhieuXuatVaoBang(maPX, tenKH, tenNhanVien, thoiGian, tongTien);
+        main.getPanelPhieuXuat().setVisible(true);
+        this.setVisible(false);
         resetFormSauKhiXuat();
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Lỗi khi xuất hàng: " + e.getMessage());
+    }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox5ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox5ItemStateChanged
@@ -783,8 +818,12 @@ if (variant != null) {
     return "PX" + (max + 1);
     }
     public void setTenKhachHang(String tenKH) {
-    jTextField12.setText(tenKH);
+        jTextField12.setText(tenKH);
     }
+    public void setTenNhanVien(String tenNV) {
+        jTextField1.setText(tenNV); // jTextField1 là ô nhân viên xuất
+    }
+
     public void setKhachHang(String maKH, String tenKH) {
         this.maKhachHangDuocChon = maKH;
         jTextField12.setText(tenKH); 
@@ -951,7 +990,7 @@ private JList<?> getPopupList(JComboBox<?> comboBox) {
     }
     return null;
 }
-
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

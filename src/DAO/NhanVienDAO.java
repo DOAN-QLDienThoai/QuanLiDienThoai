@@ -106,21 +106,66 @@ public class NhanVienDAO {
         return listNV;
     }
     public ArrayList<String> layTatCaMaNhanVien() {
-    ArrayList<String> ds = new ArrayList<>();
-    try {
-        Connection conn = ConnectedDatabase.getConnectedDB();
-        String sql = "SELECT maNV FROM nhanvien";
-        PreparedStatement ps = conn.prepareStatement(sql);
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            ds.add(rs.getString("maNV"));
+        ArrayList<String> ds = new ArrayList<>();
+        try {
+            Connection conn = ConnectedDatabase.getConnectedDB();
+            String sql = "SELECT maNV FROM nhanvien";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                ds.add(rs.getString("maNV"));
+            }
+            ConnectedDatabase.closeConnectedDB(conn);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        ConnectedDatabase.closeConnectedDB(conn);
-    } catch (Exception e) {
-        e.printStackTrace();
+        return ds;
     }
-    return ds;
-}
+    public String layTenNhanVienTheoMa(String maNV) {
+        String tenNV = "";
+        try (Connection conn = ConnectedDatabase.getConnectedDB();
+             PreparedStatement ps = conn.prepareStatement("SELECT hoTen FROM nhanvien WHERE maNV = ?")) {
+            ps.setString(1, maNV);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                tenNV = rs.getString("hoTen");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return tenNV;
+    }
+    public String layMaNVTheoTen(String tenNV) {
+        String maNV = null;
+        try (Connection conn = ConnectedDatabase.getConnectedDB();
+             PreparedStatement ps = conn.prepareStatement("SELECT maNV FROM nhanvien WHERE hoTen = ? LIMIT 1")) {
+            ps.setString(1, tenNV);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                maNV = rs.getString("maNV");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return maNV;
+    }
+    public ArrayList<String> layTatCaTenNhanVien() {
+        ArrayList<String> danhSachTen = new ArrayList<>();
+        String sql = "SELECT hoten FROM NhanVien";
+
+        try (Connection conn = ConnectedDatabase.getConnectedDB();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+
+            while (rs.next()) {
+                danhSachTen.add(rs.getString("hoten"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return danhSachTen;
+    }
 
     
 }

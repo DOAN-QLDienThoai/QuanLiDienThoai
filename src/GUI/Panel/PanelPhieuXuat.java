@@ -101,7 +101,7 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
     public void setUpTable() {
         DefaultTableModel model = new DefaultTableModel(
             new Object[][]{},
-            new String[] { "STT", "Mã phiếu xuất", "Khách hàng", "Nhân viên nhập", "Thời gian", "Tổng tiền" }
+            new String[] { "STT", "Mã phiếu xuất", "Khách hàng", "Nhân viên xuất", "Thời gian", "Tổng tiền" }
         ) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -428,7 +428,7 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
 
             },
             new String [] {
-                "STT", "Mã phiếu xuất", "Khách hàng", "Nhân viên nhập", "Thời gian", "Tổng tiền"
+                "STT", "Mã phiếu xuất", "Khách hàng", "Nhân viên xuất", "Thời gian", "Tổng tiền"
             }
         ));
         jScrollPane3.setViewportView(table_px);
@@ -441,7 +441,7 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 754, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(34, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -564,14 +564,13 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
         int stt = 1;
         java.text.DecimalFormat df = new java.text.DecimalFormat("#,###");
         for (DTO.PhieuXuatDTO px : danhSach) {
-            model.addRow(new Object[]{
-                stt++,
-                px.getMaPX(),
-                new DAO.KhachHangDAO().layTenKhachHangTheoMa(px.getMaKH()),
-                px.getMaNV(),
-                px.getThoiGian().toString().replace("T", " "),
-                df.format(px.getTongTien()) + "đ"
-            });
+            String tenNV = new DAO.NhanVienDAO().layTenNhanVienTheoMa(px.getMaNV());
+        model.addRow(new Object[]{
+            stt++,
+            px.getMaPX(),
+        new DAO.KhachHangDAO().layTenKhachHangTheoMa(px.getMaKH()),tenNV,px.getThoiGian().toString().replace("T", " "),df.format(px.getTongTien()) + "đ"
+    });
+
         }
     }
     private void filterPhieuXuat() {
@@ -590,7 +589,8 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
             String tenKHDB = new KhachHangDAO().layTenKhachHangTheoMa(px.getMaKH());
             boolean hopLe = true;
             if (!tenKH.equals("Tất cả") && !tenKHDB.equals(tenKH)) hopLe = false;
-            if (!tenNV.equals("Tất cả") && !px.getMaNV().equals(tenNV)) hopLe = false;
+            String tenNVDB = new DAO.NhanVienDAO().layTenNhanVienTheoMa(px.getMaNV());
+            if (!tenNV.equals("Tất cả") && !tenNVDB.equals(tenNV)) hopLe = false;
             java.util.Date ngayPX = java.sql.Timestamp.valueOf(px.getThoiGian());
             java.util.Date now = new java.util.Date();
             if (denNgay != null && denNgay.after(now)) denNgay = now;
@@ -602,19 +602,19 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
             if (!searchType.equals("Tất cả") && !keyword.isEmpty()) {
                 if (searchType.equals("Mã phiếu") && !px.getMaPX().toLowerCase().contains(keyword)) hopLe = false;
                 if (searchType.equals("Khách hàng") && !tenKHDB.toLowerCase().contains(keyword)) hopLe = false;
-                if (searchType.equals("Nhân viên xuất") && !px.getMaNV().toLowerCase().contains(keyword)) hopLe = false;
+                if (searchType.equals("Nhân viên xuất") && !tenNVDB.toLowerCase().contains(keyword)) hopLe = false; // 🔥 Sửa tại đây
             }
             if (!tuTienStr.equals("Tất cả") && !tuTienStr.isEmpty() && tongTien < Double.parseDouble(tuTienStr)) hopLe = false;
             if (!denTienStr.equals("Tất cả") && !denTienStr.isEmpty() && tongTien > Double.parseDouble(denTienStr)) hopLe = false;
             if (hopLe) {
                 model.addRow(new Object[]{
-                    stt++,
-                    px.getMaPX(),
-                    tenKHDB,
-                    px.getMaNV(),
-                    px.getThoiGian().toString().replace("T", " "),
-                    df.format(tongTien) + "đ"
-                });
+                stt++,
+                px.getMaPX(),
+                tenKHDB,
+                tenNVDB, 
+                px.getThoiGian().toString().replace("T", " "),
+                df.format(tongTien) + "đ"
+            });
             }
         }
     }
@@ -628,8 +628,8 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
     private void loadComboBoxNhanVien() {
         jComboBox6.removeAllItems();
         jComboBox6.addItem("Tất cả");
-        for (String maNV : new DAO.NhanVienDAO().layTatCaMaNhanVien()) {
-            jComboBox6.addItem(maNV);
+        for (String tenNV : new DAO.NhanVienDAO().layTatCaTenNhanVien()) {
+        jComboBox6.addItem(tenNV);
         }
     }
     private void exportToExcel() {

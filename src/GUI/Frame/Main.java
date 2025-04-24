@@ -40,6 +40,7 @@ import javax.swing.UIManager;
  */
 public class Main extends javax.swing.JFrame {
     String maNhanVien;
+    String tenNhanVien;
     PanelTrangChu tt=new PanelTrangChu();
     PanelNhanVien nv=new PanelNhanVien();
     PanelNhaCungCap ncc=new PanelNhaCungCap();
@@ -146,6 +147,13 @@ public class Main extends javax.swing.JFrame {
     }
     public String getMaNhanVien() {
         return this.maNhanVien;
+    }
+    public void setTenNhanVien(String tenNV) {
+        this.tenNhanVien = tenNV;
+        nhapphieuxuat.setTenNhanVien(tenNV); // 👈 Truyền xuống panel
+    }
+    public String getTenNhanVien() {
+        return this.tenNhanVien;
     }
     public void setBackgroundJButton(JButton btn) {
         for (JButton menuitem : btns) {

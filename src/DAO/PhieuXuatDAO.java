@@ -24,10 +24,9 @@ public class PhieuXuatDAO {
         }
         return danhSachMa;
     }
-    public boolean themPhieuXuat(String maPhieu, String maNV, String maKh, String ngayTao, double tongTien) {
-       String sql = "INSERT INTO phieuxuat(maPX, maNV, maKh, thoigian, tongtien,trangthai) VALUES (?, ?, ?, ?, ?, 1)";
-        try (Connection conn = ConnectedDatabase.getConnectedDB();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
+public boolean themPhieuXuat(Connection conn, String maPhieu, String maNV, String maKh, String ngayTao, double tongTien) {
+    String sql = "INSERT INTO phieuxuat(maPX, maNV, maKH, thoigian, tongtien, trangthai) VALUES (?, ?, ?, ?, ?, 1)";
+    try (PreparedStatement ps = conn.prepareStatement(sql)) {
         ps.setString(1, maPhieu);
         ps.setString(2, maNV);
         ps.setString(3, maKh);
@@ -38,7 +37,8 @@ public class PhieuXuatDAO {
         e.printStackTrace();
     }
     return false;
-    }
+}
+
     public ArrayList<PhieuXuatDTO> layTatCaPhieuXuat() {
     ArrayList<PhieuXuatDTO> list = new ArrayList<>();
     String sql = "SELECT * FROM phieuxuat WHERE trangThai = 1 ORDER BY thoigian DESC";
