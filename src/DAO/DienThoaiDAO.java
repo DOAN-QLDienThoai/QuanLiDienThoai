@@ -154,41 +154,35 @@ public class DienThoaiDAO {
         }
         return hinhAnh;
     }
-    public DienThoaiDTO layTheoMa(String maDT) {
-    DienThoaiDTO dt = null;
-    try {
-        Connection conn = ConnectedDatabase.getConnectedDB();
-        String sql = "SELECT TOP 1 d.maDT, d.tenDT, d.chipXuLy, p.soLuongTon, p.giaXuat, " +
-                     "r.dungLuongRam, ro.dungLuongRom, m.tenMau " +
-                     "FROM dienthoai d " +
-                     "JOIN phienbandienthoai p ON d.maDT = p.maDT " +
-                     "JOIN ram r ON p.maRam = r.maRam " +
-                     "JOIN rom ro ON p.maRom = ro.maRom " +
-                     "JOIN mausac m ON p.maMau = m.maMau " +
-                     "WHERE d.maDT = ? ";
+public DienThoaiDTO layTheoMa(String maDT, int maRam, int maRom, int maMau) {
+    String sql = "SELECT * FROM dienthoai dt " +
+                 "JOIN phienbandienthoai pb ON dt.maDT = pb.maDT " +
+                 "WHERE dt.maDT = ? AND pb.maRam = ? AND pb.maRom = ? AND pb.maMau = ?";
+    try (Connection conn = ConnectedDatabase.getConnectedDB();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        PreparedStatement stmt = conn.prepareStatement(sql);
-        stmt.setString(1, maDT);
-        ResultSet rs = stmt.executeQuery();
+        ps.setString(1, maDT);
+        ps.setInt(2, maRam);
+        ps.setInt(3, maRom);
+        ps.setInt(4, maMau);
+
+        ResultSet rs = ps.executeQuery();
         if (rs.next()) {
-            dt = new DienThoaiDTO();
+            DienThoaiDTO dt = new DienThoaiDTO();
             dt.setMaDT(rs.getInt("maDT"));
             dt.setTenDT(rs.getString("tenDT"));
-            dt.setChipXuLy(rs.getString("chipXuLy"));
             dt.setGiaXuat(rs.getDouble("giaXuat"));
             dt.setSoLuongTon(rs.getInt("soLuongTon"));
-            dt.setRam(rs.getInt("dungLuongRam"));
-            dt.setRom(rs.getInt("dungLuongRom"));
-            dt.setMauSac(rs.getString("tenMau"));
+            // Gán thêm các thuộc tính khác nếu cần
+            return dt;
         }
-        rs.close();
-        stmt.close();
-        conn.close();
-    } catch (Exception e) {
-        e.printStackTrace();
+    } catch (Exception ex) {
+        ex.printStackTrace();
     }
-    return dt;
+    return null;
 }
+
+
 
 
 

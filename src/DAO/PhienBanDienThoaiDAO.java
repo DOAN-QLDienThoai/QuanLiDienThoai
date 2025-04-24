@@ -60,7 +60,7 @@ public class PhienBanDienThoaiDAO {
     }
 
     public int deletePhienBan(int maPhienBan) {
-        String sqlDeletePB = "DELETE PhienBanDienThoai WHERE maPhienBan=? ";
+        String sqlDeletePB = "DELETE FROM PhienBanDienThoai WHERE maPhienBan=? ";
         PreparedStatement ps;
         try {
             ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlDeletePB);
@@ -215,6 +215,7 @@ public class PhienBanDienThoaiDAO {
         } catch (Exception e) {
             e.printStackTrace();
         }
+         System.out.println("⚠ Không tìm thấy RAM với dung lượng: " + dungLuong);
         return -1;
     }
 

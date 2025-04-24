@@ -94,66 +94,63 @@ public class PanelNhapPhieuXuat extends javax.swing.JPanel {
         if (selectedRow >= 0) {
             String maSP = jTable1.getValueAt(selectedRow, 0).toString();
             String tenSP = jTable1.getValueAt(selectedRow, 1).toString();
-            DienThoaiDTO dt = new DienThoaiBUS().layThongTinTheoMa(maSP);
+    
             jTextField3.setText(maSP);               
             jTextField5.setText(tenSP);           
             PhienBanDienThoaiDAO pbDao = new PhienBanDienThoaiDAO();
             ArrayList<String> configs = pbDao.getArrayListCauHinhByMaDT(Integer.parseInt(maSP));
             jComboBox5.removeAllItems();
-            for (String config : configs) {
-                jComboBox5.addItem(config);
-            }
             if (!configs.isEmpty()) {
-                String firstConfig = configs.get(0);
-                jComboBox5.setSelectedItem(firstConfig);
-                PhienBanDienThoaiDAO dao = new PhienBanDienThoaiDAO();
-                String[] parts = firstConfig.split(" - ");
-                if (parts.length == 3) {
-                    String rom = parts[0].replace("GB", "").trim();
-                    String ram = parts[1].replace("GB", "").trim();
-                    String color = parts[2].trim();
-                    int maMau = new MauSacDAO().getMaMauByTen(color);
-                    int maRam = dao.getMaRamTheoDungLuong(Integer.parseInt(ram));
-                    int maRom = dao.getMaRomTheoDungLuong(Integer.parseInt(rom));
-                    int maDT = Integer.parseInt(maSP); 
-                    PhienBanDienThoaiDTO variant = dao.getTheoCauHinh(maDT, maRam, maRom, maMau);
-                    if (variant != null) {
-                        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-                        symbols.setGroupingSeparator('.');
-                        DecimalFormat formatter = new DecimalFormat("#,###", symbols);
-                        jTextField6.setText(formatter.format(variant.getGiaXuat()) + " đ");
-                        jTextField7.setText(String.valueOf(variant.getSoLuongTon()));
-                    }
-                }
-            }
+    for (String config : configs) {
+        jComboBox5.addItem(config);
+    }
+    jComboBox5.setSelectedIndex(0); // ✔ GỌI TỰ ĐỘNG itemStateChanged để load giá và tồn
+}
+
         }
         }
         });     
                 jComboBox5.addItemListener(new java.awt.event.ItemListener() {
                     @Override
                     public void itemStateChanged(java.awt.event.ItemEvent e) {
-                     if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-                            String selected = (String) jComboBox5.getSelectedItem();
-                    if (selected == null || selected.isEmpty()) return;
-                    String[] parts = selected.split(" - ");
-                    if (parts.length != 3) return;
-                    String rom = parts[0].replace("GB", "").trim();
-                    String ram = parts[1].replace("GB", "").trim();
-                    String color = parts[2].trim();
-                    String maDTStr = jTextField3.getText().trim();
-                    if (maDTStr.isEmpty()) return;
-                    int maDT = Integer.parseInt(maDTStr);
-                    int maMau = new MauSacDAO().getMaMauByTen(color);
-                    PhienBanDienThoaiDAO dao = new PhienBanDienThoaiDAO();
-                    PhienBanDienThoaiDTO variant = dao.getTheoCauHinh(maDT, Integer.parseInt(ram), Integer.parseInt(rom), maMau);
-                    if (variant != null) {
-                        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-                        symbols.setGroupingSeparator('.');
-                        DecimalFormat formatter = new DecimalFormat("#,###", symbols);
-                        jTextField6.setText(formatter.format(variant.getGiaXuat()) + " đ");
-                        jTextField7.setText(String.valueOf(variant.getSoLuongTon()));
-                    }
-                }
+                 if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+    String selected = (String) jComboBox5.getSelectedItem();
+    if (selected == null || selected.trim().isEmpty()) return;
+
+    String[] parts = selected.split("-");
+    if (parts.length != 3) return;
+
+    String ramStr = parts[0].replace("GB", "").trim();
+    String romStr = parts[1].replace("GB", "").trim();
+    String mau = parts[2].trim();
+
+    String maDTStr = jTextField3.getText().trim();
+    if (maDTStr.isEmpty()) return;
+    int maDT = Integer.parseInt(maDTStr);
+
+    PhienBanDienThoaiDAO dao = new PhienBanDienThoaiDAO();
+    MauSacDAO mauDAO = new MauSacDAO();
+    int maRam = dao.getMaRamTheoDungLuong(Integer.parseInt(ramStr));
+    int maRom = dao.getMaRomTheoDungLuong(Integer.parseInt(romStr));
+    int maMau = mauDAO.getMaMauByTen(mau);
+ System.out.println("DEBUG chọn cấu hình:");
+            System.out.println("maDT = " + maDT + ", maRam = " + maRam + ", maRom = " + maRom + ", maMau = " + maMau);
+PhienBanDienThoaiDTO variant = dao.getTheoCauHinh(maDT, maRam, maRom, maMau);
+System.out.println("variant = " + variant);
+if (variant != null) {
+    System.out.println("GiaXuat: " + variant.getGiaXuat());
+    System.out.println("TonKho: " + variant.getSoLuongTon());
+}
+
+if (variant != null) {
+    DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+    symbols.setGroupingSeparator('.');
+    DecimalFormat formatter = new DecimalFormat("#,###", symbols);
+    jTextField6.setText(formatter.format(variant.getGiaXuat()) + " đ");
+    jTextField7.setText(String.valueOf(variant.getSoLuongTon()));
+}
+}
+
             }
         });
         loadCauHinhVaoComboBox();
@@ -570,7 +567,7 @@ public class PanelNhapPhieuXuat extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Sản phẩm này đã hết hàng!");
             return;
         }
-        String[] parts = cauHinh.split(" - ");
+        String[] parts = cauHinh.split("-");
         if (parts.length != 3) {
             JOptionPane.showMessageDialog(this, "Cấu hình không hợp lệ.");
             return;
@@ -694,10 +691,10 @@ public class PanelNhapPhieuXuat extends javax.swing.JPanel {
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
         String selected = (String) jComboBox5.getSelectedItem();
         if (selected == null || selected.trim().isEmpty()) return;
-        String[] parts = selected.split(" - ");
+        String[] parts = selected.split("-");
         if (parts.length != 3) return;
-        String rom = parts[0].replace("GB", "").trim();
-        String ram = parts[1].replace("GB", "").trim();
+        String ram = parts[0].replace("GB", "").trim();
+        String rom = parts[1].replace("GB", "").trim();
         String color = parts[2].trim();
         String maDTStr = jTextField3.getText().trim();
         if (maDTStr.isEmpty()) return;
@@ -757,19 +754,20 @@ public class PanelNhapPhieuXuat extends javax.swing.JPanel {
         }
     }
 
-    private void loadCauHinhVaoComboBox() {
-        jComboBox5.removeAllItems();
-        DienThoaiBUS dtBus = new DienThoaiBUS();
-        ArrayList<DienThoaiDTO> list = dtBus.listDT();
-        HashSet<String> cauHinhs = new HashSet<>();
-        for (DienThoaiDTO dt : list) {
-            String config = dt.getRom() + "GB - " + dt.getRam() + "GB - " + dt.getMauSac();
-            cauHinhs.add(config); 
-        }
-        for (String ch : cauHinhs) {
-            jComboBox5.addItem(ch);
-        }
+  private void loadCauHinhVaoComboBox() {
+    jComboBox5.removeAllItems();
+    PhienBanDienThoaiDAO dao = new PhienBanDienThoaiDAO();
+    String maDTStr = jTextField3.getText().trim();
+    if (maDTStr.isEmpty()) return;
+
+    int maDT = Integer.parseInt(maDTStr);
+    ArrayList<String> configs = dao.getArrayListCauHinhByMaDT(maDT);
+
+    for (String config : configs) {
+        jComboBox5.addItem(config);
     }
+}
+
     private String taoMaPhieuXuatMoi() {
     int max = 0;
     ArrayList<String> dsMa = new DAO.PhieuXuatDAO().layDanhSachMaPhieuXuat();
