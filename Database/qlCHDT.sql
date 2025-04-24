@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 20, 2025 at 09:28 AM
+-- Generation Time: Apr 24, 2025 at 10:51 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -538,6 +538,31 @@ INSERT INTO `rom` (`maRom`, `dungLuongRom`, `trangThai`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `taikhoan`
+--
+
+CREATE TABLE `taikhoan` (
+  `maNV` varchar(10) DEFAULT NULL,
+  `tenDangNhap` varchar(50) NOT NULL,
+  `matKhau` varchar(255) NOT NULL,
+  `trangThai` tinyint(1) DEFAULT 1,
+  `isLogin` tinyint(1) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `taikhoan`
+--
+
+INSERT INTO `taikhoan` (`maNV`, `tenDangNhap`, `matKhau`, `trangThai`, `isLogin`) VALUES
+('1', 'admin', 'admin@123', 1, 1),
+('5', 'guest', 'guest123', 0, 0),
+('3', 'nvbanhang1', 'banhang1', 1, 0),
+('4', 'nvbanhang2', 'banhang2', 1, 0),
+('2', 'qlnhansu', 'nhansu123', 1, 0);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `thuonghieu`
 --
 
@@ -599,6 +624,29 @@ ALTER TABLE `hedieuhanh`
 --
 ALTER TABLE `khachhang`
   ADD PRIMARY KEY (`maKh`);
+
+--
+-- Indexes for table `nhanvien`
+--
+ALTER TABLE `nhanvien`
+  ADD PRIMARY KEY (`maNV`);
+
+--
+-- Indexes for table `taikhoan`
+--
+ALTER TABLE `taikhoan`
+  ADD PRIMARY KEY (`tenDangNhap`),
+  ADD KEY `maNV` (`maNV`);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `taikhoan`
+--
+ALTER TABLE `taikhoan`
+  ADD CONSTRAINT `taikhoan_ibfk_1` FOREIGN KEY (`maNV`) REFERENCES `nhanvien` (`maNV`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
