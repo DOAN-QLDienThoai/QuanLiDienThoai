@@ -42,6 +42,13 @@ public class NhaCungCapBUS {
         }
         return check;
     }
+    public int deleteCheckNhaCungCap(int maNCC){
+        int check=nccDao.deleteCheckNhaCungCap(maNCC);
+        if(check==1){
+            listNCC=nccDao.listNCC();
+        }
+        return check;
+    }
     public int getIndexByID(int maNCC){
         listNCC=nccDao.listNCC();
         int i=0;
@@ -64,6 +71,7 @@ public class NhaCungCapBUS {
         return listNCC.get(index).getName();
     }
     public ArrayList<NhaCungCapDTO> timKiem(String text,String type){
+        listNCC=nccDao.listNCC();
         ArrayList<NhaCungCapDTO> listNCCFilter=new ArrayList<>();
         String find_text=text.toLowerCase();
         for(NhaCungCapDTO ncc : listNCC){

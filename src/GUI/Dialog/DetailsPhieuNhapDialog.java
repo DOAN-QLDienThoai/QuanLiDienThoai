@@ -61,20 +61,23 @@ public class DetailsPhieuNhapDialog extends javax.swing.JDialog {
         String[] colNames = {"Mã SP", "Tên SP", "Ram", "Rom", "Màu sắc", "Đơn giá", "Số lượng"};
         Object[][] rows = new Object[listCTPN.size()][colNames.length];
         for (int i = 0; i < listCTPN.size(); i++) {
-            rows[i][0]=pbDao.getMaDTByMaPhienBan(listCTPN.get(i).getMaPB());
-            int maDT=Integer.parseInt(rows[i][0].toString());
-            rows[i][1]=dtBus.getTenDTByID(maDT);
-            int maRam=pbDao.getMaRamByMaPhienBan(listCTPN.get(i).getMaPB());
-            rows[i][2]=ramBus.getDungLuongRambyID(maRam);
-            int maRom=pbDao.getMaRomByMaPhienBan(listCTPN.get(i).getMaPB());
-            rows[i][3]=romBus.getDungLuongRombyID(maRom);
-            int maMau=pbDao.getMaMauByMaPhienBan(listCTPN.get(i).getMaPB());
-            rows[i][4]=msBus.getTenMauByID(maMau);
-            rows[i][5]=String.format("%,.0f", listCTPN.get(i).getDongia());
-            rows[i][6]=listCTPN.get(i).getSoluong();
+            rows[i][0] = pbDao.getMaDTByMaPhienBan(listCTPN.get(i).getMaPB());
+            int maDT = Integer.parseInt(rows[i][0].toString());
+            System.out.println(maDT);
+            rows[i][1] = dtBus.getTenDTByID(maDT);
+            int maRam = pbDao.getMaRamByMaPhienBan(listCTPN.get(i).getMaPB());
+            rows[i][2] = ramBus.getDungLuongRambyID(maRam);
+            int maRom = pbDao.getMaRomByMaPhienBan(listCTPN.get(i).getMaPB());
+            rows[i][3] = romBus.getDungLuongRombyID(maRom);
+            int maMau = pbDao.getMaMauByMaPhienBan(listCTPN.get(i).getMaPB());
+            rows[i][4] = msBus.getTenMauByID(maMau);
+            rows[i][5] = String.format("%,.0f", listCTPN.get(i).getDongia());
+            rows[i][6] = listCTPN.get(i).getSoluong();
         }
-        DefaultTableModel model =new DefaultTableModel(rows,colNames);
+        DefaultTableModel model = new DefaultTableModel(rows, colNames);
         table_view_ctpn.setModel(model);
+        table_view_ctpn.getColumnModel().getColumn(0).setPreferredWidth(30);
+        table_view_ctpn.getColumnModel().getColumn(1).setPreferredWidth(180);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

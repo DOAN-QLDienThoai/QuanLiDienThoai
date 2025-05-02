@@ -13,7 +13,15 @@ public class TaiKhoanDTO {
     private String tenDangNhap;
     private String matKhau;
     private String trangThai;
-
+    public TaiKhoanDTO(){
+        
+    }
+    public TaiKhoanDTO(int maNV,String tenDangNhap,String matKhau,String trangThai){
+        this.maNV=maNV;
+        this.tenDangNhap=tenDangNhap;
+        this.matKhau=matKhau;
+        this.trangThai=trangThai;
+    }
     // Getters and Setters
     public int getMaNV() {
         return maNV;

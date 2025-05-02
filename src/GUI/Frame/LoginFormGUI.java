@@ -22,7 +22,6 @@ public class LoginFormGUI extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setTitle("Đăng nhập");
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -179,7 +178,6 @@ public class LoginFormGUI extends javax.swing.JFrame {
         TaiKhoanDTO tk = dao.ktraDangNhap(user, pass);
         if (tk != null) {
             dao.capNhatTrangThaiDangNhap(tk.getMaNV(), true);
-            System.out.println("Đăng Nhập Thanh Công ");
             String tenNV=nvBus.getTenNVByID(tk.getMaNV());
             Main main = new Main(tenNV);
             main.setMaNhanVien(String.valueOf(tk.getMaNV()));
@@ -187,7 +185,7 @@ public class LoginFormGUI extends javax.swing.JFrame {
             main.setVisible(true);
             this.dispose();
         } else {
-            JOptionPane.showMessageDialog(this, "Sai Tài Khoản Hoặc Mật Khẩu");
+            JOptionPane.showMessageDialog(null, "Sai Tài Khoản Hoặc Mật Khẩu","Error",0);
         }
     }//GEN-LAST:event_DangnhapActionPerformed
 

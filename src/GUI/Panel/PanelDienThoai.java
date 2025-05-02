@@ -44,9 +44,18 @@ public class PanelDienThoai extends javax.swing.JPanel {
         setShadowforJPN();
         khoitaoChooseFilterDT();
         setTextHidden();
+        setUpJTF();
+        setUpBtn();
     }
     public JTable getTableDienThoai(){
         return this.table_dt;
+    }
+    public void setUpBtn(){
+        func.setUpBtn(btn_refresh_dt, Color.WHITE, new Color(220,220,220));
+        func.setUpBtn(btn_look_dt, Color.WHITE, new Color(220,220,220));
+    }
+    public void setUpJTF(){
+        func.setUpJTF(jtf_find_dt);
     }
     public void setTextHidden(){
         PromptSupport.setPrompt("Tìm kiếm nhanh", jtf_find_dt);
@@ -74,17 +83,17 @@ public class PanelDienThoai extends javax.swing.JPanel {
     }
     //Chỉnh icon cho các jlabel
     public void setIconForJlabel() {
-        jlabel_look_dt.setIcon(new FlatSVGIcon("./resources/icon/look.svg", 0.9f));
+        btn_look_dt.setIcon(new FlatSVGIcon("./resources/icon/look.svg", 0.6f));
         jlabel_chiTiet_dt.setIcon(new FlatSVGIcon("./resources/icon/details.svg", 0.45f));
-        jlabel_refresh.setIcon(new FlatSVGIcon("./resources/icon/refresh.svg", 0.35f));
+        btn_refresh_dt.setIcon(new FlatSVGIcon("./resources/icon/refresh.svg", 0.25f));
         jlabel_excel.setIcon(new FlatSVGIcon("./resources/icon/export_excel.svg", 0.85f));
         jlabel_add_dt.setIcon(new FlatSVGIcon("./resources/icon/add.svg", 0.06f));
         jlabel_update_dt.setIcon(new FlatSVGIcon("./resources/icon/update.svg", 0.85f));
         jlabel_delete_dt.setIcon(new FlatSVGIcon("./resources/icon/delete.svg", 0.75f));
     }
     public void setCusorPointer() {
-        List<JLabel> jlabels =List.of(jlabel_add_dt,jlabel_update_dt,jlabel_delete_dt,jlabel_refresh
-        ,jlabel_excel,jlabel_chiTiet_dt,jlabel_look_dt);
+        List<JLabel> jlabels =List.of(jlabel_add_dt,jlabel_update_dt,jlabel_delete_dt
+        ,jlabel_excel,jlabel_chiTiet_dt);
         for(JLabel label : jlabels )
             func.cursorPointer(label);
     }
@@ -107,16 +116,12 @@ public class PanelDienThoai extends javax.swing.JPanel {
         table_dt = new javax.swing.JTable();
         jpanel_timkiem_dt = new javax.swing.JPanel();
         jtf_find_dt = new javax.swing.JTextField();
-        jlabel_look_dt = new javax.swing.JLabel();
         combobox_find_dt = new javax.swing.JComboBox<>();
         jLabel17 = new javax.swing.JLabel();
-        jpanel_filter = new javax.swing.JPanel();
-        jlabel_refresh = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        btn_refresh_dt = new javax.swing.JButton();
+        btn_look_dt = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(1000, 609));
-
-        jpanel_chucNang_dt.setBackground(new java.awt.Color(255, 255, 255));
 
         jlabel_delete_dt.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -226,15 +231,20 @@ public class PanelDienThoai extends javax.swing.JPanel {
         ));
         jScrollPane5.setViewportView(table_dt);
 
-        jpanel_timkiem_dt.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel17.setText("Tìm kiếm theo");
 
-        jlabel_look_dt.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jlabel_look_dtMouseClicked(evt);
+        btn_refresh_dt.setText("Làm mới");
+        btn_refresh_dt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_refresh_dtActionPerformed(evt);
             }
         });
 
-        jLabel17.setText("Tìm kiếm theo");
+        btn_look_dt.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_look_dtActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpanel_timkiem_dtLayout = new javax.swing.GroupLayout(jpanel_timkiem_dt);
         jpanel_timkiem_dt.setLayout(jpanel_timkiem_dtLayout);
@@ -248,52 +258,25 @@ public class PanelDienThoai extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jtf_find_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jlabel_look_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addComponent(btn_look_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btn_refresh_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(41, Short.MAX_VALUE))
         );
         jpanel_timkiem_dtLayout.setVerticalGroup(
             jpanel_timkiem_dtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpanel_timkiem_dtLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(25, Short.MAX_VALUE)
                 .addComponent(jLabel17)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jpanel_timkiem_dtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlabel_look_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jpanel_timkiem_dtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(combobox_find_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jtf_find_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jpanel_timkiem_dtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btn_look_dt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jpanel_timkiem_dtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jpanel_timkiem_dtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(combobox_find_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jtf_find_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btn_refresh_dt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(19, 19, 19))
-        );
-
-        jlabel_refresh.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jlabel_refreshMouseClicked(evt);
-            }
-        });
-
-        jLabel5.setText("Làm mới");
-
-        javax.swing.GroupLayout jpanel_filterLayout = new javax.swing.GroupLayout(jpanel_filter);
-        jpanel_filter.setLayout(jpanel_filterLayout);
-        jpanel_filterLayout.setHorizontalGroup(
-            jpanel_filterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpanel_filterLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpanel_filterLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jlabel_refresh, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
-        jpanel_filterLayout.setVerticalGroup(
-            jpanel_filterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpanel_filterLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jlabel_refresh, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel5)
-                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -301,41 +284,25 @@ public class PanelDienThoai extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-//<<<<<<< HEAD
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jpanel_chucNang_dt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(36, 36, 36)
-// =======
-//                 .addGap(24, 24, 24)
-//                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-//                     .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 900, javax.swing.GroupLayout.PREFERRED_SIZE)
-//                     .addGroup(layout.createSequentialGroup()
-//                         .addComponent(jpanel_chucNang_dt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-//                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-// >>>>>>> mhuy
-                        .addComponent(jpanel_timkiem_dt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jpanel_filter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(14, Short.MAX_VALUE))
+                        .addComponent(jpanel_timkiem_dt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(jpanel_chucNang_dt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jpanel_timkiem_dt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jpanel_filter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jpanel_chucNang_dt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jpanel_timkiem_dt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -411,28 +378,28 @@ public class PanelDienThoai extends javax.swing.JPanel {
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         new DetailsDienThoaiDialog((Frame) parentWindow, true, dt).setVisible(true);
     }//GEN-LAST:event_jlabel_chiTiet_dtMouseClicked
+           
+    private void btn_refresh_dtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_refresh_dtActionPerformed
+        jtf_find_dt.setText("");
+        setUpTable();
+    }//GEN-LAST:event_btn_refresh_dtActionPerformed
 
-    private void jlabel_look_dtMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_look_dtMouseClicked
+    private void btn_look_dtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_look_dtActionPerformed
         String type = combobox_find_dt.getSelectedItem().toString();
         String find_text = jtf_find_dt.getText().toLowerCase();
         func.addDataTableDienThoai(dtBus.timKiem(find_text, type), table_dt);
         func.centerTable(table_dt);
-    }//GEN-LAST:event_jlabel_look_dtMouseClicked
-
-    private void jlabel_refreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_refreshMouseClicked
-        jtf_find_dt.setText("");
-        func.addDataTableDienThoai(dtBus.listDT(), table_dt);
-        func.centerTable(table_dt);
-    }//GEN-LAST:event_jlabel_refreshMouseClicked
+    }//GEN-LAST:event_btn_look_dtActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_look_dt;
+    private javax.swing.JButton btn_refresh_dt;
     private javax.swing.JComboBox<String> combobox_find_dt;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JScrollPane jScrollPane5;
@@ -440,11 +407,8 @@ public class PanelDienThoai extends javax.swing.JPanel {
     private javax.swing.JLabel jlabel_chiTiet_dt;
     private javax.swing.JLabel jlabel_delete_dt;
     private javax.swing.JLabel jlabel_excel;
-    private javax.swing.JLabel jlabel_look_dt;
-    private javax.swing.JLabel jlabel_refresh;
     private javax.swing.JLabel jlabel_update_dt;
     private javax.swing.JPanel jpanel_chucNang_dt;
-    private javax.swing.JPanel jpanel_filter;
     private javax.swing.JPanel jpanel_timkiem_dt;
     private javax.swing.JTextField jtf_find_dt;
     private javax.swing.JTable table_dt;

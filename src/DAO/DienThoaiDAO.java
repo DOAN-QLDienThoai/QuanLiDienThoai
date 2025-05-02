@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 import java.sql.Connection;
 
 public class DienThoaiDAO {
-
+    //Thêm điện thoại (ahuy)
     public int insertDienThoai(DienThoaiDTO dt) {
         try {
             String sqlAdd = "INSERT INTO DienThoai(tenDT,maHDH,maThuongHieu,chipXuLy,dungLuongPin,kichThuocMan,hinhAnh,trangThai) "
@@ -26,15 +26,16 @@ public class DienThoaiDAO {
             ps.setInt(5, dt.getDungLuongPin());
             ps.setDouble(6, dt.getKichThuocMan());
             ps.setString(7, dt.getHinhAnh());
-            if(ps.executeUpdate()>0)
+            if (ps.executeUpdate() > 0) {
                 return 1;
+            }
             ps.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return 0;
     }
-
+    //Cập nhật điện thoại (ahuy)
     public int updateDienThoai(DienThoaiDTO dt) {
         try {
             String sqlUpdate = "UPDATE DienThoai "
@@ -59,7 +60,7 @@ public class DienThoaiDAO {
         }
         return 0;
     }
-
+    //Xóa điện thoại (ahuy)
     public int deleteDienThoai(int maDT) {
         try {
             String sqlDelete = "UPDATE DienThoai SET trangThai=0 "
@@ -93,7 +94,9 @@ public class DienThoaiDAO {
         }
         return id;
     }
-    public int updateSoLuongTonDienThoai(int maPhienBan, int soLuongNhap) {
+    
+    //Cập nhật số lượng tồn kho sau khi nhập (ahuy)
+    public int updateSoLuongTonDienThoaiSauKhiNhap(int maPhienBan, int soLuongNhap) {
         String sql = "UPDATE DienThoai SET soLuongTon = soLuongTon + ? "
                 + "WHERE maDT = (SELECT maDT FROM PhienBanDienThoai WHERE maPhienBan = ?)";
         PreparedStatement ps;
@@ -109,6 +112,23 @@ public class DienThoaiDAO {
         }
         return 0;
     }
+    public int updateSoLuongTonDienThoaiSauKhiXuat(int maPhienBan, int soLuongXuat) {
+        String sql = "UPDATE DienThoai SET soLuongTon = soLuongTon - ? "
+                + "WHERE maDT = (SELECT maDT FROM PhienBanDienThoai WHERE maPhienBan = ?)";
+        PreparedStatement ps;
+        try {
+            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            ps.setInt(1, soLuongXuat);
+            ps.setInt(2, maPhienBan);
+            if (ps.executeUpdate() > 0) {
+                return 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    //Lấy danh sách điện thoại (ahuy)
     public ArrayList<DienThoaiDTO> listDT() {
         ArrayList<DienThoaiDTO> listDT = new ArrayList<>();
         String sqlListDT = "SELECT * FROM DienThoai WHERE trangThai=1";
@@ -126,64 +146,61 @@ public class DienThoaiDAO {
                 int dungLuongPin = rs.getInt("dungLuongPin");
                 double kichThuocMan = rs.getDouble("kichThuocMan");
                 String hinhanh = rs.getString("hinhanh");
-                int soLuongTon=rs.getInt("soLuongTon");
-                listDT.add(new DienThoaiDTO(maDT, tenDT, heDieuHanh, thuongHieu, chipXuLy, dungLuongPin, kichThuocMan, hinhanh,soLuongTon));
+                int soLuongTon = rs.getInt("soLuongTon");
+                listDT.add(new DienThoaiDTO(maDT, tenDT, heDieuHanh, thuongHieu, chipXuLy, dungLuongPin, kichThuocMan, hinhanh, soLuongTon));
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return listDT;
     }
-    public String getHinhAnh(int maDT){
-        String hinhAnh=null;
+    //Lấy link hình ảnh (ahuy)
+    public String getHinhAnh(int maDT) {
+        String hinhAnh = null;
         String sqlgetHinhAnh = "SELECT hinhAnh FROM DienThoai WHERE maDT=? ";
         PreparedStatement ps;
         ResultSet rs;
-        try{
-            ps=ConnectedDatabase.getConnectedDB().prepareStatement(sqlgetHinhAnh);
+        try {
+            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlgetHinhAnh);
             ps.setInt(1, maDT);
-            rs=ps.executeQuery();
-            if(rs.next()){
-                hinhAnh=rs.getString("hinhAnh");
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                hinhAnh = rs.getString("hinhAnh");
             }
             rs.close();
             ps.close();
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null,"Không lấy được link hình ảnh","Error",0);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "Không lấy được link hình ảnh", "Error", 0);
             e.printStackTrace();
         }
         return hinhAnh;
     }
-public DienThoaiDTO layTheoMa(String maDT, int maRam, int maRom, int maMau) {
-    String sql = "SELECT * FROM dienthoai dt " +
-                 "JOIN phienbandienthoai pb ON dt.maDT = pb.maDT " +
-                 "WHERE dt.maDT = ? AND pb.maRam = ? AND pb.maRom = ? AND pb.maMau = ?";
-    try (Connection conn = ConnectedDatabase.getConnectedDB();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        ps.setString(1, maDT);
-        ps.setInt(2, maRam);
-        ps.setInt(3, maRom);
-        ps.setInt(4, maMau);
+    public DienThoaiDTO layTheoMa(String maDT, int maRam, int maRom, int maMau) {
+        String sql = "SELECT * FROM dienthoai dt "
+                + "JOIN phienbandienthoai pb ON dt.maDT = pb.maDT "
+                + "WHERE dt.maDT = ? AND pb.maRam = ? AND pb.maRom = ? AND pb.maMau = ?";
+        try (Connection conn = ConnectedDatabase.getConnectedDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            DienThoaiDTO dt = new DienThoaiDTO();
-            dt.setMaDT(rs.getInt("maDT"));
-            dt.setTenDT(rs.getString("tenDT"));
-            dt.setGiaXuat(rs.getDouble("giaXuat"));
-            dt.setSoLuongTon(rs.getInt("soLuongTon"));
-            // Gán thêm các thuộc tính khác nếu cần
-            return dt;
+            ps.setString(1, maDT);
+            ps.setInt(2, maRam);
+            ps.setInt(3, maRom);
+            ps.setInt(4, maMau);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                DienThoaiDTO dt = new DienThoaiDTO();
+                dt.setMaDT(rs.getInt("maDT"));
+                dt.setTenDT(rs.getString("tenDT"));
+                dt.setGiaXuat(rs.getDouble("giaXuat"));
+                dt.setSoLuongTon(rs.getInt("soLuongTon"));
+                // Gán thêm các thuộc tính khác nếu cần
+                return dt;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-    } catch (Exception ex) {
-        ex.printStackTrace();
+        return null;
     }
-    return null;
-}
-
-
-
-
 
 }

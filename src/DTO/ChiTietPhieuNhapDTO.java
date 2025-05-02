@@ -13,26 +13,14 @@ public class ChiTietPhieuNhapDTO {
     private int maPhienBan;
     private int soluong;
     private double dongia;
-    private String hinhthucnhap;
     public ChiTietPhieuNhapDTO(){
     }
-    public ChiTietPhieuNhapDTO(String maPN,int maPhienBan, int soluong, double dongia,String hinhthucnhap) {
+    public ChiTietPhieuNhapDTO(String maPN,int maPhienBan, int soluong, double dongia) {
         this.maPN = maPN;
         this.maPhienBan = maPhienBan;
         this.soluong = soluong;
         this.dongia = dongia;
-        this.hinhthucnhap = hinhthucnhap;
     }
-
-    public String getHinhthucnhap() {
-        return hinhthucnhap;
-    }
-
-    public void setHinhthucnhap(String hinhthucnhap) {
-        this.hinhthucnhap = hinhthucnhap;
-    }
-
-    
     public String getMaPhieuNhap() {
         return maPN;
     }

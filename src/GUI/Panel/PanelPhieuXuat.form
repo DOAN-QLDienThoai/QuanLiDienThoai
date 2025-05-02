@@ -83,7 +83,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jpanel_chucNang_px" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="646" max="32767" attributes="0"/>
+                  <EmptySpace pref="647" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

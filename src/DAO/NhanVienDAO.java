@@ -22,7 +22,7 @@ import java.sql.Connection;
  * @author kiman
  */
 public class NhanVienDAO {
-
+    //Thêm nhân viên (ahuy)
     public int insertNhanVien(NhanVienDTO nv) {
         try {
             String sqlAdd = "INSERT INTO NhanVien(hoTen,ngaySinh,gioiTinh,sdt,trangThai) "
@@ -42,7 +42,7 @@ public class NhanVienDAO {
         }
         return 0;
     }
-
+    //Cập nhật nhân viên (ahuy)
     public int updateNhanVien(NhanVienDTO nv) {
         try {
             String sqlUpdate = "UPDATE NhanVien "
@@ -64,7 +64,7 @@ public class NhanVienDAO {
         }
         return 0;
     }
-
+    //Xóa nhân viên (ahuy)
     public int deleteNhanVien(int maNV) {
         try {
             String sqlDelete = "UPDATE NhanVien SET trangThai=0 "
@@ -81,9 +81,35 @@ public class NhanVienDAO {
         }
         return 0;
     }
-    
-    
-
+    //Kiểm tra khóa chính nhân viên có đang đc khóa ngoại nào tham chiếu đến không để chặn không được xóa
+    public int deleteCheckNhanVien(int maNV) {
+        String checkSQL = "SELECT COUNT(*) FROM PhieuNhap WHERE maNV = ? AND trangthai=1 ";
+        String deleteSQL = "UPDATE NhanVien SET trangThai=0 "
+                    + "WHERE maNV=?";
+        PreparedStatement psCheck, psDelete;
+        ResultSet rs;
+        try {
+            psCheck = ConnectedDatabase.getConnectedDB().prepareStatement(checkSQL);
+            psCheck.setInt(1, maNV);
+            rs = psCheck.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Không thể xóa nhân viên này vì đang được sử dụng trong phiếu nhập.",
+                        "Error", 0);
+                return 0;
+            }
+            psDelete = ConnectedDatabase.getConnectedDB().prepareStatement(deleteSQL);
+            psDelete.setInt(1, maNV);
+            if (psDelete.executeUpdate() > 0) {
+                JOptionPane.showMessageDialog(null, "Xóa nhân viên thành công");
+                return 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    //Lấy danh sách nhân viên (ahuy)
     public ArrayList<NhanVienDTO> listNV() {
         ArrayList<NhanVienDTO> listNV = new ArrayList<NhanVienDTO>();
         String sqlListNV = "SELECT * FROM NhanVien WHERE trangThai=1";
@@ -105,6 +131,14 @@ public class NhanVienDAO {
         }
         return listNV;
     }
+    
+    
+    
+    
+    
+    
+    
+    
     public ArrayList<String> layTatCaMaNhanVien() {
         ArrayList<String> ds = new ArrayList<>();
         try {
@@ -135,14 +169,14 @@ public class NhanVienDAO {
         }
         return tenNV;
     }
-    public String layMaNVTheoTen(String tenNV) {
-        String maNV = null;
+    public int layMaNVTheoTen(String tenNV) {
+        int maNV = -1;
         try (Connection conn = ConnectedDatabase.getConnectedDB();
-             PreparedStatement ps = conn.prepareStatement("SELECT maNV FROM nhanvien WHERE hoTen = ? LIMIT 1")) {
+             PreparedStatement ps = conn.prepareStatement("SELECT TOP 1 maNV FROM nhanvien WHERE hoTen = ? ")) {
             ps.setString(1, tenNV);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                maNV = rs.getString("maNV");
+                maNV = rs.getInt("maNV");
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -40,6 +40,8 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
         setShadowforJPN();
         setIconForJlabel();
         setTextHidden();
+        setUpBtn();
+        setUpJTF();
     }
     public void setTextHidden(){
         PromptSupport.setPrompt("Tìm kiếm nhanh", jtf_find_ncc);
@@ -50,10 +52,17 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
         jlabel_add_ncc.setIcon(new FlatSVGIcon("./resources/icon/add.svg", 0.06f));
         jlabel_update_ncc.setIcon(new FlatSVGIcon("./resources/icon/update.svg", 0.85f));
         jlabel_delete_ncc.setIcon(new FlatSVGIcon("./resources/icon/delete.svg", 0.75f));
-        jlabel_look_ncc.setIcon(new FlatSVGIcon("./resources/icon/look.svg", 0.9f));
+        btn_look_ncc.setIcon(new FlatSVGIcon("./resources/icon/look.svg", 0.6f));
         jlabel_chiTiet_ncc.setIcon(new FlatSVGIcon("./resources/icon/details.svg", 0.45f));
         jlabel_xuat_excel_ncc.setIcon(new FlatSVGIcon("./resources/icon/export_excel.svg", 0.85f));
-        jlabel_refresh_ncc.setIcon(new FlatSVGIcon("./resources/icon/refresh.svg",0.35f));
+        btn_refresh_ncc.setIcon(new FlatSVGIcon("./resources/icon/refresh.svg",0.25f));
+    }
+    public void setUpJTF(){
+        func.setUpJTF(jtf_find_ncc);
+    }
+    public void setUpBtn(){
+        func.setUpBtn(btn_refresh_ncc, Color.WHITE, new Color(220,220,220));
+        func.setUpBtn(btn_look_ncc, Color.WHITE, new Color(220,220,220));
     }
     public void khoitaoChooserFilterNCC() {
         String[] filtersNCC = {"Tất cả", "Tên nhà cung cấp", "Email", "Số điện thoại", "Địa chỉ"};
@@ -77,7 +86,7 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
     //Hàm thêm biểu tượng chuột vào cái jlabel
     public void setCusorPointer() {
         List<JLabel> jlabels =List.of(jlabel_add_ncc
-        ,jlabel_update_ncc,jlabel_delete_ncc,jlabel_chiTiet_ncc,jlabel_refresh_ncc,jlabel_look_ncc);
+        ,jlabel_update_ncc,jlabel_delete_ncc,jlabel_chiTiet_ncc);
         for(JLabel label : jlabels )
             func.cursorPointer(label);
     }
@@ -100,16 +109,13 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
         table_ncc = new javax.swing.JTable();
         jpanel_timkiem_ncc = new javax.swing.JPanel();
         jtf_find_ncc = new javax.swing.JTextField();
-        jlabel_look_ncc = new javax.swing.JLabel();
         combobox_find_ncc = new javax.swing.JComboBox<>();
         jLabel18 = new javax.swing.JLabel();
-        jpanel_filter_ncc = new javax.swing.JPanel();
-        jlabel_refresh_ncc = new javax.swing.JLabel();
-        jLabel25 = new javax.swing.JLabel();
+        btn_refresh_ncc = new javax.swing.JButton();
+        btn_look_ncc = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(1030, 630));
 
-        jpanel_chucNang_ncc.setBackground(new java.awt.Color(255, 255, 255));
         jpanel_chucNang_ncc.setPreferredSize(new java.awt.Dimension(320, 96));
 
         jlabel_update_ncc.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -183,13 +189,12 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
             jpanel_chucNang_nccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpanel_chucNang_nccLayout.createSequentialGroup()
                 .addGap(14, 14, 14)
-                .addGroup(jpanel_chucNang_nccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlabel_xuat_excel_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jpanel_chucNang_nccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jlabel_delete_ncc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jlabel_update_ncc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jlabel_add_ncc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jlabel_chiTiet_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jpanel_chucNang_nccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jlabel_xuat_excel_ncc, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                    .addComponent(jlabel_delete_ncc, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+                    .addComponent(jlabel_update_ncc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jlabel_add_ncc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jlabel_chiTiet_ncc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpanel_chucNang_nccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel19)
@@ -197,7 +202,7 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
                     .addComponent(jLabel21)
                     .addComponent(jLabel22)
                     .addComponent(jLabel23))
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(14, Short.MAX_VALUE))
         );
 
         table_ncc.setModel(new javax.swing.table.DefaultTableModel(
@@ -213,15 +218,20 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
         ));
         jScrollPane2.setViewportView(table_ncc);
 
-        jpanel_timkiem_ncc.setBackground(new java.awt.Color(255, 255, 255));
+        jLabel18.setText("Tìm kiếm theo");
 
-        jlabel_look_ncc.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jlabel_look_nccMouseClicked(evt);
+        btn_refresh_ncc.setText("Làm mới");
+        btn_refresh_ncc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_refresh_nccActionPerformed(evt);
             }
         });
 
-        jLabel18.setText("Tìm kiếm theo");
+        btn_look_ncc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_look_nccActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpanel_timkiem_nccLayout = new javax.swing.GroupLayout(jpanel_timkiem_ncc);
         jpanel_timkiem_ncc.setLayout(jpanel_timkiem_nccLayout);
@@ -229,56 +239,31 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
             jpanel_timkiem_nccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpanel_timkiem_nccLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jpanel_timkiem_nccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                    .addComponent(combobox_find_ncc, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jtf_find_ncc, javax.swing.GroupLayout.DEFAULT_SIZE, 185, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jlabel_look_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16))
+                .addGroup(jpanel_timkiem_nccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpanel_timkiem_nccLayout.createSequentialGroup()
+                        .addComponent(combobox_find_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jtf_find_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_look_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btn_refresh_ncc, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE))
+                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(7, 7, 7))
         );
         jpanel_timkiem_nccLayout.setVerticalGroup(
             jpanel_timkiem_nccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpanel_timkiem_nccLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel18)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jpanel_timkiem_nccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jlabel_look_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
+                .addGroup(jpanel_timkiem_nccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn_look_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jpanel_timkiem_nccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jtf_find_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(combobox_find_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(21, 21, 21))
-        );
-
-        jlabel_refresh_ncc.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jlabel_refresh_nccMouseClicked(evt);
-            }
-        });
-
-        jLabel25.setText("Làm mới");
-
-        javax.swing.GroupLayout jpanel_filter_nccLayout = new javax.swing.GroupLayout(jpanel_filter_ncc);
-        jpanel_filter_ncc.setLayout(jpanel_filter_nccLayout);
-        jpanel_filter_nccLayout.setHorizontalGroup(
-            jpanel_filter_nccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpanel_filter_nccLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jpanel_filter_nccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jlabel_refresh_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(14, Short.MAX_VALUE))
-        );
-        jpanel_filter_nccLayout.setVerticalGroup(
-            jpanel_filter_nccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpanel_filter_nccLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jlabel_refresh_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(8, Short.MAX_VALUE))
+                        .addComponent(combobox_find_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btn_refresh_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -287,31 +272,25 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 950, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jpanel_chucNang_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(23, 23, 23)
-                        .addComponent(jpanel_timkiem_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jpanel_filter_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(61, Short.MAX_VALUE))
+                .addComponent(jpanel_chucNang_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23)
+                .addComponent(jpanel_timkiem_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(98, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jpanel_timkiem_ncc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jpanel_chucNang_ncc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(jpanel_filter_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jpanel_chucNang_ncc, javax.swing.GroupLayout.DEFAULT_SIZE, 100, Short.MAX_VALUE)
+                    .addComponent(jpanel_timkiem_ncc, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 494, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(18, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -339,17 +318,20 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
     private void jlabel_delete_nccMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_delete_nccMouseClicked
         int vitriRow = table_ncc.getSelectedRow();
         if (vitriRow == -1) {
-            JOptionPane.showMessageDialog(null, "Bạn chưa chọn nhà cung cấp để xóa", "Error", 0);
+            JOptionPane.showMessageDialog(null, "Bạn chưa chọn nhà cung cấp để xóa", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
-        int maNCC =Integer.parseInt(table_ncc.getValueAt(vitriRow, 0).toString());
-        int confirm=JOptionPane.showConfirmDialog(null,"Bạn có chắc chắn muốn xóa không","Xác nhận xóa",
-            JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE);
-        if(confirm==JOptionPane.YES_OPTION){
-            nccBus.deleteNhaCungCap(maNCC);
+        int maNCC = Integer.parseInt(table_ncc.getValueAt(vitriRow, 0).toString());
+        int confirm = JOptionPane.showConfirmDialog(null,
+                "Bạn có chắc chắn muốn xóa nhà cung cấp này không?",
+                "Xác nhận xóa", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (confirm == JOptionPane.YES_OPTION) {
+            int result = nccBus.deleteCheckNhaCungCap(maNCC);
+            if (result == 1) {
+                func.addDataTableNCC(nccBus.listNCC(), table_ncc);
+                func.centerTable(table_ncc);
+            }
         }
-        func.addDataTableNCC(nccBus.listNCC(),table_ncc);
-        func.centerTable(table_ncc);
     }//GEN-LAST:event_jlabel_delete_nccMouseClicked
 
     private void jlabel_chiTiet_nccMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_chiTiet_nccMouseClicked
@@ -374,22 +356,24 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
             e.printStackTrace();
         }
     }//GEN-LAST:event_jlabel_xuat_excel_nccMouseClicked
+     
+    private void btn_refresh_nccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_refresh_nccActionPerformed
+        func.addDataTableNCC(nccBus.listNCC(), table_ncc);
+        func.centerTable(table_ncc);
+        func.setUpTable(table_ncc);
+    }//GEN-LAST:event_btn_refresh_nccActionPerformed
 
-    private void jlabel_look_nccMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_look_nccMouseClicked
+    private void btn_look_nccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_look_nccActionPerformed
         String type=combobox_find_ncc.getSelectedItem().toString();
         String find_text=jtf_find_ncc.getText().toLowerCase();
         func.addDataTableNCC(nccBus.timKiem(find_text,type), table_ncc);
         func.centerTable(table_ncc);
-    }//GEN-LAST:event_jlabel_look_nccMouseClicked
-
-    private void jlabel_refresh_nccMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_refresh_nccMouseClicked
-        jtf_find_ncc.setText("");
-        func.addDataTableNCC(nccBus.listNCC(), table_ncc);
-        func.centerTable(table_ncc);
-    }//GEN-LAST:event_jlabel_refresh_nccMouseClicked
+    }//GEN-LAST:event_btn_look_nccActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_look_ncc;
+    private javax.swing.JButton btn_refresh_ncc;
     private javax.swing.JComboBox<String> combobox_find_ncc;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
@@ -397,17 +381,13 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel25;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel jlabel_add_ncc;
     private javax.swing.JLabel jlabel_chiTiet_ncc;
     private javax.swing.JLabel jlabel_delete_ncc;
-    private javax.swing.JLabel jlabel_look_ncc;
-    private javax.swing.JLabel jlabel_refresh_ncc;
     private javax.swing.JLabel jlabel_update_ncc;
     private javax.swing.JLabel jlabel_xuat_excel_ncc;
     private javax.swing.JPanel jpanel_chucNang_ncc;
-    private javax.swing.JPanel jpanel_filter_ncc;
     private javax.swing.JPanel jpanel_timkiem_ncc;
     private javax.swing.JTextField jtf_find_ncc;
     private javax.swing.JTable table_ncc;

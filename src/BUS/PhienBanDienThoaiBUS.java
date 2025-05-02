@@ -47,7 +47,7 @@ public class PhienBanDienThoaiBUS {
         return pbDao.getArrayListCauHinhByMaDT(maDT);
     }
     public int updateSoLuongTon(int maPB,int soLuong){
-        int check=pbDao.updateSoLuongTonPhienBan(maPB, soLuong);
+        int check=pbDao.updateSoLuongTonPhienBanSauKhiNhap(maPB, soLuong);
         if(check==1){
             listPB=pbDao.listPhienBan();
         }

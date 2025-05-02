@@ -7,10 +7,13 @@ package GUI.Panel;
 import BUS.DienThoaiBUS;
 import BUS.NhaCungCapBUS;
 import BUS.NhanVienBUS;
+import DAO.ChiTietPhieuXuatDAO;
+import DAO.DienThoaiDAO;
 import DTO.DienThoaiDTO;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.table.DefaultTableModel;
 import util.Func_class;
 
@@ -24,6 +27,7 @@ public class PanelThongKe extends javax.swing.JPanel {
     NhanVienBUS nvBus=new NhanVienBUS();
     NhaCungCapBUS nccBus=new NhaCungCapBUS();
     Font font1=new Font("Arial",Font.BOLD,30);
+    
     public PanelThongKe() {
         initComponents();
         khoiTao();
@@ -54,12 +58,14 @@ public class PanelThongKe extends javax.swing.JPanel {
     public void loadDataSanPham(ArrayList<DienThoaiDTO> listDT){
         String[] colNames={"Số thứ tự","Mã máy","Tên máy","Số lượng nhập","Số lượng xuất"};
         Object[][] rows=new Object[listDT.size()][colNames.length];
+        HashMap<Integer, Integer> mapXuat = new ChiTietPhieuXuatDAO().thongKeSoLuongXuatTheoMaDT();
+
         for(int i=0;i<listDT.size();i++){
             rows[i][0]=i;
             rows[i][1]=listDT.get(i).getMaDT();
             rows[i][2]=listDT.get(i).getTenDT();
             rows[i][3]=listDT.get(i).getSoLuongTon();
-            rows[i][4]=0;
+            rows[i][4]=mapXuat.getOrDefault(listDT.get(i).getMaDT(), 0);
         }
         DefaultTableModel model=new DefaultTableModel(rows,colNames);
         table.setModel(model);

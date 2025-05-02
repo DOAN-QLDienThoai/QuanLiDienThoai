@@ -4,7 +4,7 @@
  */
 package GUI.Frame;
 
-import BUS.NhanVienBUS;
+import BUS.DienThoaiBUS;
 import DAO.TaiKhoanDAO;
 import DTO.TaiKhoanDTO;
 import GUI.Panel.PanelDienThoai;
@@ -18,6 +18,7 @@ import GUI.Panel.PanelPhieuXuat;
 import GUI.Panel.PanelThongKe;
 import GUI.Panel.PanelThuocTinh;
 import GUI.Panel.PanelTrangChu;
+import GUI.Panel.PanelTaiKhoan;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
 import java.awt.Component;
@@ -39,6 +40,7 @@ import javax.swing.UIManager;
  * @author kiman
  */
 public class Main extends javax.swing.JFrame {
+    DienThoaiBUS dtBus=new DienThoaiBUS();
     String maNhanVien;
     String tenNhanVien;
     PanelTrangChu tt=new PanelTrangChu();
@@ -52,7 +54,8 @@ public class Main extends javax.swing.JFrame {
     PanelNhapPhieuNhap nhapphieunhap=new PanelNhapPhieuNhap(this);
     PanelPhieuXuat phieuxuat=new PanelPhieuXuat(this);
     PanelNhapPhieuXuat nhapphieuxuat=new PanelNhapPhieuXuat(this);
-    JButton[] btns = new JButton[9];
+    PanelTaiKhoan user=new PanelTaiKhoan();
+    JButton[] btns = new JButton[10];
     JButton currentActiveBtn = null;
     Border etchedBorder = BorderFactory.createEtchedBorder();
     public Main(String tenNV) {
@@ -63,6 +66,7 @@ public class Main extends javax.swing.JFrame {
         UIManager.put("Button.arc", 10);
         jlabel_name.setFont(new Font("Arial",Font.BOLD,18));
         this.jlabel_name.setText(tenNV);
+        jlabel_name.setHorizontalAlignment(SwingConstants.CENTER);
         khoiTao();
         main.add(tt);
         main.add(dt);
@@ -75,6 +79,7 @@ public class Main extends javax.swing.JFrame {
         main.add(tk);
         main.add(pn);
         main.add(nhapphieunhap);
+        main.add(user);
         tt.setVisible(false);
         dt.setVisible(false);
         thuoctinh.setVisible(false);
@@ -105,6 +110,7 @@ public class Main extends javax.swing.JFrame {
         btns[6] = btn_px;
         btns[7]=btn_pn;
         btns[8]=btn_tk;
+        btns[9]=btn_taiKhoan;
     }
     public void setIconForJButton(){
         btn_trangChu.setIcon(new FlatSVGIcon("./resources/icon/home.svg", 0.35f));
@@ -117,6 +123,7 @@ public class Main extends javax.swing.JFrame {
         btn_pn.setIcon(new FlatSVGIcon("./resources/icon/phieunhap.svg", 0.27f));
         btn_tk.setIcon(new FlatSVGIcon("./resources/icon/static.svg", 0.3f));
         btn_logout.setIcon(new FlatSVGIcon("./resources/icon/logout.svg", 0.3f));
+        btn_taiKhoan.setIcon(new FlatSVGIcon("./resources/icon/logout.svg", 0.3f));
     }
     public PanelTrangChu getPanelTrangChu(){
         return this.tt;
@@ -151,6 +158,7 @@ public class Main extends javax.swing.JFrame {
     public void setTenNhanVien(String tenNV) {
         this.tenNhanVien = tenNV;
         nhapphieuxuat.setTenNhanVien(tenNV); // 👈 Truyền xuống panel
+        nhapphieunhap.setTenNV(tenNV);
     }
     public String getTenNhanVien() {
         return this.tenNhanVien;
@@ -213,11 +221,11 @@ public class Main extends javax.swing.JFrame {
         btn_pn = new javax.swing.JButton();
         btn_tk = new javax.swing.JButton();
         jpanel_menu_top1 = new javax.swing.JPanel();
-        img_store1 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jlabel_name = new javax.swing.JLabel();
         btn_trangChu = new javax.swing.JButton();
         btn_logout = new javax.swing.JButton();
+        btn_taiKhoan = new javax.swing.JButton();
         main = new javax.swing.JLayeredPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -278,7 +286,14 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
-       
+        btn_tc.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btn_tc.setText("Trang chủ");
+        btn_tc.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
+        btn_tc.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_tcActionPerformed(evt);
+            }
+        });
 
         btn_pn.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btn_pn.setText("Phiếu Nhập");
@@ -300,8 +315,6 @@ public class Main extends javax.swing.JFrame {
 
         jpanel_menu_top1.setBackground(new java.awt.Color(255, 255, 255));
 
-        img_store1.setBackground(new java.awt.Color(255, 255, 255));
-
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jLabel1.setText("HI !");
 
@@ -310,28 +323,19 @@ public class Main extends javax.swing.JFrame {
         jpanel_menu_top1Layout.setHorizontalGroup(
             jpanel_menu_top1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpanel_menu_top1Layout.createSequentialGroup()
-                .addGap(88, 88, 88)
+                .addGap(91, 91, 91)
                 .addComponent(jLabel1)
-                .addContainerGap(94, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpanel_menu_top1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jlabel_name, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15))
-            .addGroup(jpanel_menu_top1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jpanel_menu_top1Layout.createSequentialGroup()
-                    .addComponent(img_store1, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 108, Short.MAX_VALUE)))
+                .addContainerGap(91, Short.MAX_VALUE))
+            .addComponent(jlabel_name, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jpanel_menu_top1Layout.setVerticalGroup(
             jpanel_menu_top1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpanel_menu_top1Layout.createSequentialGroup()
-                .addGap(23, 23, 23)
+                .addGap(35, 35, 35)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jlabel_name, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(15, Short.MAX_VALUE))
-            .addGroup(jpanel_menu_top1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(img_store1, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE))
         );
 
         btn_trangChu.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -350,6 +354,15 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        btn_taiKhoan.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btn_taiKhoan.setText("Tài Khoản");
+        btn_taiKhoan.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btn_taiKhoan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_taiKhoanActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jpanel_menu_bottomLayout = new javax.swing.GroupLayout(jpanel_menu_bottom);
         jpanel_menu_bottom.setLayout(jpanel_menu_bottomLayout);
         jpanel_menu_bottomLayout.setHorizontalGroup(
@@ -357,23 +370,26 @@ public class Main extends javax.swing.JFrame {
             .addGroup(jpanel_menu_bottomLayout.createSequentialGroup()
                 .addGroup(jpanel_menu_bottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpanel_menu_bottomLayout.createSequentialGroup()
-                        .addGroup(jpanel_menu_bottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jpanel_menu_bottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jpanel_menu_bottomLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(jpanel_menu_bottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btn_tk, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btn_thuoctinh, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btn_nv, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btn_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btn_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btn_px, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btn_pn, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btn_tk, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                    .addComponent(btn_thuoctinh, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                    .addComponent(btn_nv, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                    .addComponent(btn_ncc, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                    .addComponent(btn_kh, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                    .addComponent(btn_px, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+                                    .addComponent(btn_pn, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
                                     .addGroup(jpanel_menu_bottomLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                                         .addComponent(btn_trangChu, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(btn_dt, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE))))
                             .addGroup(jpanel_menu_bottomLayout.createSequentialGroup()
                                 .addGap(39, 39, 39)
-                                .addComponent(btn_logout, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btn_logout, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jpanel_menu_bottomLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(btn_taiKhoan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGap(0, 3, Short.MAX_VALUE))
                     .addComponent(jpanel_menu_top1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -399,8 +415,10 @@ public class Main extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_pn, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btn_taiKhoan, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_tk, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btn_logout, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -442,6 +460,7 @@ public class Main extends javax.swing.JFrame {
         pn.setVisible(false);
         nhapphieuxuat.setVisible(false);
         tt.setVisible(false);
+        user.setVisible(false);
     }//GEN-LAST:event_btn_thuoctinhActionPerformed
     public void actionJButtonMenu() {
         Component[] cpns = jpanel_menu_bottom.getComponents();
@@ -469,6 +488,7 @@ public class Main extends javax.swing.JFrame {
         tk.setVisible(false);
         pn.setVisible(false);
         nhapphieunhap.setVisible(false);
+         user.setVisible(false);
     }//GEN-LAST:event_btn_nvActionPerformed
 
     private void btn_pxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pxActionPerformed
@@ -484,6 +504,7 @@ public class Main extends javax.swing.JFrame {
         tk.setVisible(false);
         pn.setVisible(false);
         nhapphieunhap.setVisible(false);
+         user.setVisible(false);
     }//GEN-LAST:event_btn_pxActionPerformed
 
     private void btn_dtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_dtActionPerformed
@@ -498,6 +519,7 @@ public class Main extends javax.swing.JFrame {
         tk.setVisible(false);
         nhapphieunhap.setVisible(false);
         pn.setVisible(false);
+         user.setVisible(false);
     }//GEN-LAST:event_btn_dtActionPerformed
 
     private void btn_nccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nccActionPerformed
@@ -511,6 +533,7 @@ public class Main extends javax.swing.JFrame {
         nhapphieuxuat.setVisible(false);
         tk.setVisible(false);
         pn.setVisible(false);
+         user.setVisible(false);
         nhapphieunhap.setVisible(false);
     }//GEN-LAST:event_btn_nccActionPerformed
 
@@ -526,6 +549,7 @@ public class Main extends javax.swing.JFrame {
         tk.setVisible(false);
         pn.setVisible(false);
         nhapphieunhap.setVisible(false);
+         user.setVisible(false);
     }//GEN-LAST:event_btn_khActionPerformed
 
     private void btn_pnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pnActionPerformed
@@ -541,6 +565,7 @@ public class Main extends javax.swing.JFrame {
         pn.setVisible(true);
         pn.setUpTable();
         nhapphieunhap.setVisible(false);
+        user.setVisible(false);
     }//GEN-LAST:event_btn_pnActionPerformed
 
     private void btn_tkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tkActionPerformed
@@ -555,6 +580,8 @@ public class Main extends javax.swing.JFrame {
         tk.setVisible(true);
         pn.setVisible(false);
         nhapphieunhap.setVisible(false);
+        user.setVisible(false);
+        tk.setUpTableDT();
     }//GEN-LAST:event_btn_tkActionPerformed
 
 //<<<<<<< HEAD:src/GUI/Frame/Main.java
@@ -570,6 +597,7 @@ public class Main extends javax.swing.JFrame {
         tk.setVisible(false);
         pn.setVisible(false);
         nhapphieunhap.setVisible(false);
+        user.setVisible(false);
     }//GEN-LAST:event_btn_trangChuActionPerformed
 // =======
 //     private void btn_tcActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_tcActionPerformed
@@ -615,6 +643,21 @@ public class Main extends javax.swing.JFrame {
         formLogin.setVisible(true);
     }//GEN-LAST:event_btn_logoutActionPerformed
 
+    private void btn_taiKhoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_taiKhoanActionPerformed
+        tt.setVisible(false);
+        dt.setVisible(false);
+        thuoctinh.setVisible(false);
+        nv.setVisible(false);
+        ncc.setVisible(false);
+        khachhang.setVisible(false);
+        phieuxuat.setVisible(false);
+        nhapphieuxuat.setVisible(false);
+        tk.setVisible(false);
+        pn.setVisible(false);
+        nhapphieunhap.setVisible(false);
+        user.setVisible(true);
+    }//GEN-LAST:event_btn_taiKhoanActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_dt;
     private javax.swing.JButton btn_kh;
@@ -623,11 +666,11 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton btn_nv;
     private javax.swing.JButton btn_pn;
     private javax.swing.JButton btn_px;
+    private javax.swing.JButton btn_taiKhoan;
     private javax.swing.JButton btn_tc;
     private javax.swing.JButton btn_thuoctinh;
     private javax.swing.JButton btn_tk;
     private javax.swing.JButton btn_trangChu;
-    private javax.swing.JLabel img_store1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jlabel_name;
     private javax.swing.JPanel jpanel_menu_bottom;

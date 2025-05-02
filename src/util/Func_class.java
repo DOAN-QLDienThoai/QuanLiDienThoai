@@ -10,21 +10,31 @@ import DTO.DienThoaiDTO;
 import DTO.NhaCungCapDTO;
 import DTO.NhanVienDTO;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListCellRenderer;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.poi.ss.usermodel.Sheet;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -71,6 +81,87 @@ public class Func_class {
         table.setFillsViewportHeight(true);
         Font font_hearderTable=new Font("Arial",Font.BOLD,13);
         table.getTableHeader().setFont(font_hearderTable);
+    }
+    public void setUpJTF(JTextField jtf) {
+        jtf.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+
+        // Set foreground and background color
+        jtf.setForeground(Color.DARK_GRAY);
+        jtf.setBackground(Color.WHITE); // Màu xanh nhạt
+
+        // Set padding
+        jtf.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.WHITE), // viền xanh
+                new EmptyBorder(5, 10, 5, 10) // padding
+        ));
+    }
+
+    public void setUpBtn(JButton btn, Color colorExit, Color colorEntered) {
+        btn.setFocusPainted(false);
+        btn.setBackground(Color.WHITE);
+        btn.setForeground(Color.BLACK);
+        btn.setFont(new Font("Tahoma", Font.BOLD, 16));
+        btn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        // Tạo bo góc
+        btn.setContentAreaFilled(false);
+        btn.setOpaque(true);
+        btn.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2, true));
+        // Hiệu ứng hover
+        btn.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent evt) {
+                btn.setBackground(colorEntered);
+            }
+            public void mouseExited(MouseEvent evt) {
+                btn.setBackground(colorExit);
+            }
+        });
+    }
+    public void setUpBtnTwo(JButton btn,Color ColorStart,Color colorExit, Color colorEntered,int size) {
+        btn.setFocusPainted(false);
+        btn.setBackground(ColorStart);
+        btn.setForeground(Color.BLACK);
+        btn.setFont(new Font("Tahoma", Font.BOLD,size));
+        btn.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        // Tạo bo góc
+        btn.setContentAreaFilled(false);
+        btn.setOpaque(true);
+        btn.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2, true));
+        // Hiệu ứng hover
+        btn.addMouseListener(new MouseAdapter() {
+            public void mouseEntered(MouseEvent evt) {
+                btn.setBackground(colorEntered);
+            }
+            public void mouseExited(MouseEvent evt) {
+                btn.setBackground(colorExit);
+            }
+        });
+    }
+
+    public void setUpComBoBox(JComboBox<?> comboBox) {
+        comboBox.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        comboBox.setPreferredSize(new Dimension(150, 30));
+        comboBox.setBackground(new Color(240, 240, 240));
+        comboBox.setForeground(Color.DARK_GRAY);
+        // Renderer tùy chỉnh giao diện từng item
+        comboBox.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index,
+                    boolean isSelected, boolean cellHasFocus) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                label.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+                label.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+                if (isSelected) {
+                    label.setBackground(new Color(0, 120, 215));
+                    label.setForeground(Color.WHITE);
+                } else {
+                    label.setBackground(Color.WHITE);
+                    label.setForeground(Color.DARK_GRAY);
+                }
+                return label;
+            }
+        });
     }
     public void cursorPointer(JLabel label){
         label.setCursor(new Cursor(Cursor.HAND_CURSOR) {

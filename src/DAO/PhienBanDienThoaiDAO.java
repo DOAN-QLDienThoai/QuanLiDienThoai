@@ -17,7 +17,7 @@ import java.sql.ResultSet;
  * @author kiman
  */
 public class PhienBanDienThoaiDAO {
-
+    //Thêm phiên bản (ahuy)
     public int insertPhienBan(PhienBanDienThoaiDTO pb) {
         String sqlAddPB = "INSERT INTO PhienBanDienThoai(maDT, maRam, maRom, maMau, giaNhap, giaXuat)"
                 + " VALUES (?, ?, ?, ?, ?, ?)";
@@ -38,7 +38,7 @@ public class PhienBanDienThoaiDAO {
         }
         return 0;
     }
-
+    //Cập nhật phiên bản (ahuy)
     public int updatePhienBan(PhienBanDienThoaiDTO pb) {
         String sqlUpdatePB = "UPDATE PhienBanDienThoai SET maRam=?, maRom=?, maMau=?, giaNhap=?, giaXuat=? WHERE maPhienBan=? ";
         PreparedStatement ps;
@@ -58,7 +58,7 @@ public class PhienBanDienThoaiDAO {
         }
         return 0;
     }
-
+    //Xóa phiên bản (ahuy)
     public int deletePhienBan(int maPhienBan) {
         String sqlDeletePB = "DELETE FROM PhienBanDienThoai WHERE maPhienBan=? ";
         PreparedStatement ps;
@@ -73,7 +73,7 @@ public class PhienBanDienThoaiDAO {
         }
         return 0;
     }
-
+    //Lấy danh sách phiên bản (ahuy)
     public ArrayList<PhienBanDienThoaiDTO> listPhienBan() {
         ArrayList<PhienBanDienThoaiDTO> listPB = new ArrayList<>();
         String sqlAllPB = "SELECT * FROM PhienBanDienThoai ";
@@ -100,7 +100,7 @@ public class PhienBanDienThoaiDAO {
         return listPB;
     }
 
-    //Lấy danh sách cấu hình
+    //Lấy danh sách cấu hình (ahuy)
     public ArrayList<String> getArrayListCauHinhByMaDT(int maDT) {
         ArrayList<String> danhSachCauHinh = new ArrayList<>();
         String sql = "SELECT r.dungLuongRam AS ram, rom.dungLuongRom AS rom, m.tenMau "
@@ -127,7 +127,7 @@ public class PhienBanDienThoaiDAO {
         return danhSachCauHinh;
     }
 
-    //Lấy giá nhập điện thoại dựa trên maDT,maRam,maRom,maMau
+    //Lấy giá nhập điện thoại dựa trên maDT,maRam,maRom,maMau (ahuy)
     public double getGiaNhapByCauHinh(int maDT, int maRam, int maRom, int maMau) {
         double giaNhap = 0.0;
         String sql = "SELECT giaNhap FROM PhienBanDienThoai WHERE maDT = ? AND maRam = ? AND maRom = ? AND maMau = ?";
@@ -149,6 +149,156 @@ public class PhienBanDienThoaiDAO {
         return giaNhap;
     }
 
+    // Lấy mã RAM từ dung lượng (ahuy)
+    public int getMaRamTheoDungLuong(int dungLuong) {
+        String sql = "SELECT maRam FROM ram WHERE dungLuongRam = ?";
+        try (Connection conn = ConnectedDatabase.getConnectedDB();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, dungLuong);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt("maRam");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+         System.out.println("⚠ Không tìm thấy RAM với dung lượng: " + dungLuong);
+        return -1;
+    }
+    // Lấy mã ROM từ dung lượng (ahuy)
+    public int getMaRomTheoDungLuong(int dungLuong) {
+        String sql = "SELECT maRom FROM rom WHERE dungLuongRom = ?";
+        try (Connection conn = ConnectedDatabase.getConnectedDB();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, dungLuong);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) return rs.getInt("maRom");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+    //Lấy mã rom theo mã phiên bản (ahuy)
+    public int getMaRomByMaPhienBan(int maPhienBan) {
+        int maRom = -1;
+        String sql = "SELECT maRom FROM PhienBanDienThoai WHERE maPhienBan=? ";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            ps.setInt(1, maPhienBan);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                maRom = rs.getInt("maRom");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return maRom;
+    }
+    //Lấy mã ram theo mã Phiên bản (ahuy)
+    public int getMaRamByMaPhienBan(int maPhienBan) {
+        int maRam = -1;
+        String sql = "SELECT maRam FROM PhienBanDienThoai WHERE maPhienBan=? ";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            ps.setInt(1, maPhienBan);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                maRam = rs.getInt("maRam");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return maRam;
+    }
+    //Lấy mã màu theo mã phiên bản (ahuy)
+    public int getMaMauByMaPhienBan(int maPhienBan) {
+        int maMau = -1;
+        String sql = "SELECT maMau FROM PhienBanDienThoai WHERE maPhienBan=? ";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            ps.setInt(1, maPhienBan);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                maMau = rs.getInt("maMau");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return maMau;
+    }
+    //Cập nhật số lượng tồn của mỗi phiên bản điện thoại sau khi nhập (ahuy)
+    public int updateSoLuongTonPhienBanSauKhiNhap(int maPhienBan, int soLuongNhap) {
+        String sql = "UPDATE PhienBanDienThoai SET soLuongTon = soLuongTon + ? WHERE maPhienBan = ?";
+        PreparedStatement ps;
+        try {
+            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            ps.setInt(1, soLuongNhap);
+            ps.setInt(2, maPhienBan);
+            if (ps.executeUpdate() > 0) {
+                return 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+    //Lấy mã Phiên bản dựa trên mã điện thoại, mã ram,mã rom,mã màu (ahuy)
+    public int getMaPhienBanByCauHinh(int maDT, int maRam, int maRom, int maMau) {
+        int maPhienBan = -1;
+        String sql = "SELECT maPhienBan FROM PhienBanDienThoai WHERE maDT = ? AND maRam = ? AND maRom = ? AND maMau = ?";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            ps.setInt(1, maDT);
+            ps.setInt(2, maRam);
+            ps.setInt(3, maRom);
+            ps.setInt(4, maMau);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                maPhienBan = rs.getInt("maPhienBan");
+            }
+        } catch (Exception e) {
+            System.err.println("Lỗi truy vấn mã phiên bản: " + e.getMessage());
+        }
+        return maPhienBan;
+    }
+    //Lấy mã điện thoại dựa vào mã phiên bản điện thoại (ahuy)
+    public int getMaDTByMaPhienBan(int maPhienBan) {
+        int maDT = -1;
+        String sql = "SELECT maDT FROM PhienBanDienThoai WHERE maPhienBan=? ";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            ps.setInt(1, maPhienBan);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                maDT = rs.getInt("maDT");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return maDT;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public PhienBanDienThoaiDTO getTheoCauHinh(int maDT, int maRam, int maRom, int maMau) {
         PhienBanDienThoaiDTO variant = null;
         String sql = "SELECT * FROM PhienBanDienThoai WHERE maDT = ? AND maRam = ? AND maRom = ? AND maMau = ?";
@@ -176,7 +326,7 @@ public class PhienBanDienThoaiDAO {
         }
         return variant;
     }
-    public boolean capNhatSoLuongTonSauXuat(int maPhienBan, int soLuongTru) {
+    public boolean updateSoLuongTonPhienBanSauXuat(int maPhienBan, int soLuongTru) {
         String sql = "UPDATE phienbandienthoai SET soLuongTon = soLuongTon - ? WHERE maPhienBan = ?";
         try (Connection conn = ConnectedDatabase.getConnectedDB();
             PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -204,34 +354,6 @@ public class PhienBanDienThoaiDAO {
         }
         return ma;
     }
-    // Lấy mã RAM từ dung lượng
-    public int getMaRamTheoDungLuong(int dungLuong) {
-        String sql = "SELECT maRam FROM ram WHERE dungLuongRam = ?";
-        try (Connection conn = ConnectedDatabase.getConnectedDB();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, dungLuong);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) return rs.getInt("maRam");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-         System.out.println("⚠ Không tìm thấy RAM với dung lượng: " + dungLuong);
-        return -1;
-    }
-
-    // Lấy mã ROM từ dung lượng
-    public int getMaRomTheoDungLuong(int dungLuong) {
-        String sql = "SELECT maRom FROM rom WHERE dungLuongRom = ?";
-        try (Connection conn = ConnectedDatabase.getConnectedDB();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setInt(1, dungLuong);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) return rs.getInt("maRom");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return -1;
-    }
     public String[] layCauHinhBangPhienBan(int maPhienBan) {
         String[] cauHinh = new String[3]; // ROM - RAM - Màu
         String sql = "SELECT r.dungLuongRam AS ram, rom.dungLuongRom AS rom, m.tenMau " +
@@ -256,47 +378,23 @@ public class PhienBanDienThoaiDAO {
     }
     public int getTongSoLuongTonCuaDienThoai(int maDT) {
         int tong = 0;
-         try (Connection conn = ConnectedDatabase.getConnectedDB()) {
-             PreparedStatement stmt = conn.prepareStatement(
-                 "SELECT SUM(soLuongTon) AS tong FROM PhienBanDienThoai WHERE maDT = ?"
-             );
-             stmt.setInt(1, maDT);
-             ResultSet rs = stmt.executeQuery();
-             if (rs.next()) {
-                 tong = rs.getInt("tong");
-             }
-         } catch (Exception e) {
-             System.out.println("Lỗi lấy tổng số lượng tồn: " + e.getMessage());
-         }
-         return tong;
-     }
-
-    //Lấy mã Phiên bản dựa trên mã điện thoại, mã ram,mã rom,mã màu
-    public int getMaPhienBanByCauHinh(int maDT, int maRam, int maRom, int maMau) {
-        int maPhienBan = -1;
-        String sql = "SELECT maPhienBan FROM PhienBanDienThoai WHERE maDT = ? AND maRam = ? AND maRom = ? AND maMau = ?";
-        PreparedStatement ps;
-        ResultSet rs;
-        try {
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
-            ps.setInt(1, maDT);
-            ps.setInt(2, maRam);
-            ps.setInt(3, maRom);
-            ps.setInt(4, maMau);
-            rs = ps.executeQuery();
+        try (Connection conn = ConnectedDatabase.getConnectedDB()) {
+            PreparedStatement stmt = conn.prepareStatement(
+                    "SELECT SUM(soLuongTon) AS tong FROM PhienBanDienThoai WHERE maDT = ?"
+            );
+            stmt.setInt(1, maDT);
+            ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                maPhienBan = rs.getInt("maPhienBan");
+                tong = rs.getInt("tong");
             }
         } catch (Exception e) {
-            System.err.println("Lỗi truy vấn mã phiên bản: " + e.getMessage());
+            e.printStackTrace();
         }
-        return maPhienBan;
+        return tong;
     }
-
-    //Lấy mã điện thoại dựa vào mã phiên bản điện thoại
-    public int getMaDTByMaPhienBan(int maPhienBan) {
-        int maDT = -1;
-        String sql = "SELECT maDT FROM PhienBanDienThoai WHERE maPhienBan=? ";
+    public int getSoLuongTonCuaPhienBan(int maPhienBan) {
+        int soLuongTon = 0;
+        String sql = "SELECT soLuongTon FROM PhienBanDienThoai WHERE maPhienBan = ?";
         PreparedStatement ps;
         ResultSet rs;
         try {
@@ -304,85 +402,11 @@ public class PhienBanDienThoaiDAO {
             ps.setInt(1, maPhienBan);
             rs = ps.executeQuery();
             if (rs.next()) {
-                maDT = rs.getInt("maDT");
+                soLuongTon = rs.getInt("soLuongTon");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return maDT;
-    }
-
-    //Lấy mã rom theo mã phiên bản
-    public int getMaRomByMaPhienBan(int maPhienBan) {
-        int maRom = -1;
-        String sql = "SELECT maRom FROM PhienBanDienThoai WHERE maPhienBan=? ";
-        PreparedStatement ps;
-        ResultSet rs;
-        try {
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
-            ps.setInt(1, maPhienBan);
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                maRom = rs.getInt("maRom");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return maRom;
-    }
-
-    //Lấy mã ram theo mã Phiên bản
-    public int getMaRamByMaPhienBan(int maPhienBan) {
-        int maRam = -1;
-        String sql = "SELECT maRam FROM PhienBanDienThoai WHERE maPhienBan=? ";
-        PreparedStatement ps;
-        ResultSet rs;
-        try {
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
-            ps.setInt(1, maPhienBan);
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                maRam = rs.getInt("maRam");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return maRam;
-    }
-
-    //Lấy mã màu theo mã phiên bản
-    public int getMaMauByMaPhienBan(int maPhienBan) {
-        int maMau = -1;
-        String sql = "SELECT maMau FROM PhienBanDienThoai WHERE maPhienBan=? ";
-        PreparedStatement ps;
-        ResultSet rs;
-        try {
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
-            ps.setInt(1, maPhienBan);
-            rs = ps.executeQuery();
-            if (rs.next()) {
-                maMau = rs.getInt("maMau");
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return maMau;
-    }
-
-    //Cập nhật số lượng tồn của mỗi phiên bản điện thoại
-    public int updateSoLuongTonPhienBan(int maPhienBan, int soLuongNhap) {
-        String sql = "UPDATE PhienBanDienThoai SET soLuongTon = soLuongTon + ? WHERE maPhienBan = ?";
-        PreparedStatement ps;
-        try {
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
-            ps.setInt(1, soLuongNhap);
-            ps.setInt(2, maPhienBan);
-            if (ps.executeUpdate() > 0) {
-                return 1;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return 0;
+        return soLuongTon;
     }
 }

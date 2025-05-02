@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 public class PhieuNhapDAO {
+    //Thêm 1 phiếu nhập (ahuy)
     public int insertPhieuNhapDienThoai (PhieuNhapDTO pn){
         try{
             String sqlAdd = "INSERT INTO PhieuNhap(maPN,maNV,maNCC,thoigian,tongtien,trangthai )"
@@ -35,34 +36,7 @@ public class PhieuNhapDAO {
         }
         return 0;
     }
-    
-    public int deletePhieuNhap(String maPN) {
-        try {
-            PhienBanDienThoaiDAO pbDao = new PhienBanDienThoaiDAO();
-            DienThoaiDAO dtDao = new DienThoaiDAO();
-            String sqlSelect = "SELECT maPhienBan, soluong FROM ChiTietPhieuNhap WHERE maPN = ?";
-            PreparedStatement psSelect = ConnectedDatabase.getConnectedDB().prepareStatement(sqlSelect);
-            psSelect.setString(1, maPN);
-            ResultSet rs = psSelect.executeQuery();
-            while (rs.next()) {
-                int maPhienBan = rs.getInt("maPhienBan");
-                int soLuong = rs.getInt("soluong");
-                pbDao.updateSoLuongTonPhienBan(maPhienBan, -soLuong);
-                dtDao.updateSoLuongTonDienThoai(maPhienBan, -soLuong);
-            }
-            String sqlUpdate = "UPDATE PhieuNhap SET trangthai = 0 WHERE maPN = ?";
-            PreparedStatement psUpdate = ConnectedDatabase.getConnectedDB().prepareStatement(sqlUpdate);
-            psUpdate.setString(1, maPN);
-            if (psUpdate.executeUpdate() > 0) {
-                JOptionPane.showMessageDialog(null, "Hủy phiếu nhập và cập nhật tồn kho thành công!", "Success", 1);
-                return 1;
-            }
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return 0;
-    }
+    //Cập nhật 1 phiếu nhập (ahuy)
     public int updatePhieuNhap(PhieuNhapDTO pn){
         try {
             String sqlUpdate = "UPDATE PhieuNhap "
@@ -84,6 +58,43 @@ public class PhieuNhapDAO {
         }
         return 0;
     }
+    //Xóa 1 phiếu nhập (ahuy)
+    public int deletePhieuNhap(String maPN) {
+        try {
+            PhienBanDienThoaiDAO pbDao = new PhienBanDienThoaiDAO();
+            DienThoaiDAO dtDao = new DienThoaiDAO();
+            String sqlSelect = "SELECT maPhienBan, soluong FROM ChiTietPhieuNhap WHERE maPN = ?";
+            PreparedStatement psSelect = ConnectedDatabase.getConnectedDB().prepareStatement(sqlSelect);
+            psSelect.setString(1, maPN);
+            ResultSet rs = psSelect.executeQuery();
+            while (rs.next()) {
+                int maPhienBan = rs.getInt("maPhienBan");
+                int soLuongNhap = rs.getInt("soLuong");
+                int tonKhoHienTai = pbDao.getSoLuongTonCuaPhienBan(maPhienBan);
+
+                // Tính lượng thực sự có thể trừ (tối đa là tồn kho hiện tại)
+                int soLuongThucTeDeTru = Math.min(tonKhoHienTai, soLuongNhap);
+
+                // Cập nhật tồn kho phiên bản
+                pbDao.updateSoLuongTonPhienBanSauKhiNhap(maPhienBan, -soLuongThucTeDeTru);
+                //pbDao.updateSoLuongTonPhienBanSauKhiNhap(maPhienBan, -soLuongNhap);
+                //dtDao.updateSoLuongTonDienThoaiSauKhiNhap(maPhienBan, -soLuongNhap);
+                dtDao.updateSoLuongTonDienThoaiSauKhiNhap(maPhienBan, -soLuongThucTeDeTru);
+            }
+            String sqlUpdate = "UPDATE PhieuNhap SET trangthai = 0 WHERE maPN = ?";
+            PreparedStatement psUpdate = ConnectedDatabase.getConnectedDB().prepareStatement(sqlUpdate);
+            psUpdate.setString(1, maPN);
+            if (psUpdate.executeUpdate() > 0) {
+                JOptionPane.showMessageDialog(null, "Hủy phiếu nhập và cập nhật tồn kho thành công!", "Success", 1);
+                return 1;
+            }
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return 0;
+    }
+    //Lấy danh sách phiếu nhập (ahuy)
     public ArrayList<PhieuNhapDTO> listPN() {
         ArrayList<PhieuNhapDTO> ListPN = new ArrayList<>();
         String sqlListPN = "SELECT * FROM PhieuNhap WHERE trangthai=1";
@@ -126,6 +137,7 @@ public class PhieuNhapDAO {
                     }
         return ListPN;
     }
+    //Lấy phiếu nhập by mã phiếu nhập (ahuy)
     public PhieuNhapDTO getPhieuNhapByMaPN(String maPN) {
         String sql = "SELECT * FROM PhieuNhap WHERE maPN = ? ";
         PreparedStatement ps;

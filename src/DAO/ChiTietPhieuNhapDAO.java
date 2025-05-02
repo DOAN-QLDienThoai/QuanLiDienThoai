@@ -20,14 +20,13 @@ import java.util.logging.Logger;
 public class ChiTietPhieuNhapDAO {
     public int insertChiTietPhieuNhap(ChiTietPhieuNhapDTO ctpn){
         try{
-            String sqlAdd = "INSERT INTO ChiTietPhieuNhap(maPN,maPhienBan,soluong,dongia,hinhthucnhap) "
-                    + "VALUES (?,?,?,?,?) ";
+            String sqlAdd = "INSERT INTO ChiTietPhieuNhap(maPN,maPhienBan,soluong,dongia) "
+                    + "VALUES (?,?,?,?) ";
             PreparedStatement ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlAdd);
             ps.setString(1, ctpn.getMaPhieuNhap());
             ps.setInt(2, ctpn.getMaPB());
             ps.setInt(3, ctpn.getSoluong());
             ps.setDouble(4, ctpn.getDongia());
-            ps.setString(5, ctpn.getHinhthucnhap());
             if(ps.executeUpdate() > 0) {
                 return 1;
             }
@@ -55,15 +54,14 @@ public class ChiTietPhieuNhapDAO {
     public int updateChiTietPhieuNhap(ChiTietPhieuNhapDTO ctpn){
         try {
             String sqlUpdate = "UPDATE ChiTietPhieuNhap "
-                    + "SET soluong=?,dongia=?,hinhthucnhap=? "
+                    + "SET soluong=?,dongia=? "
                     + "WHERE maPN=? AND maPhienBan=?";
             PreparedStatement ps;
             ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlUpdate);
             ps.setInt(1, ctpn.getSoluong());
             ps.setDouble(2, ctpn.getDongia());
-            ps.setString(3, ctpn.getHinhthucnhap());
-            ps.setString(4,ctpn.getMaPhieuNhap());
-            ps.setInt(5,ctpn.getMaPB());
+            ps.setString(3,ctpn.getMaPhieuNhap());
+            ps.setInt(4,ctpn.getMaPB());
             if(ps.executeUpdate() > 0){
                 return 1;
             }
@@ -85,8 +83,7 @@ public class ChiTietPhieuNhapDAO {
                 int maPhienBan = rs.getInt("maPhienBan");
                 int soluong = rs.getInt("soluong");
                 double dongia = rs.getDouble("dongia");
-                String hinhthucnhap = rs.getString("hinhthucnhap");
-                ListCTPN.add(new ChiTietPhieuNhapDTO(maPN,maPhienBan,soluong,dongia,hinhthucnhap));
+                ListCTPN.add(new ChiTietPhieuNhapDTO(maPN,maPhienBan,soluong,dongia));
             }
         } catch (SQLException ex) {
             Logger.getLogger(ChiTietPhieuNhapDAO.class.getName()).log(Level.SEVERE, null, ex);
@@ -106,8 +103,7 @@ public class ChiTietPhieuNhapDAO {
                 int maPhienBan = rs.getInt("maPhienBan");
                 int soluong = rs.getInt("soluong");
                 double dongia = rs.getDouble("dongia");
-                String hinhthucnhap = rs.getString("hinhthucnhap");
-                ListCTPN.add(new ChiTietPhieuNhapDTO(maPN,maPhienBan,soluong,dongia,hinhthucnhap));
+                ListCTPN.add(new ChiTietPhieuNhapDTO(maPN,maPhienBan,soluong,dongia));
             }
         } catch (SQLException ex) {
             Logger.getLogger(ChiTietPhieuNhapDAO.class.getName()).log(Level.SEVERE, null, ex);

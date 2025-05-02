@@ -4,6 +4,7 @@
  */
 package GUI.Panel;
 
+import BUS.NhanVienBUS;
 import GUI.Frame.Main;
 import DAO.PhieuXuatDAO;
 import DAO.ChiTietPhieuXuatDAO;
@@ -54,7 +55,7 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
     private Main main;
     private javax.swing.JTable jTablePhieuXuat;
     private int hoverIndex = -1;
-
+    NhanVienBUS nvBus=new NhanVienBUS();
 
     public PanelPhieuXuat(Main main) {
         initComponents();
@@ -482,7 +483,8 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
         PhieuXuatDTO px = new PhieuXuatDAO().layPhieuXuatTheoMa(maPX);
         if (px == null) return;
         dialog.setMaPhieu(px.getMaPX());
-        dialog.setNhanVien(px.getMaNV());
+        String tenNV=nvBus.getTenNVByID(px.getMaNV());
+        dialog.setNhanVien(tenNV);
         dialog.setThoiGian(px.getThoiGian());
         dialog.setKhachHang(new KhachHangDAO().layTenKhachHangTheoMa(px.getMaKH()));
         ArrayList<ChiTietPhieuXuatDTO> dsCT = new ChiTietPhieuXuatDAO().layChiTietTheoMaPhieu(px.getMaPX());
@@ -560,16 +562,16 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
     public void loadDanhSachPhieuXuat() {
         ArrayList<DTO.PhieuXuatDTO> danhSach = new DAO.PhieuXuatDAO().layTatCaPhieuXuat();
         DefaultTableModel model = (DefaultTableModel) table_px.getModel();
-        model.setRowCount(0); 
+        model.setRowCount(0);
         int stt = 1;
         java.text.DecimalFormat df = new java.text.DecimalFormat("#,###");
         for (DTO.PhieuXuatDTO px : danhSach) {
-            String tenNV = new DAO.NhanVienDAO().layTenNhanVienTheoMa(px.getMaNV());
-        model.addRow(new Object[]{
-            stt++,
-            px.getMaPX(),
-        new DAO.KhachHangDAO().layTenKhachHangTheoMa(px.getMaKH()),tenNV,px.getThoiGian().toString().replace("T", " "),df.format(px.getTongTien()) + "đ"
-    });
+            String tenNV = nvBus.getTenNVByID(px.getMaNV());
+            model.addRow(new Object[]{
+                stt++,
+                px.getMaPX(),
+                new DAO.KhachHangDAO().layTenKhachHangTheoMa(px.getMaKH()), tenNV, px.getThoiGian().toString().replace("T", " "), df.format(px.getTongTien()) + "đ"
+            });
 
         }
     }
@@ -589,7 +591,7 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
             String tenKHDB = new KhachHangDAO().layTenKhachHangTheoMa(px.getMaKH());
             boolean hopLe = true;
             if (!tenKH.equals("Tất cả") && !tenKHDB.equals(tenKH)) hopLe = false;
-            String tenNVDB = new DAO.NhanVienDAO().layTenNhanVienTheoMa(px.getMaNV());
+            String tenNVDB = nvBus.getTenNVByID(px.getMaNV());
             if (!tenNV.equals("Tất cả") && !tenNVDB.equals(tenNV)) hopLe = false;
             java.util.Date ngayPX = java.sql.Timestamp.valueOf(px.getThoiGian());
             java.util.Date now = new java.util.Date();

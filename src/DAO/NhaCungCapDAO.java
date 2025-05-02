@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 public class NhaCungCapDAO {
+    //Thêm nhà cung cấp (ahuy)
     public int insertNhaCungCap(NhaCungCapDTO ncc) {
         String sql = "INSERT INTO NhaCungCap (tenNCC,diaChi,sdt,email,trangThai)"
                 + "VALUES (?,?,?,?,1)";
@@ -33,6 +34,7 @@ public class NhaCungCapDAO {
         }
         return 0;
     }
+    //Cập nhật nhà cung cấp (ahuy)
     public int updateNhaCungCap(NhaCungCapDTO ncc) {
         String sqlUpdate = "UPDATE NhaCungCap "
                 + "SET tenNCC=?,diaChi=?,sdt=?,email=? "
@@ -54,7 +56,7 @@ public class NhaCungCapDAO {
         }
         return 0;
     }
-
+    //Xóa nhà cung cấp (ahuy)
     public int deleteNhaCungCap(int maNCC) {
         String sqlDelete = "UPDATE NhaCungCap SET trangThai=0 "
                 + "WHERE maNCC=?";
@@ -71,7 +73,7 @@ public class NhaCungCapDAO {
         }
         return 0;
     }
-
+    //Lấy danh sách nhà cung cấp (ahuy)
     public ArrayList<NhaCungCapDTO> listNCC() {
         ArrayList<NhaCungCapDTO> listNcc = new ArrayList<NhaCungCapDTO>();
         PreparedStatement ps;
@@ -89,11 +91,44 @@ public class NhaCungCapDAO {
                 NhaCungCapDTO ncc = new NhaCungCapDTO(maNCC, name, address, sdt, email);
                 listNcc.add(ncc);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(NhaCungCapDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return listNcc;
     }
+    //Kiểm tra có khóa ngoại nào đang tham chiếu đến nhà cung cấp không để ngăn chặn xóa (ahuy)
+    public int deleteCheckNhaCungCap(int maNCC) {
+        String checkSQL = "SELECT COUNT(*) FROM PhieuNhap WHERE maNCC = ? AND trangthai = 1";
+        String deleteSQL = "UPDATE NhaCungCap SET trangThai=0 "
+                + "WHERE maNCC=?";
+        PreparedStatement psCheck, psDelete;
+        ResultSet rs;
+        try {
+            psCheck = ConnectedDatabase.getConnectedDB().prepareStatement(checkSQL);
+            psCheck.setInt(1, maNCC);
+            rs = psCheck.executeQuery();
+            if (rs.next() && rs.getInt(1) > 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Không thể xóa nhà cung cấp này vì đang được sử dụng trong phiếu nhập.",
+                        "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return 0;
+            }
+            // Nếu không có ràng buộc => thực hiện xóa
+            psDelete = ConnectedDatabase.getConnectedDB().prepareStatement(deleteSQL);
+            psDelete.setInt(1, maNCC);
+            if (psDelete.executeUpdate() > 0) {
+                JOptionPane.showMessageDialog(null,
+                        "Xóa nhà cung cấp thành công",
+                        "Success", JOptionPane.INFORMATION_MESSAGE);
+                return 1;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    //HashMap lưu mã và tên nhà cung cấp (ahuy)
     public HashMap<String, Integer> mapNhaCungCap() {
         HashMap<String, Integer> mapNCC = new HashMap<>();
         String sql = "SELECT * FROM NhaCungCap WHERE trangThai = 1";

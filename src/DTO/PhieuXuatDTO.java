@@ -1,11 +1,10 @@
 package DTO;
 
-import java.sql.Date;
 
 public class PhieuXuatDTO {
     private String maPX;
     private String thoiGian;
-    private String maNV;
+    private int maNV;
     private String maKH;
     private double tongTien;
     private int trangThai;
@@ -13,7 +12,7 @@ public class PhieuXuatDTO {
     public PhieuXuatDTO() {
     }
 
-    public PhieuXuatDTO(String maPX, String thoiGian, String maNV, String maKH, double tongTien, int trangThai) {
+    public PhieuXuatDTO(String maPX, String thoiGian, int maNV, String maKH, double tongTien, int trangThai) {
         this.maPX = maPX;
         this.thoiGian = thoiGian;
         this.maNV = maNV;
@@ -38,11 +37,11 @@ public class PhieuXuatDTO {
         this.thoiGian = thoiGian;
     }
 
-    public String getMaNV() {
+    public int getMaNV() {
         return maNV;
     }
 
-    public void setMaNV(String maNV) {
+    public void setMaNV(int maNV) {
         this.maNV = maNV;
     }
 

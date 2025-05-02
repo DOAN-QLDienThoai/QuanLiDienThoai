@@ -39,6 +39,13 @@ public class NhanVienBUS {
         }
         return check;
     }
+    public int deleteCheckNhanVien(int maNV) {
+        int check = nvDao.deleteCheckNhanVien(maNV);
+        if (check == 1) {
+            listNV = nvDao.listNV();
+        }
+        return check;
+    }
     public int getIndexByID(int maNV){
         int i=0;
         int vitri=-1;
@@ -59,10 +66,23 @@ public class NhanVienBUS {
         }
         return listNV.get(index).getHoTen();
     }
+    public int getIDByTenNV(String tenNV) {
+        listNV = nvDao.listNV();
+
+        for (NhanVienDTO nv : listNV) {
+            if (nv.getHoTen().equalsIgnoreCase(tenNV)) {
+                return nv.getMaNV(); // trả về ID đầu tiên
+            }
+        }
+
+        return -1; // không tìm thấy
+    }
     public ArrayList<NhanVienDTO> listNV(){
+        listNV=nvDao.listNV();
         return listNV;
     }
     public ArrayList<NhanVienDTO> timKiem(String text,String type){
+        listNV=nvDao.listNV();
         ArrayList<NhanVienDTO> listNVFilter=new ArrayList<>();
         String text_find=text.toLowerCase();
         for(NhanVienDTO nv : listNV){

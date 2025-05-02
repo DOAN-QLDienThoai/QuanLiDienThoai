@@ -13,9 +13,7 @@ public class PhieuXuatDAO {
     public ArrayList<String> layDanhSachMaPhieuXuat() {
         ArrayList<String> danhSachMa = new ArrayList<>();
         String sql = "SELECT maPX FROM phieuxuat";
-        try (Connection conn = ConnectedDatabase.getConnectedDB();
-             PreparedStatement ps = conn.prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+        try (Connection conn = ConnectedDatabase.getConnectedDB(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 danhSachMa.add(rs.getString("maPX"));
             }
@@ -24,43 +22,43 @@ public class PhieuXuatDAO {
         }
         return danhSachMa;
     }
-public boolean themPhieuXuat(Connection conn, String maPhieu, String maNV, String maKh, String ngayTao, double tongTien) {
-    String sql = "INSERT INTO phieuxuat(maPX, maNV, maKH, thoigian, tongtien, trangthai) VALUES (?, ?, ?, ?, ?, 1)";
-    try (PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setString(1, maPhieu);
-        ps.setString(2, maNV);
-        ps.setString(3, maKh);
-        ps.setString(4, ngayTao);
-        ps.setDouble(5, tongTien);
-        return ps.executeUpdate() > 0;
-    } catch (Exception e) {
-        e.printStackTrace();
+
+    public boolean themPhieuXuat(Connection conn, String maPhieu, int maNV, String maKh, String ngayTao, double tongTien) {
+        String sql = "INSERT INTO phieuxuat(maPX, maNV, maKH, thoigian, tongtien, trangthai) VALUES (?, ?, ?, ?, ?, 1)";
+        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maPhieu);
+            ps.setInt(2, maNV);
+            ps.setString(3, maKh);
+            ps.setString(4, ngayTao);
+            ps.setDouble(5, tongTien);
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
-    return false;
-}
 
     public ArrayList<PhieuXuatDTO> layTatCaPhieuXuat() {
-    ArrayList<PhieuXuatDTO> list = new ArrayList<>();
-    String sql = "SELECT * FROM phieuxuat WHERE trangThai = 1 ORDER BY thoigian DESC";
-    try (Connection conn = ConnectedDatabase.getConnectedDB();
-         PreparedStatement ps = conn.prepareStatement(sql);
-         ResultSet rs = ps.executeQuery()) {
-        while (rs.next()) {
-            PhieuXuatDTO px = new PhieuXuatDTO(
-                rs.getString("maPX"),
-                rs.getString("thoigian"),
-                rs.getString("maNV"),
-                rs.getString("maKH"),
-                rs.getDouble("tongTien"),
-                rs.getInt("trangThai")
-            );
-            list.add(px);
+        ArrayList<PhieuXuatDTO> list = new ArrayList<>();
+        String sql = "SELECT * FROM phieuxuat WHERE trangThai = 1 ORDER BY thoigian DESC";
+        try (Connection conn = ConnectedDatabase.getConnectedDB(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                PhieuXuatDTO px = new PhieuXuatDTO(
+                        rs.getString("maPX"),
+                        rs.getString("thoigian"),
+                        rs.getInt("maNV"),
+                        rs.getString("maKH"),
+                        rs.getDouble("tongTien"),
+                        rs.getInt("trangThai")
+                );
+                list.add(px);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
+        return list;
     }
-    return list;
-    }
+
     // Vị trí thêm: Cuối class PhieuXuatDAO.java
     public void xoaPhieuXuatVaCapNhatTonKho(String maPX) {
         Connection conn = null;
@@ -94,7 +92,9 @@ public boolean themPhieuXuat(Connection conn, String maPhieu, String maNV, Strin
             JOptionPane.showMessageDialog(null, "Đã xóa phiếu xuất và cập nhật tồn kho!");
         } catch (Exception e) {
             try {
-                if (conn != null) conn.rollback();
+                if (conn != null) {
+                    conn.rollback();
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -102,33 +102,34 @@ public boolean themPhieuXuat(Connection conn, String maPhieu, String maNV, Strin
             JOptionPane.showMessageDialog(null, "Xóa thất bại: " + e.getMessage());
         } finally {
             try {
-                if (conn != null) conn.setAutoCommit(true);
+                if (conn != null) {
+                    conn.setAutoCommit(true);
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         }
     }
-    public PhieuXuatDTO layPhieuXuatTheoMa(String maPX) {
-    String sql = "SELECT * FROM phieuxuat WHERE maPX = ?";
-    try (Connection conn = ConnectedDatabase.getConnectedDB();
-         PreparedStatement ps = conn.prepareStatement(sql)) {
-        ps.setString(1, maPX);
-        ResultSet rs = ps.executeQuery();
-        if (rs.next()) {
-            return new PhieuXuatDTO(
-                rs.getString("maPX"),
-                rs.getString("thoigian"),
-                rs.getString("maNV"),
-                rs.getString("maKH"),
-                rs.getDouble("tongTien"),
-                rs.getInt("trangThai")
-            );
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-    return null;
-}
 
+    public PhieuXuatDTO layPhieuXuatTheoMa(String maPX) {
+        String sql = "SELECT * FROM phieuxuat WHERE maPX = ?";
+        try (Connection conn = ConnectedDatabase.getConnectedDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, maPX);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new PhieuXuatDTO(
+                        rs.getString("maPX"),
+                        rs.getString("thoigian"),
+                        rs.getInt("maNV"),
+                        rs.getString("maKH"),
+                        rs.getDouble("tongTien"),
+                        rs.getInt("trangThai")
+                );
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
 }

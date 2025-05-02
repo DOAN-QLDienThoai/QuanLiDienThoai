@@ -9,6 +9,7 @@ import DAO.MauSacDAO;
 import DTO.PhienBanDienThoaiDTO;
 import DTO.DienThoaiDTO;
 import BUS.DienThoaiBUS;
+import DAO.DienThoaiDAO;
 import GUI.Frame.Main;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
@@ -27,15 +28,15 @@ import javax.swing.border.Border;
 import util.RoundedBorder;
 import java.sql.Connection;
 
-
 /**
  *
  * @author kiman
  */
 public class PanelNhapPhieuXuat extends javax.swing.JPanel {
-        private Main main;
-        private String maKhachHangDuocChon;  
-        private int hoverIndex = -1;
+
+    private Main main;
+    private String maKhachHangDuocChon;
+    private int hoverIndex = -1;
 
     public PanelNhapPhieuXuat(Main main) {
         this.main = main;
@@ -56,7 +57,7 @@ public class PanelNhapPhieuXuat extends javax.swing.JPanel {
             field.setBorder(inputBorder);
         }
         jTextField11.setText(taoMaPhieuXuatMoi());
-        String tenNV = main.getTenNhanVien(); 
+        String tenNV = main.getTenNhanVien();
         jTextField1.setText(tenNV);
         jComboBox5.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
         jComboBox5.setMinimumSize(new Dimension(0, 30));
@@ -65,12 +66,14 @@ public class PanelNhapPhieuXuat extends javax.swing.JPanel {
         PanelPhieuXuat phieuXuat = new PanelPhieuXuat(main);
         loadTableSanPham();
         jTextField2.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-             public void insertUpdate(javax.swing.event.DocumentEvent e) {
+            public void insertUpdate(javax.swing.event.DocumentEvent e) {
                 timKiemTuDong();
             }
+
             public void removeUpdate(javax.swing.event.DocumentEvent e) {
                 timKiemTuDong();
             }
+
             public void changedUpdate(javax.swing.event.DocumentEvent e) {
                 timKiemTuDong();
             }
@@ -79,10 +82,11 @@ public class PanelNhapPhieuXuat extends javax.swing.JPanel {
         jTextField2.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 if (jTextField2.getText().equals("Tên sản phẩm, mã sản phẩm...")) {
-                 jTextField2.setText("");
-                  jTextField2.setForeground(Color.BLACK); 
+                    jTextField2.setText("");
+                    jTextField2.setForeground(Color.BLACK);
                 }
             }
+
             public void focusLost(java.awt.event.FocusEvent evt) {
                 if (jTextField2.getText().trim().equals("")) {
                     jTextField2.setForeground(Color.GRAY);
@@ -90,82 +94,88 @@ public class PanelNhapPhieuXuat extends javax.swing.JPanel {
                 }
             }
         });
-            jTable1.getSelectionModel().addListSelectionListener(e -> {
-         if (!e.getValueIsAdjusting()) {
-        int selectedRow = jTable1.getSelectedRow();
-        if (selectedRow >= 0) {
-            String maSP = jTable1.getValueAt(selectedRow, 0).toString();
-            String tenSP = jTable1.getValueAt(selectedRow, 1).toString();
-    
-            jTextField3.setText(maSP);               
-            jTextField5.setText(tenSP);           
-            PhienBanDienThoaiDAO pbDao = new PhienBanDienThoaiDAO();
-            ArrayList<String> configs = pbDao.getArrayListCauHinhByMaDT(Integer.parseInt(maSP));
-            jComboBox5.removeAllItems();
-            if (!configs.isEmpty()) {
-    for (String config : configs) {
-        jComboBox5.addItem(config);
-    }
-    jComboBox5.setSelectedIndex(0); // ✔ GỌI TỰ ĐỘNG itemStateChanged để load giá và tồn
-}
+        jTable1.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                int selectedRow = jTable1.getSelectedRow();
+                if (selectedRow >= 0) {
+                    String maSP = jTable1.getValueAt(selectedRow, 0).toString();
+                    String tenSP = jTable1.getValueAt(selectedRow, 1).toString();
 
-        }
-        }
-        });     
-                jComboBox5.addItemListener(new java.awt.event.ItemListener() {
-                    @Override
-                    public void itemStateChanged(java.awt.event.ItemEvent e) {
-                 if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-    String selected = (String) jComboBox5.getSelectedItem();
-    if (selected == null || selected.trim().isEmpty()) return;
+                    jTextField3.setText(maSP);
+                    jTextField5.setText(tenSP);
+                    PhienBanDienThoaiDAO pbDao = new PhienBanDienThoaiDAO();
+                    ArrayList<String> configs = pbDao.getArrayListCauHinhByMaDT(Integer.parseInt(maSP));
+                    jComboBox5.removeAllItems();
+                    if (!configs.isEmpty()) {
+                        for (String config : configs) {
+                            jComboBox5.addItem(config);
+                        }
+                        jComboBox5.setSelectedIndex(0); // ✔ GỌI TỰ ĐỘNG itemStateChanged để load giá và tồn
+                    }
 
-    String[] parts = selected.split("-");
-    if (parts.length != 3) return;
+                }
+            }
+        });
+        jComboBox5.addItemListener(new java.awt.event.ItemListener() {
+            @Override
+            public void itemStateChanged(java.awt.event.ItemEvent e) {
+                if (e.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+                    String selected = (String) jComboBox5.getSelectedItem();
+                    if (selected == null || selected.trim().isEmpty()) {
+                        return;
+                    }
 
-    String ramStr = parts[0].replace("GB", "").trim();
-    String romStr = parts[1].replace("GB", "").trim();
-    String mau = parts[2].trim();
+                    String[] parts = selected.split("-");
+                    if (parts.length != 3) {
+                        return;
+                    }
 
-    String maDTStr = jTextField3.getText().trim();
-    if (maDTStr.isEmpty()) return;
-    int maDT = Integer.parseInt(maDTStr);
+                    String ramStr = parts[0].replace("GB", "").trim();
+                    String romStr = parts[1].replace("GB", "").trim();
+                    String mau = parts[2].trim();
 
-    PhienBanDienThoaiDAO dao = new PhienBanDienThoaiDAO();
-    MauSacDAO mauDAO = new MauSacDAO();
-    int maRam = dao.getMaRamTheoDungLuong(Integer.parseInt(ramStr));
-    int maRom = dao.getMaRomTheoDungLuong(Integer.parseInt(romStr));
-    int maMau = mauDAO.getMaMauByTen(mau);
- System.out.println("DEBUG chọn cấu hình:");
-            System.out.println("maDT = " + maDT + ", maRam = " + maRam + ", maRom = " + maRom + ", maMau = " + maMau);
-PhienBanDienThoaiDTO variant = dao.getTheoCauHinh(maDT, maRam, maRom, maMau);
-System.out.println("variant = " + variant);
-if (variant != null) {
-    System.out.println("GiaXuat: " + variant.getGiaXuat());
-    System.out.println("TonKho: " + variant.getSoLuongTon());
-}
+                    String maDTStr = jTextField3.getText().trim();
+                    if (maDTStr.isEmpty()) {
+                        return;
+                    }
+                    int maDT = Integer.parseInt(maDTStr);
 
-if (variant != null) {
-    DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-    symbols.setGroupingSeparator('.');
-    DecimalFormat formatter = new DecimalFormat("#,###", symbols);
-    jTextField6.setText(formatter.format(variant.getGiaXuat()) + " đ");
-    jTextField7.setText(String.valueOf(variant.getSoLuongTon()));
-}
-}
+                    PhienBanDienThoaiDAO dao = new PhienBanDienThoaiDAO();
+                    MauSacDAO mauDAO = new MauSacDAO();
+                    int maRam = dao.getMaRamTheoDungLuong(Integer.parseInt(ramStr));
+                    int maRom = dao.getMaRomTheoDungLuong(Integer.parseInt(romStr));
+                    int maMau = mauDAO.getMaMauByTen(mau);
+                    System.out.println("DEBUG chọn cấu hình:");
+                    System.out.println("maDT = " + maDT + ", maRam = " + maRam + ", maRom = " + maRom + ", maMau = " + maMau);
+                    PhienBanDienThoaiDTO variant = dao.getTheoCauHinh(maDT, maRam, maRom, maMau);
+                    System.out.println("variant = " + variant);
+                    if (variant != null) {
+                        System.out.println("GiaXuat: " + variant.getGiaXuat());
+                        System.out.println("TonKho: " + variant.getSoLuongTon());
+                    }
+
+                    if (variant != null) {
+                        DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+                        symbols.setGroupingSeparator('.');
+                        DecimalFormat formatter = new DecimalFormat("#,###", symbols);
+                        jTextField6.setText(formatter.format(variant.getGiaXuat()) + " đ");
+                        jTextField7.setText(String.valueOf(variant.getSoLuongTon()));
+                    }
+                }
 
             }
         });
         loadCauHinhVaoComboBox();
         jTextField11.setEditable(false);
         jTextField11.setFocusable(false);
-        jTextField1.setEditable(false);  
-        jTextField12.setEditable(false); 
+        jTextField1.setEditable(false);
+        jTextField12.setEditable(false);
         jTextField1.setFocusable(false);
         jTextField12.setFocusable(false);
         jTextField6.setFocusable(false);
         jTextField7.setFocusable(false);
-        jTextField6.setEditable(false); 
-        jTextField7.setEditable(false); 
+        jTextField6.setEditable(false);
+        jTextField7.setEditable(false);
 //        jTextField2.setFocusable(false);
 //        jTextField2.setEditable(false); 
         javax.swing.SwingUtilities.invokeLater(() -> {
@@ -501,7 +511,7 @@ if (variant != null) {
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
-           timKiemTuDong();
+        timKiemTuDong();
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
@@ -514,10 +524,11 @@ if (variant != null) {
         DefaultTableModel modelCT = (DefaultTableModel) jTable2.getModel();
         String maSP = modelCT.getValueAt(selectedRow, 1).toString();
         DefaultTableModel modelSP = (DefaultTableModel) jTable1.getModel();
+        int soLuongDaThem = Integer.parseInt(modelCT.getValueAt(selectedRow, 7).toString());
         for (int i = 0; i < modelSP.getRowCount(); i++) {
             if (modelSP.getValueAt(i, 0).toString().equals(maSP)) {
                 int soLuongTon = Integer.parseInt(modelSP.getValueAt(i, 2).toString());
-                modelSP.setValueAt(soLuongTon + 1, i, 2);
+                modelSP.setValueAt(soLuongTon + soLuongDaThem, i, 2);
                 break;
             }
         }
@@ -634,150 +645,163 @@ if (variant != null) {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-           String maPX = jTextField11.getText().trim();
-    String tenNV = jTextField1.getText().trim();
-    String nhanVien = new DAO.NhanVienDAO().layMaNVTheoTen(tenNV);
-        if (nhanVien == null) {
+        String maPX = jTextField11.getText().trim();
+        String tenNV = jTextField1.getText().trim();
+        int nhanVien = new DAO.NhanVienDAO().layMaNVTheoTen(tenNV);
+        if (nhanVien == -1) {
             JOptionPane.showMessageDialog(this, "Không tìm thấy mã nhân viên từ tên: " + tenNV);
             return;
-    }
-    String tenKH = jTextField12.getText().trim();
-    DefaultTableModel modelCT = (DefaultTableModel) jTable2.getModel();
+        }
 
-    if (tenKH.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Vui lòng chọn khách hàng!");
-        return;
-    }
+        String tenKH = jTextField12.getText().trim();
+        DefaultTableModel modelCT = (DefaultTableModel) jTable2.getModel();
 
-    if (modelCT.getRowCount() == 0) {
-        JOptionPane.showMessageDialog(this, "Chưa có sản phẩm nào để xuất!");
-        return;
-    }
-
-    String tongTienStr = jLabel8.getText().replace("đ", "").replace(".", "").replace(",", "").trim();
-    double tongTien = Double.parseDouble(tongTienStr);
-    String thoiGian = java.time.LocalDateTime.now().toString();
-
-    DAO.PhieuXuatDAO pxDao = new DAO.PhieuXuatDAO();
-    DAO.ChiTietPhieuXuatDAO ctpxDao = new DAO.ChiTietPhieuXuatDAO();
-    DAO.PhienBanDienThoaiDAO dao = new DAO.PhienBanDienThoaiDAO();
-    PanelPhieuXuat phieuXuatPanel = main.getPanelPhieuXuat();
-
-    try {
-        Connection conn = util.ConnectedDatabase.getConnectedDB();
-        conn.setAutoCommit(false); // Bắt đầu transaction
-
-        boolean themPhieu = pxDao.themPhieuXuat(conn, maPX, nhanVien, maKhachHangDuocChon, thoiGian, tongTien);
-        if (!themPhieu) {
-            conn.rollback();
-            JOptionPane.showMessageDialog(this, "Không thể thêm phiếu xuất vào cơ sở dữ liệu!");
+        if (tenKH.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn khách hàng!");
             return;
         }
 
-        for (int i = 0; i < modelCT.getRowCount(); i++) {
-            String maSP = modelCT.getValueAt(i, 1).toString();
-            String rom = modelCT.getValueAt(i, 3).toString();
-            String ram = modelCT.getValueAt(i, 4).toString();
-            String mau = modelCT.getValueAt(i, 5).toString();
-            int soLuong = Integer.parseInt(modelCT.getValueAt(i, 7).toString());
-            double donGia = Double.parseDouble(modelCT.getValueAt(i, 6).toString());
-
-            int dungLuongRam = Integer.parseInt(ram);
-            int dungLuongRom = Integer.parseInt(rom);
-            int maRam = dao.getMaRamTheoDungLuong(dungLuongRam);
-            int maRom = dao.getMaRomTheoDungLuong(dungLuongRom);
-            int maPhienBan = dao.getMaPhienBanTheoChiTiet(maSP, String.valueOf(maRam), String.valueOf(maRom), mau);
-
-            System.out.println("DEBUG maPhienBan = " + maPhienBan 
-                + " | maSP = " + maSP + ", ram = " + ram + ", rom = " + rom + ", màu = " + mau);
-
-            if (maPhienBan == -1) {
-                conn.rollback();
-                JOptionPane.showMessageDialog(this, "Không tìm thấy phiên bản sản phẩm phù hợp!");
-                return;
-            }
-
-            boolean ok = ctpxDao.themChiTiet(conn, maPX, maPhienBan, soLuong, donGia);
-            System.out.println("✔ Đã thêm chi tiết PX: maPhienBan = " + maPhienBan + ", SL = " + soLuong + ", giá = " + donGia);
-
-            if (!ok) {
-                conn.rollback();
-                JOptionPane.showMessageDialog(this, "Thêm chi tiết phiếu xuất thất bại!");
-                return;
-            }
+        if (modelCT.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Chưa có sản phẩm nào để xuất!");
+            return;
         }
 
-        conn.commit(); // Thành công thì lưu lại toàn bộ
-        JOptionPane.showMessageDialog(this, "Xuất hàng thành công!");
-        String tenNhanVien = jTextField1.getText().trim();
-        phieuXuatPanel.themPhieuXuatVaoBang(maPX, tenKH, tenNhanVien, thoiGian, tongTien);
-        main.getPanelPhieuXuat().setVisible(true);
-        this.setVisible(false);
-        resetFormSauKhiXuat();
-    } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Lỗi khi xuất hàng: " + e.getMessage());
-    }
+        String tongTienStr = jLabel8.getText().replace("đ", "").replace(".", "").replace(",", "").trim();
+        double tongTien = Double.parseDouble(tongTienStr);
+        String thoiGian = java.time.LocalDateTime.now().toString();
+
+        DAO.PhieuXuatDAO pxDao = new DAO.PhieuXuatDAO();
+        DAO.ChiTietPhieuXuatDAO ctpxDao = new DAO.ChiTietPhieuXuatDAO();
+        DAO.PhienBanDienThoaiDAO dao = new DAO.PhienBanDienThoaiDAO();
+        DAO.DienThoaiDAO dtDao = new DAO.DienThoaiDAO(); // Thêm DAO điện thoại
+        PanelPhieuXuat phieuXuatPanel = main.getPanelPhieuXuat();
+
+        try {
+            Connection conn = util.ConnectedDatabase.getConnectedDB();
+            conn.setAutoCommit(false); // Bắt đầu transaction
+
+            boolean themPhieu = pxDao.themPhieuXuat(conn, maPX, nhanVien, maKhachHangDuocChon, thoiGian, tongTien);
+            if (!themPhieu) {
+                conn.rollback();
+                JOptionPane.showMessageDialog(this, "Không thể thêm phiếu xuất vào cơ sở dữ liệu!");
+                return;
+            }
+
+            for (int i = 0; i < modelCT.getRowCount(); i++) {
+                String maSP = modelCT.getValueAt(i, 1).toString();
+                String rom = modelCT.getValueAt(i, 3).toString();
+                String ram = modelCT.getValueAt(i, 4).toString();
+                String mau = modelCT.getValueAt(i, 5).toString();
+                int soLuong = Integer.parseInt(modelCT.getValueAt(i, 7).toString());
+                double donGia = Double.parseDouble(modelCT.getValueAt(i, 6).toString());
+
+                int dungLuongRam = Integer.parseInt(ram);
+                int dungLuongRom = Integer.parseInt(rom);
+                int maRam = dao.getMaRamTheoDungLuong(dungLuongRam);
+                int maRom = dao.getMaRomTheoDungLuong(dungLuongRom);
+                int maPhienBan = dao.getMaPhienBanTheoChiTiet(maSP, String.valueOf(maRam), String.valueOf(maRom), mau);
+
+                if (maPhienBan == -1) {
+                    conn.rollback();
+                    JOptionPane.showMessageDialog(this, "Không tìm thấy phiên bản sản phẩm phù hợp!");
+                    return;
+                }
+
+                boolean ok = ctpxDao.themChiTiet(conn, maPX, maPhienBan, soLuong, donGia);
+                if (!ok) {
+                    conn.rollback();
+                    JOptionPane.showMessageDialog(this, "Thêm chi tiết phiếu xuất thất bại!");
+                    return;
+                }
+
+                int capNhatDT = dtDao.updateSoLuongTonDienThoaiSauKhiXuat(maPhienBan, soLuong);
+                boolean capNhatPB = dao.updateSoLuongTonPhienBanSauXuat(maPhienBan, soLuong);
+
+                if (capNhatDT == 0 || !capNhatPB) {
+                    conn.rollback();
+                    JOptionPane.showMessageDialog(this, "Cập nhật số lượng tồn thất bại sau khi xuất sản phẩm!");
+                    return;
+                }
+            }
+
+            conn.commit(); // Nếu mọi thứ đều OK thì commit
+            JOptionPane.showMessageDialog(this, "Xuất hàng thành công!");
+            phieuXuatPanel.themPhieuXuatVaoBang(maPX, tenKH, tenNV, thoiGian, tongTien);
+            main.getPanelPhieuXuat().setVisible(true);
+            this.setVisible(false);
+            resetFormSauKhiXuat();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi xuất hàng: " + e.getMessage());
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jComboBox5ItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBox5ItemStateChanged
         // TODO add your handling code here:
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
-        String selected = (String) jComboBox5.getSelectedItem();
-        if (selected == null || selected.trim().isEmpty()) return;
-        String[] parts = selected.split("-");
-        if (parts.length != 3) return;
-        String ram = parts[0].replace("GB", "").trim();
-        String rom = parts[1].replace("GB", "").trim();
-        String color = parts[2].trim();
-        String maDTStr = jTextField3.getText().trim();
-        if (maDTStr.isEmpty()) return;
-        int maDT = Integer.parseInt(maDTStr);
-        MauSacDAO mauDAO = new MauSacDAO();
-        PhienBanDienThoaiDAO dao = new PhienBanDienThoaiDAO();
-        int maMau = mauDAO.getMaMauByTen(color);
-        int maRam = dao.getMaRamTheoDungLuong(Integer.parseInt(ram));
-        int maRom = dao.getMaRomTheoDungLuong(Integer.parseInt(rom));
-        PhienBanDienThoaiDTO variant = dao.getTheoCauHinh(maDT, maRam, maRom, maMau);
-        if (variant != null) {
-            DecimalFormatSymbols symbols = new DecimalFormatSymbols();
-            symbols.setGroupingSeparator('.');
-            DecimalFormat formatter = new DecimalFormat("#,###", symbols);
-            jTextField6.setText(formatter.format(variant.getGiaXuat()) + " đ");
-            jTextField7.setText(String.valueOf(variant.getSoLuongTon()));
-        } else {
-            jTextField6.setText("0 đ");
-            jTextField7.setText("0");
+            String selected = (String) jComboBox5.getSelectedItem();
+            if (selected == null || selected.trim().isEmpty()) {
+                return;
+            }
+            String[] parts = selected.split("-");
+            if (parts.length != 3) {
+                return;
+            }
+            String ram = parts[0].replace("GB", "").trim();
+            String rom = parts[1].replace("GB", "").trim();
+            String color = parts[2].trim();
+            String maDTStr = jTextField3.getText().trim();
+            if (maDTStr.isEmpty()) {
+                return;
+            }
+            int maDT = Integer.parseInt(maDTStr);
+            MauSacDAO mauDAO = new MauSacDAO();
+            PhienBanDienThoaiDAO dao = new PhienBanDienThoaiDAO();
+            int maMau = mauDAO.getMaMauByTen(color);
+            int maRam = dao.getMaRamTheoDungLuong(Integer.parseInt(ram));
+            int maRom = dao.getMaRomTheoDungLuong(Integer.parseInt(rom));
+            PhienBanDienThoaiDTO variant = dao.getTheoCauHinh(maDT, maRam, maRom, maMau);
+            if (variant != null) {
+                DecimalFormatSymbols symbols = new DecimalFormatSymbols();
+                symbols.setGroupingSeparator('.');
+                DecimalFormat formatter = new DecimalFormat("#,###", symbols);
+                jTextField6.setText(formatter.format(variant.getGiaXuat()) + " đ");
+                jTextField7.setText(String.valueOf(variant.getSoLuongTon()));
+            } else {
+                jTextField6.setText("0 đ");
+                jTextField7.setText("0");
+            }
         }
-    }
     }//GEN-LAST:event_jComboBox5ItemStateChanged
 
-        public void loadTableSanPham() {
-            DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-            model.setRowCount(0);
-            DienThoaiBUS dtBus = new DienThoaiBUS();
-            PhienBanDienThoaiDAO pbDAO = new PhienBanDienThoaiDAO();
-            for (DienThoaiDTO dt : dtBus.listDT()) {
-                int tongSoLuong = pbDAO.getTongSoLuongTonCuaDienThoai(dt.getMaDT());
-                model.addRow(new Object[]{
-                     dt.getMaDT(),
-                     dt.getTenDT(),
-                     tongSoLuong
-                });
-             }
+    public void loadTableSanPham() {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        model.setRowCount(0);
+        DienThoaiBUS dtBus = new DienThoaiBUS();
+        PhienBanDienThoaiDAO pbDAO = new PhienBanDienThoaiDAO();
+        for (DienThoaiDTO dt : dtBus.listDT()) {
+            int tongSoLuong = pbDAO.getTongSoLuongTonCuaDienThoai(dt.getMaDT());
+            model.addRow(new Object[]{
+                dt.getMaDT(),
+                dt.getTenDT(),
+                tongSoLuong
+            });
         }
+    }
+
     private void timKiemTuDong() {
         String keyword = jTextField2.getText().trim();
-        if (keyword.equals("Tên sản phẩm, mã sản phẩm...")) return;
+        if (keyword.equals("Tên sản phẩm, mã sản phẩm...")) {
+            return;
+        }
 
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
         model.setRowCount(0);
 
         DienThoaiBUS dtBus = new DienThoaiBUS();
         for (DienThoaiDTO dt : dtBus.listDT()) {
-            if (dt.getTenDT().toLowerCase().contains(keyword.toLowerCase()) ||
-                String.valueOf(dt.getMaDT()).toLowerCase().contains(keyword.toLowerCase())) {
+            if (dt.getTenDT().toLowerCase().contains(keyword.toLowerCase())
+                    || String.valueOf(dt.getMaDT()).toLowerCase().contains(keyword.toLowerCase())) {
 
                 int tongSoLuong = new PhienBanDienThoaiDAO().getTongSoLuongTonCuaDienThoai(dt.getMaDT());
                 model.addRow(new Object[]{
@@ -789,59 +813,67 @@ if (variant != null) {
         }
     }
 
-  private void loadCauHinhVaoComboBox() {
-    jComboBox5.removeAllItems();
-    PhienBanDienThoaiDAO dao = new PhienBanDienThoaiDAO();
-    String maDTStr = jTextField3.getText().trim();
-    if (maDTStr.isEmpty()) return;
+    private void loadCauHinhVaoComboBox() {
+        jComboBox5.removeAllItems();
+        PhienBanDienThoaiDAO dao = new PhienBanDienThoaiDAO();
+        String maDTStr = jTextField3.getText().trim();
+        if (maDTStr.isEmpty()) {
+            return;
+        }
 
-    int maDT = Integer.parseInt(maDTStr);
-    ArrayList<String> configs = dao.getArrayListCauHinhByMaDT(maDT);
+        int maDT = Integer.parseInt(maDTStr);
+        ArrayList<String> configs = dao.getArrayListCauHinhByMaDT(maDT);
 
-    for (String config : configs) {
-        jComboBox5.addItem(config);
-    }
-}
-
-    private String taoMaPhieuXuatMoi() {
-    int max = 0;
-    ArrayList<String> dsMa = new DAO.PhieuXuatDAO().layDanhSachMaPhieuXuat();
-    for (String ma : dsMa) {
-        if (ma.startsWith("PX")) {
-            try {
-                int so = Integer.parseInt(ma.substring(2));
-                if (so > max) max = so;
-            } catch (NumberFormatException ex) {
-            }
+        for (String config : configs) {
+            jComboBox5.addItem(config);
         }
     }
-    return "PX" + (max + 1);
+
+    private String taoMaPhieuXuatMoi() {
+        int max = 0;
+        ArrayList<String> dsMa = new DAO.PhieuXuatDAO().layDanhSachMaPhieuXuat();
+        for (String ma : dsMa) {
+            if (ma.startsWith("PX")) {
+                try {
+                    int so = Integer.parseInt(ma.substring(2));
+                    if (so > max) {
+                        max = so;
+                    }
+                } catch (NumberFormatException ex) {
+                }
+            }
+        }
+        return "PX" + (max + 1);
     }
+
     public void setTenKhachHang(String tenKH) {
         jTextField12.setText(tenKH);
     }
+
     public void setTenNhanVien(String tenNV) {
         jTextField1.setText(tenNV); // jTextField1 là ô nhân viên xuất
     }
 
     public void setKhachHang(String maKH, String tenKH) {
         this.maKhachHangDuocChon = maKH;
-        jTextField12.setText(tenKH); 
+        jTextField12.setText(tenKH);
     }
+
     private void resetFormSauKhiXuat() {
-    jTextField11.setText(taoMaPhieuXuatMoi());
-    jTextField12.setText("");
-    maKhachHangDuocChon = null;
-    jTextField3.setText("");
-    jTextField5.setText("");
-    jTextField6.setText("");
-    jTextField7.setText("");
-    jComboBox5.removeAllItems();
-    DefaultTableModel modelCT = (DefaultTableModel) jTable2.getModel();
-    modelCT.setRowCount(0);
-    jLabel8.setText("0đ");
-    loadTableSanPham();
-}
+        jTextField11.setText(taoMaPhieuXuatMoi());
+        jTextField12.setText("");
+        maKhachHangDuocChon = null;
+        jTextField3.setText("");
+        jTextField5.setText("");
+        jTextField6.setText("");
+        jTextField7.setText("");
+        jComboBox5.removeAllItems();
+        DefaultTableModel modelCT = (DefaultTableModel) jTable2.getModel();
+        modelCT.setRowCount(0);
+        jLabel8.setText("0đ");
+        loadTableSanPham();
+    }
+
     private void styleTable(javax.swing.JTable table) {
         table.setShowGrid(true);
         table.setGridColor(new java.awt.Color(240, 240, 240));
@@ -904,93 +936,105 @@ if (variant != null) {
             }
         }
     }
-    private void customComboBoxUI(JComboBox<?> comboBox) {
-    comboBox.setBackground(Color.WHITE);
-    comboBox.setForeground(Color.BLACK);
-    comboBox.setFocusable(false);
-    comboBox.setOpaque(true);
-    comboBox.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-    comboBox.setBorder(new util.RoundedBorder(10));
-    comboBox.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    comboBox.setRenderer(new DefaultListCellRenderer() {
-        @Override
-        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, false, false);
-            label.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-            label.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-            if (index == hoverIndex) {
-                label.setBackground(new Color(192, 192, 192));
-                label.setForeground(Color.WHITE);
-            } else {
-                label.setBackground(Color.WHITE);
-                label.setForeground(Color.BLACK);
-            }
-            return label;
-        }
-    });
-    comboBox.setUI(new BasicComboBoxUI() {
-        @Override
-        protected JButton createArrowButton() {
-            JButton arrow = new BasicArrowButton(SwingConstants.SOUTH,
-                    Color.WHITE, Color.WHITE, Color.BLACK, Color.WHITE);
-            arrow.setBorder(BorderFactory.createEmptyBorder());
-            return arrow;
-        }
-    });
-    comboBox.setEditable(true);
 
-    if (comboBox.getEditor().getEditorComponent() instanceof JTextField editor) {
-        editor.setBackground(Color.WHITE);
-        editor.setForeground(Color.BLACK);
-        editor.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+    private void customComboBoxUI(JComboBox<?> comboBox) {
+        comboBox.setBackground(Color.WHITE);
+        comboBox.setForeground(Color.BLACK);
+        comboBox.setFocusable(false);
+        comboBox.setOpaque(true);
+        comboBox.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        comboBox.setBorder(new util.RoundedBorder(10));
+        comboBox.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        comboBox.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, false, false);
+                label.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+                label.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+                if (index == hoverIndex) {
+                    label.setBackground(new Color(192, 192, 192));
+                    label.setForeground(Color.WHITE);
+                } else {
+                    label.setBackground(Color.WHITE);
+                    label.setForeground(Color.BLACK);
+                }
+                return label;
+            }
+        });
+        comboBox.setUI(new BasicComboBoxUI() {
+            @Override
+            protected JButton createArrowButton() {
+                JButton arrow = new BasicArrowButton(SwingConstants.SOUTH,
+                        Color.WHITE, Color.WHITE, Color.BLACK, Color.WHITE);
+                arrow.setBorder(BorderFactory.createEmptyBorder());
+                return arrow;
+            }
+        });
+        comboBox.setEditable(true);
+
+        if (comboBox.getEditor().getEditorComponent() instanceof JTextField editor) {
+            editor.setBackground(Color.WHITE);
+            editor.setForeground(Color.BLACK);
+            editor.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+        }
+
+        comboBox.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                comboBox.setBackground(new Color(250, 250, 250));
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                comboBox.setBackground(Color.WHITE);
+            }
+        });
+
+        javax.swing.SwingUtilities.invokeLater(() -> {
+            Object comp = comboBox.getUI().getAccessibleChild(comboBox, 0);
+            if (comp instanceof javax.swing.plaf.basic.ComboPopup popup) {
+                JScrollPane scrollPane = (JScrollPane) popup.getList().getParent().getParent();
+                scrollPane.getVerticalScrollBar().setUI(new CustomScrollBarUI());
+                scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(8, Integer.MAX_VALUE));
+            }
+        });
+
+        comboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
+            @Override
+            public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent e) {
+                JList<?> list = getPopupList(comboBox);
+                if (list != null) {
+                    list.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+                        @Override
+                        public void mouseMoved(java.awt.event.MouseEvent e) {
+                            int index = list.locationToIndex(e.getPoint());
+                            if (index != hoverIndex) {
+                                hoverIndex = index;
+                                list.repaint();
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent e) {
+            }
+
+            @Override
+            public void popupMenuCanceled(javax.swing.event.PopupMenuEvent e) {
+            }
+        });
     }
 
-    comboBox.addMouseListener(new java.awt.event.MouseAdapter() {
-        @Override public void mouseEntered(java.awt.event.MouseEvent evt) {
-            comboBox.setBackground(new Color(250, 250, 250));
-        }
-        @Override public void mouseExited(java.awt.event.MouseEvent evt) {
-            comboBox.setBackground(Color.WHITE);
-        }
-    });
-
-    javax.swing.SwingUtilities.invokeLater(() -> {
+    private JList<?> getPopupList(JComboBox<?> comboBox) {
         Object comp = comboBox.getUI().getAccessibleChild(comboBox, 0);
         if (comp instanceof javax.swing.plaf.basic.ComboPopup popup) {
-            JScrollPane scrollPane = (JScrollPane) popup.getList().getParent().getParent();
-            scrollPane.getVerticalScrollBar().setUI(new CustomScrollBarUI());
-            scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(8, Integer.MAX_VALUE));
+            return popup.getList();
         }
-    });
-
-    comboBox.addPopupMenuListener(new javax.swing.event.PopupMenuListener() {
-        @Override public void popupMenuWillBecomeVisible(javax.swing.event.PopupMenuEvent e) {
-            JList<?> list = getPopupList(comboBox);
-            if (list != null) {
-                list.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
-                    @Override public void mouseMoved(java.awt.event.MouseEvent e) {
-                        int index = list.locationToIndex(e.getPoint());
-                        if (index != hoverIndex) {
-                            hoverIndex = index;
-                            list.repaint();
-                        }
-                    }
-                });
-            }
-        }
-        @Override public void popupMenuWillBecomeInvisible(javax.swing.event.PopupMenuEvent e) {}
-        @Override public void popupMenuCanceled(javax.swing.event.PopupMenuEvent e) {}
-    });
-}
-
-private JList<?> getPopupList(JComboBox<?> comboBox) {
-    Object comp = comboBox.getUI().getAccessibleChild(comboBox, 0);
-    if (comp instanceof javax.swing.plaf.basic.ComboPopup popup) {
-        return popup.getList();
+        return null;
     }
-    return null;
-}
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
