@@ -65,31 +65,54 @@ public class PhieuXuatDAO {
         try {
             conn = ConnectedDatabase.getConnectedDB();
             conn.setAutoCommit(false); // Bắt đầu transaction
+
             // 1. Lấy chi tiết phiếu xuất
             String sqlLayChiTiet = "SELECT maPhienBan, soluong FROM chitietphieuxuat WHERE maPX = ?";
             PreparedStatement ps1 = conn.prepareStatement(sqlLayChiTiet);
             ps1.setString(1, maPX);
             ResultSet rs = ps1.executeQuery();
-            // 2. Cập nhật lại tồn kho
+
             while (rs.next()) {
                 int maPhienBan = rs.getInt("maPhienBan");
                 int soLuong = rs.getInt("soluong");
-                String sqlUpdateTon = "UPDATE phienbandienthoai SET soLuongTon = soLuongTon + ? WHERE maPhienBan = ?";
-                PreparedStatement ps2 = conn.prepareStatement(sqlUpdateTon);
+
+                // 2.1 Cập nhật tồn kho bảng phienbandienthoai
+                String sqlUpdateTonPB = "UPDATE phienbandienthoai SET soLuongTon = soLuongTon + ? WHERE maPhienBan = ?";
+                PreparedStatement ps2 = conn.prepareStatement(sqlUpdateTonPB);
                 ps2.setInt(1, soLuong);
                 ps2.setInt(2, maPhienBan);
                 ps2.executeUpdate();
+
+                // 2.2 Lấy maDienThoai từ maPhienBan
+                String sqlLayMaDT = "SELECT maDT FROM phienbandienthoai WHERE maPhienBan = ?";
+                PreparedStatement ps3 = conn.prepareStatement(sqlLayMaDT);
+                ps3.setInt(1, maPhienBan);
+                ResultSet rsDT = ps3.executeQuery();
+                if (rsDT.next()) {
+                    int maDienThoai = rsDT.getInt("maDT");
+
+                    // 2.3 Cập nhật tồn kho bảng dienthoai
+                    String sqlUpdateTonDT = "UPDATE dienthoai SET soLuongTon = soLuongTon + ? WHERE maDT = ?";
+                    PreparedStatement ps4 = conn.prepareStatement(sqlUpdateTonDT);
+                    ps4.setInt(1, soLuong);
+                    ps4.setInt(2, maDienThoai);
+                    ps4.executeUpdate();
+                }
             }
+
             // 3. Xoá chi tiết phiếu xuất
-            PreparedStatement ps3 = conn.prepareStatement("DELETE FROM chitietphieuxuat WHERE maPX = ?");
-            ps3.setString(1, maPX);
-            ps3.executeUpdate();
-            // 4. Xoá phiếu xuất chính
-            PreparedStatement ps4 = conn.prepareStatement("UPDATE phieuxuat SET trangThai = 0 WHERE maPX = ?");
-            ps4.setString(1, maPX);
-            ps4.executeUpdate();
+            PreparedStatement ps5 = conn.prepareStatement("DELETE FROM chitietphieuxuat WHERE maPX = ?");
+            ps5.setString(1, maPX);
+            ps5.executeUpdate();
+
+            // 4. Xoá phiếu xuất chính (chuyển trạng thái)
+            PreparedStatement ps6 = conn.prepareStatement("UPDATE phieuxuat SET trangThai = 0 WHERE maPX = ?");
+            ps6.setString(1, maPX);
+            ps6.executeUpdate();
+
             conn.commit();
             JOptionPane.showMessageDialog(null, "Đã xóa phiếu xuất và cập nhật tồn kho!");
+
         } catch (Exception e) {
             try {
                 if (conn != null) {
@@ -110,6 +133,7 @@ public class PhieuXuatDAO {
             }
         }
     }
+
 
     public PhieuXuatDTO layPhieuXuatTheoMa(String maPX) {
         String sql = "SELECT * FROM phieuxuat WHERE maPX = ?";

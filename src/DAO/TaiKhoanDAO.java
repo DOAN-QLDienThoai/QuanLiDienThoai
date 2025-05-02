@@ -55,7 +55,7 @@ public class TaiKhoanDAO {
         return 0;
     }
     public int deleteTaiKhoan(int maNV) {
-        String sqlDeleteTaiKhoan = "UPDATE TaiKhoan SET trangThai = 0 WHERE maNV = ?";
+        String sqlDeleteTaiKhoan = "UPDATE TaiKhoan SET trangThai = 2 WHERE maNV = ?";
         PreparedStatement ps;
         try {
             ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlDeleteTaiKhoan);
@@ -108,7 +108,7 @@ public class TaiKhoanDAO {
     
     public ArrayList<TaiKhoanDTO> listTaiKhoan() {
         ArrayList<TaiKhoanDTO> listTaiKhoan = new ArrayList<>();
-        String sqlAllTaiKhoan = "SELECT * FROM TaiKhoan WHERE trangthai=1 ";
+        String sqlAllTaiKhoan = "SELECT * FROM TaiKhoan WHERE trangthai='1' OR trangthai='0' ";
         PreparedStatement ps;
         ResultSet rs;
         try {
@@ -126,26 +126,7 @@ public class TaiKhoanDAO {
         }
         return listTaiKhoan;
     }
-    public ArrayList<TaiKhoanDTO> listTaiKhoanFull() {
-        ArrayList<TaiKhoanDTO> listTaiKhoan = new ArrayList<>();
-        String sqlAllTaiKhoan = "SELECT * FROM TaiKhoan";
-        PreparedStatement ps;
-        ResultSet rs;
-        try {
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlAllTaiKhoan);
-            rs = ps.executeQuery();
-            while (rs.next()) {
-                int maNV = rs.getInt("maNV");
-                String tenDangNhap = rs.getString("tenDangNhap");
-                String matKhau = rs.getString("matKhau");
-                String trangThai = rs.getString("trangThai"); // Có thể là String hoặc int tùy bạn thiết kế
-                listTaiKhoan.add(new TaiKhoanDTO(maNV, tenDangNhap, matKhau, trangThai));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return listTaiKhoan;
-    }
+
     public TaiKhoanDTO isLoginCheck() {
         String sql = "SELECT * FROM TaiKhoan WHERE isLogin= 1 AND trangthai = 1 ";
         try (Connection conn = ConnectedDatabase.getConnectedDB(); PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -194,7 +175,23 @@ public class TaiKhoanDAO {
         }
         return false;
     }
- 
+    //Lấy tài khoản đang đăng nhập 
+    public TaiKhoanDTO getTKIsLogin() {
+        String sql = "SELECT * FROM TaiKhoan WHERE islogin = 1";
+        try (Connection conn = ConnectedDatabase.getConnectedDB(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                TaiKhoanDTO tk = new TaiKhoanDTO();
+                tk.setTenDangNhap(rs.getString("tendangnhap"));
+                tk.setMatKhau(rs.getString("matkhau"));
+                tk.setMaNV(rs.getInt("manv"));
+                return tk;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
 
 

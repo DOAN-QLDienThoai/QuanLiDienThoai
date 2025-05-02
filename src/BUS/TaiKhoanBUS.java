@@ -18,16 +18,16 @@ public class TaiKhoanBUS {
     private ArrayList<TaiKhoanDTO> listTaiKhoan = new ArrayList<>();
 
     public TaiKhoanBUS() {
-        this.listTaiKhoan = tkDao.listTaiKhoanFull();
+        this.listTaiKhoan = tkDao.listTaiKhoan();
     }
     public ArrayList<TaiKhoanDTO> listTaiKhoan() {
-        listTaiKhoan=tkDao.listTaiKhoanFull();
+        listTaiKhoan=tkDao.listTaiKhoan();
         return listTaiKhoan;
     }
     public int insertTaiKhoan(TaiKhoanDTO tk) {
         int check = tkDao.insertTaiKhoan(tk);
         if (check == 1) {
-            listTaiKhoan = tkDao.listTaiKhoanFull();
+            listTaiKhoan = tkDao.listTaiKhoan();
         }
         return check;
     }
@@ -35,7 +35,7 @@ public class TaiKhoanBUS {
     public int updateTaiKhoan(TaiKhoanDTO tk) {
         int check = tkDao.updateTaiKhoan(tk);
         if (check == 1) {
-            listTaiKhoan = tkDao.listTaiKhoanFull();
+            listTaiKhoan = tkDao.listTaiKhoan();
         }
         return check;
     }
@@ -51,7 +51,7 @@ public class TaiKhoanBUS {
     public int updatePass(int maNV, String newPass) {
         int check = tkDao.updatePass(maNV, newPass);
         if (check == 1) {
-            listTaiKhoan = tkDao.listTaiKhoanFull();
+            listTaiKhoan = tkDao.listTaiKhoan();
         }
         return check;
     }
@@ -68,19 +68,21 @@ public class TaiKhoanBUS {
         }
         return vitri;
     }
-
     public String getTenDangNhapByMaNV(int maNV) {
-        listTaiKhoan = tkDao.listTaiKhoanFull();
+        listTaiKhoan = tkDao.listTaiKhoan();
         int index = getIndexByMaNV(maNV);
         if (index == -1) {
             return null;
         }
         return listTaiKhoan.get(index).getTenDangNhap();
     }
+    public TaiKhoanDTO getTKIsLogin(){
+        return tkDao.getTKIsLogin();
+    }
     public ArrayList<TaiKhoanDTO> timKiem(String textfind, String type) {
         String trangThaiHD = null;
         String text = textfind.toLowerCase();
-        listTaiKhoan = tkDao.listTaiKhoanFull();
+        listTaiKhoan = tkDao.listTaiKhoan();
         ArrayList<TaiKhoanDTO> listTKTemp = new ArrayList<>();
         for (TaiKhoanDTO u : listTaiKhoan) {
             if (type.equals("Tất cả")) {

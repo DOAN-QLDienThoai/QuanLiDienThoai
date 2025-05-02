@@ -132,12 +132,12 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel7">
           <Properties>
-            <Property name="text" type="java.lang.String" value="   X&#xf3;a"/>
+            <Property name="text" type="java.lang.String" value="    X&#xf3;a"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel8">
           <Properties>
-            <Property name="text" type="java.lang.String" value="  Chi ti&#x1ebf;t"/>
+            <Property name="text" type="java.lang.String" value=" Chi ti&#x1ebf;t"/>
           </Properties>
         </Component>
       </SubComponents>

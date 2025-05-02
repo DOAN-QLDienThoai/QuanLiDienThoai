@@ -150,7 +150,7 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
 
         jLabel19.setText("  Thêm");
 
-        jLabel20.setText("   Sửa");
+        jLabel20.setText("    Sửa");
 
         jLabel21.setText("   Xóa");
 

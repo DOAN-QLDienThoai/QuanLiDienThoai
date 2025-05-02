@@ -129,7 +129,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel29">
           <Properties>
-            <Property name="text" type="java.lang.String" value=" Chi ti&#x1ebf;t"/>
+            <Property name="text" type="java.lang.String" value="Chi ti&#x1ebf;t"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel30">

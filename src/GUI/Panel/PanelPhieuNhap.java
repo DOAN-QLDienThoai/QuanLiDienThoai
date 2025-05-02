@@ -252,7 +252,7 @@ public class PanelPhieuNhap extends javax.swing.JPanel {
 
         jLabel26.setText("Hủy Phiếu");
 
-        jLabel29.setText(" Chi tiết");
+        jLabel29.setText("Chi tiết");
 
         jLabel30.setText("Xuất Excel");
 

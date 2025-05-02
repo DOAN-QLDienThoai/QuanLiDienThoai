@@ -154,9 +154,9 @@ public class PanelTaiKhoan extends javax.swing.JPanel {
 
         jLabel6.setText("    Sửa");
 
-        jLabel7.setText("   Xóa");
+        jLabel7.setText("    Xóa");
 
-        jLabel8.setText("  Chi tiết");
+        jLabel8.setText(" Chi tiết");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -312,15 +312,20 @@ public class PanelTaiKhoan extends javax.swing.JPanel {
     }//GEN-LAST:event_btn_refreshActionPerformed
 
     private void jlabel_deleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_deleteMouseClicked
-        int vitriRow=table_taiKhoan.getSelectedRow();
-        if(vitriRow==-1){
-            JOptionPane.showMessageDialog(null,"Bạn chưa chọn tài khoản","Error",0);
+        int vitriRow = table_taiKhoan.getSelectedRow();
+        if (vitriRow == -1) {
+            JOptionPane.showMessageDialog(null, "Bạn chưa chọn tài khoản", "Error", 0);
             return;
         }
-        int maNV=Integer.parseInt(table_taiKhoan.getValueAt(vitriRow,0).toString());
-        int confirm=JOptionPane.showConfirmDialog(null,"Bạn có chắc chắn muốn xóa","Xác nhận xóa",JOptionPane.YES_NO_OPTION
-        ,JOptionPane.WARNING_MESSAGE);
-        if(confirm==JOptionPane.YES_OPTION){
+        int maNV = Integer.parseInt(table_taiKhoan.getValueAt(vitriRow, 0).toString());
+        TaiKhoanDTO tk = tkBus.getTKIsLogin();
+        int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa", "Xác nhận xóa", JOptionPane.YES_NO_OPTION,
+                 JOptionPane.WARNING_MESSAGE);
+        if (confirm == JOptionPane.YES_OPTION) {
+            if (maNV == tk.getMaNV()) {
+                JOptionPane.showMessageDialog(null, "Không thể xóa tài khoản đang đăng nhập", "Error", 0);
+                return;
+            }
             tkBus.deleteTaiKhoan(maNV);
             loadData(tkDao.listTaiKhoan());
             func.centerTable(table_taiKhoan);

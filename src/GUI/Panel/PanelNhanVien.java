@@ -5,7 +5,9 @@
 package GUI.Panel;
 
 import BUS.NhanVienBUS;
+import BUS.TaiKhoanBUS;
 import DTO.NhanVienDTO;
+import DTO.TaiKhoanDTO;
 import GUI.Dialog.AddNhanVienDialog;
 import GUI.Dialog.DetailsNhanVienDialog;
 import GUI.Dialog.EditNhanVienDialog;
@@ -28,8 +30,9 @@ import util.Func_class;
  * @author kiman
  */
 public class PanelNhanVien extends javax.swing.JPanel {
-    private Func_class func=new Func_class();
-    private NhanVienBUS nhanvienBUS=new NhanVienBUS();
+    Func_class func=new Func_class();
+    NhanVienBUS nhanvienBUS=new NhanVienBUS();
+    TaiKhoanBUS tkBus=new TaiKhoanBUS();
     public PanelNhanVien() {
         initComponents();
         khoiTao();
@@ -136,7 +139,7 @@ public class PanelNhanVien extends javax.swing.JPanel {
 
         jLabel1.setText("  Thêm");
 
-        jLabel8.setText("    Sửa");
+        jLabel8.setText("     Sửa");
 
         jLabel9.setText("   Xóa");
 
@@ -330,10 +333,15 @@ public class PanelNhanVien extends javax.swing.JPanel {
             return;
         }
         int maNV = Integer.parseInt(table_nv.getValueAt(vitriRow, 0).toString());
-        int confirm = JOptionPane.showConfirmDialog(null,"Bạn có chắc chắn muốn xóa không?","Xóa nhân viên",JOptionPane.YES_NO_OPTION,
+        TaiKhoanDTO tk = tkBus.getTKIsLogin();
+        int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa không?", "Xóa nhân viên", JOptionPane.YES_NO_OPTION,
                 JOptionPane.WARNING_MESSAGE
         );
         if (confirm == JOptionPane.YES_OPTION) {
+            if (maNV == tk.getMaNV()) {
+                JOptionPane.showMessageDialog(null, "Không thể xóa tài khoản đang đăng nhập", "Error", 0);
+                return;
+            }
             int result = nhanvienBUS.deleteCheckNhanVien(maNV);
             if (result == 1) {
                 func.addDataTableNV(nhanvienBUS.listNV(), table_nv);

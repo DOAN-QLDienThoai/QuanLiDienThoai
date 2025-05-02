@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 public class PhieuNhapDAO {
@@ -37,19 +38,19 @@ public class PhieuNhapDAO {
         return 0;
     }
     //Cập nhật 1 phiếu nhập (ahuy)
-    public int updatePhieuNhap(PhieuNhapDTO pn){
+    public int updatePhieuNhap(PhieuNhapDTO pn) {
         try {
             String sqlUpdate = "UPDATE PhieuNhap "
                     + "SET thoigian=?,tongtien=?,maNCC=?,maNV=? "
                     + "WHERE maPN=?";
             PreparedStatement ps;
             ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlUpdate);
-            ps.setDate(1, (Date)pn.getNgayNhap());
+            ps.setDate(1, (Date) pn.getNgayNhap());
             ps.setInt(2, pn.getNhaCungCap());
             ps.setInt(3, pn.getNhanVien());
             ps.setDouble(4, pn.getTongTien());
             ps.setString(5, pn.getMaPhieuNhap());
-            if(ps.executeUpdate() > 0){
+            if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Cap nhat thong tin phieu nhap thanh cong", "Success", 1);
                 return 1;
             }
@@ -58,34 +59,59 @@ public class PhieuNhapDAO {
         }
         return 0;
     }
+
     //Xóa 1 phiếu nhập (ahuy)
     public int deletePhieuNhap(String maPN) {
         try {
             PhienBanDienThoaiDAO pbDao = new PhienBanDienThoaiDAO();
             DienThoaiDAO dtDao = new DienThoaiDAO();
+
             String sqlSelect = "SELECT maPhienBan, soluong FROM ChiTietPhieuNhap WHERE maPN = ?";
             PreparedStatement psSelect = ConnectedDatabase.getConnectedDB().prepareStatement(sqlSelect);
             psSelect.setString(1, maPN);
             ResultSet rs = psSelect.executeQuery();
+
+            // Lưu thông tin vào danh sách tạm
+            ArrayList<Integer> listMaPhienBan = new ArrayList<>();
+            HashMap<Integer, Integer> mapSoLuongNhap = new HashMap<>();
+
             while (rs.next()) {
                 int maPhienBan = rs.getInt("maPhienBan");
-                int soLuongNhap = rs.getInt("soLuong");
-                int tonKhoHienTai = pbDao.getSoLuongTonCuaPhienBan(maPhienBan);
+                int soLuong = rs.getInt("soLuong");
 
-                // Tính lượng thực sự có thể trừ (tối đa là tồn kho hiện tại)
+                // Kiểm tra xem phiên bản này đã từng được xuất chưa
+                String sqlCheckXuat = "SELECT SUM(soLuong) AS daXuat FROM ChiTietPhieuXuat WHERE maPhienBan = ?";
+                PreparedStatement psCheck = ConnectedDatabase.getConnectedDB().prepareStatement(sqlCheckXuat);
+                psCheck.setInt(1, maPhienBan);
+                ResultSet rsCheck = psCheck.executeQuery();
+
+                if (rsCheck.next() && rsCheck.getInt("daXuat") > 0) {
+                    JOptionPane.showMessageDialog(null,
+                            "Không thể hủy phiếu nhập vì sản phẩm đã được xuất!",
+                            "Lỗi", JOptionPane.ERROR_MESSAGE);
+                    return 0;
+                }
+
+                listMaPhienBan.add(maPhienBan);
+                mapSoLuongNhap.put(maPhienBan, soLuong);
+            }
+
+            // Cập nhật tồn kho sau khi hủy phiếu nhập
+            for (int maPhienBan : listMaPhienBan) {
+                int soLuongNhap = mapSoLuongNhap.get(maPhienBan);
+                int tonKhoHienTai = pbDao.getSoLuongTonCuaPhienBan(maPhienBan);
                 int soLuongThucTeDeTru = Math.min(tonKhoHienTai, soLuongNhap);
 
-                // Cập nhật tồn kho phiên bản
                 pbDao.updateSoLuongTonPhienBanSauKhiNhap(maPhienBan, -soLuongThucTeDeTru);
-                //pbDao.updateSoLuongTonPhienBanSauKhiNhap(maPhienBan, -soLuongNhap);
-                //dtDao.updateSoLuongTonDienThoaiSauKhiNhap(maPhienBan, -soLuongNhap);
                 dtDao.updateSoLuongTonDienThoaiSauKhiNhap(maPhienBan, -soLuongThucTeDeTru);
             }
+
+            // Cập nhật trạng thái phiếu nhập
             String sqlUpdate = "UPDATE PhieuNhap SET trangthai = 0 WHERE maPN = ?";
             PreparedStatement psUpdate = ConnectedDatabase.getConnectedDB().prepareStatement(sqlUpdate);
             psUpdate.setString(1, maPN);
             if (psUpdate.executeUpdate() > 0) {
-                JOptionPane.showMessageDialog(null, "Hủy phiếu nhập và cập nhật tồn kho thành công!", "Success", 1);
+                JOptionPane.showMessageDialog(null, "Hủy phiếu nhập và cập nhật tồn kho thành công!", "Thành công", 1);
                 return 1;
             }
 
@@ -94,6 +120,8 @@ public class PhieuNhapDAO {
         }
         return 0;
     }
+
+
     //Lấy danh sách phiếu nhập (ahuy)
     public ArrayList<PhieuNhapDTO> listPN() {
         ArrayList<PhieuNhapDTO> ListPN = new ArrayList<>();
