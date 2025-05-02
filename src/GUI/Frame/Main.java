@@ -164,12 +164,18 @@ public class Main extends javax.swing.JFrame {
         return this.tenNhanVien;
     }
     public void setBackgroundJButton(JButton btn) {
-        for (JButton menuitem : btns) {
-            menuitem.setBackground(new Color(211, 218, 211));
-            menuitem.setForeground(Color.BLACK);
-        }
-        btn.setBackground(new Color(173, 216, 230));
-        btn.setForeground(Color.BLACK);
+//        for (JButton menuitem : btns) {
+//            menuitem.setBackground(new Color(211, 218, 211));
+//            menuitem.setForeground(Color.BLACK);
+//        }
+//        btn.setBackground(new Color(173, 216, 230));
+//        btn.setForeground(Color.BLACK);
+    if (currentActiveBtn != null && currentActiveBtn != btn) {
+        currentActiveBtn.setBackground(null);
+        currentActiveBtn.setOpaque(false);
+    }
+    btn.setBackground(new Color(100, 149, 237));
+    btn.setOpaque(true);
         currentActiveBtn = btn;
     }
     public void styleButtonMenu(JButton btn) {
@@ -178,19 +184,25 @@ public class Main extends javax.swing.JFrame {
         btn.setBackground(Color.WHITE);
         btn.setHorizontalAlignment(SwingConstants.LEFT);
         btn.setIconTextGap(10);
-
+        btn.setContentAreaFilled(false);
+        
         btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent e) {
-                btn.setBackground(new java.awt.Color(230, 240, 255));
+                if(btn == currentActiveBtn){
+                    btn.setBackground(new Color(100, 149, 237));
+                    return;
+                }
+                btn.setOpaque(true);
+                btn.setBackground(new Color(173, 216, 230));
             }
             public void mouseExited(java.awt.event.MouseEvent e) {
                 if (btn == currentActiveBtn) {
+                    btn.setBackground(new Color(100, 149, 237));
                     return;
                 }
-                btn.setBackground(new Color(211, 218, 211)); 
+                btn.setOpaque(false);
             }
         });
-        
     }
     public void setBtnMenu() {
         for (JButton btn : btns) {

@@ -24,14 +24,14 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane5" min="-2" pref="960" max="-2" attributes="0"/>
+                  <Component id="jScrollPane5" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <Component id="jpanel_chucNang_dt" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                      <Component id="jpanel_timkiem_dt" min="-2" max="-2" attributes="0"/>
+                      <Component id="jpanel_timkiem_dt" max="32767" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="29" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -215,7 +215,7 @@
                   <Component id="btn_look_dt" min="-2" pref="46" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btn_refresh_dt" min="-2" pref="120" max="-2" attributes="0"/>
-                  <EmptySpace pref="41" max="32767" attributes="0"/>
+                  <EmptySpace pref="102" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -227,13 +227,11 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="btn_look_dt" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                              <Component id="combobox_find_dt" alignment="3" min="-2" pref="39" max="-2" attributes="0"/>
-                              <Component id="jtf_find_dt" alignment="3" min="-2" pref="39" max="-2" attributes="0"/>
-                          </Group>
-                          <Component id="btn_refresh_dt" alignment="0" max="32767" attributes="0"/>
+                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
+                          <Component id="combobox_find_dt" alignment="3" min="-2" pref="39" max="-2" attributes="0"/>
+                          <Component id="jtf_find_dt" alignment="3" min="-2" pref="39" max="-2" attributes="0"/>
                       </Group>
+                      <Component id="btn_refresh_dt" alignment="0" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="19" max="-2" attributes="0"/>
               </Group>
