@@ -51,7 +51,12 @@ public class RomBUS {
         return check;
     }
     public int getDungLuongRombyID(int maRom){
-        return listROM.get(getIndexByID(maRom)).getDungLuongRom();
+        listROM = RomDao.listRom();
+        int index = getIndexByID(maRom);
+        if (index == -1) {
+            return -1;
+        }
+        return listROM.get(index).getDungLuongRom();
     }
     public int getIDByDungLuongRom(int dungLuongRom) {
         for (RomDTO rom : listROM) {

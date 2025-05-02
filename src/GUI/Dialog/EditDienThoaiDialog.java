@@ -28,15 +28,15 @@ import util.Func_class;
  * @author kiman
  */
 public class EditDienThoaiDialog extends javax.swing.JDialog {
-    private DienThoaiBUS dtBus=new DienThoaiBUS();
-    private Func_class func = new Func_class();
-    private DienThoaiDTO dt;
-    private PanelDienThoai dtPanel;
-    private HashMap<String, Integer> mapHDH;
-    private HashMap<String, Integer> mapThuongHieu;
-    private ArrayList<PhienBanDienThoaiDTO> listPBDTTemp = new ArrayList<>();
-    private ArrayList<PhienBanDienThoaiDTO> listPBDT;
-    private String url_img;
+    DienThoaiBUS dtBus=new DienThoaiBUS();
+    Func_class func = new Func_class();
+    DienThoaiDTO dt;
+    PanelDienThoai dtPanel;
+    HashMap<String, Integer> mapHDH;
+    HashMap<String, Integer> mapThuongHieu;
+    ArrayList<PhienBanDienThoaiDTO> listPBDTTemp = new ArrayList<>();
+    ArrayList<PhienBanDienThoaiDTO> listPBDT;
+    String url_img;
     public EditDienThoaiDialog(java.awt.Frame parent, boolean modal, DienThoaiDTO dt, PanelDienThoai dtPanel) {
         super(parent, modal);
         initComponents();
@@ -45,7 +45,7 @@ public class EditDienThoaiDialog extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);
         this.setTitle("Chỉnh sửa thông tin điện thoại");
         this.setLocationRelativeTo(null);
-         jtf_tenDT.setText(dt.getTenDT());
+        jtf_tenDT.setText(dt.getTenDT());
         mapHDH = new HeDieuHanhDAO().listMapHDH();
         String tenHDH=func.getKey(mapHDH, dt.getHeDieuHanh());
         cbb_HDH.setSelectedItem(tenHDH);
@@ -290,6 +290,11 @@ public class EditDienThoaiDialog extends javax.swing.JDialog {
 
         jButton4.setBackground(new java.awt.Color(255, 51, 51));
         jButton4.setText("Hủy Bỏ");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -377,8 +382,7 @@ public class EditDienThoaiDialog extends javax.swing.JDialog {
             DienThoaiDTO dienThoai = new DienThoaiDTO(tenDT, maHDH, maThuongHieu, chip, dungLuongPin, kichThuocMan, hinhAnh);
             dienThoai.setMaDT(dt.getMaDT());
             dtBus.updateDienThoai(dienThoai);
-            func.addDataTableDienThoai(dtBus.listDT(),dtPanel.getTableDienThoai());
-            func.centerTable(dtPanel.getTableDienThoai());
+            dtPanel.setUpTable();
         }
     }//GEN-LAST:event_btn_save_edit_dtMouseClicked
 
@@ -396,6 +400,10 @@ public class EditDienThoaiDialog extends javax.swing.JDialog {
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         new EditCauHinhDialog((Frame) parentWindow, true, maDT, listPBDTTemp, dtPanel).setVisible(true);
     }//GEN-LAST:event_btn_edit_cauHinhMouseClicked
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_add_Image;

@@ -522,8 +522,7 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
             return;
         } else {
             dtBus.insertDienThoai(dt);
-            func.addDataTableDienThoai(dtBus.listDT(), dtPanel.getTableDienThoai());
-            func.centerTable(dtPanel.getTableDienThoai());
+            dtPanel.setUpTable();
             int maDT = new DienThoaiDAO().getID();
             for (PhienBanDienThoaiDTO pb : listPBDTTemp) {
                 pb.setMaDT(maDT);

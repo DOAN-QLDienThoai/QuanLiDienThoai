@@ -5,6 +5,8 @@
 package GUI.Panel;
 
 import BUS.DienThoaiBUS;
+import BUS.HeDieuHanhBUS;
+import BUS.ThuongHieuBUS;
 import DAO.DienThoaiDAO;
 import DAO.HeDieuHanhDAO;
 import DAO.ThuongHieuDAO;
@@ -16,12 +18,14 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Window;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 import org.jdesktop.swingx.prompt.PromptSupport;
 import util.DropShadowBorder;
 import util.Func_class;
@@ -33,6 +37,8 @@ import util.Func_class;
 public class PanelDienThoai extends javax.swing.JPanel {
     Func_class func=new Func_class();
     DienThoaiBUS dtBus=new DienThoaiBUS();
+    HeDieuHanhBUS hdhBus=new HeDieuHanhBUS();
+    ThuongHieuBUS thBus=new ThuongHieuBUS();
     public PanelDienThoai() {
         initComponents();
         khoiTao();
@@ -72,7 +78,7 @@ public class PanelDienThoai extends javax.swing.JPanel {
     }
     //Hàm chỉnh sửa độ đẹp mắt của bảng
     public void setUpTable() {
-        func.addDataTableDienThoai(dtBus.listDT(), table_dt);
+        addDataTableDienThoai(dtBus.listDT());
         func.centerTable(table_dt);
         func.setUpTable(table_dt);
     }
@@ -96,6 +102,24 @@ public class PanelDienThoai extends javax.swing.JPanel {
         ,jlabel_excel,jlabel_chiTiet_dt);
         for(JLabel label : jlabels )
             func.cursorPointer(label);
+    }
+    //Hàm thêm dữ liệu vào bảng điện thoại
+    public void addDataTableDienThoai(ArrayList<DienThoaiDTO> listDT) {
+        String[] colNames = {"Mã ĐT", "Tên Điện Thoại", "Hệ điều hành", "Thương hiệu", "Chip xử lý", "Dung lượng pin", "Kích thước màn"};
+        Object[][] rows = new Object[listDT.size()][colNames.length];
+        for (int i = 0; i < listDT.size(); i++) {
+            rows[i][0] = listDT.get(i).getMaDT();
+            rows[i][1] = listDT.get(i).getTenDT();
+            int maHDH = listDT.get(i).getHeDieuHanh();
+            rows[i][2] = hdhBus.getTenByMaHDH(maHDH);
+            int maThuongHieu = listDT.get(i).getThuongHieu();
+            rows[i][3] = thBus.getTenByMaTH(maThuongHieu);
+            rows[i][4] = listDT.get(i).getChipXuLy();
+            rows[i][5] = listDT.get(i).getDungLuongPin() + "mAh";
+            rows[i][6] = listDT.get(i).getKichThuocMan() + " inch";
+        }
+        DefaultTableModel model = new DefaultTableModel(rows, colNames);
+        table_dt.setModel(model);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -261,7 +285,7 @@ public class PanelDienThoai extends javax.swing.JPanel {
                 .addComponent(btn_look_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btn_refresh_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(102, Short.MAX_VALUE))
         );
         jpanel_timkiem_dtLayout.setVerticalGroup(
             jpanel_timkiem_dtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -271,11 +295,10 @@ public class PanelDienThoai extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpanel_timkiem_dtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btn_look_dt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jpanel_timkiem_dtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(jpanel_timkiem_dtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(combobox_find_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jtf_find_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(btn_refresh_dt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(jpanel_timkiem_dtLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(combobox_find_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jtf_find_dt, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btn_refresh_dt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(19, 19, 19))
         );
 
@@ -286,12 +309,12 @@ public class PanelDienThoai extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 960, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane5)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jpanel_chucNang_dt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(36, 36, 36)
-                        .addComponent(jpanel_timkiem_dt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(29, Short.MAX_VALUE))
+                        .addComponent(jpanel_timkiem_dt, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -317,8 +340,7 @@ public class PanelDienThoai extends javax.swing.JPanel {
             JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
         if(confirm==JOptionPane.YES_OPTION){
             dtBus.deleteDienThoai(maDT);
-            func.addDataTableDienThoai(dtBus.listDT(), table_dt);
-            func.centerTable(table_dt);
+            setUpTable();
         }
     }//GEN-LAST:event_jlabel_delete_dtMouseClicked
 
@@ -365,16 +387,27 @@ public class PanelDienThoai extends javax.swing.JPanel {
         }
         int maDT = Integer.parseInt(table_dt.getValueAt(vitriRow, 0).toString());
         String tenDT = table_dt.getValueAt(vitriRow, 1).toString();
-        HashMap<String, Integer> mapHDH = new HeDieuHanhDAO().listMapHDH();
-        int maHDH = mapHDH.get(table_dt.getValueAt(vitriRow, 2).toString());
-        HashMap<String, Integer> mapThuongHieu = new ThuongHieuDAO().listMapThuongHieu();
-        int maThuongHieu = mapThuongHieu.get(table_dt.getValueAt(vitriRow, 3).toString());
-        String tenThuongHieu = table_dt.getValueAt(vitriRow, 3).toString();
+        Object tenHDH= table_dt.getValueAt(vitriRow,2);
+        int maHDH;
+        if(tenHDH!=null){
+            maHDH=hdhBus.getIDByTenHDH(tenHDH.toString());
+        }
+        else{
+            maHDH=-1;
+        }
+        Object tenTH= table_dt.getValueAt(vitriRow,3);
+        int maTH;
+        if(tenTH!=null){
+            maTH=thBus.getIDByTenTH(tenTH.toString());
+        }
+        else{
+            maTH=-1;
+        }
         String tenChip = table_dt.getValueAt(vitriRow, 4).toString();
         int dungLuongPin = Integer.parseInt(table_dt.getValueAt(vitriRow, 5).toString().replaceAll("mAh", ""));
         double kichThuocMan = Double.parseDouble(table_dt.getValueAt(vitriRow, 6).toString().replaceAll("inch", ""));
         String hinhAnh = new DienThoaiDAO().getHinhAnh(maDT);
-        DienThoaiDTO dt = new DienThoaiDTO(maDT, tenDT, maHDH, maThuongHieu, tenChip, dungLuongPin, kichThuocMan, hinhAnh,0);
+        DienThoaiDTO dt = new DienThoaiDTO(maDT, tenDT, maHDH, maTH, tenChip, dungLuongPin, kichThuocMan, hinhAnh,0);
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
         new DetailsDienThoaiDialog((Frame) parentWindow, true, dt).setVisible(true);
     }//GEN-LAST:event_jlabel_chiTiet_dtMouseClicked
@@ -387,7 +420,7 @@ public class PanelDienThoai extends javax.swing.JPanel {
     private void btn_look_dtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_look_dtActionPerformed
         String type = combobox_find_dt.getSelectedItem().toString();
         String find_text = jtf_find_dt.getText().toLowerCase();
-        func.addDataTableDienThoai(dtBus.timKiem(find_text, type), table_dt);
+        addDataTableDienThoai(dtBus.timKiem(find_text, type));
         func.centerTable(table_dt);
     }//GEN-LAST:event_btn_look_dtActionPerformed
 

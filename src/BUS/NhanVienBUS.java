@@ -68,13 +68,11 @@ public class NhanVienBUS {
     }
     public int getIDByTenNV(String tenNV) {
         listNV = nvDao.listNV();
-
         for (NhanVienDTO nv : listNV) {
             if (nv.getHoTen().equalsIgnoreCase(tenNV)) {
                 return nv.getMaNV(); // trả về ID đầu tiên
             }
         }
-
         return -1; // không tìm thấy
     }
     public ArrayList<NhanVienDTO> listNV(){

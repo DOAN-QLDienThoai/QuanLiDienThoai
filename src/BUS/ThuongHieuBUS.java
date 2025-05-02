@@ -55,8 +55,21 @@ public class ThuongHieuBUS {
         }
         return check;
     }
-    public String getTenByMaTH(int maTH){
-        return listTH.get(getIndexByID(maTH)).getTenThuongHieu();
+    public int getIDByTenTH(String tenTH){
+        listTH=thDAO.listThuongHieu();
+        for(ThuongHieuDTO th : listTH){
+            if(th.getTenThuongHieu().equals(tenTH))
+                return th.getMaThuongHieu();
+        }
+        return -1;
+    }
+    public String getTenByMaTH(int maTH) {
+        listTH = thDAO.listThuongHieu();
+        int index = getIndexByID(maTH);
+        if (index == -1) {
+            return null;
+        }
+        return listTH.get(index).getTenThuongHieu();
     }
     public boolean checkDup(String name){
         boolean check=true;

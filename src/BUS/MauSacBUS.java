@@ -63,7 +63,12 @@ public class MauSacBUS {
         return check;
     }
     public String getTenMauByID(int maMS){
-        return listMS.get(getIndexByID(maMS)).getTenMau();
+        listMS = msDao.listMS();
+        int index = getIndexByID(maMS);
+        if (index == -1) {
+            return null;
+        }
+        return listMS.get(index).getTenMau();
     }
     public boolean checkDup(String tenMau){
         boolean check=true;

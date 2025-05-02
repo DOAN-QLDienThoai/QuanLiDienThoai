@@ -87,7 +87,7 @@
                       <Component id="jlabel_xuat_excel_ncc" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
                       <Component id="jLabel23" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="18" max="32767" attributes="0"/>
+                  <EmptySpace pref="17" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

@@ -1,11 +1,10 @@
 package util;
 
-import java.sql.Connection;
+import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
+import java.sql.Connection; 
 import java.sql.DriverManager;
-import java.sql.SQLException;
-
 public class ConnectedDatabase {
-
+private static SQLServerDataSource ds = new SQLServerDataSource();
     public static Connection getConnectedDB() {
         Connection c = null;
         try {
@@ -14,27 +13,26 @@ public class ConnectedDatabase {
             String username = "sa";
             String password = "123456789";
             c = DriverManager.getConnection(url, username, password);
+            System.out.println("Ket noi thanh cong ");
         } catch (Exception e) {
             e.printStackTrace();
             System.out.println("Ket noi co so du lieu that bai");
         }
         return c;
     }
-
     public static void closeConnectedDB(Connection c) {
-        if (c != null) {
-            try {
-                c.close();
-                System.out.println("Dong ket noi thanh cong!");
-            } catch (SQLException e) {
-                System.err.println("Khong the dong ket noi!");
-                e.printStackTrace();
-            }
-        }
-    }
+		try {
+			if(c!=null) {
+				c.close();
+				System.out.println("Đóng thành công !");
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+			System.out.println("Không thể đóng ");
+		}
+	}
 
-    public static void main(String[] args) {
-        Connection conn = getConnectedDB();
-        closeConnectedDB(conn);
+    public static com.sun.jdi.connect.spi.Connection getConnection() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

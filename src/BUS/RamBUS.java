@@ -59,7 +59,12 @@ public class RamBUS {
         return check;
     }
     public int getDungLuongRambyID(int maRam){
-        return listRAM.get(getIndexByID(maRam)).getDungLuongRam();
+        listRAM = ramDao.listRam();
+        int index = getIndexByID(maRam);
+        if (index == -1) {
+            return -1;
+        }
+        return listRAM.get(index).getDungLuongRam();
     }
     public boolean checkDup(int dungLuongRam){
         boolean check=true;

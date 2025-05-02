@@ -10,7 +10,9 @@ import BUS.ThuongHieuBUS;
 import DAO.HeDieuHanhDAO;
 import DAO.ThuongHieuDAO;
 import DTO.DienThoaiDTO;
+import DTO.HeDieuHanhDTO;
 import DTO.PhienBanDienThoaiDTO;
+import DTO.ThuongHieuDTO;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Window;
@@ -32,8 +34,8 @@ public class DetailsDienThoaiDialog extends javax.swing.JDialog {
     HashMap<String, Integer> mapHDH;
     HashMap<String,Integer> mapThuongHieu;
     PhienBanDienThoaiBUS pbBus=new PhienBanDienThoaiBUS();
-    ThuongHieuDAO thDao=new ThuongHieuDAO();
-    HeDieuHanhDAO hdhDao=new HeDieuHanhDAO();
+    ThuongHieuBUS thBus=new ThuongHieuBUS();
+    HeDieuHanhBUS hdhBus=new HeDieuHanhBUS();
     Func_class func=new Func_class();
     ArrayList<PhienBanDienThoaiDTO> listPBDTTemp=new ArrayList<>();
     ArrayList<PhienBanDienThoaiDTO> listPBDT;
@@ -48,16 +50,20 @@ public class DetailsDienThoaiDialog extends javax.swing.JDialog {
         
     }
     public void khoiTao() {
-        fillComboboxHDH();
-        fillComboboxThuongHieu();
         jtf_tenDT.setText(dt.getTenDT());
         jtf_tenDT.setEditable(false);
-        mapHDH = hdhDao.listMapHDH();
-        String tenHDH = func.getKey(mapHDH, dt.getHeDieuHanh());
-        cbb_HDH.setSelectedItem(tenHDH);
-        mapThuongHieu = thDao.listMapThuongHieu();
-        String tenThuongHieu = func.getKey(mapThuongHieu, dt.getThuongHieu());
-        cbb_ThuongHieu.setSelectedItem(tenThuongHieu);
+        String tenThuongHieu;
+        if(dt.getThuongHieu()!=-1){
+            fillComboboxThuongHieu();
+            tenThuongHieu=thBus.getTenByMaTH(dt.getThuongHieu());
+            cbb_ThuongHieu.setSelectedItem(tenThuongHieu);
+        }
+        String tenHDH;
+        if(dt.getHeDieuHanh()!=-1){
+            fillComboboxHDH();
+            tenHDH=hdhBus.getTenByMaHDH(dt.getHeDieuHanh());
+            cbb_HDH.setSelectedItem(tenHDH);
+        }
         jtf_chip.setText(dt.getChipXuLy());
         jtf_chip.setEditable(false);
         jtf_dungLuongPin.setText(String.valueOf(dt.getDungLuongPin()));
@@ -68,18 +74,16 @@ public class DetailsDienThoaiDialog extends javax.swing.JDialog {
     }
      //Hàm khởi tạo giá trị vào combobox thương hiệu
     public void fillComboboxThuongHieu(){
-        mapThuongHieu=thDao.listMapThuongHieu();
         cbb_ThuongHieu.setBackground(Color.WHITE);
-        for(String th : mapThuongHieu.keySet()){
-            cbb_ThuongHieu.addItem(th);
+        for(ThuongHieuDTO th : thBus.listTH()){
+            cbb_ThuongHieu.addItem(th.getTenThuongHieu());
         }
     }
     //Hàm khởi tạo giá trị vào combobox hệ điều hành
     public void fillComboboxHDH(){
-        mapHDH=hdhDao.listMapHDH();
         cbb_HDH.setBackground(Color.WHITE);
-        for(String hdh : mapHDH.keySet()){
-            cbb_HDH.addItem(hdh);
+        for(HeDieuHanhDTO hdh : hdhBus.listHDH()){
+            cbb_HDH.addItem(hdh.getTenHDH());
         }
     }
       public int check_edit_sanPham(){

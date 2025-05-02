@@ -55,8 +55,21 @@ public class HeDieuHanhBUS {
         }
         return check;
     }
-    public String getTenByMaTH(int maTH){
-        return listHDH.get(getIndexByID(maTH)).getTenHDH();
+    public int getIDByTenHDH(String tenHDH){
+        listHDH=hdhDao.listHDH();
+        for(HeDieuHanhDTO hdh : listHDH){
+            if(hdh.getTenHDH().equals(tenHDH))
+                return hdh.getMaHDH();
+        }
+        return -1;
+    }
+    public String getTenByMaHDH(int maHDH){
+        listHDH = hdhDao.listHDH();
+        int index = getIndexByID(maHDH);
+        if (index == -1) {
+            return null;
+        }
+        return listHDH.get(index).getTenHDH();
     }
     public boolean checkDup(String name){
         boolean check=true;

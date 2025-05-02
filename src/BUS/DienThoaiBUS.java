@@ -16,7 +16,8 @@ public class DienThoaiBUS {
 
     private DienThoaiDAO dtDao = new DienThoaiDAO();
     private ArrayList<DienThoaiDTO> listDT = new ArrayList<>();
-
+    HeDieuHanhBUS hdhBus=new HeDieuHanhBUS();
+    ThuongHieuBUS thBus=new ThuongHieuBUS();
     public DienThoaiBUS() {
         this.listDT=dtDao.listDT();
     }
@@ -81,7 +82,7 @@ public class DienThoaiBUS {
     }
 
     public DienThoaiDTO layThongTinTheoMa(String maDT, int maRam, int maRom, int maMau) {
-        return new DienThoaiDAO().layTheoMa(maDT, maRam, maRom, maMau);
+        return dtDao.layTheoMa(maDT, maRam, maRom, maMau);
     }
 
     public int getIDbyIndex(int index) {
@@ -100,15 +101,28 @@ public class DienThoaiBUS {
             String maDT = String.valueOf(dt.getMaDT()).toLowerCase();
             String kichThuocMan = String.valueOf(dt.getKichThuocMan() + " inch").toLowerCase();
             String dungLuongPin = String.valueOf(dt.getDungLuongPin() + "mAh").toLowerCase();
+            String tenHDH = hdhBus.getTenByMaHDH(dt.getHeDieuHanh()).toLowerCase();
+            String tenTH = thBus.getTenByMaTH(dt.getThuongHieu()).toLowerCase();
             switch (type) {
                 case "Tất cả":
                     if (dt.getTenDT().toLowerCase().contains(find_text) || dt.getChipXuLy().toLowerCase().contains(find_text)
-                            || maDT.contains(find_text) || kichThuocMan.contains(find_text) || dungLuongPin.contains(find_text)) {
+                            || maDT.contains(find_text) || kichThuocMan.contains(find_text) || dungLuongPin.contains(find_text)
+                            ||tenHDH.contains(find_text)||tenTH.contains(find_text)) {
                         listDTFilter.add(dt);
                     }
                     break;
                 case "Tên điện thoại":
                     if (dt.getTenDT().toLowerCase().contains(find_text)) {
+                        listDTFilter.add(dt);
+                    }
+                    break;
+                case "Hệ điều hành":
+                    if (tenHDH.contains(find_text)) {
+                        listDTFilter.add(dt);
+                    }
+                    break;
+                case "Thương hiệu":
+                    if (tenTH.contains(find_text)) {
                         listDTFilter.add(dt);
                     }
                     break;

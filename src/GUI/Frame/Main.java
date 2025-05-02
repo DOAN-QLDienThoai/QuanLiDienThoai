@@ -92,8 +92,8 @@ public class Main extends javax.swing.JFrame {
         nhapphieunhap.setVisible(false);
     }
     public void khoiTao(){
-        actionJButtonMenu();
         khoitaoButtonInMenu();
+        actionJButtonMenu();
         styleAllButtonMenu();
         setIconForJButton();
     }
@@ -164,13 +164,27 @@ public class Main extends javax.swing.JFrame {
         return this.tenNhanVien;
     }
     public void setBackgroundJButton(JButton btn) {
-        for (JButton menuitem : btns) {
-            menuitem.setBackground(new Color(211, 218, 211));
-            menuitem.setForeground(Color.BLACK);
+        if (currentActiveBtn != null && currentActiveBtn != btn) {
+            currentActiveBtn.setBackground(null);
+            currentActiveBtn.setOpaque(false);
         }
-        btn.setBackground(new Color(173, 216, 230));
-        btn.setForeground(Color.BLACK);
+        btn.setBackground(new Color(100, 149, 237));
+        btn.setOpaque(true);
         currentActiveBtn = btn;
+    }
+     public void actionJButtonMenu() {
+        Component[] cpns = jpanel_menu_bottom.getComponents();
+        for (Component cpn : cpns) {
+            if (cpn instanceof JButton) {
+                JButton button = (JButton) cpn;
+                button.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        setBackgroundJButton(button);
+                    }
+                });
+            }
+        }
     }
     public void styleButtonMenu(JButton btn) {
         btn.setFocusPainted(false);
@@ -178,19 +192,25 @@ public class Main extends javax.swing.JFrame {
         btn.setBackground(Color.WHITE);
         btn.setHorizontalAlignment(SwingConstants.LEFT);
         btn.setIconTextGap(10);
-
+        btn.setContentAreaFilled(false);
+        
         btn.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent e) {
-                btn.setBackground(new java.awt.Color(230, 240, 255));
+                if(btn == currentActiveBtn){
+                    btn.setBackground(new Color(100, 149, 237));
+                    return;
+                }
+                btn.setOpaque(true);
+                btn.setBackground(new Color(173, 216, 230));
             }
             public void mouseExited(java.awt.event.MouseEvent e) {
                 if (btn == currentActiveBtn) {
+                    btn.setBackground(new Color(100, 149, 237));
                     return;
                 }
-                btn.setBackground(new Color(211, 218, 211)); 
+                btn.setOpaque(false);
             }
         });
-        
     }
     public void setBtnMenu() {
         for (JButton btn : btns) {
@@ -204,7 +224,7 @@ public class Main extends javax.swing.JFrame {
         for (JButton btn : btns) {
             styleButtonMenu(btn);
         }
-        styleButtonMenu(btn_kh);
+        setBackgroundJButton(btn_trangChu);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -462,20 +482,7 @@ public class Main extends javax.swing.JFrame {
         tt.setVisible(false);
         user.setVisible(false);
     }//GEN-LAST:event_btn_thuoctinhActionPerformed
-    public void actionJButtonMenu() {
-        Component[] cpns = jpanel_menu_bottom.getComponents();
-        for (Component cpn : cpns) {
-            if (cpn instanceof JButton) {
-                JButton button = (JButton) cpn;
-                button.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        setBackgroundJButton(button);
-                    }
-                });
-            }
-        }
-    }
+
     private void btn_nvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nvActionPerformed
         tt.setVisible(false);
         dt.setVisible(false);
@@ -519,7 +526,8 @@ public class Main extends javax.swing.JFrame {
         tk.setVisible(false);
         nhapphieunhap.setVisible(false);
         pn.setVisible(false);
-         user.setVisible(false);
+        user.setVisible(false);
+        dt.setUpTable();
     }//GEN-LAST:event_btn_dtActionPerformed
 
     private void btn_nccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_nccActionPerformed
