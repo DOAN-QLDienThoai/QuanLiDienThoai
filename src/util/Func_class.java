@@ -4,9 +4,6 @@
  */
 package util;
 
-import DAO.HeDieuHanhDAO;
-import DAO.ThuongHieuDAO;
-import DTO.DienThoaiDTO;
 import DTO.NhaCungCapDTO;
 import DTO.NhanVienDTO;
 import java.awt.Color;
@@ -52,8 +49,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 //Lớp khởi tạo các hàm sử dụng chung
 public class Func_class {
-    private HashMap<String,Integer> mapHDH;
-    private HashMap<String,Integer> mapThuongHieu;
     //Hàm gán icon, ảnh cho jlabel,button
     public void disPlayImage(int width,int height,String linkImage,JLabel jlabel){
         ImageIcon imgIcon=new ImageIcon(linkImage);
@@ -225,28 +220,7 @@ public class Func_class {
         DefaultTableModel model = new DefaultTableModel(rows, colNames);
         table.setModel(model);
     }
-//    //Hàm thêm dữ liệu vào bảng điện thoại
-//    public void addDataTableDienThoai(ArrayList<DienThoaiDTO> listDT,JTable table) {
-//        mapHDH = new HeDieuHanhDAO().listMapHDH();
-//        mapThuongHieu = new ThuongHieuDAO().listMapThuongHieu();
-//        String[] colNames = {"Mã ĐT", "Tên Điện Thoại", "Hệ điều hành", "Thương hiệu", "Chip xử lý", "Dung lượng pin", "Kích thước màn"};
-//        Object[][] rows = new Object[listDT.size()][colNames.length];
-//        for (int i = 0; i < listDT.size(); i++) {
-//            rows[i][0] = listDT.get(i).getMaDT();
-//            rows[i][1] = listDT.get(i).getTenDT();
-//            int maHDH = listDT.get(i).getHeDieuHanh();
-//            String tenHDH = getKey(mapHDH,maHDH);
-//            rows[i][2] = tenHDH;
-//            int maThuongHieu = listDT.get(i).getThuongHieu();
-//            String tenThuongHieu = getKey(mapThuongHieu,maThuongHieu);
-//            rows[i][3] = tenThuongHieu;
-//            rows[i][4] = listDT.get(i).getChipXuLy();
-//            rows[i][5] = listDT.get(i).getDungLuongPin() + "mAh";
-//            rows[i][6] = listDT.get(i).getKichThuocMan() + " inch";
-//        }
-//        DefaultTableModel model = new DefaultTableModel(rows, colNames);
-//        table.setModel(model);
-//    }
+    
     public static void exportJTableToExcel(JTable table) throws IOException {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Chọn đường dẫn lưu file Excel");

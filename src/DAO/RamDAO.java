@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 
 public class RamDAO {
+    //Thêm ram (ahuy)
     public int insertRam(RamDTO ram){
         String sqlAddRam="INSERT INTO Ram(dungLuongRam,trangThai)"+
                          "VALUES (?,1)";
@@ -28,6 +29,7 @@ public class RamDAO {
         }
         return 0;
     }
+    //Update ram (ahuy)
     public int updateRam(RamDTO ram){
         String sqlUpdateRam="UPDATE Ram SET dungLuongRam=? WHERE maRam=? ";
         PreparedStatement ps;
@@ -44,6 +46,7 @@ public class RamDAO {
         }
         return 0;
     }
+    //Xóa ram (ahuy)
     public int deleteRam(int maRam){
         String sqlDeleteRam="UPDATE Ram SET trangThai=0 WHERE maRam=? ";
         PreparedStatement ps;
@@ -59,6 +62,27 @@ public class RamDAO {
         }
         return 0;
     }
+    //Kiểm tra ram đã đc phiên bản nào sử dụng hay chưa (ahuy)
+    public boolean isRamDangDuocSuDung(int maRam) {
+        String sql = "SELECT COUNT(*) FROM PhienBanDienThoai WHERE maRam = ?";
+        PreparedStatement ps;
+        try {
+            ps=ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            ps.setInt(1, maRam);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                if (count > 0) {
+                    JOptionPane.showMessageDialog(null, "Ram đã được phiên bản sử dụng", "Error", 0);
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+    //Lấy danh sách Ram (ahuy)
     public ArrayList<RamDTO> listRam(){
         ArrayList<RamDTO> listRam=new ArrayList<RamDTO>();
         String sqlAllRam="SELECT * FROM Ram WHERE trangThai=1 ";

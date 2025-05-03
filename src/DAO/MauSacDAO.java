@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 
 public class MauSacDAO {
+    //Thêm màu sắc (ahuy)
     public int insertMauSac(MauSacDTO ms){
         String sqlAddMS="INSERT INTO MauSac(tenMau,trangThai)"+
                          "VALUES (?,1)";
@@ -29,6 +30,7 @@ public class MauSacDAO {
         }
         return 0;
     }
+    //Cập nhật màu sắc (ahuy)
     public int updateMS(MauSacDTO ms){
         String sqlUpdateMS="UPDATE MauSac SET tenMau=? WHERE maMau=? ";
         PreparedStatement ps;
@@ -45,6 +47,7 @@ public class MauSacDAO {
         }
         return 0;
     }
+    //Xóa màu sắc (ahuy)
     public int deleteMS(int maMau){
         String sqlDeleteMS="UPDATE MauSac SET trangThai=0 WHERE maMau=? ";
         PreparedStatement ps;
@@ -60,6 +63,27 @@ public class MauSacDAO {
         }
         return 0;
     }
+    //Kiểm tra màu sắc đã được sử dụng ở phiên bản chưa (ahuy)
+    public boolean isMauSacDangDuocSuDung(int maMau) {
+        String sql = "SELECT COUNT(*) FROM PhienBanDienThoai WHERE maMau = ?";
+        PreparedStatement ps;
+        try {
+            ps=ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            ps.setInt(1, maMau);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                if (count > 0) {
+                    JOptionPane.showMessageDialog(null, "Màu sắc đã được phiên bản sử dụng", "Error", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+    //Lấy danh sách màu sắc (ahuy)
     public ArrayList<MauSacDTO> listMS(){
         ArrayList<MauSacDTO> listMS=new ArrayList<MauSacDTO>();
         String sqlAllMS="SELECT * FROM MauSac WHERE trangThai=1 ";
@@ -111,5 +135,4 @@ public class MauSacDAO {
             }
             return maMau;
     }
-
 }

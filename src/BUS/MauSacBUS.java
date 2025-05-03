@@ -82,4 +82,7 @@ public class MauSacBUS {
         }
         return check;
     }
+    public boolean isMauSacDuocSuDung(int maMau){
+        return msDao.isMauSacDangDuocSuDung(maMau);
+    }
 }

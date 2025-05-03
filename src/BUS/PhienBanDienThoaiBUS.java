@@ -64,10 +64,16 @@ public class PhienBanDienThoaiBUS {
 
     public boolean checkDupEdit(ArrayList<PhienBanDienThoaiDTO> listPBTemp, PhienBanDienThoaiDTO pb) {
         for (PhienBanDienThoaiDTO item : listPBTemp) {
-            if (item.isSameFullConFig(pb)) {
+            if (item.isSameConFig(pb)||item.isSameFullConFig(pb)) {
                 return false;
             }
         }
         return true;
+    }
+    public boolean isPhienBanDaDuocNhap(int maPhienBan){
+        return pbDao.existsNhapByMaPhienBan(maPhienBan);
+    }
+    public boolean isPhienBanDaDuocXuat(int maPhienBan){
+        return pbDao.existsXuatByMaPhienBan(maPhienBan);
     }
 }

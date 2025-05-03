@@ -220,8 +220,7 @@ public class RomDialog extends javax.swing.JDialog {
         int dungLuongRom = Integer.parseInt(jtf_dlr.getText());
         if (romBus.checkDup(dungLuongRom)) {
             romBus.insertRom(dungLuongRom);
-            loadDataTable(romBus.listROM());
-            func.centerTable(table_rom);
+            setUpTable();
             jtf_dlr.setText("");
             return;
         }
@@ -238,8 +237,7 @@ public class RomDialog extends javax.swing.JDialog {
         int dungLuongRom = Integer.parseInt(jtf_dlr.getText());
         if(romBus.checkDup(dungLuongRom)){
             romBus.updateRom(new RomDTO(maRom,dungLuongRom));
-            loadDataTable(romBus.listROM());
-            func.centerTable(table_rom);
+            setUpTable();
             jtf_dlr.setText("");
             return;
         }
@@ -253,14 +251,15 @@ public class RomDialog extends javax.swing.JDialog {
             return;
         }
         int maRom = (int) table_rom.getValueAt(vitriRow, 0);
-        int confirm = JOptionPane.showConfirmDialog(null,"Bạn có chắc chắn muốn xóa RAM này không?",
-            "Xác nhận xóa",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.WARNING_MESSAGE);
+        int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa ROM này không?",
+                "Xác nhận xóa",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
         if (confirm == JOptionPane.YES_OPTION) {
-            romBus.deleteRom(maRom);
-            loadDataTable(romBus.listROM());
-            func.centerTable(table_rom);
+            if (romBus.isRomDuocSuDung(maRom)) {
+                romBus.deleteRom(maRom);
+                setUpTable();
+            }
         }
     }//GEN-LAST:event_btn_deleteMouseClicked
 

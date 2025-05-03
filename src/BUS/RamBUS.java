@@ -77,4 +77,7 @@ public class RamBUS {
         }
         return check;
     }
+    public boolean isRamDuocSuDung(int maRam){
+        return ramDao.isRamDangDuocSuDung(maRam);
+    }
 }

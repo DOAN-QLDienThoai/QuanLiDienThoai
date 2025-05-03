@@ -285,6 +285,46 @@ public class PhienBanDienThoaiDAO {
         }
         return maDT;
     }
+    //Kiểm tra phiên bản đã được nhập hay chưa (ahuy)
+    public boolean existsNhapByMaPhienBan(int maPhienBan) {
+        String sql = "SELECT TOP 1 1 FROM ChiTietPhieuNhap WHERE maPhienBan = ? ";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps=ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            ps.setInt(1, maPhienBan);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(null,"Phiên bản đã được nhập hàng ","Error",0);
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+     //Kiểm tra phiên bản đã được xuất hay chưa (ahuy)
+    public boolean existsXuatByMaPhienBan(int maPhienBan) {
+        String sql = "SELECT TOP 1 1 FROM phieuxuat WHERE maPhienBan = ? ";
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            ps.setInt(1, maPhienBan);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(null, "Phiên bản đã được xuất hàng ", "Error", 0);
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+    
+    
+    
+    
     
     
     

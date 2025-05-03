@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.util.HashMap;
 
 public class RomDAO {
+    //Thêm rom (ahuy)
     public int insertRom(RomDTO rom){
         String sqlAddRom="INSERT INTO Rom(dungLuongRom,trangThai)"+
                          "VALUES (?,1)";
@@ -29,6 +30,7 @@ public class RomDAO {
         }
         return 0;
     }
+    //Cập nhật rom (ahuy)
     public int updateRom(RomDTO rom){
         String sqlUpdateRom="UPDATE Rom SET dungLuongRom=? WHERE maRom=? ";
         PreparedStatement ps;
@@ -45,6 +47,7 @@ public class RomDAO {
         }
         return 0;
     }
+    //Xóa rom (ahuy)
     public int deleteRom(int maRom){
         String sqlDeleteRam="UPDATE Rom SET trangThai=0 WHERE maRom=? ";
         PreparedStatement ps;
@@ -60,6 +63,27 @@ public class RomDAO {
         }
         return 0;
     }
+    //Kiểm tra rom đã được phiên bản sử dụng hay chưa (ahuy)
+    public boolean isRomDangDuocSuDung(int maRom) {
+        String sql = "SELECT COUNT(*) FROM PhienBanDienThoai WHERE maRom = ?";
+        PreparedStatement ps;
+        try {
+            ps=ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            ps.setInt(1, maRom);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                if (count > 0) {
+                    JOptionPane.showMessageDialog(null, "Rom đã được phiên bản sử dụng", "Error", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return true;
+    }
+    //Láy danh sách Rom (ahuy)
     public ArrayList<RomDTO> listRom(){
         ArrayList<RomDTO> listRom=new ArrayList<RomDTO>();
         String sqlAllRom="SELECT * FROM Rom WHERE trangThai=1 ";

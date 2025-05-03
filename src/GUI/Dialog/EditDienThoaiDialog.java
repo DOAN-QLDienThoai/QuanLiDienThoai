@@ -5,11 +5,15 @@
 package GUI.Dialog;
 
 import BUS.DienThoaiBUS;
+import BUS.HeDieuHanhBUS;
+import BUS.ThuongHieuBUS;
 import DAO.HeDieuHanhDAO;
 import DAO.PhienBanDienThoaiDAO;
 import DAO.ThuongHieuDAO;
 import DTO.DienThoaiDTO;
+import DTO.HeDieuHanhDTO;
 import DTO.PhienBanDienThoaiDTO;
+import DTO.ThuongHieuDTO;
 import GUI.Panel.PanelDienThoai;
 import java.awt.Color;
 import java.awt.Frame;
@@ -32,8 +36,8 @@ public class EditDienThoaiDialog extends javax.swing.JDialog {
     Func_class func = new Func_class();
     DienThoaiDTO dt;
     PanelDienThoai dtPanel;
-    HashMap<String, Integer> mapHDH;
-    HashMap<String, Integer> mapThuongHieu;
+    HeDieuHanhBUS hdhBus=new HeDieuHanhBUS();
+    ThuongHieuBUS thBus=new ThuongHieuBUS();
     ArrayList<PhienBanDienThoaiDTO> listPBDTTemp = new ArrayList<>();
     ArrayList<PhienBanDienThoaiDTO> listPBDT;
     String url_img;
@@ -45,36 +49,36 @@ public class EditDienThoaiDialog extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);
         this.setTitle("Chỉnh sửa thông tin điện thoại");
         this.setLocationRelativeTo(null);
+        khoiTao();
+    }
+    public void khoiTao(){
+        fillComboboxHDH();
+        fillComboboxThuongHieu();
         jtf_tenDT.setText(dt.getTenDT());
-        mapHDH = new HeDieuHanhDAO().listMapHDH();
-        String tenHDH=func.getKey(mapHDH, dt.getHeDieuHanh());
-        cbb_HDH.setSelectedItem(tenHDH);
-        mapThuongHieu=new ThuongHieuDAO().listMapThuongHieu();
-        String tenThuongHieu=func.getKey(mapThuongHieu,dt.getThuongHieu());
-        cbb_ThuongHieu.setSelectedItem(tenThuongHieu);
+        if(dt.getHeDieuHanh()!=-1){
+            cbb_HDH.setSelectedItem(hdhBus.getTenByMaHDH(dt.getHeDieuHanh()));
+        }
+        if(dt.getThuongHieu()!=-1){
+            cbb_ThuongHieu.setSelectedItem(thBus.getTenByMaTH(dt.getThuongHieu()));
+        }
         jtf_chip.setText(dt.getChipXuLy());
         jtf_dungLuongPin.setText(String.valueOf(dt.getDungLuongPin()));
         jtf_kichThuocMan.setText(String.valueOf(dt.getKichThuocMan()));
         func.disPlayImage(jlabel_hinhAnh.getWidth(),jlabel_hinhAnh.getHeight(),dt.getHinhAnh(), jlabel_hinhAnh);
-        fillComboboxHDH();
-        fillComboboxThuongHieu();
     }
     //Hàm khởi tạo giá trị vào combobox thương hiệu
-
     public void fillComboboxThuongHieu() {
-        mapThuongHieu = new ThuongHieuDAO().listMapThuongHieu();
-        cbb_ThuongHieu.setBackground(Color.WHITE);
-        for (String th : mapThuongHieu.keySet()) {
-            cbb_ThuongHieu.addItem(th);
+        func.setUpComBoBox(cbb_ThuongHieu);
+        for (ThuongHieuDTO th : thBus.listTH()) {
+            cbb_ThuongHieu.addItem(th.getTenThuongHieu());
         }
     }
 
     //Hàm khởi tạo giá trị vào combobox hệ điều hành
     public void fillComboboxHDH() {
-        mapHDH = new HeDieuHanhDAO().listMapHDH();
-        cbb_HDH.setBackground(Color.WHITE);
-        for (String hdh : mapHDH.keySet()) {
-            cbb_HDH.addItem(hdh);
+        func.setUpComBoBox(cbb_HDH);
+        for (HeDieuHanhDTO hdh : hdhBus.listHDH()) {
+            cbb_HDH.addItem(hdh.getTenHDH());
         }
     }
      public int check_edit_sanPham(){
@@ -383,6 +387,7 @@ public class EditDienThoaiDialog extends javax.swing.JDialog {
             dienThoai.setMaDT(dt.getMaDT());
             dtBus.updateDienThoai(dienThoai);
             dtPanel.setUpTable();
+            this.dispose();
         }
     }//GEN-LAST:event_btn_save_edit_dtMouseClicked
 

@@ -250,15 +250,17 @@ public class MauSacDialog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(null, "Bạn chưa chọn màu để xóa ", "Error", 0);
             return;
         }
-        int maMau =Integer.parseInt(table_mausac.getValueAt(vitriRow, 0).toString());
-        int confirm = JOptionPane.showConfirmDialog(null,"Bạn có chắc chắn muốn xóa màu này không?",
-            "Xác nhận xóa",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.WARNING_MESSAGE);
+        int maMau = Integer.parseInt(table_mausac.getValueAt(vitriRow, 0).toString());
+        int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa màu này không?",
+                "Xác nhận xóa",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
         if (confirm == JOptionPane.YES_OPTION) {
-            msBus.deleteMauSac(maMau);
-            loadDataTable(msBus.listMS());
-            func.centerTable(table_mausac);
+            if (msBus.isMauSacDuocSuDung(maMau)) {
+                msBus.deleteMauSac(maMau);
+                loadDataTable(msBus.listMS());
+                func.centerTable(table_mausac);
+            }
         }
     }//GEN-LAST:event_btn_deleteMouseClicked
 

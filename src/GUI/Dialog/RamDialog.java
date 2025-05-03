@@ -220,8 +220,7 @@ public class RamDialog extends javax.swing.JDialog {
         int dungLuongRam = Integer.parseInt(jtf_dlr.getText());
         if (ramBus.checkDup(dungLuongRam)) {
             ramBus.insertRam(dungLuongRam);
-            loadDataTable(ramBus.listRAM());
-            func.centerTable(table_ram);
+            setUpTable();
             jtf_dlr.setText("");
             return;
         }
@@ -236,14 +235,13 @@ public class RamDialog extends javax.swing.JDialog {
         }
         int maRam = Integer.parseInt(table_ram.getValueAt(vitriRow, 0).toString());
         int dungLuongRam = Integer.parseInt(jtf_dlr.getText());
-        if(ramBus.checkDup(dungLuongRam)){
-            ramBus.updateRam(new RamDTO(maRam,dungLuongRam));
-            loadDataTable(ramBus.listRAM());
-            func.centerTable(table_ram);
+        if (ramBus.checkDup(dungLuongRam)) {
+            ramBus.updateRam(new RamDTO(maRam, dungLuongRam));
+            setUpTable();
             jtf_dlr.setText("");
             return;
         }
-        JOptionPane.showMessageDialog(null,"Dung lượng ram đã tồn tại","Error",0);
+        JOptionPane.showMessageDialog(null, "Dung lượng ram đã tồn tại", "Error", 0);
     }//GEN-LAST:event_btn_updateMouseClicked
 
     private void btn_deleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_deleteMouseClicked
@@ -253,14 +251,15 @@ public class RamDialog extends javax.swing.JDialog {
             return;
         }
         int maRam = Integer.parseInt(table_ram.getValueAt(vitriRow, 0).toString());
-        int confirm = JOptionPane.showConfirmDialog(null,"Bạn có chắc chắn muốn xóa RAM này không?",
-            "Xác nhận xóa",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.WARNING_MESSAGE);
+        int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa RAM này không?",
+                "Xác nhận xóa",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE);
         if (confirm == JOptionPane.YES_OPTION) {
-            ramBus.deleteRam(maRam);
-            loadDataTable(ramBus.listRAM());
-            func.centerTable(table_ram);
+            if (ramBus.isRamDuocSuDung(maRam)) {
+                ramBus.deleteRam(maRam);
+                setUpTable();
+            }
         }
     }//GEN-LAST:event_btn_deleteMouseClicked
 

@@ -495,7 +495,7 @@ public class Main extends javax.swing.JFrame {
         tk.setVisible(false);
         pn.setVisible(false);
         nhapphieunhap.setVisible(false);
-         user.setVisible(false);
+        user.setVisible(false);
     }//GEN-LAST:event_btn_nvActionPerformed
 
     private void btn_pxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_pxActionPerformed

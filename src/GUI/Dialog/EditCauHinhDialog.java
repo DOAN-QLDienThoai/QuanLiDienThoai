@@ -4,7 +4,10 @@
  */
 package GUI.Dialog;
 
+import BUS.MauSacBUS;
 import BUS.PhienBanDienThoaiBUS;
+import BUS.RamBUS;
+import BUS.RomBUS;
 import DAO.MauSacDAO;
 import DAO.PhienBanDienThoaiDAO;
 import DAO.RamDAO;
@@ -30,6 +33,9 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
     PanelDienThoai dtPanel;
     ArrayList<PhienBanDienThoaiDTO> listPBDTTemp;
     PhienBanDienThoaiBUS pbBus=new PhienBanDienThoaiBUS();
+    RamBUS ramBus =new RamBUS();
+    RomBUS romBUS=new RomBUS();
+    MauSacBUS msBus=new MauSacBUS();
     int maDT;
     public EditCauHinhDialog(java.awt.Frame parent, boolean modal, int maDT, ArrayList<PhienBanDienThoaiDTO> listPBDTTemp, PanelDienThoai dtPanel) {
         super(parent, modal);
@@ -98,34 +104,13 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
         for (PhienBanDienThoaiDTO pb : listPBDTTemp) {
             // Lấy thông tin Ram
             int maRam = pb.getmaRam();
-            int dungLuongRam = -1;
-            HashMap<Integer, Integer> mapRam = new RamDAO().listMapRam();
-            for (Map.Entry<Integer, Integer> entry : mapRam.entrySet()) {
-                if (maRam == entry.getValue()) {
-                    dungLuongRam = entry.getKey();
-                    break;
-                }
-            }
+            int dungLuongRam=ramBus.getDungLuongRambyID(maRam);
             // Lấy thông tin Rom
             int maRom = pb.getmaRom();
-            int dungLuongRom = -1;
-            HashMap<Integer, Integer> mapRom = new RomDAO().listMapRom();
-            for (Map.Entry<Integer, Integer> entry : mapRom.entrySet()) {
-                if (maRom == entry.getValue()) {
-                    dungLuongRom = entry.getKey();
-                    break;
-                }
-            }
+            int dungLuongRom=romBUS.getDungLuongRombyID(maRom);
             // Lấy thông tin Màu sắc
             int maMau = pb.getmaMau();
-            String tenMau = null;
-            HashMap<String, Integer> mapMS = new MauSacDAO().listMapMS();
-            for (Map.Entry<String, Integer> entry : mapMS.entrySet()) {
-                if (maMau == entry.getValue()) {
-                    tenMau = entry.getKey();
-                    break;
-                }
-            }
+            String tenMau = msBus.getTenMauByID(maMau);
             // Cập nhật giá trị vào bảng
             rows[index][0] = index;
             rows[index][1] = dungLuongRam;
@@ -137,7 +122,6 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
         }
         DefaultTableModel model = new DefaultTableModel(rows, colNames);
         table_cauHinh.setModel(model);
-        func.centerTable(table_cauHinh);
     }
     public void resetGia(){
         jtf_gia_nhap.setText("");
@@ -397,14 +381,11 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
     private void btn_add_cauHinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_add_cauHinhMouseClicked
         int result = checkCauHinh();
         if (result == 1) {
-            HashMap<Integer, Integer> mapRam = new RamDAO().listMapRam();
-            int selectedRam = Integer.parseInt(cbb_ram.getSelectedItem().toString()); // Chuyển String -> Integer
-            int maRam = mapRam.getOrDefault(selectedRam, -1);
-            HashMap<Integer, Integer> mapRom = new RomDAO().listMapRom();
-            int selectedRom = Integer.parseInt(cbb_rom.getSelectedItem().toString()); // Chuyển String -> Integer
-            int maRom = mapRom.getOrDefault(selectedRom, -1);
-            HashMap<String, Integer> mapMS = new MauSacDAO().listMapMS();
-            int maMau = mapMS.get(cbb_ms.getSelectedItem().toString());
+            int dungLuongRam = Integer.parseInt(cbb_ram.getSelectedItem().toString()); // Chuyển String -> Integer
+            int maRam = ramBus.getIDByDungLuongRam(dungLuongRam);
+            int dungLuongRom = Integer.parseInt(cbb_rom.getSelectedItem().toString()); // Chuyển String -> Integer
+            int maRom = romBUS.getIDByDungLuongRom(dungLuongRom);
+            int maMau = msBus.getIDByTenMau(cbb_ms.getSelectedItem().toString());
             double giaNhap = Double.parseDouble(jtf_gia_nhap.getText().replaceAll(",", ""));
             double giaXuat = Double.parseDouble(jtf_gia_xuat.getText().replaceAll(",", ""));
             if (checkGiaNhapGiaXuat(giaNhap, giaXuat)) {
@@ -413,8 +394,7 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
                     listPBDTTemp.add(pb);
                     new PhienBanDienThoaiDAO().insertPhienBan(pb);
                     resetGia();
-                    addDatatable();
-                    func.centerTable(table_cauHinh);
+                    setUpTable();
                     return;
                 }
                 JOptionPane.showMessageDialog(null, "Cấu hình đã tồn tại", "Error", 0);
@@ -444,14 +424,11 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
             return;
         }
         PhienBanDienThoaiDTO phienBanUpdate = listPBDTTemp.get(vitriRow);
-        HashMap<Integer, Integer> mapRam = new RamDAO().listMapRam();
-        int selectedRam = Integer.parseInt(cbb_ram.getSelectedItem().toString()); // Chuyển String -> Integer
-        int maRam = mapRam.getOrDefault(selectedRam, -1);
-        HashMap<Integer, Integer> mapRom = new RomDAO().listMapRom();
-        int selectedRom = Integer.parseInt(cbb_rom.getSelectedItem().toString()); // Chuyển String -> Integer
-        int maRom = mapRom.getOrDefault(selectedRom, -1);
-        HashMap<String, Integer> mapMS = new MauSacDAO().listMapMS();
-        int maMau = mapMS.get(cbb_ms.getSelectedItem().toString());
+        int dungLuongRam = Integer.parseInt(cbb_ram.getSelectedItem().toString()); // Chuyển String -> Integer
+        int maRam = ramBus.getIDByDungLuongRam(dungLuongRam);
+        int dungLuongRom = Integer.parseInt(cbb_rom.getSelectedItem().toString()); // Chuyển String -> Integer
+        int maRom = romBUS.getIDByDungLuongRom(dungLuongRom);
+        int maMau = msBus.getIDByTenMau(cbb_ms.getSelectedItem().toString());
         double giaNhap = Double.parseDouble(jtf_gia_nhap.getText().replaceAll(",", ""));
         double giaXuat = Double.parseDouble(jtf_gia_xuat.getText().replaceAll(",", ""));
         if (checkGiaNhapGiaXuat(giaNhap, giaXuat)) {
@@ -462,8 +439,8 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
                 phienBanUpdate.setMausac(maMau);
                 phienBanUpdate.setGiaNhap(giaNhap);
                 phienBanUpdate.setGiaXuat(giaXuat);
-                addDatatable();
-                func.centerTable(table_cauHinh);
+                pbBus.updatePhienBanDienThoai(phienBanUpdate);
+                setUpTable();
                 resetGia();
                 return;
             }
@@ -472,16 +449,17 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
     }//GEN-LAST:event_btn_update_cauHinhMouseClicked
 
     private void btn_delete_cauHinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_delete_cauHinhMouseClicked
-        int vitriRow=table_cauHinh.getSelectedRow();
-        if(vitriRow==-1){
-            JOptionPane.showMessageDialog(null,"Bạn chọn phiên bản để xóa","Error",0);
+        int vitriRow = table_cauHinh.getSelectedRow();
+        if (vitriRow == -1) {
+            JOptionPane.showMessageDialog(null, "Bạn chọn phiên bản để xóa", "Error", 0);
             return;
         }
         PhienBanDienThoaiDTO phienBanDelete = listPBDTTemp.get(vitriRow);
-        listPBDTTemp.remove(phienBanDelete);
-        new PhienBanDienThoaiDAO().deletePhienBan(phienBanDelete.getMaPhienBan());
-        addDatatable();
-        func.centerTable(table_cauHinh);
+        if (pbBus.isPhienBanDaDuocNhap(phienBanDelete.getMaPhienBan()) && pbBus.isPhienBanDaDuocXuat(phienBanDelete.getMaPhienBan())) {
+            listPBDTTemp.remove(phienBanDelete);
+            pbBus.deletePhienBanDienThoai(phienBanDelete.getMaPhienBan());
+            setUpTable();
+        }
     }//GEN-LAST:event_btn_delete_cauHinhMouseClicked
 
     private void btn_make_newMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_make_newMouseClicked

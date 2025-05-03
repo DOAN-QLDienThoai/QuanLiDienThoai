@@ -77,4 +77,7 @@ public class RomBUS {
         }
         return check;
     }
+    public boolean isRomDuocSuDung(int maRom){
+        return RomDao.isRomDangDuocSuDung(maRom);
+    }
 }
