@@ -123,7 +123,7 @@ public class Main extends javax.swing.JFrame {
         btn_pn.setIcon(new FlatSVGIcon("./resources/icon/phieunhap.svg", 0.27f));
         btn_tk.setIcon(new FlatSVGIcon("./resources/icon/static.svg", 0.3f));
         btn_logout.setIcon(new FlatSVGIcon("./resources/icon/logout.svg", 0.3f));
-        btn_taiKhoan.setIcon(new FlatSVGIcon("./resources/icon/logout.svg", 0.3f));
+        btn_taiKhoan.setIcon(new FlatSVGIcon("./resources/icon/user.svg", 0.3f));
     }
     public PanelTrangChu getPanelTrangChu(){
         return this.tt;

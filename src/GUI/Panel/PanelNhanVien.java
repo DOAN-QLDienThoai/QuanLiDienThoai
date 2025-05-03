@@ -45,6 +45,7 @@ public class PanelNhanVien extends javax.swing.JPanel {
         setCusorPointer();
         setUpBtn();
         setBorderPanel();
+        setUpCBB();
         setUpJTF();
     }
     public JTable getTableNhanVien(){
@@ -68,6 +69,9 @@ public class PanelNhanVien extends javax.swing.JPanel {
     public void setBorderPanel(){
         jpanel_chucNang_nv.setBorder(new DropShadowBorder(1,Color.BLACK));
         jpanel_timkiem_nv.setBorder(new DropShadowBorder(1,Color.BLACK));
+    }
+    public void setUpCBB(){
+        func.setUpComBoBox(combobox_find_nv);
     }
     public void setUpJTF(){
         func.setUpJTF(jtf_find_nv);

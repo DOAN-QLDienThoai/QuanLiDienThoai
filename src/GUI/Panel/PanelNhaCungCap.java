@@ -42,6 +42,7 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
         setTextHidden();
         setUpBtn();
         setUpJTF();
+        setUpCBB();
     }
     public void setTextHidden(){
         PromptSupport.setPrompt("Tìm kiếm nhanh", jtf_find_ncc);
@@ -59,6 +60,9 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
     }
     public void setUpJTF(){
         func.setUpJTF(jtf_find_ncc);
+    }
+    public void setUpCBB(){
+        func.setUpComBoBox(combobox_find_ncc);
     }
     public void setUpBtn(){
         func.setUpBtn(btn_refresh_ncc, Color.WHITE, new Color(220,220,220));
@@ -152,7 +156,7 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
 
         jLabel20.setText("    Sửa");
 
-        jLabel21.setText("   Xóa");
+        jLabel21.setText("    Xóa");
 
         jLabel22.setText(" Chi tiết");
 
@@ -241,13 +245,13 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jpanel_timkiem_nccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jpanel_timkiem_nccLayout.createSequentialGroup()
-                        .addComponent(combobox_find_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(combobox_find_ncc, 0, 148, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtf_find_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jtf_find_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_look_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_refresh_ncc, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE))
+                        .addComponent(btn_refresh_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(7, 7, 7))
         );
@@ -275,10 +279,10 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
                 .addComponent(jpanel_chucNang_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 360, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(23, 23, 23)
                 .addComponent(jpanel_timkiem_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(98, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 1018, Short.MAX_VALUE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(

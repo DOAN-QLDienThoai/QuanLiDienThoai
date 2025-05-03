@@ -98,6 +98,7 @@ public class PanelDienThoai extends javax.swing.JPanel {
         setTextHidden();
         setUpJTF();
         setUpBtn();
+        setUpCombobox();
     }
     public JTable getTableDienThoai(){
         return this.table_dt;
@@ -105,6 +106,9 @@ public class PanelDienThoai extends javax.swing.JPanel {
     public void setUpBtn(){
         func.setUpBtn(btn_refresh_dt, Color.WHITE, new Color(220,220,220));
         func.setUpBtn(btn_look_dt, Color.WHITE, new Color(220,220,220));
+    }
+    public void setUpCombobox(){
+        func.setUpComBoBox(combobox_find_dt);
     }
     public void setUpJTF(){
         func.setUpJTF(jtf_find_dt);

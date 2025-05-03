@@ -15,10 +15,10 @@ import DAO.RomDAO;
 import DTO.DienThoaiDTO;
 import DTO.PhienBanDienThoaiDTO;
 import GUI.Panel.PanelDienThoai;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import util.Func_class;
@@ -36,7 +36,6 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
     RamBUS ramBus =new RamBUS();
     RomBUS romBUS=new RomBUS();
     MauSacBUS msBus=new MauSacBUS();
-    int maDT;
     public EditCauHinhDialog(java.awt.Frame parent, boolean modal, int maDT, ArrayList<PhienBanDienThoaiDTO> listPBDTTemp, PanelDienThoai dtPanel) {
         super(parent, modal);
         initComponents();
@@ -52,6 +51,7 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
         fillComboboxRom();
         fillComboboxMauSac();
         setUpTable();
+        setIcon();
     }
     public void setUpTable() {
         this.addDatatable();
@@ -66,7 +66,9 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
             cbb_ms.addItem(ms);
         }
     }
-
+    public void setIcon(){
+        btn_return.setIcon(new FlatSVGIcon("./resources/icon/left.svg",0.4f));
+    }
     public void fillComboboxRam() {
         HashMap<Integer, Integer> mapRam = new RamDAO().listMapRam();
         cbb_ram.setBackground(Color.WHITE);
@@ -307,9 +309,6 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
-        jPanel3.setBackground(new java.awt.Color(245, 245, 245));
-
-        btn_return.setBackground(new java.awt.Color(255, 204, 0));
         btn_return.setText("Quay lại");
         btn_return.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -323,14 +322,14 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(64, 64, 64)
-                .addComponent(btn_return, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(95, Short.MAX_VALUE))
+                .addComponent(btn_return, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(79, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(btn_return, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_return, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -433,7 +432,7 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
         double giaXuat = Double.parseDouble(jtf_gia_xuat.getText().replaceAll(",", ""));
         if (checkGiaNhapGiaXuat(giaNhap, giaXuat)) {
             PhienBanDienThoaiDTO pbNew = new PhienBanDienThoaiDTO(0, phienBanUpdate.getMaDT(), maRam, maRom, maMau, giaNhap, giaXuat);
-            if (pbBus.checkDupEdit(listPBDTTemp, pbNew)) {
+            if (pbBus.checkDupEdit(listPBDTTemp, pbNew,vitriRow)) {
                 phienBanUpdate.setRam(maRam);
                 phienBanUpdate.setRom(maRom);
                 phienBanUpdate.setMausac(maMau);

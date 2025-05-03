@@ -13,7 +13,6 @@ import BUS.PhienBanDienThoaiBUS;
 import BUS.PhieuNhapBUS;
 import BUS.RamBUS;
 import BUS.RomBUS;
-import BUS.TaiKhoanBUS;
 import DAO.PhienBanDienThoaiDAO;
 import DTO.ChiTietPhieuNhapDTO;
 import DTO.DienThoaiDTO;
@@ -109,6 +108,7 @@ public class PanelNhapPhieuNhap extends javax.swing.JPanel {
         jtf_nv_nhap.setEditable(false);
         jtf_maPN.setEditable(false);
         jtf_tenSP.setEditable(false);
+        func.notAllowText(jtf_soLuong);
     }
     public void loadDataDienThoai(ArrayList<DienThoaiDTO> listDT) {
         String[] colNames = {"Mã điện thoại", "Tên điện thoại", "Số lượng tồn"};
@@ -556,33 +556,45 @@ public class PanelNhapPhieuNhap extends javax.swing.JPanel {
     }//GEN-LAST:event_btn_addMouseClicked
 
     private void btn_addActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_addActionPerformed
-        int vitriRow=table_dt.getSelectedRow();
-        if(vitriRow==-1){
-            JOptionPane.showMessageDialog(null,"Bạn chưa điện thoại","Error",0);
+        int vitriRow = table_dt.getSelectedRow();
+        if (vitriRow == -1) {
+            JOptionPane.showMessageDialog(null, "Bạn chưa chọn điện thoại", "Error", 0);
             return;
         }
-        if(jtf_soLuong.getText().equals("")){
-            JOptionPane.showMessageDialog(null,"Bạn chưa nhập số lượng","Error",0);
+        if (jtf_soLuong.getText().equals("")) {
+            JOptionPane.showMessageDialog(null, "Bạn chưa nhập số lượng", "Error", 0);
             return;
         }
-        String maPN=jtf_maPN.getText();
-        double giaNhap=Double.parseDouble(jtf_giaNhap.getText().replaceAll(",",""));
-        int maDT=Integer.parseInt(jtf_maSp.getText());
-        String cauHinh=combobox_cauHinh.getSelectedItem().toString();
-        String[] parts=getCauHinh(cauHinh);
-        int dungLuongRam=Integer.parseInt(parts[0]);
-        int maRam=ramBus.getIDByDungLuongRam(dungLuongRam);
-        int dungLuongRom=Integer.parseInt(parts[1]);
-        int maRom=romBus.getIDByDungLuongRom(dungLuongRom);
-        String tenMau=parts[2];
-        int maMau=msBus.getIDByTenMau(tenMau);
-        int soLuong=Integer.parseInt(jtf_soLuong.getText());
-        int maPhienBan=pbDao.getMaPhienBanByCauHinh(maDT,maRam, maRom, maMau);
-        double donGia=soLuong*giaNhap;
-        tongTien+=donGia;
-        jlabel_tongTien.setText(String.format("%,.0f",tongTien)+" VNĐ");
-        ChiTietPhieuNhapDTO ctpn=new ChiTietPhieuNhapDTO(maPN, maPhienBan, soLuong, donGia);
-        listCTPNTemp.add(ctpn);
+        String maPN = jtf_maPN.getText();
+        int soLuong = Integer.parseInt(jtf_soLuong.getText());
+        double giaNhap = Double.parseDouble(jtf_giaNhap.getText().replaceAll(",", ""));
+        int maDT = Integer.parseInt(jtf_maSp.getText());
+        String cauHinh = combobox_cauHinh.getSelectedItem().toString();
+        String[] parts = getCauHinh(cauHinh);
+        int dungLuongRam = Integer.parseInt(parts[0]);
+        int maRam = ramBus.getIDByDungLuongRam(dungLuongRam);
+        int dungLuongRom = Integer.parseInt(parts[1]);
+        int maRom = romBus.getIDByDungLuongRom(dungLuongRom);
+        String tenMau = parts[2];
+        int maMau = msBus.getIDByTenMau(tenMau);
+        int maPhienBan = pbDao.getMaPhienBanByCauHinh(maDT, maRam, maRom, maMau);
+        double donGia = soLuong * giaNhap;
+        boolean daTonTai = false;
+        for (ChiTietPhieuNhapDTO ctpn : listCTPNTemp) {
+            if (ctpn.getMaPB() == maPhienBan) {
+                ctpn.setSoluong(ctpn.getSoluong() + soLuong);
+                ctpn.setDongia(ctpn.getDongia() + donGia);
+                daTonTai = true;
+                break;
+            }
+        }
+        // Nếu chưa tồn tại thì thêm mới
+        if (!daTonTai) {
+            ChiTietPhieuNhapDTO ctpn = new ChiTietPhieuNhapDTO(maPN, maPhienBan, soLuong, donGia);
+            listCTPNTemp.add(ctpn);
+        }
+        tongTien += donGia;
+        jlabel_tongTien.setText(String.format("%,.0f", tongTien) + " VNĐ");
         loadDataChiTietPhieuNhap(listCTPNTemp);
         func.centerTable(table_thongTin_cauHinh);
         setUpEnableSuaXoa();
@@ -686,7 +698,10 @@ public class PanelNhapPhieuNhap extends javax.swing.JPanel {
         listCTPNTemp.get(vitriRow).setDongia(donGia);
         listCTPNTemp.get(vitriRow).setMaPB(maPB);
         listCTPNTemp.get(vitriRow).setSoluong(soLuong);
-        tongTien=soLuong*giaNhap;
+        tongTien=0;
+        for(ChiTietPhieuNhapDTO ctpn : listCTPNTemp){
+            tongTien+=ctpn.getDongia();
+        }
         jlabel_tongTien.setText(String.format("%,.0f",tongTien)+" VNĐ");
         loadDataChiTietPhieuNhap(listCTPNTemp);
         func.centerTable(table_thongTin_cauHinh);

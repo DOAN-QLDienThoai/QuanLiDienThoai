@@ -476,7 +476,7 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
         double giaXuat = Double.parseDouble(jtf_gia_xuat.getText().replaceAll(",", ""));
         if (checkGiaNhapGiaXuat(giaNhap, giaXuat)) {
             PhienBanDienThoaiDTO pbNew = new PhienBanDienThoaiDTO(0, phienBanUpdate.getMaDT(), maRam, maRom, maMau, giaNhap, giaXuat);
-            if (pbBus.checkDupEdit(listPBDTTemp, pbNew)) {
+            if (pbBus.checkDupEdit(listPBDTTemp, pbNew,vitriRow)) {
                 phienBanUpdate.setRam(maRam);
                 phienBanUpdate.setRom(maRom);
                 phienBanUpdate.setMausac(maMau);

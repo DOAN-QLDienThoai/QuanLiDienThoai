@@ -9,6 +9,7 @@ import BUS.KhachHangBUS;
 import BUS.NhaCungCapBUS;
 import BUS.NhanVienBUS;
 import BUS.PhieuNhapBUS;
+import DAO.ChiTietPhieuNhapDAO;
 import DAO.ChiTietPhieuXuatDAO;
 import DAO.PhieuXuatDAO;
 import DTO.DienThoaiDTO;
@@ -104,15 +105,17 @@ public class PanelThongKe extends javax.swing.JPanel {
 //        func.setUpBtn(btn_phieuXuat, Color.WHITE,new Color(211,218,211));
 //    }
     public void loadDataSanPham(ArrayList<DienThoaiDTO> listDT){
-        String[] colNames={"Số thứ tự","Mã máy","Tên máy","Số lượng nhập","Số lượng xuất"};
+        String[] colNames={"Số thứ tự","Mã máy","Tên máy","Số lượng nhập","Số lượng xuất","Còn lại kho"};
         Object[][] rows=new Object[listDT.size()][colNames.length];
+        HashMap<Integer, Integer> mapNhap = new ChiTietPhieuNhapDAO().thongKeSoLuongNhapTheoMaDT();
         HashMap<Integer, Integer> mapXuat = new ChiTietPhieuXuatDAO().thongKeSoLuongXuatTheoMaDT();
         for(int i=0;i<listDT.size();i++){
             rows[i][0]=i+1;
             rows[i][1]=listDT.get(i).getMaDT();
             rows[i][2]=listDT.get(i).getTenDT();
-            rows[i][3]=listDT.get(i).getSoLuongTon();
+            rows[i][3] = mapNhap.getOrDefault(listDT.get(i).getMaDT(), 0); // Sửa tại đây
             rows[i][4]=mapXuat.getOrDefault(listDT.get(i).getMaDT(), 0);
+            rows[i][5]=mapNhap.getOrDefault(listDT.get(i).getMaDT(), 0)-mapXuat.getOrDefault(listDT.get(i).getMaDT(), 0);
         }
         DefaultTableModel model=new DefaultTableModel(rows,colNames);
         table.setModel(model);

@@ -26,11 +26,11 @@
               <Component id="jpanel_chucNang_ncc" min="-2" pref="360" max="-2" attributes="0"/>
               <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
               <Component id="jpanel_timkiem_ncc" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="98" max="32767" attributes="0"/>
+              <EmptySpace max="32767" attributes="0"/>
           </Group>
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="jScrollPane2" max="32767" attributes="0"/>
+              <Component id="jScrollPane2" pref="1018" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
@@ -87,7 +87,7 @@
                       <Component id="jlabel_xuat_excel_ncc" alignment="0" min="-2" pref="51" max="-2" attributes="0"/>
                       <Component id="jLabel23" alignment="0" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="17" max="32767" attributes="0"/>
+                  <EmptySpace pref="18" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -153,7 +153,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel21">
           <Properties>
-            <Property name="text" type="java.lang.String" value="   X&#xf3;a"/>
+            <Property name="text" type="java.lang.String" value="    X&#xf3;a"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel22">
@@ -197,16 +197,16 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <Component id="combobox_find_ncc" min="-2" pref="120" max="-2" attributes="0"/>
+                      <Group type="102" attributes="0">
+                          <Component id="combobox_find_ncc" pref="148" max="32767" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jtf_find_ncc" min="-2" pref="200" max="-2" attributes="0"/>
+                          <Component id="jtf_find_ncc" min="-2" pref="212" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="btn_look_ncc" min="-2" pref="45" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="btn_refresh_ncc" pref="134" max="32767" attributes="0"/>
+                          <Component id="btn_refresh_ncc" min="-2" pref="147" max="-2" attributes="0"/>
                       </Group>
-                      <Component id="jLabel18" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
+                      <Component id="jLabel18" min="-2" pref="120" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
               </Group>

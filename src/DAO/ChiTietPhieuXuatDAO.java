@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
 import java.util.HashMap;
-import java.util.Map;
 import util.ConnectedDatabase;
 
 public class ChiTietPhieuXuatDAO {
