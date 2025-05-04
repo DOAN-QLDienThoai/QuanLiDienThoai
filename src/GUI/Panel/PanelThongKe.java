@@ -117,8 +117,16 @@ public class PanelThongKe extends javax.swing.JPanel {
             rows[i][4]=mapXuat.getOrDefault(listDT.get(i).getMaDT(), 0);
             rows[i][5]=mapNhap.getOrDefault(listDT.get(i).getMaDT(), 0)-mapXuat.getOrDefault(listDT.get(i).getMaDT(), 0);
         }
-        DefaultTableModel model=new DefaultTableModel(rows,colNames);
+        DefaultTableModel model = new DefaultTableModel(rows, colNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Tắt chỉnh sửa toàn bộ
+            }
+        };
         table.setModel(model);
+        table.getColumnModel().getColumn(0).setPreferredWidth(30);
+        table.getColumnModel().getColumn(1).setPreferredWidth(30);
+        table.getColumnModel().getColumn(2).setPreferredWidth(180);
     }
     public void loadDataPhieuNhap(ArrayList<PhieuNhapDTO> listPN){
         String[] colNames={"Số thứ tự","Mã PN","Nhà cung cấp","Nhân viên","Ngày nhập","Tổng tiền"};
@@ -134,8 +142,17 @@ public class PanelThongKe extends javax.swing.JPanel {
         }
         jlabel_tongPhieu.setText("TỔNG PHIẾU : "+listPN.size());
         jlabel_tongTien.setText("TỔNG TIỀN : "+String.format("%,.0f",tongTienNhap)+ " VNĐ");
-        DefaultTableModel model=new DefaultTableModel(rows,colNames);
+        DefaultTableModel model = new DefaultTableModel(rows, colNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Tắt chỉnh sửa toàn bộ
+            }
+        };
         table.setModel(model);
+        table.getColumnModel().getColumn(0).setPreferredWidth(30);
+        table.getColumnModel().getColumn(1).setPreferredWidth(30);
+        table.getColumnModel().getColumn(2).setPreferredWidth(150);
+        table.getColumnModel().getColumn(3).setPreferredWidth(150);
     }
     public void loadDataPhieuXuat(ArrayList<PhieuXuatDTO> listPX){
         String[] colNames={"Số thứ tự","Mã PX","Khách hàng","Nhân viên","Ngày nhập","Tổng tiền"};
@@ -151,8 +168,18 @@ public class PanelThongKe extends javax.swing.JPanel {
         }
         jlabel_tongPhieu.setText("TỔNG PHIẾU : "+listPX.size());
         jlabel_tongTien.setText("TỔNG TIỀN : "+String.format("%,.0f",tongTienXuat)+ " VNĐ");
-        DefaultTableModel model=new DefaultTableModel(rows,colNames);
+        DefaultTableModel model = new DefaultTableModel(rows, colNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Tắt chỉnh sửa toàn bộ
+            }
+        };
         table.setModel(model);
+        table.getColumnModel().getColumn(0).setPreferredWidth(30);
+        table.getColumnModel().getColumn(1).setPreferredWidth(30);
+        table.getColumnModel().getColumn(2).setPreferredWidth(150);
+        table.getColumnModel().getColumn(3).setPreferredWidth(150);
+        table.getColumnModel().getColumn(4).setPreferredWidth(150);
     }
     public void highlightSelectedButton(JButton btnSanPham, JButton btnPhieuNhap, JButton btnPhieuXuat, JButton selected) {
         Color selectedColor = new Color(100, 149, 237); // Màu xanh dương nhạt

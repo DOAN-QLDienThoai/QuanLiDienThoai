@@ -6,14 +6,17 @@ package GUI.Dialog;
 
 import BUS.NhanVienBUS;
 import BUS.TaiKhoanBUS;
+import DTO.NhanVienDTO;
 import DTO.TaiKhoanDTO;
 import GUI.Panel.PanelTaiKhoan;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Window;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 import org.jdesktop.swingx.prompt.PromptSupport;
 import util.DropShadowBorder;
 import util.Func_class;
@@ -45,7 +48,7 @@ public class AddTaiKhoanDialog extends javax.swing.JDialog {
         fillComBoBox(); 
     }
     public void setUpTable(){
-        func.addDataTableNV(nvBus.listNV(), table_NV);
+        addDataTableNV(nvBus.listNV());
         func.centerTable(table_NV);
         func.setUpTable(table_NV);
     }
@@ -75,6 +78,24 @@ public class AddTaiKhoanDialog extends javax.swing.JDialog {
         for(String item : items){
             cbb_item.addItem(item);
         }
+    }
+    public void addDataTableNV(ArrayList<NhanVienDTO> listNV) {
+        String[] colNames = {"Mã NV", "Họ tên", "Ngày sinh", "Giới tính", "Số điện thoại"};
+        Object[][] rows = new Object[listNV.size()][colNames.length];
+        for (int i = 0; i < listNV.size(); i++) {
+            rows[i][0] = listNV.get(i).getMaNV();
+            rows[i][1] = listNV.get(i).getHoTen();
+            rows[i][2] = listNV.get(i).getNgaySinh();
+            rows[i][3] = listNV.get(i).getGioiTinh();
+            rows[i][4] = listNV.get(i).getSDT();
+        }
+        DefaultTableModel model = new DefaultTableModel(rows, colNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Tắt chỉnh sửa toàn bộ
+            }
+        };
+        table_NV.setModel(model);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -202,7 +223,7 @@ public class AddTaiKhoanDialog extends javax.swing.JDialog {
     private void btn_lookMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_lookMouseClicked
         String choose_combobox=cbb_item.getSelectedItem().toString();
         String text = jtf_search.getText();
-        func.addDataTableNV(nvBus.timKiem(text,choose_combobox), table_NV);
+        addDataTableNV(nvBus.timKiem(text,choose_combobox));
         func.centerTable(table_NV);
     }//GEN-LAST:event_btn_lookMouseClicked
 

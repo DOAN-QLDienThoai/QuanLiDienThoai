@@ -308,112 +308,114 @@ public class DetailPhieuXuatDialog extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         try {
-        File defaultDir = new File(System.getProperty("user.home"), "Desktop");
-        int nextNum = getNextPDFNumber(defaultDir);
-        JFileChooser fileChooser = new JFileChooser(defaultDir);
-        fileChooser.setDialogTitle("Chọn nơi lưu file PDF");
-        fileChooser.setSelectedFile(new File("phieuxuat_" + nextNum + ".pdf"));
-        int userSelection = fileChooser.showSaveDialog(this);
-        if (userSelection != JFileChooser.APPROVE_OPTION) return;
-        File selectedFile = fileChooser.getSelectedFile();
-        String filePath = selectedFile.getAbsolutePath();
-        if (!filePath.toLowerCase().endsWith(".pdf")) {
-            filePath += ".pdf";
+            File defaultDir = new File(System.getProperty("user.home"), "Desktop");
+            int nextNum = getNextPDFNumber(defaultDir);
+            JFileChooser fileChooser = new JFileChooser(defaultDir);
+            fileChooser.setDialogTitle("Chọn nơi lưu file PDF");
+            fileChooser.setSelectedFile(new File("phieuxuat_" + nextNum + ".pdf"));
+            int userSelection = fileChooser.showSaveDialog(this);
+            if (userSelection != JFileChooser.APPROVE_OPTION) {
+                return;
+            }
+            File selectedFile = fileChooser.getSelectedFile();
+            String filePath = selectedFile.getAbsolutePath();
+            if (!filePath.toLowerCase().endsWith(".pdf")) {
+                filePath += ".pdf";
+            }
+            Document document = new Document();
+            PdfWriter.getInstance(document, new FileOutputStream(filePath));
+            document.open();
+            BaseFont bf = BaseFont.createFont("resources/fonts/times.ttf", BaseFont.IDENTITY_H, true);
+            Font fontHeader = new Font(bf, 25, Font.BOLD);
+            Font fontTitle = new Font(bf, 14, Font.BOLD);
+            Font fontNormal = new Font(bf, 12);
+            Font fontItalic = new Font(bf, 12, Font.ITALIC);
+            Font fontBoldItalic = new Font(bf, 12, Font.BOLDITALIC);
+            PdfPTable titleRow = new PdfPTable(2);
+            titleRow.setWidthPercentage(100);
+            titleRow.setWidths(new float[]{6f, 4f});
+            PdfPCell leftTitle = new PdfPCell(new Phrase("HỆ THỐNG QUẢN LÝ ĐIỆN THOẠI NHÓM 4", fontTitle));
+            leftTitle.setBorder(Rectangle.NO_BORDER);
+            leftTitle.setHorizontalAlignment(Element.ALIGN_LEFT);
+            String tgHienTai = java.time.LocalDateTime.now()
+                    .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+            PdfPCell rightTime = new PdfPCell(new Phrase("Thời gian in phiếu: " + tgHienTai, fontNormal));
+            rightTime.setBorder(Rectangle.NO_BORDER);
+            rightTime.setHorizontalAlignment(Element.ALIGN_RIGHT);
+            titleRow.addCell(leftTitle);
+            titleRow.addCell(rightTime);
+            document.add(titleRow);
+            document.add(new Paragraph("\n", fontNormal));
+            Paragraph title = new Paragraph("THÔNG TIN PHIẾU XUẤT", fontHeader);
+            title.setAlignment(Element.ALIGN_CENTER);
+            title.setSpacingAfter(15);
+            document.add(title);
+            String maPX = jTextField1.getText();
+            String tenKH = jTextField4.getText();
+            String tenNV = jTextField2.getText();
+            String tgNhap = jTextField3.getText();
+            KhachHangDTO kh = new KhachHangDAO().layKhachHangTheoTen(tenKH);
+            String diachi = kh != null ? kh.getAddress() : "Không rõ";
+            String sdt = kh != null ? kh.getSDT() : "Không rõ";
+            Paragraph thongtin = new Paragraph(String.format(
+                    "Mã phiếu: %s\nKhách hàng: %s   -   %s\nSĐT: %s\nNgười thực hiện: %s\nThời gian nhập: %s\n\n",
+                    maPX, tenKH, diachi, sdt, tenNV, tgNhap
+            ), fontNormal);
+            thongtin.setSpacingAfter(10);
+            document.add(thongtin);
+            PdfPTable table = new PdfPTable(6);
+            table.setWidths(new int[]{3, 3, 2, 2, 2, 3});
+            table.setWidthPercentage(100);
+            String[] headers = {"Tên sản phẩm", "Phiên bản", "Màu", "Giá", "Số lượng", "Tổng tiền"};
+            for (String col : headers) {
+                PdfPCell cell = new PdfPCell(new Phrase(col, fontTitle));
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                table.addCell(cell);
+            }
+            double tong = 0;
+            for (int i = 0; i < jTable1.getRowCount(); i++) {
+                String tenSP = jTable1.getValueAt(i, 2).toString();
+                String phienban = jTable1.getValueAt(i, 3) + " - " + jTable1.getValueAt(i, 4);
+                String mausac = jTable1.getValueAt(i, 5).toString();
+                int sl = Integer.parseInt(jTable1.getValueAt(i, 6).toString());
+                String giaStr = jTable1.getValueAt(i, 7).toString().replace(",", "").replace("đ", "");
+                double gia = Double.parseDouble(giaStr);
+                double thanhtien = gia * sl;
+                tong += thanhtien;
+                table.addCell(new Phrase(tenSP, fontNormal));
+                table.addCell(new Phrase(phienban, fontNormal));
+                table.addCell(new Phrase(mausac, fontNormal));
+                table.addCell(new Phrase(formatCurrency(gia), fontNormal));
+                table.addCell(new Phrase(String.valueOf(sl), fontNormal));
+                table.addCell(new Phrase(formatCurrency(thanhtien), fontNormal));
+            }
+            document.add(table);
+            Paragraph total = new Paragraph("\nTổng thành tiền: " + formatCurrency(tong), fontTitle);
+            total.setAlignment(Element.ALIGN_RIGHT);
+            document.add(total);
+            document.add(new Paragraph("\n\n\n", fontNormal));
+            PdfPTable tableKy = new PdfPTable(3);
+            tableKy.setWidthPercentage(100f);
+            PdfPCell[] cells = {
+                new PdfPCell(new Phrase("Người lập phiếu", fontBoldItalic)),
+                new PdfPCell(new Phrase("Người giao", fontBoldItalic)),
+                new PdfPCell(new Phrase("Khách hàng", fontBoldItalic)),
+                new PdfPCell(new Phrase("(Ký và ghi rõ họ tên)", fontNormal)),
+                new PdfPCell(new Phrase("(Ký và ghi rõ họ tên)", fontNormal)),
+                new PdfPCell(new Phrase("(Ký và ghi rõ họ tên)", fontNormal))
+            };
+            for (PdfPCell cell : cells) {
+                cell.setBorder(Rectangle.NO_BORDER);
+                cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                tableKy.addCell(cell);
+            }
+            document.add(tableKy);
+            document.close();
+            JOptionPane.showMessageDialog(this, "Xuất file PDF thành công!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi khi xuất PDF: " + e.getMessage());
         }
-        Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream(filePath));
-        document.open();
-        BaseFont bf = BaseFont.createFont("resources/fonts/times.ttf", BaseFont.IDENTITY_H, true);
-        Font fontHeader = new Font(bf, 25, Font.BOLD);             
-        Font fontTitle = new Font(bf, 14, Font.BOLD);        
-        Font fontNormal = new Font(bf, 12);
-        Font fontItalic = new Font(bf, 12, Font.ITALIC);
-        Font fontBoldItalic = new Font(bf, 12, Font.BOLDITALIC);
-        PdfPTable titleRow = new PdfPTable(2);
-        titleRow.setWidthPercentage(100);
-        titleRow.setWidths(new float[]{6f, 4f});
-        PdfPCell leftTitle = new PdfPCell(new Phrase("HỆ THỐNG QUẢN LÝ ĐIỆN THOẠI NHÓM 4", fontTitle));
-        leftTitle.setBorder(Rectangle.NO_BORDER);
-        leftTitle.setHorizontalAlignment(Element.ALIGN_LEFT);
-        String tgHienTai = java.time.LocalDateTime.now()
-                .format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-        PdfPCell rightTime = new PdfPCell(new Phrase("Thời gian in phiếu: " + tgHienTai, fontNormal));
-        rightTime.setBorder(Rectangle.NO_BORDER);
-        rightTime.setHorizontalAlignment(Element.ALIGN_RIGHT);
-        titleRow.addCell(leftTitle);
-        titleRow.addCell(rightTime);
-        document.add(titleRow);
-        document.add(new Paragraph("\n", fontNormal));
-        Paragraph title = new Paragraph("THÔNG TIN PHIẾU XUẤT", fontHeader);
-        title.setAlignment(Element.ALIGN_CENTER);
-        title.setSpacingAfter(15);
-        document.add(title);
-        String maPX = jTextField1.getText();
-        String tenKH = jTextField4.getText();
-        String tenNV = jTextField2.getText();
-        String tgNhap = jTextField3.getText();
-        KhachHangDTO kh = new KhachHangDAO().layKhachHangTheoTen(tenKH);
-        String diachi = kh != null ? kh.getAddress() : "Không rõ";
-        String sdt = kh != null ? kh.getSDT() : "Không rõ";
-        Paragraph thongtin = new Paragraph(String.format(
-            "Mã phiếu: %s\nKhách hàng: %s   -   %s\nSĐT: %s\nNgười thực hiện: %s\nThời gian nhập: %s\n\n",
-            maPX, tenKH, diachi, sdt, tenNV, tgNhap
-        ), fontNormal);
-        thongtin.setSpacingAfter(10);
-        document.add(thongtin);
-        PdfPTable table = new PdfPTable(6);
-        table.setWidths(new int[]{3, 3, 2, 2, 2, 3});
-        table.setWidthPercentage(100);
-        String[] headers = {"Tên sản phẩm", "Phiên bản", "Màu", "Giá", "Số lượng", "Tổng tiền"};
-        for (String col : headers) {
-            PdfPCell cell = new PdfPCell(new Phrase(col, fontTitle));
-            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            table.addCell(cell);
-        }
-        double tong = 0;
-        for (int i = 0; i < jTable1.getRowCount(); i++) {
-            String tenSP = jTable1.getValueAt(i, 2).toString();
-            String phienban = jTable1.getValueAt(i, 3) + " - " + jTable1.getValueAt(i, 4);
-            String mausac = jTable1.getValueAt(i, 5).toString();
-            int sl = Integer.parseInt(jTable1.getValueAt(i, 6).toString());
-            String giaStr = jTable1.getValueAt(i, 7).toString().replace(",", "").replace("đ", "");
-            double gia = Double.parseDouble(giaStr);
-            double thanhtien = gia * sl;
-            tong += thanhtien;
-            table.addCell(new Phrase(tenSP, fontNormal));
-            table.addCell(new Phrase(phienban, fontNormal));
-            table.addCell(new Phrase(mausac, fontNormal));
-            table.addCell(new Phrase(formatCurrency(gia), fontNormal));
-            table.addCell(new Phrase(String.valueOf(sl), fontNormal));
-            table.addCell(new Phrase(formatCurrency(thanhtien), fontNormal));
-        }
-        document.add(table);
-        Paragraph total = new Paragraph("\nTổng thành tiền: " + formatCurrency(tong), fontTitle);
-        total.setAlignment(Element.ALIGN_RIGHT);
-        document.add(total);
-        document.add(new Paragraph("\n\n\n", fontNormal));
-        PdfPTable tableKy = new PdfPTable(3);
-        tableKy.setWidthPercentage(100f);
-        PdfPCell[] cells = {
-            new PdfPCell(new Phrase("Người lập phiếu", fontBoldItalic)),
-            new PdfPCell(new Phrase("Người giao", fontBoldItalic)),
-            new PdfPCell(new Phrase("Khách hàng", fontBoldItalic)),
-            new PdfPCell(new Phrase("(Ký và ghi rõ họ tên)", fontNormal)),
-            new PdfPCell(new Phrase("(Ký và ghi rõ họ tên)", fontNormal)),
-            new PdfPCell(new Phrase("(Ký và ghi rõ họ tên)", fontNormal))
-        };
-        for (PdfPCell cell : cells) {
-            cell.setBorder(Rectangle.NO_BORDER);
-            cell.setHorizontalAlignment(Element.ALIGN_CENTER);
-            tableKy.addCell(cell);
-        }
-        document.add(tableKy);
-        document.close();
-        JOptionPane.showMessageDialog(this, "Xuất file PDF thành công!");
-    } catch (Exception e) {
-        e.printStackTrace();
-        JOptionPane.showMessageDialog(this, "Lỗi khi xuất PDF: " + e.getMessage());
-    }
     }//GEN-LAST:event_jButton1ActionPerformed
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
         SwingUtilities.getWindowAncestor(this).dispose();

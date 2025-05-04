@@ -171,7 +171,8 @@ public class PanelDienThoai extends javax.swing.JPanel {
         DefaultTableModel model = new DefaultTableModel(rows, colNames);
         table_dt.setModel(model);
         table_dt.getColumnModel().getColumn(0).setPreferredWidth(30);
-        table_dt.getColumnModel().getColumn(1).setPreferredWidth(150);
+        table_dt.getColumnModel().getColumn(1).setPreferredWidth(165);
+        table_dt.getColumnModel().getColumn(4).setPreferredWidth(165);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

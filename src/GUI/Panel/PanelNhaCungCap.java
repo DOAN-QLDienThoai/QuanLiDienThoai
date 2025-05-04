@@ -106,9 +106,15 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
             rows[i][3] = listNCC.get(i).getSDT();
             rows[i][4] = listNCC.get(i).getEmail();
         }
-        DefaultTableModel model = new DefaultTableModel(rows, colNames);
+        DefaultTableModel model = new DefaultTableModel(rows, colNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Tắt chỉnh sửa toàn bộ
+            }
+        };
         table_ncc.setModel(model);
         table_ncc.getColumnModel().getColumn(0).setPreferredWidth(30);
+        table_ncc.getColumnModel().getColumn(2).setPreferredWidth(150);
         table_ncc.getColumnModel().getColumn(2).setPreferredWidth(180);
     }
     @SuppressWarnings("unchecked")

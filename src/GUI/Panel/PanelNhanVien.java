@@ -15,12 +15,14 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Window;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 import org.jdesktop.swingx.prompt.PromptSupport;
 import util.DropShadowBorder;
 import util.Func_class;
@@ -62,7 +64,7 @@ public class PanelNhanVien extends javax.swing.JPanel {
     }
     public void setCusorPointer() {
         List<JLabel> jlabels =List.of(jlabel_add_nv,jlabel_update_nv,jlabel_delete_nv
-        ,jlabel_nhap_excel_nv,jlabel_chitiet_nv,jlabel_xuat_excel_nv);
+        ,jlabel_chitiet_nv,jlabel_xuat_excel_nv);
         for(JLabel label : jlabels )
             func.cursorPointer(label);
     }
@@ -84,10 +86,9 @@ public class PanelNhanVien extends javax.swing.JPanel {
         btn_refresh_nv.setIcon(new FlatSVGIcon("./resources/icon/refresh.svg", 0.3f));
         jlabel_chitiet_nv.setIcon(new FlatSVGIcon("./resources/icon/details.svg", 0.45f));
         jlabel_xuat_excel_nv.setIcon(new FlatSVGIcon("./resources/icon/export_excel.svg", 0.85f));
-        jlabel_nhap_excel_nv.setIcon(new FlatSVGIcon("./resources/icon/excel.svg", 0.55f));
     }
     public void setUpTable() {
-        func.addDataTableNV(nhanvienBUS.listNV(), table_nv);
+        addDataTableNV(nhanvienBUS.listNV());
         func.centerTable(table_nv);
         func.setUpTable(table_nv);
     }
@@ -96,6 +97,24 @@ public class PanelNhanVien extends javax.swing.JPanel {
         combobox_find_nv.setBackground(Color.WHITE);
         for(String nameFilterDT : filtersDT )
             combobox_find_nv.addItem(nameFilterDT);
+    }
+    public void addDataTableNV(ArrayList<NhanVienDTO> listNV){
+        String[] colNames = {"Mã NV", "Họ tên", "Ngày sinh", "Giới tính", "Số điện thoại"};
+        Object[][] rows = new Object[listNV.size()][colNames.length];
+        for (int i = 0; i < listNV.size(); i++) {
+            rows[i][0] = listNV.get(i).getMaNV();
+            rows[i][1] = listNV.get(i).getHoTen();
+            rows[i][2] = listNV.get(i).getNgaySinh();
+            rows[i][3] = listNV.get(i).getGioiTinh();
+            rows[i][4] = listNV.get(i).getSDT();
+        }
+        DefaultTableModel model = new DefaultTableModel(rows, colNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Tắt chỉnh sửa toàn bộ
+            }
+        };
+        table_nv.setModel(model);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -110,8 +129,6 @@ public class PanelNhanVien extends javax.swing.JPanel {
         jLabel9 = new javax.swing.JLabel();
         jlabel_chitiet_nv = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
-        jlabel_nhap_excel_nv = new javax.swing.JLabel();
-        jLabel13 = new javax.swing.JLabel();
         jlabel_xuat_excel_nv = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -155,8 +172,6 @@ public class PanelNhanVien extends javax.swing.JPanel {
 
         jLabel11.setText("Chi tiết");
 
-        jLabel13.setText("Nhập Excel");
-
         jlabel_xuat_excel_nv.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jlabel_xuat_excel_nvMouseClicked(evt);
@@ -187,21 +202,16 @@ public class PanelNhanVien extends javax.swing.JPanel {
                     .addComponent(jlabel_chitiet_nv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 51, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addGroup(jpanel_chucNang_nvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jLabel13, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jlabel_nhap_excel_nv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
                 .addGroup(jpanel_chucNang_nvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel15)
-                    .addComponent(jlabel_xuat_excel_nv, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(20, Short.MAX_VALUE))
+                    .addComponent(jlabel_xuat_excel_nv, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
         jpanel_chucNang_nvLayout.setVerticalGroup(
             jpanel_chucNang_nvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpanel_chucNang_nvLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jpanel_chucNang_nvLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlabel_nhap_excel_nv, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlabel_xuat_excel_nv, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlabel_chitiet_nv, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jlabel_delete_nv, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -213,7 +223,6 @@ public class PanelNhanVien extends javax.swing.JPanel {
                     .addComponent(jLabel8)
                     .addComponent(jLabel9)
                     .addComponent(jLabel11)
-                    .addComponent(jLabel13)
                     .addComponent(jLabel15))
                 .addContainerGap())
         );
@@ -261,11 +270,11 @@ public class PanelNhanVien extends javax.swing.JPanel {
                     .addGroup(jpanel_timkiem_nvLayout.createSequentialGroup()
                         .addComponent(combobox_find_nv, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtf_find_nv, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jtf_find_nv, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btn_look_nv, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btn_refresh_nv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btn_refresh_nv, javax.swing.GroupLayout.DEFAULT_SIZE, 138, Short.MAX_VALUE)
                         .addGap(12, 12, 12))))
         );
         jpanel_timkiem_nvLayout.setVerticalGroup(
@@ -288,16 +297,15 @@ public class PanelNhanVien extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jpanel_chucNang_nv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jpanel_timkiem_nv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1021, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addGap(17, 17, 17)
+                .addComponent(jpanel_chucNang_nv, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jpanel_timkiem_nv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(83, 83, 83))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 980, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -307,8 +315,8 @@ public class PanelNhanVien extends javax.swing.JPanel {
                     .addComponent(jpanel_chucNang_nv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jpanel_timkiem_nv, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 467, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(31, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 490, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     
@@ -351,7 +359,7 @@ public class PanelNhanVien extends javax.swing.JPanel {
             }
             int result = nhanvienBUS.deleteCheckNhanVien(maNV);
             if (result == 1) {
-                func.addDataTableNV(nhanvienBUS.listNV(), table_nv);
+                addDataTableNV(nhanvienBUS.listNV());
                 func.centerTable(table_nv);
             }
         }
@@ -388,7 +396,7 @@ public class PanelNhanVien extends javax.swing.JPanel {
     private void btn_look_nvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_look_nvActionPerformed
         String choose_combobox = combobox_find_nv.getSelectedItem().toString();
         String text = jtf_find_nv.getText();
-        func.addDataTableNV(nhanvienBUS.timKiem(text,choose_combobox), table_nv);
+        addDataTableNV(nhanvienBUS.timKiem(text,choose_combobox));
         func.centerTable(table_nv);
     }//GEN-LAST:event_btn_look_nvActionPerformed
 
@@ -399,7 +407,6 @@ public class PanelNhanVien extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> combobox_find_nv;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel8;
@@ -408,7 +415,6 @@ public class PanelNhanVien extends javax.swing.JPanel {
     private javax.swing.JLabel jlabel_add_nv;
     private javax.swing.JLabel jlabel_chitiet_nv;
     private javax.swing.JLabel jlabel_delete_nv;
-    private javax.swing.JLabel jlabel_nhap_excel_nv;
     private javax.swing.JLabel jlabel_update_nv;
     private javax.swing.JLabel jlabel_xuat_excel_nv;
     private javax.swing.JPanel jpanel_chucNang_nv;

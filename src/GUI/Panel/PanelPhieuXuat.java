@@ -295,7 +295,7 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
             .addGroup(jpn_px1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jpanel_chucNang_px, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(646, Short.MAX_VALUE))
+                .addContainerGap(647, Short.MAX_VALUE))
         );
         jpn_px1Layout.setVerticalGroup(
             jpn_px1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -502,6 +502,7 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
         main.getPanelNhapPX().setVisible(true);
         main.getPanelPhieuXuat().setVisible(false);
         main.getPanelNhapPX().loadTableSanPham();
+        main.getPanelNhapPX().resetAll();
     }//GEN-LAST:event_jlabel_add_pxjlabel_add_pxMouseClicked
 
     private void jlabel_delete_pxjlabel_delete_pxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_delete_pxjlabel_delete_pxMouseClicked

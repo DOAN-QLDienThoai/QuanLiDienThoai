@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
  */
 package GUI.Dialog;
+import BUS.NhanVienBUS;
 import DAO.NhanVienDAO;
 import DTO.NhanVienDTO;
 import GUI.Panel.PanelNhanVien;
@@ -17,8 +18,9 @@ import javax.swing.JOptionPane;
  * @author kiman
  */
 public class AddNhanVienDialog extends javax.swing.JDialog {
-    private PanelNhanVien nvPanel;
-    private Func_class func=new Func_class();
+    PanelNhanVien nvPanel;
+    Func_class func=new Func_class();
+    NhanVienBUS nvBus=new NhanVienBUS();
     public AddNhanVienDialog(java.awt.Frame parent, boolean modal,PanelNhanVien nvPanel) {
         super(parent, modal);
         initComponents();
@@ -199,23 +201,23 @@ public class AddNhanVienDialog extends javax.swing.JDialog {
 
     private void btn_addMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_addMouseClicked
         if (check_add_NhanVien() == 1) {
-            String hoTen=jtf_name_nv.getText();
+            String hoTen = jtf_name_nv.getText();
             String sdt = jtf_sdt_nv.getText();
             if (sdt.length() != 10 || sdt.charAt(0) != '0') {
                 JOptionPane.showMessageDialog(null, "Số điện thoại không hợp lệ", "Erorr", 0);
                 return;
             }
-            String gioiTinh= null;
-            if(jradio_nam.isSelected())
-            gioiTinh=jradio_nam.getText();
-            else
-            gioiTinh=jradio_nu.getText();
-            Date ngaySinh=jdateChooser_ngaySinh.getDate();
-            java.sql.Date ngaySinhSQL=new java.sql.Date(ngaySinh.getTime());
-            NhanVienDTO nv=new NhanVienDTO(hoTen, ngaySinhSQL, gioiTinh, sdt);
-            new NhanVienDAO().insertNhanVien(nv);
-            ArrayList<NhanVienDTO> listNV=new NhanVienDAO().listNV();
-            func.addDataTableNV(listNV,nvPanel.getTableNhanVien());
+            String gioiTinh = null;
+            if (jradio_nam.isSelected()) {
+                gioiTinh = jradio_nam.getText();
+            } else {
+                gioiTinh = jradio_nu.getText();
+            }
+            Date ngaySinh = jdateChooser_ngaySinh.getDate();
+            java.sql.Date ngaySinhSQL = new java.sql.Date(ngaySinh.getTime());
+            NhanVienDTO nv = new NhanVienDTO(hoTen, ngaySinhSQL, gioiTinh, sdt);
+            nvBus.insertNhanVien(nv);
+            nvPanel.addDataTableNV(nvBus.listNV());
             func.centerTable(nvPanel.getTableNhanVien());
             this.dispose();
         }

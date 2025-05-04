@@ -115,8 +115,16 @@ public class PanelPhieuNhap extends javax.swing.JPanel {
             rows[i][3]=listPN.get(i).getNgayNhap();
             rows[i][4]=String.format("%,.0f", listPN.get(i).getTongTien());
         }
-        DefaultTableModel model=new DefaultTableModel(rows,colNames);
+        DefaultTableModel model = new DefaultTableModel(rows, colNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Tắt chỉnh sửa toàn bộ
+            }
+        };
         table_pn.setModel(model);
+        table_pn.getColumnModel().getColumn(0).setPreferredWidth(35);
+        table_pn.getColumnModel().getColumn(1).setPreferredWidth(150);
+        table_pn.getColumnModel().getColumn(2).setPreferredWidth(150);
     }
     public String createIDPhieuNhapTuDong(){
         String newID=null;

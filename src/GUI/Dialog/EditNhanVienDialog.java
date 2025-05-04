@@ -4,18 +4,19 @@
  */
 package GUI.Dialog;
 
+import BUS.NhanVienBUS;
 import DAO.NhanVienDAO;
 import DTO.NhanVienDTO;
 import GUI.Panel.PanelNhanVien;
-import java.util.ArrayList;
 import util.Func_class;
 import java.util.Date;
 import javax.swing.ButtonGroup;
 import javax.swing.JOptionPane;
 public class EditNhanVienDialog extends javax.swing.JDialog {
-    private PanelNhanVien nvPanel;
-    private NhanVienDTO nv;
-    private Func_class func=new Func_class();
+    PanelNhanVien nvPanel;
+    NhanVienDTO nv;
+    Func_class func=new Func_class();
+    NhanVienBUS nvBus=new NhanVienBUS();
     public EditNhanVienDialog(java.awt.Frame parent, boolean modal,NhanVienDTO nv,PanelNhanVien nvPanel) {
         super(parent, modal);
         initComponents();
@@ -208,8 +209,7 @@ public class EditNhanVienDialog extends javax.swing.JDialog {
             java.sql.Date ngaySinhSQL=new java.sql.Date(ngaySinh.getTime());
             nv=new NhanVienDTO(maNV,hoTen, ngaySinhSQL, gioiTinh, sdt);
             new NhanVienDAO().updateNhanVien(nv);
-            ArrayList<NhanVienDTO> listNV=new NhanVienDAO().listNV();
-            func.addDataTableNV(listNV,nvPanel.getTableNhanVien());
+            nvPanel.addDataTableNV(nvBus.listNV());
             func.centerTable(nvPanel.getTableNhanVien());
             this.dispose();
         }

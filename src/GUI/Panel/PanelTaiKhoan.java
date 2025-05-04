@@ -102,7 +102,12 @@ public class PanelTaiKhoan extends javax.swing.JPanel {
                 rows[i][2]="Ngưng hoạt động";
             }
         }
-        DefaultTableModel model = new DefaultTableModel(rows, colNames);
+        DefaultTableModel model = new DefaultTableModel(rows, colNames) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Tắt chỉnh sửa toàn bộ
+            }
+        };
         table_taiKhoan.setModel(model);
     }
     @SuppressWarnings("unchecked")

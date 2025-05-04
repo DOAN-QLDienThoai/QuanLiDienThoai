@@ -4,7 +4,6 @@
  */
 package util;
 
-import DTO.NhaCungCapDTO;
 import DTO.NhanVienDTO;
 import java.awt.Color;
 import java.awt.Component;
@@ -194,19 +193,7 @@ public class Func_class {
         }
         return name;
     }
-    public void addDataTableNV(ArrayList<NhanVienDTO> listNV,JTable table){
-        String[] colNames = {"Mã NV", "Họ tên", "Ngày sinh", "Giới tính", "Số điện thoại"};
-        Object[][] rows = new Object[listNV.size()][colNames.length];
-        for (int i = 0; i < listNV.size(); i++) {
-            rows[i][0] = listNV.get(i).getMaNV();
-            rows[i][1] = listNV.get(i).getHoTen();
-            rows[i][2] = listNV.get(i).getNgaySinh();
-            rows[i][3] = listNV.get(i).getGioiTinh();
-            rows[i][4] = listNV.get(i).getSDT();
-        }
-        DefaultTableModel model = new DefaultTableModel(rows, colNames);
-        table.setModel(model);
-    }
+    
     
     
     public static void exportJTableToExcel(JTable table) throws IOException {
