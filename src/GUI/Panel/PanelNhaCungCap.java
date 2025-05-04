@@ -13,11 +13,13 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
 import java.awt.Frame;
 import java.awt.Window;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.table.DefaultTableModel;
 import org.jdesktop.swingx.prompt.PromptSupport;
 import util.DropShadowBorder;
 import util.Func_class;
@@ -83,7 +85,7 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
         return this.table_ncc;
     }
     public void setUpTable() {
-        func.addDataTableNCC(nccBus.listNCC(), table_ncc);
+        addDataTableNCC(nccBus.listNCC());
         func.centerTable(table_ncc);
         func.setUpTable(table_ncc);
     }
@@ -93,6 +95,21 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
         ,jlabel_update_ncc,jlabel_delete_ncc,jlabel_chiTiet_ncc);
         for(JLabel label : jlabels )
             func.cursorPointer(label);
+    }
+    public void addDataTableNCC(ArrayList<NhaCungCapDTO> listNCC){
+        String[] colNames = {"Mã NCC", "Tên NCC", "Địa chỉ", "SĐT", "Email"};
+        Object[][] rows = new Object[listNCC.size()][colNames.length];
+        for (int i = 0; i < listNCC.size(); i++) {
+            rows[i][0] = listNCC.get(i).getmaNCC();
+            rows[i][1] = listNCC.get(i).getName();
+            rows[i][2] = listNCC.get(i).getAddress();
+            rows[i][3] = listNCC.get(i).getSDT();
+            rows[i][4] = listNCC.get(i).getEmail();
+        }
+        DefaultTableModel model = new DefaultTableModel(rows, colNames);
+        table_ncc.setModel(model);
+        table_ncc.getColumnModel().getColumn(0).setPreferredWidth(30);
+        table_ncc.getColumnModel().getColumn(2).setPreferredWidth(180);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -332,7 +349,7 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
         if (confirm == JOptionPane.YES_OPTION) {
             int result = nccBus.deleteCheckNhaCungCap(maNCC);
             if (result == 1) {
-                func.addDataTableNCC(nccBus.listNCC(), table_ncc);
+                addDataTableNCC(nccBus.listNCC());
                 func.centerTable(table_ncc);
             }
         }
@@ -362,7 +379,7 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
     }//GEN-LAST:event_jlabel_xuat_excel_nccMouseClicked
      
     private void btn_refresh_nccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_refresh_nccActionPerformed
-        func.addDataTableNCC(nccBus.listNCC(), table_ncc);
+        addDataTableNCC(nccBus.listNCC());
         func.centerTable(table_ncc);
         func.setUpTable(table_ncc);
     }//GEN-LAST:event_btn_refresh_nccActionPerformed
@@ -370,7 +387,7 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
     private void btn_look_nccActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_look_nccActionPerformed
         String type=combobox_find_ncc.getSelectedItem().toString();
         String find_text=jtf_find_ncc.getText().toLowerCase();
-        func.addDataTableNCC(nccBus.timKiem(find_text,type), table_ncc);
+        addDataTableNCC(nccBus.timKiem(find_text,type));
         func.centerTable(table_ncc);
     }//GEN-LAST:event_btn_look_nccActionPerformed
 

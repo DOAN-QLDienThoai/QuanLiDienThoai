@@ -590,6 +590,7 @@ public class Main extends javax.swing.JFrame {
         nhapphieunhap.setVisible(false);
         user.setVisible(false);
         tk.setUpTableDT();
+        tk.setSoLuong();
         tk.highlightSelectedButton(tk.getBtnSp(),tk.getBtnPn(),tk.getBtnPx(),tk.getBtnSp());
         tk.getLabelTongTien().setVisible(false);
         tk.getLabelTongPhieu().setVisible(false);

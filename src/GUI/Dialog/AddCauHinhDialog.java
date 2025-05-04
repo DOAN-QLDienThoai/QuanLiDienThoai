@@ -14,9 +14,11 @@ import DAO.MauSacDAO;
 import DAO.RamDAO;
 import DAO.RomDAO;
 import DTO.DienThoaiDTO;
+import DTO.MauSacDTO;
 import DTO.PhienBanDienThoaiDTO;
+import DTO.RamDTO;
+import DTO.RomDTO;
 import GUI.Panel.PanelDienThoai;
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,34 +69,13 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
         for (PhienBanDienThoaiDTO pb : listPBDTTemp) {
             // Lấy thông tin Ram
             int maRam = pb.getmaRam();
-            int dungLuongRam = -1;
-            HashMap<Integer, Integer> mapRam = new RamDAO().listMapRam();
-            for (Map.Entry<Integer, Integer> entry : mapRam.entrySet()) {
-                if (maRam == entry.getValue()) {
-                    dungLuongRam = entry.getKey();
-                    break;
-                }
-            }
+            int dungLuongRam=ramBus.getDungLuongRambyID(maRam);
             // Lấy thông tin Rom
             int maRom = pb.getmaRom();
-            int dungLuongRom = -1;
-            HashMap<Integer, Integer> mapRom = new RomDAO().listMapRom();
-            for (Map.Entry<Integer, Integer> entry : mapRom.entrySet()) {
-                if (maRom == entry.getValue()) {
-                    dungLuongRom = entry.getKey();
-                    break;
-                }
-            }
+            int dungLuongRom=romBUS.getDungLuongRombyID(maRom);
             // Lấy thông tin Màu sắc
             int maMau = pb.getmaMau();
-            String tenMau = null;
-            HashMap<String, Integer> mapMS = new MauSacDAO().listMapMS();
-            for (Map.Entry<String, Integer> entry : mapMS.entrySet()) {
-                if (maMau == entry.getValue()) {
-                    tenMau = entry.getKey();
-                    break;
-                }
-            }
+            String tenMau=msBus.getTenMauByID(maMau);
             // Cập nhật giá trị vào bảng
             rows[index][0] = index;
             rows[index][1] = String.valueOf(dungLuongRam);
@@ -116,26 +97,23 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
     }
 
     public void fillCbbMauSac() {
-        HashMap<String, Integer> mapMS = new MauSacDAO().listMapMS();
-        cbb_ms.setBackground(Color.WHITE);
-        for (String ms : mapMS.keySet()) {
-            cbb_ms.addItem(ms);
+        func.setUpComBoBox(cbb_ms);
+        for (MauSacDTO ms : msBus.listMS()) {
+            cbb_ms.addItem(ms.getTenMau());
         }
     }
 
     public void fillCbbRam() {
-        HashMap<Integer, Integer> mapRam = new RamDAO().listMapRam();
-        cbb_ram.setBackground(Color.WHITE);
-        for (int ram : mapRam.keySet()) {
-            cbb_ram.addItem(String.valueOf(ram));
+        func.setUpComBoBox(cbb_ram);
+        for (RamDTO ram : ramBus.listRAM()) {
+            cbb_ram.addItem(String.valueOf(ram.getDungLuongRam()));
         }
     }
 
     public void fillCbbRom() {
-        HashMap<Integer, Integer> mapRom = new RomDAO().listMapRom();
-        cbb_rom.setBackground(Color.WHITE);
-        for (int rom : mapRom.keySet()) {
-            cbb_rom.addItem(String.valueOf(rom));
+        func.setUpComBoBox(cbb_rom);
+        for (RomDTO rom : romBUS.listROM()) {
+            cbb_rom.addItem(String.valueOf(rom.getDungLuongRom()));
         }
     }
 
@@ -199,6 +177,7 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Thêm cấu hình điện thoại");
+        setBackground(new java.awt.Color(255, 255, 255));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -234,17 +213,15 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 586, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(37, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cbb_ram, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(cbb_rom, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -253,7 +230,7 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(cbb_ms, 0, 140, Short.MAX_VALUE))
+                            .addComponent(cbb_ms, 0, 141, Short.MAX_VALUE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jtf_gia_nhap, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -261,8 +238,8 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jtf_gia_xuat, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(20, 20, 20))))
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(20, 20, 20))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -285,8 +262,6 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(19, 19, 19))
         );
-
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         btn_add_cauHinh.setBackground(new java.awt.Color(153, 255, 153));
         btn_add_cauHinh.setText("Thêm Cấu Hình");
@@ -347,8 +322,6 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
                 .addContainerGap(26, Short.MAX_VALUE))
         );
 
-        jPanel3.setBackground(new java.awt.Color(245, 245, 245));
-
         btn_add_dien_thoai.setBackground(new java.awt.Color(102, 255, 102));
         btn_add_dien_thoai.setText("Thêm Điện Thoại");
         btn_add_dien_thoai.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -381,7 +354,7 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btn_add_dien_thoai, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btn_add_dien_thoai, javax.swing.GroupLayout.DEFAULT_SIZE, 41, Short.MAX_VALUE)
                     .addComponent(btn_return, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -436,14 +409,11 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
     private void btn_add_cauHinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_add_cauHinhMouseClicked
         int result = checkCauHinh();
         if (result == 1) {
-            HashMap<Integer, Integer> mapRam = new RamDAO().listMapRam();
-            int selectedRam = Integer.parseInt(cbb_ram.getSelectedItem().toString()); // Chuyển String -> Integer
-            int maRam = mapRam.getOrDefault(selectedRam, -1);
-            HashMap<Integer, Integer> mapRom = new RomDAO().listMapRom();
-            int selectedRom = Integer.parseInt(cbb_rom.getSelectedItem().toString()); // Chuyển String -> Integer
-            int maRom = mapRom.getOrDefault(selectedRom, -1);
-            HashMap<String, Integer> mapMS = new MauSacDAO().listMapMS();
-            int maMau = mapMS.get(cbb_ms.getSelectedItem().toString());
+            int dungLuongRam = Integer.parseInt(cbb_ram.getSelectedItem().toString()); // Chuyển String -> Integer
+            int maRam=ramBus.getIDByDungLuongRam(dungLuongRam);
+            int dungLuongRom = Integer.parseInt(cbb_rom.getSelectedItem().toString()); // Chuyển String -> Integer
+            int maRom = romBUS.getIDByDungLuongRom(dungLuongRom);
+            int maMau = msBus.getIDByTenMau(cbb_ms.getSelectedItem().toString());
             double giaNhap = Double.parseDouble(jtf_gia_nhap.getText().replaceAll(",", ""));
             double giaXuat = Double.parseDouble(jtf_gia_xuat.getText().replaceAll(",", ""));
             if (checkGiaNhapGiaXuat(giaNhap, giaXuat)) {
@@ -451,8 +421,7 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
                 if (pbBus.checkDupAdd(listPBDTTemp, pb)) {
                     listPBDTTemp.add(pb);
                     resetGia();
-                    this.addDatatable();
-                    func.centerTable(table_cauHinh);
+                    setUpTable();
                     return;
                 }
                 JOptionPane.showMessageDialog(null, "Cấu hình đã tồn tại", "Error", 0);
@@ -482,8 +451,7 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
                 phienBanUpdate.setMausac(maMau);
                 phienBanUpdate.setGiaNhap(giaNhap);
                 phienBanUpdate.setGiaXuat(giaXuat);
-                addDatatable();
-                func.centerTable(table_cauHinh);
+                setUpTable();
                 resetGia();
                 return;
             }
@@ -521,21 +489,25 @@ public class AddCauHinhDialog extends javax.swing.JDialog {
             JOptionPane.showMessageDialog(this, "Bạn chưa thêm cấu hình!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         } else {
-            dtBus.insertDienThoai(dt);
-            dtPanel.setUpTable();
-            int maDT = new DienThoaiDAO().getID();
-            for (PhienBanDienThoaiDTO pb : listPBDTTemp) {
-                pb.setMaDT(maDT);
-                try {
-                    pbBus.insertPhienBanDienThoai(pb);
-                } catch (Exception e) {
-                    e.printStackTrace();
+            int confirm = JOptionPane.showConfirmDialog(null, "Bạn chắc chắn muốn thêm điện thoại này ? ", "Xác nhận thêm",
+                    JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+            if (confirm == JOptionPane.YES_OPTION) {
+                dtBus.insertDienThoai(dt);
+                dtPanel.setUpTable();
+                int maDT = new DienThoaiDAO().getID();
+                for (PhienBanDienThoaiDTO pb : listPBDTTemp) {
+                    pb.setMaDT(maDT);
+                    try {
+                        pbBus.insertPhienBanDienThoai(pb);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
+                JOptionPane.showMessageDialog(this, "Thêm điện thoại thành công!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                listPBDTTemp.clear();
+                this.dispose();
+                dtDialog.dispose();
             }
-            JOptionPane.showMessageDialog(this, "Thêm điện thoại thành công!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            listPBDTTemp.clear();
-            this.dispose();
-            dtDialog.dispose();
         }
     }//GEN-LAST:event_btn_add_dien_thoaiMouseClicked
 

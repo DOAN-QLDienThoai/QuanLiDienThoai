@@ -207,19 +207,7 @@ public class Func_class {
         DefaultTableModel model = new DefaultTableModel(rows, colNames);
         table.setModel(model);
     }
-    public void addDataTableNCC(ArrayList<NhaCungCapDTO> listNCC, JTable table){
-        String[] colNames = {"Mã NCC", "Tên NCC", "Địa chỉ", "SĐT", "Email"};
-        Object[][] rows = new Object[listNCC.size()][colNames.length];
-        for (int i = 0; i < listNCC.size(); i++) {
-            rows[i][0] = listNCC.get(i).getmaNCC();
-            rows[i][1] = listNCC.get(i).getName();
-            rows[i][2] = listNCC.get(i).getAddress();
-            rows[i][3] = listNCC.get(i).getSDT();
-            rows[i][4] = listNCC.get(i).getEmail();
-        }
-        DefaultTableModel model = new DefaultTableModel(rows, colNames);
-        table.setModel(model);
-    }
+    
     
     public static void exportJTableToExcel(JTable table) throws IOException {
         JFileChooser fileChooser = new JFileChooser();

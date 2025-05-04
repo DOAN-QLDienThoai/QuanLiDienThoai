@@ -52,13 +52,18 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
         fillComboboxMauSac();
         setUpTable();
         setIcon();
+        setUpCBB();
     }
     public void setUpTable() {
         this.addDatatable();
         func.setUpTable(table_cauHinh);
         func.centerTable(table_cauHinh);
     }
-
+    public void setUpCBB(){
+        func.setUpComBoBox(cbb_rom);
+        func.setUpComBoBox(cbb_ram);
+        func.setUpComBoBox(cbb_ms);
+    }
     public void fillComboboxMauSac() {
         HashMap<String, Integer> mapMS = new MauSacDAO().listMapMS();
         cbb_ms.setBackground(Color.WHITE);

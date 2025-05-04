@@ -7,8 +7,6 @@ package GUI.Dialog;
 import BUS.HeDieuHanhBUS;
 import BUS.PhienBanDienThoaiBUS;
 import BUS.ThuongHieuBUS;
-import DAO.HeDieuHanhDAO;
-import DAO.ThuongHieuDAO;
 import DTO.DienThoaiDTO;
 import DTO.HeDieuHanhDTO;
 import DTO.PhienBanDienThoaiDTO;
@@ -50,18 +48,19 @@ public class DetailsDienThoaiDialog extends javax.swing.JDialog {
         
     }
     public void khoiTao() {
+        setUPcomBobox();
         jtf_tenDT.setText(dt.getTenDT());
         jtf_tenDT.setEditable(false);
         String tenThuongHieu;
         if(dt.getThuongHieu()!=-1){
-            fillComboboxThuongHieu();
             tenThuongHieu=thBus.getTenByMaTH(dt.getThuongHieu());
+            cbb_ThuongHieu.addItem(tenThuongHieu);
             cbb_ThuongHieu.setSelectedItem(tenThuongHieu);
         }
         String tenHDH;
         if(dt.getHeDieuHanh()!=-1){
-            fillComboboxHDH();
             tenHDH=hdhBus.getTenByMaHDH(dt.getHeDieuHanh());
+            cbb_HDH.addItem(tenHDH);
             cbb_HDH.setSelectedItem(tenHDH);
         }
         jtf_chip.setText(dt.getChipXuLy());
@@ -72,19 +71,9 @@ public class DetailsDienThoaiDialog extends javax.swing.JDialog {
         jtf_kichThuocMan.setEditable(false);
         func.disPlayImage(jlabel_hinhAnh.getWidth(), jlabel_hinhAnh.getHeight(), dt.getHinhAnh(), jlabel_hinhAnh);
     }
-     //Hàm khởi tạo giá trị vào combobox thương hiệu
-    public void fillComboboxThuongHieu(){
-        cbb_ThuongHieu.setBackground(Color.WHITE);
-        for(ThuongHieuDTO th : thBus.listTH()){
-            cbb_ThuongHieu.addItem(th.getTenThuongHieu());
-        }
-    }
-    //Hàm khởi tạo giá trị vào combobox hệ điều hành
-    public void fillComboboxHDH(){
-        cbb_HDH.setBackground(Color.WHITE);
-        for(HeDieuHanhDTO hdh : hdhBus.listHDH()){
-            cbb_HDH.addItem(hdh.getTenHDH());
-        }
+    public void setUPcomBobox(){
+        func.setUpComBoBox(cbb_HDH);
+        func.setUpComBoBox(cbb_ThuongHieu);
     }
       public int check_edit_sanPham(){
         if (jlabel_hinhAnh.getIcon() == null) {
@@ -118,7 +107,6 @@ public class DetailsDienThoaiDialog extends javax.swing.JDialog {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jlabel_hinhAnh = new javax.swing.JLabel();
-        btn_add_Image = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jtf_tenDT = new javax.swing.JTextField();
         jtf_chip = new javax.swing.JTextField();
@@ -166,30 +154,15 @@ public class DetailsDienThoaiDialog extends javax.swing.JDialog {
 
         jlabel_hinhAnh.setBackground(new java.awt.Color(255, 255, 255));
 
-        btn_add_Image.setText("Chỉnh sửa ảnh");
-        btn_add_Image.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btn_add_ImageMouseClicked(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jlabel_hinhAnh, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(41, 41, 41)
-                .addComponent(btn_add_Image, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(50, Short.MAX_VALUE))
+            .addComponent(jlabel_hinhAnh, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addComponent(btn_add_Image)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jlabel_hinhAnh, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+            .addComponent(jlabel_hinhAnh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         jLabel3.setText("Tên sản phẩm");
@@ -275,7 +248,7 @@ public class DetailsDienThoaiDialog extends javax.swing.JDialog {
                 .addGap(19, 19, 19)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 266, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -333,21 +306,6 @@ public class DetailsDienThoaiDialog extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_add_ImageMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_add_ImageMouseClicked
-        JFileChooser jfilechoose=new JFileChooser();
-        jfilechoose.setDialogTitle("Chọn ảnh");
-        FileNameExtensionFilter fileFilter=new FileNameExtensionFilter("Hình ảnh","png","jpg","Hinhanh","dt");
-        jfilechoose.setFileFilter(fileFilter);
-        jfilechoose.setCurrentDirectory(new File("C://MyImage"));
-        int resultF=jfilechoose.showOpenDialog(null);
-        if(resultF==jfilechoose.APPROVE_OPTION){
-            File selectFile=jfilechoose.getSelectedFile();
-            url_img=selectFile.getPath();
-            jlabel_hinhAnh.setText("");
-            func.disPlayImage(jlabel_hinhAnh.getWidth(),jlabel_hinhAnh.getHeight(), url_img, jlabel_hinhAnh);
-        }
-    }//GEN-LAST:event_btn_add_ImageMouseClicked
-
     private void btn_view_cauHinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_view_cauHinhMouseClicked
         int maDT=dt.getMaDT();
         if(!listPBDTTemp.isEmpty())
@@ -364,7 +322,6 @@ public class DetailsDienThoaiDialog extends javax.swing.JDialog {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_add_Image;
     private javax.swing.JButton btn_view_cauHinh;
     private javax.swing.JComboBox<String> cbb_HDH;
     private javax.swing.JComboBox<String> cbb_ThuongHieu;

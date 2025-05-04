@@ -15,9 +15,9 @@ import util.Func_class;
  * @author kiman
  */
 public class EditNhaCungCapDialog extends javax.swing.JDialog {
-    private Func_class func=new Func_class();
-    private NhaCungCapBUS nccBus=new NhaCungCapBUS();
-    private PanelNhaCungCap nccPanel;
+    Func_class func=new Func_class();
+    NhaCungCapBUS nccBus=new NhaCungCapBUS();
+    PanelNhaCungCap nccPanel;
     private NhaCungCapDTO ncc;
     public EditNhaCungCapDialog(java.awt.Frame parent, boolean modal,NhaCungCapDTO ncc,PanelNhaCungCap nccPanel) {
         super(parent, modal);
@@ -196,7 +196,7 @@ public class EditNhaCungCapDialog extends javax.swing.JDialog {
             String address=jtf_address_ncc.getText();
             ncc=new NhaCungCapDTO(ncc.getmaNCC(),tenNCC, address, sdt, email);
             nccBus.updateNhaCungCap(ncc);
-            func.addDataTableNCC(nccBus.listNCC(),nccPanel.getTableNhaCungCap());
+            nccPanel.addDataTableNCC(nccBus.listNCC());
             func.centerTable(nccPanel.getTableNhaCungCap());
             this.dispose();
         }
