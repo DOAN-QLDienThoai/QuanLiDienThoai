@@ -185,6 +185,7 @@ public class PanelNhapPhieuXuat extends javax.swing.JPanel {
         jTextField6.setText("");
         jTextField7.setText("");
         jTextField12.setText("");
+        jLabel8.setText("");
         jComboBox5.removeAllItems();
         DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
         model.setRowCount(0);  // Xóa tất cả các dòng trong bảng
@@ -541,7 +542,7 @@ public class PanelNhapPhieuXuat extends javax.swing.JPanel {
         String maSPDangXem = jTextField3.getText().trim();
         if (maSPDangXem.equals(maSP)) {
             int sl = Integer.parseInt(jTextField7.getText().trim());
-            jTextField7.setText(String.valueOf(sl + 1));
+            jTextField7.setText(String.valueOf(sl + soLuongDaThem));
         }
         modelCT.removeRow(selectedRow);
         for (int i = 0; i < modelCT.getRowCount(); i++) {

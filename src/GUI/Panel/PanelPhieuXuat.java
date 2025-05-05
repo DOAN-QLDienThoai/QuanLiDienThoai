@@ -34,14 +34,12 @@ import javax.swing.JTextField;
 import util.CustomScrollBarUI;
 import javax.swing.JScrollPane;
 import util.RoundedBorder;
-import javax.swing.table.JTableHeader;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.SwingConstants;
 import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.BorderFactory;
 import java.awt.Color;
-import javax.swing.JTable;
+import util.DropShadowBorder;
 
 
 
@@ -102,7 +100,7 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
     public void setUpTable() {
         DefaultTableModel model = new DefaultTableModel(
             new Object[][]{},
-            new String[] { "STT", "Mã phiếu xuất", "Khách hàng", "Nhân viên xuất", "Thời gian", "Tổng tiền" }
+            new String[] { "STT", "Mã PX", "Khách hàng", "Nhân viên xuất", "Thời gian", "Tổng tiền" }
         ) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -110,57 +108,20 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
             }
         };
         table_px.setModel(model);
-        table_px.setShowGrid(true);
-        table_px.setGridColor(new java.awt.Color(240, 240, 240));
-        table_px.setIntercellSpacing(new java.awt.Dimension(0, 1));
-        table_px.setBorder(null);
-        jScrollPane3.setBorder(null);
-        jScrollPane3.getVerticalScrollBar().setPreferredSize(new Dimension(8, Integer.MAX_VALUE));
-        jScrollPane3.getVerticalScrollBar().setUI(new CustomScrollBarUI());
-        jScrollPane3.getHorizontalScrollBar().setUI(new CustomScrollBarUI());
-        JTableHeader header = table_px.getTableHeader();
-        header.setDefaultRenderer(new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                                                           boolean isSelected, boolean hasFocus, int row, int column) {
-                JLabel label = new JLabel(value.toString());
-                label.setFont(label.getFont().deriveFont(Font.BOLD));
-                label.setHorizontalAlignment(SwingConstants.CENTER);
-                label.setOpaque(true);
-                label.setBackground(new Color(245, 245, 245));
-                label.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
-                return label;
-            }
-        });
-        header.setReorderingAllowed(false);
-        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                                                           boolean isSelected, boolean hasFocus, int row, int column) {
-                JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                label.setHorizontalAlignment(SwingConstants.CENTER);
-                label.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-                if (isSelected) {
-                    label.setBackground(new Color(192, 192, 192));
-                    label.setForeground(Color.WHITE);
-                } else {
-                    label.setBackground(Color.WHITE);
-                    label.setForeground(Color.BLACK);
-                }
-                return label;
-            }
-        };
-        for (int i = 0; i < table_px.getColumnCount(); i++) {
-            table_px.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
-        }
-        table_px.setShowVerticalLines(false); 
-        table_px.setShowHorizontalLines(true); 
+        func.centerTable(table_px);
+        func.setUpTable(table_px);
+        table_px.getColumnModel().getColumn(0).setPreferredWidth(30);
+        table_px.getColumnModel().getColumn(1).setPreferredWidth(35);
+        table_px.getColumnModel().getColumn(3).setPreferredWidth(150);
+        table_px.getColumnModel().getColumn(4).setPreferredWidth(160);
     }
     public void setIconForJLabel(){
         jlabel_add_px.setIcon(new FlatSVGIcon("./resources/icon/add.svg", 0.06f));
         jlabel_detail_px.setIcon(new FlatSVGIcon("./resources/icon/details.svg", 0.45f));
         jlabel_delete_px.setIcon(new FlatSVGIcon("./resources/icon/huyphieu.svg", 0.06f));
         jlabel_excel_px.setIcon(new FlatSVGIcon("./resources/icon/excel.svg", 0.5f));
+        jpanel_chucNang_px.setBorder(new DropShadowBorder(1,Color.BLACK));
+        jPanel3.setBorder(new DropShadowBorder(1,Color.BLACK));
     }
     public void setCursorPointer(){
         func.cursorPointer(jlabel_add_px);
@@ -172,16 +133,6 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jpn_px1 = new javax.swing.JPanel();
-        jpanel_chucNang_px = new javax.swing.JPanel();
-        jlabel_detail_px = new javax.swing.JLabel();
-        jlabel_add_px = new javax.swing.JLabel();
-        jlabel_delete_px = new javax.swing.JLabel();
-        jlabel_excel_px = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         reset_px = new javax.swing.JButton();
         txt_search_px = new javax.swing.JTextField();
@@ -201,111 +152,17 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
         jTextField2 = new javax.swing.JTextField();
         jScrollPane3 = new javax.swing.JScrollPane();
         table_px = new javax.swing.JTable();
+        jpanel_chucNang_px = new javax.swing.JPanel();
+        jlabel_detail_px = new javax.swing.JLabel();
+        jlabel_add_px = new javax.swing.JLabel();
+        jlabel_delete_px = new javax.swing.JLabel();
+        jlabel_excel_px = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(255, 255, 255));
         setPreferredSize(new java.awt.Dimension(907, 607));
-
-        jpn_px1.setBackground(new java.awt.Color(255, 255, 255));
-        jpn_px1.setPreferredSize(new java.awt.Dimension(1030, 625));
-
-        jpanel_chucNang_px.setBackground(new java.awt.Color(255, 255, 255));
-
-        jlabel_detail_px.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jlabel_detail_pxjlabel_update_pxMouseClicked(evt);
-            }
-        });
-
-        jlabel_add_px.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jlabel_add_pxjlabel_add_pxMouseClicked(evt);
-            }
-        });
-
-        jlabel_delete_px.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jlabel_delete_pxjlabel_delete_pxMouseClicked(evt);
-            }
-        });
-
-        jlabel_excel_px.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jlabel_excel_pxjlabel_delete_pxMouseClicked(evt);
-            }
-        });
-
-        jLabel7.setText("Thêm");
-
-        jLabel8.setText("Chi tiết");
-
-        jLabel9.setText("Hủy phiếu");
-
-        jLabel10.setText("Xuất Excel");
-
-        javax.swing.GroupLayout jpanel_chucNang_pxLayout = new javax.swing.GroupLayout(jpanel_chucNang_px);
-        jpanel_chucNang_px.setLayout(jpanel_chucNang_pxLayout);
-        jpanel_chucNang_pxLayout.setHorizontalGroup(
-            jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpanel_chucNang_pxLayout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlabel_add_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jpanel_chucNang_pxLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jLabel7)))
-                .addGap(18, 18, 18)
-                .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlabel_detail_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jpanel_chucNang_pxLayout.createSequentialGroup()
-                        .addGap(6, 6, 6)
-                        .addComponent(jLabel8)))
-                .addGap(18, 18, 18)
-                .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlabel_delete_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel9))
-                .addGap(18, 18, 18)
-                .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlabel_excel_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel10))
-                .addContainerGap(28, Short.MAX_VALUE))
-        );
-        jpanel_chucNang_pxLayout.setVerticalGroup(
-            jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpanel_chucNang_pxLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlabel_excel_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlabel_add_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlabel_delete_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlabel_detail_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jLabel9)
-                        .addComponent(jLabel10)
-                        .addComponent(jLabel8))
-                    .addComponent(jLabel7))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        javax.swing.GroupLayout jpn_px1Layout = new javax.swing.GroupLayout(jpn_px1);
-        jpn_px1.setLayout(jpn_px1Layout);
-        jpn_px1Layout.setHorizontalGroup(
-            jpn_px1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpn_px1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jpanel_chucNang_px, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(647, Short.MAX_VALUE))
-        );
-        jpn_px1Layout.setVerticalGroup(
-            jpn_px1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jpn_px1Layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addComponent(jpanel_chucNang_px, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(551, Short.MAX_VALUE))
-        );
-
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         reset_px.setText("Làm mới");
         reset_px.addActionListener(new java.awt.event.ActionListener() {
@@ -434,40 +291,113 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
         ));
         jScrollPane3.setViewportView(table_px);
 
+        jlabel_detail_px.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jlabel_detail_pxjlabel_update_pxMouseClicked(evt);
+            }
+        });
+
+        jlabel_add_px.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jlabel_add_pxjlabel_add_pxMouseClicked(evt);
+            }
+        });
+
+        jlabel_delete_px.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jlabel_delete_pxjlabel_delete_pxMouseClicked(evt);
+            }
+        });
+
+        jlabel_excel_px.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jlabel_excel_pxjlabel_delete_pxMouseClicked(evt);
+            }
+        });
+
+        jLabel7.setText("Thêm");
+
+        jLabel8.setText("Chi tiết");
+
+        jLabel9.setText("Hủy phiếu");
+
+        jLabel10.setText("Xuất Excel");
+
+        javax.swing.GroupLayout jpanel_chucNang_pxLayout = new javax.swing.GroupLayout(jpanel_chucNang_px);
+        jpanel_chucNang_px.setLayout(jpanel_chucNang_pxLayout);
+        jpanel_chucNang_pxLayout.setHorizontalGroup(
+            jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpanel_chucNang_pxLayout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlabel_add_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jpanel_chucNang_pxLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel7)))
+                .addGap(18, 18, 18)
+                .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlabel_detail_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jpanel_chucNang_pxLayout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel8)))
+                .addGap(18, 18, 18)
+                .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlabel_delete_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel9))
+                .addGap(18, 18, 18)
+                .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlabel_excel_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel10))
+                .addContainerGap(28, Short.MAX_VALUE))
+        );
+        jpanel_chucNang_pxLayout.setVerticalGroup(
+            jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpanel_chucNang_pxLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jlabel_excel_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlabel_add_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlabel_delete_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlabel_detail_px, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jpanel_chucNang_pxLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabel9)
+                        .addComponent(jLabel10)
+                        .addComponent(jLabel8))
+                    .addComponent(jLabel7))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 754, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 766, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jpanel_chucNang_px, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(34, 34, 34)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(16, 16, 16))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(30, Short.MAX_VALUE)
-                    .addComponent(jpn_px1, javax.swing.GroupLayout.PREFERRED_SIZE, 958, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(30, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(3, 3, 3)
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jpanel_chucNang_px, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(54, Short.MAX_VALUE))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jpn_px1, javax.swing.GroupLayout.PREFERRED_SIZE, 648, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -805,7 +735,7 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
         jdatechooser_ngaytaopx1.setBorder(BorderFactory.createEmptyBorder());
         jdatechooser_ngaytaopx2.setBorder(BorderFactory.createEmptyBorder());
     }
-        private JList<?> getPopupList(JComboBox<?> comboBox) {
+    private JList<?> getPopupList(JComboBox<?> comboBox) {
         Object comp = comboBox.getUI().getAccessibleChild(comboBox, 0);
         if (comp instanceof javax.swing.plaf.basic.ComboPopup popup) {
             return popup.getList();
@@ -838,7 +768,6 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
     private javax.swing.JLabel jlabel_detail_px;
     private javax.swing.JLabel jlabel_excel_px;
     private javax.swing.JPanel jpanel_chucNang_px;
-    private javax.swing.JPanel jpn_px1;
     private javax.swing.JButton reset_px;
     private javax.swing.JTable table_px;
     private javax.swing.JTextField txt_search_px;
