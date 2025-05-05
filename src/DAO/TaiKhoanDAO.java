@@ -33,7 +33,6 @@ public class TaiKhoanDAO {
                 JOptionPane.showMessageDialog(null, "Thêm tài khoản thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -54,7 +53,6 @@ public class TaiKhoanDAO {
                 JOptionPane.showMessageDialog(null, "Cập nhật tài khoản thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -72,7 +70,6 @@ public class TaiKhoanDAO {
                 JOptionPane.showMessageDialog(null, "Xóa (khóa) tài khoản thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -91,7 +88,6 @@ public class TaiKhoanDAO {
                 JOptionPane.showMessageDialog(null, "Cập nhật mật khẩu thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -113,7 +109,6 @@ public class TaiKhoanDAO {
                 String trangThai = rs.getString("trangThai");
                 return new TaiKhoanDTO(maNV, tk, mk, trangThai);
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -136,7 +131,6 @@ public class TaiKhoanDAO {
                 String trangThai = rs.getString("trangThai"); // Có thể là String hoặc int tùy bạn thiết kế
                 listTaiKhoan.add(new TaiKhoanDTO(maNV, tenDangNhap, matKhau, trangThai));
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }

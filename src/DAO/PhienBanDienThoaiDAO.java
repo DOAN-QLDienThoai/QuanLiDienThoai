@@ -35,7 +35,6 @@ public class PhienBanDienThoaiDAO {
             if (ps.executeUpdate() > 0) {
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -57,7 +56,6 @@ public class PhienBanDienThoaiDAO {
             if (ps.executeUpdate() > 0) {
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -75,7 +73,6 @@ public class PhienBanDienThoaiDAO {
                 JOptionPane.showMessageDialog(null, "Xóa phiên bản điện thoại thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -102,7 +99,6 @@ public class PhienBanDienThoaiDAO {
                 int soLuongTon = 0;
                 listPB.add(new PhienBanDienThoaiDTO(maPhienBan, maDT, maRam, maRom, maMau, giaNhap, giaXuat, soLuongTon));
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -131,7 +127,6 @@ public class PhienBanDienThoaiDAO {
                 String cauHinh = ram + "GB-" + rom + "GB-" + mauSac;
                 danhSachCauHinh.add(cauHinh);
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -155,7 +150,6 @@ public class PhienBanDienThoaiDAO {
             if (rs.next()) {
                 giaNhap = rs.getDouble("giaNhap");
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -203,7 +197,6 @@ public class PhienBanDienThoaiDAO {
             if (rs.next()) {
                 maRom = rs.getInt("maRom");
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -223,7 +216,6 @@ public class PhienBanDienThoaiDAO {
             if (rs.next()) {
                 maRam = rs.getInt("maRam");
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -261,7 +253,6 @@ public class PhienBanDienThoaiDAO {
             if (ps.executeUpdate() > 0) {
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -284,7 +275,6 @@ public class PhienBanDienThoaiDAO {
             if (rs.next()) {
                 maPhienBan = rs.getInt("maPhienBan");
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             System.err.println("Lỗi truy vấn mã phiên bản: " + e.getMessage());
         }
@@ -340,7 +330,6 @@ public class PhienBanDienThoaiDAO {
                 JOptionPane.showMessageDialog(null, "Phiên bản đã được xuất hàng ", "Error", 0);
                 return false;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }

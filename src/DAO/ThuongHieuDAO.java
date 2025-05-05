@@ -27,7 +27,6 @@ public class ThuongHieuDAO {
                 JOptionPane.showMessageDialog(null, "Thêm thương hiệu thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -45,7 +44,6 @@ public class ThuongHieuDAO {
                 JOptionPane.showMessageDialog(null, "Cập nhật thương hiệu thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -62,7 +60,6 @@ public class ThuongHieuDAO {
                 JOptionPane.showMessageDialog(null, "Xóa thương hiệu thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -82,7 +79,6 @@ public class ThuongHieuDAO {
                 String tenThuongHieu = rs.getString("tenThuongHieu");
                 listThuongHieu.add(new ThuongHieuDTO(maThuongHieu, tenThuongHieu));
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -103,7 +99,6 @@ public class ThuongHieuDAO {
                 String tenThuongHieu = rs.getString("tenThuongHieu");
                 mapThuongHieu.put(tenThuongHieu, maThuongHieu);
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }

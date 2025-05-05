@@ -28,7 +28,6 @@ public class HeDieuHanhDAO {
                 JOptionPane.showMessageDialog(null, "Thêm hệ điều hành thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -47,7 +46,6 @@ public class HeDieuHanhDAO {
                 JOptionPane.showMessageDialog(null, "Cập nhật thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -65,7 +63,6 @@ public class HeDieuHanhDAO {
                 JOptionPane.showMessageDialog(null, "Xóa thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -86,7 +83,6 @@ public class HeDieuHanhDAO {
                 String tenHDH = rs.getString("tenHDH");
                 listHDH.add(new HeDieuHanhDTO(maHDH, tenHDH));
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }

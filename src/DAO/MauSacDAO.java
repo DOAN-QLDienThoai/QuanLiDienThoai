@@ -27,7 +27,6 @@ public class MauSacDAO {
                 JOptionPane.showMessageDialog(null, "Thêm màu sắc thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -46,7 +45,6 @@ public class MauSacDAO {
                 JOptionPane.showMessageDialog(null, "Cập nhật màu sắc thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -64,7 +62,6 @@ public class MauSacDAO {
                 JOptionPane.showMessageDialog(null, "Xóa màu sắc thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -86,7 +83,6 @@ public class MauSacDAO {
                     return false;
                 }
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -107,7 +103,6 @@ public class MauSacDAO {
                 String tenMau = rs.getString("tenMau");
                 listMS.add(new MauSacDTO(maMau, tenMau));
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -127,7 +122,6 @@ public class MauSacDAO {
                 String tenMau = rs.getString("tenMau");
                 mapMS.put(tenMau, maMau);
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -144,7 +138,6 @@ public class MauSacDAO {
             if (rs.next()) {
                 maMau = rs.getInt("maMau");
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }

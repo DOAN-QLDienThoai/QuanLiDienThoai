@@ -27,7 +27,6 @@ public class RamDAO {
                 JOptionPane.showMessageDialog(null, "Thêm ram thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -46,7 +45,6 @@ public class RamDAO {
                 JOptionPane.showMessageDialog(null, "Cập nhật ram thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -64,7 +62,6 @@ public class RamDAO {
                 JOptionPane.showMessageDialog(null, "Xóa Ram thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -86,7 +83,6 @@ public class RamDAO {
                     return false;
                 }
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -107,7 +103,6 @@ public class RamDAO {
                 int dungLuongRam = rs.getInt("dungLuongRam");
                 listRam.add(new RamDTO(maRam, dungLuongRam));
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -127,7 +122,6 @@ public class RamDAO {
                 int dungLuongRam = rs.getInt("dungLuongRam");
                 mapRam.put(dungLuongRam, maRam);
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }

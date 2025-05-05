@@ -28,7 +28,6 @@ public class RomDAO {
                 JOptionPane.showMessageDialog(null, "Thêm rom thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -47,7 +46,6 @@ public class RomDAO {
                 JOptionPane.showMessageDialog(null, "Cập nhật rom thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -65,7 +63,6 @@ public class RomDAO {
                 JOptionPane.showMessageDialog(null, "Xóa Rom thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -87,7 +84,6 @@ public class RomDAO {
                     return false;
                 }
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -108,7 +104,6 @@ public class RomDAO {
                 int dungLuongRom = rs.getInt("dungLuongRom");
                 listRom.add(new RomDTO(maRom, dungLuongRom));
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -129,7 +124,6 @@ public class RomDAO {
                 int dungLuongRom = rs.getInt("dungLuongRom");
                 mapRom.put(dungLuongRom, maRom);
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }

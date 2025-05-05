@@ -29,7 +29,6 @@ public class NhaCungCapDAO {
                 JOptionPane.showMessageDialog(null, "Thêm nhà cung cấp thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -53,7 +52,6 @@ public class NhaCungCapDAO {
                 JOptionPane.showMessageDialog(null, "Update thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -72,7 +70,6 @@ public class NhaCungCapDAO {
                 JOptionPane.showMessageDialog(null, "Xóa thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -97,7 +94,6 @@ public class NhaCungCapDAO {
                 NhaCungCapDTO ncc = new NhaCungCapDTO(maNCC, name, address, sdt, email);
                 listNcc.add(ncc);
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -130,7 +126,6 @@ public class NhaCungCapDAO {
                         "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }

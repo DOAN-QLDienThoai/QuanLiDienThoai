@@ -31,7 +31,6 @@ public class DienThoaiDAO {
             if (ps.executeUpdate() > 0) {
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -58,7 +57,6 @@ public class DienThoaiDAO {
                 JOptionPane.showMessageDialog(null, "Cập nhật thông tin điện thoại thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -77,7 +75,6 @@ public class DienThoaiDAO {
                 JOptionPane.showMessageDialog(null, "Xóa điện thoại thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -94,7 +91,6 @@ public class DienThoaiDAO {
             if (rs.next()) {
                 id = rs.getInt(1);
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -114,7 +110,6 @@ public class DienThoaiDAO {
             if (ps.executeUpdate() > 0) {
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -132,7 +127,6 @@ public class DienThoaiDAO {
             if (ps.executeUpdate() > 0) {
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -160,7 +154,6 @@ public class DienThoaiDAO {
                 int soLuongTon = rs.getInt("soLuongTon");
                 listDT.add(new DienThoaiDTO(maDT, tenDT, heDieuHanh, thuongHieu, chipXuLy, dungLuongPin, kichThuocMan, hinhanh, soLuongTon));
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }

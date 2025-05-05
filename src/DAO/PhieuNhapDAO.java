@@ -14,8 +14,6 @@ import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 public class PhieuNhapDAO {
     //Thêm 1 phiếu nhập (ahuy)
     public int insertPhieuNhapDienThoai(PhieuNhapDTO pn) {
@@ -34,7 +32,6 @@ public class PhieuNhapDAO {
                 JOptionPane.showMessageDialog(null, "Tạo phiếu nhập thành công", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -59,7 +56,6 @@ public class PhieuNhapDAO {
                 JOptionPane.showMessageDialog(null, "Cap nhat thong tin phieu nhap thanh cong", "Success", 1);
                 return 1;
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -145,7 +141,6 @@ public class PhieuNhapDAO {
                 long tongtien = rs.getLong("tongtien");
                 ListPN.add(new PhieuNhapDTO(maPN, maNV, maNCC, thoigian, tongtien));
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -168,7 +163,6 @@ public class PhieuNhapDAO {
                 long tongtien = rs.getLong("tongtien");
                 ListPN.add(new PhieuNhapDTO(maPN, maNV, maNCC, thoigian, tongtien));
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -191,7 +185,6 @@ public class PhieuNhapDAO {
                 long tongtien = rs.getLong("tongtien");
                 return new PhieuNhapDTO(maPN, maNV, maNCC, thoigian, tongtien);
             }
-            ConnectedDatabase.closeConnectedDB(conn);
         } catch (SQLException e) {
             e.printStackTrace();
         }

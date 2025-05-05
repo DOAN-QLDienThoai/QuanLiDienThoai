@@ -184,10 +184,10 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(27, Short.MAX_VALUE)
-                .addComponent(cbb_search_px, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txt_search_px, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(cbb_search_px, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txt_search_px, javax.swing.GroupLayout.DEFAULT_SIZE, 209, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(reset_px)
                 .addGap(18, 18, 18))
@@ -397,7 +397,7 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 498, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(54, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -514,43 +514,99 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
         java.util.Date denNgay = jdatechooser_ngaytaopx2.getDate();
         String tuTienStr = jTextField2.getText().replace(",", "").replace("đ", "").trim();
         String denTienStr = jTextField1.getText().replace(",", "").replace("đ", "").trim();
+        String searchType = cbb_search_px.getSelectedItem().toString();
+        String keyword = txt_search_px.getText().trim().toLowerCase();
+
         ArrayList<PhieuXuatDTO> danhSach = new PhieuXuatDAO().layTatCaPhieuXuat();
         DefaultTableModel model = (DefaultTableModel) table_px.getModel();
         model.setRowCount(0);
         DecimalFormat df = new DecimalFormat("#,###");
         int stt = 1;
+
+        java.util.Date now = new java.util.Date();
+        if (denNgay != null && denNgay.after(now)) {
+            denNgay = now;
+        }
+
         for (PhieuXuatDTO px : danhSach) {
-            String tenKHDB = new KhachHangDAO().layTenKhachHangTheoMa(px.getMaKH());
             boolean hopLe = true;
-            if (!tenKH.equals("Tất cả") && !tenKHDB.equals(tenKH)) hopLe = false;
+
+            String tenKHDB = new KhachHangDAO().layTenKhachHangTheoMa(px.getMaKH());
             String tenNVDB = nvBus.getTenNVByID(px.getMaNV());
-            if (!tenNV.equals("Tất cả") && !tenNVDB.equals(tenNV)) hopLe = false;
             java.util.Date ngayPX = java.sql.Timestamp.valueOf(px.getThoiGian());
-            java.util.Date now = new java.util.Date();
-            if (denNgay != null && denNgay.after(now)) denNgay = now;
-            if (tuNgay != null && ngayPX.before(tuNgay)) hopLe = false;
-            if (denNgay != null && ngayPX.after(denNgay)) hopLe = false;
             double tongTien = px.getTongTien();
-            String searchType = cbb_search_px.getSelectedItem().toString();
-            String keyword = txt_search_px.getText().trim().toLowerCase();
-            if (!searchType.equals("Tất cả") && !keyword.isEmpty()) {
-                if (searchType.equals("Mã phiếu") && !px.getMaPX().toLowerCase().contains(keyword)) hopLe = false;
-                if (searchType.equals("Khách hàng") && !tenKHDB.toLowerCase().contains(keyword)) hopLe = false;
-                if (searchType.equals("Nhân viên xuất") && !tenNVDB.toLowerCase().contains(keyword)) hopLe = false; // 🔥 Sửa tại đây
+
+            // Lọc khách hàng
+            if (!tenKH.equals("Tất cả") && !tenKHDB.equals(tenKH)) {
+                hopLe = false;
             }
-            else if(searchType.equals("Tất cả")){
-               if (hopLe) {
-                model.addRow(new Object[]{stt++,px.getMaPX(),tenKHDB,tenNVDB, px.getThoiGian().toString().replace("T", " "),df.format(tongTien) + "đ"
-            }); 
+
+            // Lọc nhân viên
+            if (!tenNV.equals("Tất cả") && !tenNVDB.equals(tenNV)) {
+                hopLe = false;
             }
-            if (!tuTienStr.equals("Tất cả") && !tuTienStr.isEmpty() && tongTien < Double.parseDouble(tuTienStr)) hopLe = false;
-            if (!denTienStr.equals("Tất cả") && !denTienStr.isEmpty() && tongTien > Double.parseDouble(denTienStr)) hopLe = false;
+
+            // Lọc theo ngày
+            if (tuNgay != null && ngayPX.before(tuNgay)) {
+                hopLe = false;
+            }
+            if (denNgay != null && ngayPX.after(denNgay)) {
+                hopLe = false;
+            }
+
+            // Lọc theo giá
+            if (!tuTienStr.equals("Tất cả") && !tuTienStr.isEmpty()) {
+                try {
+                    double min = Double.parseDouble(tuTienStr);
+                    if (tongTien < min) {
+                        hopLe = false;
+                    }
+                } catch (NumberFormatException e) {
+                    hopLe = false;
+                }
+            }
+
+            if (!denTienStr.equals("Tất cả") && !denTienStr.isEmpty()) {
+                try {
+                    double max = Double.parseDouble(denTienStr);
+                    if (tongTien > max) {
+                        hopLe = false;
+                    }
+                } catch (NumberFormatException e) {
+                    hopLe = false;
+                }
+            }
+
+            // Lọc theo từ khóa
+            if (!keyword.isEmpty()) {
+                if (!searchType.equals("Tất cả")) {
+                    if (searchType.equals("Mã phiếu") && !px.getMaPX().toLowerCase().contains(keyword)) {
+                        hopLe = false;
+                    } else if (searchType.equals("Khách hàng") && !tenKHDB.toLowerCase().contains(keyword)) {
+                        hopLe = false;
+                    } else if (searchType.equals("Nhân viên xuất") && !tenNVDB.toLowerCase().contains(keyword)) {
+                        hopLe = false;
+                    }
+                } else {
+                    String allFields = (px.getMaPX() + " " + tenKHDB + " " + tenNVDB + " " + px.getThoiGian() + " " + tongTien).toLowerCase();
+                    if (!allFields.contains(keyword)) {
+                        hopLe = false;
+                    }
+                }
+            }
+
+            // Thêm dòng nếu hợp lệ
             if (hopLe) {
-                model.addRow(new Object[]{stt++,px.getMaPX(),tenKHDB,tenNVDB, px.getThoiGian().toString().replace("T", " "),df.format(tongTien) + "đ"
-            });
+                model.addRow(new Object[]{
+                    stt++,
+                    px.getMaPX(),
+                    tenKHDB,
+                    tenNVDB,
+                    px.getThoiGian().toString().replace("T", " "),
+                    df.format(tongTien) + "đ"
+                });
             }
         }
-    }
     }
     private void loadComboBoxKhachHang() {
         jComboBox7.removeAllItems();

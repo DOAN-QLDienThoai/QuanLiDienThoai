@@ -121,6 +121,7 @@ public class PanelPhieuNhap extends javax.swing.JPanel {
                 return false; // Tắt chỉnh sửa toàn bộ
             }
         };
+        table_pn.setRowSorter(null);
         table_pn.setModel(model);
         table_pn.getColumnModel().getColumn(0).setPreferredWidth(35);
         table_pn.getColumnModel().getColumn(1).setPreferredWidth(150);
