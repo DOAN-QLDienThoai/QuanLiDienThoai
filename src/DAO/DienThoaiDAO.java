@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public class DienThoaiDAO {
     //Thêm điện thoại (ahuy)
@@ -18,7 +19,8 @@ public class DienThoaiDAO {
         try {
             String sqlAdd = "INSERT INTO DienThoai(tenDT,maHDH,maThuongHieu,chipXuLy,dungLuongPin,kichThuocMan,hinhAnh,trangThai) "
                     + "VALUES (?,?,?,?,?,?,?,1)";
-            PreparedStatement ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlAdd);
+            Connection conn=ConnectedDatabase.getConnectedDB();
+            PreparedStatement ps = conn.prepareStatement(sqlAdd);
             ps.setString(1, dt.getTenDT());
             ps.setInt(2, dt.getHeDieuHanh());
             ps.setInt(3, dt.getThuongHieu());
@@ -29,8 +31,8 @@ public class DienThoaiDAO {
             if (ps.executeUpdate() > 0) {
                 return 1;
             }
-            ps.close();
-        } catch (Exception e) {
+            ConnectedDatabase.closeConnectedDB(conn);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
@@ -42,7 +44,8 @@ public class DienThoaiDAO {
                     + "SET tenDT=?, maHDH=?, maThuongHieu=?,chipXuLy=?,dungLuongPin=?,kichThuocMan=?,hinhAnh=? "
                     + "WHERE maDT=?";
             PreparedStatement ps;
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlUpdate);
+            Connection conn=ConnectedDatabase.getConnectedDB();
+            ps = conn.prepareStatement(sqlUpdate);
             ps.setString(1, dt.getTenDT());
             ps.setInt(2, dt.getHeDieuHanh());  // Đã đổi sang kiểu int
             ps.setInt(3, dt.getThuongHieu());  // Đã đổi sang kiểu int
@@ -55,7 +58,8 @@ public class DienThoaiDAO {
                 JOptionPane.showMessageDialog(null, "Cập nhật thông tin điện thoại thành công", "Success", 1);
                 return 1;
             }
-        } catch (Exception e) {
+            ConnectedDatabase.closeConnectedDB(conn);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
@@ -66,13 +70,15 @@ public class DienThoaiDAO {
             String sqlDelete = "UPDATE DienThoai SET trangThai=0 "
                     + "WHERE maDT=?";
             PreparedStatement ps;
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlDelete);
+            Connection conn=ConnectedDatabase.getConnectedDB();
+            ps = conn.prepareStatement(sqlDelete);
             ps.setInt(1, maDT);
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Xóa điện thoại thành công", "Success", 1);
                 return 1;
             }
-        } catch (Exception e) {
+            ConnectedDatabase.closeConnectedDB(conn);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
@@ -82,14 +88,14 @@ public class DienThoaiDAO {
         int id = -1;
         try {
             String sql = "SELECT MAX(maDT) FROM DienThoai";
-            PreparedStatement ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            Connection conn=ConnectedDatabase.getConnectedDB();
+            PreparedStatement ps = conn.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 id = rs.getInt(1);
             }
-            rs.close();
-            ps.close();
-        } catch (Exception e) {
+            ConnectedDatabase.closeConnectedDB(conn);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return id;
@@ -97,33 +103,37 @@ public class DienThoaiDAO {
     
     //Cập nhật số lượng tồn kho sau khi nhập (ahuy)
     public int updateSoLuongTonDienThoaiSauKhiNhap(int maPhienBan, int soLuongNhap) {
-        String sql = "UPDATE DienThoai SET soLuongTon = soLuongTon + ? "
-                + "WHERE maDT = (SELECT maDT FROM PhienBanDienThoai WHERE maPhienBan = ?)";
-        PreparedStatement ps;
         try {
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            String sql = "UPDATE DienThoai SET soLuongTon = soLuongTon + ? "
+                    + "WHERE maDT = (SELECT maDT FROM PhienBanDienThoai WHERE maPhienBan = ?)";
+            PreparedStatement ps;
+            Connection conn = ConnectedDatabase.getConnectedDB();
+            ps = conn.prepareStatement(sql);
             ps.setInt(1, soLuongNhap);
             ps.setInt(2, maPhienBan);
             if (ps.executeUpdate() > 0) {
                 return 1;
             }
-        } catch (Exception e) {
+            ConnectedDatabase.closeConnectedDB(conn);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
     }
     public int updateSoLuongTonDienThoaiSauKhiXuat(int maPhienBan, int soLuongXuat) {
-        String sql = "UPDATE DienThoai SET soLuongTon = soLuongTon - ? "
-                + "WHERE maDT = (SELECT maDT FROM PhienBanDienThoai WHERE maPhienBan = ?)";
-        PreparedStatement ps;
         try {
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            String sql = "UPDATE DienThoai SET soLuongTon = soLuongTon - ? "
+                    + "WHERE maDT = (SELECT maDT FROM PhienBanDienThoai WHERE maPhienBan = ?)";
+            PreparedStatement ps;
+            Connection conn = ConnectedDatabase.getConnectedDB();
+            ps = conn.prepareStatement(sql);
             ps.setInt(1, soLuongXuat);
             ps.setInt(2, maPhienBan);
             if (ps.executeUpdate() > 0) {
                 return 1;
             }
-        } catch (Exception e) {
+            ConnectedDatabase.closeConnectedDB(conn);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
@@ -131,11 +141,12 @@ public class DienThoaiDAO {
     //Lấy danh sách điện thoại (ahuy)
     public ArrayList<DienThoaiDTO> listDT() {
         ArrayList<DienThoaiDTO> listDT = new ArrayList<>();
-        String sqlListDT = "SELECT * FROM DienThoai WHERE trangThai=1";
-        PreparedStatement ps;
-        ResultSet rs;
         try {
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlListDT);
+            String sqlListDT = "SELECT * FROM DienThoai WHERE trangThai=1";
+            PreparedStatement ps;
+            ResultSet rs;
+            Connection conn = ConnectedDatabase.getConnectedDB();
+            ps = conn.prepareStatement(sqlListDT);
             rs = ps.executeQuery();
             while (rs.next()) {
                 int maDT = rs.getInt("maDT");
@@ -149,7 +160,8 @@ public class DienThoaiDAO {
                 int soLuongTon = rs.getInt("soLuongTon");
                 listDT.add(new DienThoaiDTO(maDT, tenDT, heDieuHanh, thuongHieu, chipXuLy, dungLuongPin, kichThuocMan, hinhanh, soLuongTon));
             }
-        } catch (Exception e) {
+            ConnectedDatabase.closeConnectedDB(conn);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return listDT;
@@ -169,7 +181,7 @@ public class DienThoaiDAO {
             }
             rs.close();
             ps.close();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Không lấy được link hình ảnh", "Error", 0);
             e.printStackTrace();
         }
@@ -197,8 +209,8 @@ public class DienThoaiDAO {
                 // Gán thêm các thuộc tính khác nếu cần
                 return dt;
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }

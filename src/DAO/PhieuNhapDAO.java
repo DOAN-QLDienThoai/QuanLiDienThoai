@@ -6,6 +6,7 @@ package DAO;
 
 import DTO.PhieuNhapDTO;
 import util.ConnectedDatabase;
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.util.ArrayList;
@@ -17,26 +18,29 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 public class PhieuNhapDAO {
     //Thêm 1 phiếu nhập (ahuy)
-    public int insertPhieuNhapDienThoai (PhieuNhapDTO pn){
-        try{
+    public int insertPhieuNhapDienThoai(PhieuNhapDTO pn) {
+        try {
             String sqlAdd = "INSERT INTO PhieuNhap(maPN,maNV,maNCC,thoigian,tongtien,trangthai )"
                     + "VAlUES (?,?,?,?,?,1)";
             PreparedStatement ps;
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlAdd);
+            Connection conn = ConnectedDatabase.getConnectedDB();
+            ps = conn.prepareStatement(sqlAdd);
             ps.setString(1, pn.getMaPhieuNhap());
             ps.setInt(2, pn.getNhanVien());
             ps.setInt(3, pn.getNhaCungCap());
             ps.setDate(4, (Date) pn.getNgayNhap());
             ps.setDouble(5, pn.getTongTien());
             if (ps.executeUpdate() > 0) {
-                JOptionPane.showMessageDialog(null, "Tạo phiếu nhập thành công", "Success" , 1);
+                JOptionPane.showMessageDialog(null, "Tạo phiếu nhập thành công", "Success", 1);
                 return 1;
             }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            ConnectedDatabase.closeConnectedDB(conn);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return 0;
     }
+
     //Cập nhật 1 phiếu nhập (ahuy)
     public int updatePhieuNhap(PhieuNhapDTO pn) {
         try {
@@ -44,7 +48,8 @@ public class PhieuNhapDAO {
                     + "SET thoigian=?,tongtien=?,maNCC=?,maNV=? "
                     + "WHERE maPN=?";
             PreparedStatement ps;
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlUpdate);
+            Connection conn = ConnectedDatabase.getConnectedDB();
+            ps = conn.prepareStatement(sqlUpdate);
             ps.setDate(1, (Date) pn.getNgayNhap());
             ps.setInt(2, pn.getNhaCungCap());
             ps.setInt(3, pn.getNhanVien());
@@ -54,7 +59,8 @@ public class PhieuNhapDAO {
                 JOptionPane.showMessageDialog(null, "Cap nhat thong tin phieu nhap thanh cong", "Success", 1);
                 return 1;
             }
-        } catch (Exception ex) {
+            ConnectedDatabase.closeConnectedDB(conn);
+        } catch (SQLException ex) {
             ex.printStackTrace();
         }
         return 0;
@@ -65,7 +71,6 @@ public class PhieuNhapDAO {
         try {
             PhienBanDienThoaiDAO pbDao = new PhienBanDienThoaiDAO();
             DienThoaiDAO dtDao = new DienThoaiDAO();
-
             String sqlSelect = "SELECT maPhienBan, soluong FROM ChiTietPhieuNhap WHERE maPN = ?";
             PreparedStatement psSelect = ConnectedDatabase.getConnectedDB().prepareStatement(sqlSelect);
             psSelect.setString(1, maPN);
@@ -88,7 +93,7 @@ public class PhieuNhapDAO {
                 if (rsCheck.next() && rsCheck.getInt("daXuat") > 0) {
                     JOptionPane.showMessageDialog(null,
                             "Không thể hủy phiếu nhập vì sản phẩm đã được xuất!",
-                            "Lỗi", JOptionPane.ERROR_MESSAGE);
+                            "Lỗi",0);
                     return 0;
                 }
 
@@ -115,8 +120,8 @@ public class PhieuNhapDAO {
                 return 1;
             }
 
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return 0;
     }
@@ -125,53 +130,58 @@ public class PhieuNhapDAO {
     //Lấy danh sách phiếu nhập (ahuy)
     public ArrayList<PhieuNhapDTO> listPN() {
         ArrayList<PhieuNhapDTO> ListPN = new ArrayList<>();
-        String sqlListPN = "SELECT * FROM PhieuNhap WHERE trangthai=1";
-        PreparedStatement ps;
-        ResultSet rs;
         try {
+            String sqlListPN = "SELECT * FROM PhieuNhap WHERE trangthai=1";
+            PreparedStatement ps;
+            ResultSet rs;
+            Connection conn = ConnectedDatabase.getConnectedDB();
             ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlListPN);
             rs = ps.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 String maPN = rs.getString("maPN");
                 int maNV = rs.getInt("maNV");
                 int maNCC = rs.getInt("maNCC");
                 Date thoigian = rs.getDate("thoigian");
                 long tongtien = rs.getLong("tongtien");
-                ListPN.add(new PhieuNhapDTO(maPN,maNV,maNCC,thoigian,tongtien));
+                ListPN.add(new PhieuNhapDTO(maPN, maNV, maNCC, thoigian, tongtien));
             }
-        } catch (SQLException ex) {
-                    Logger.getLogger(PhieuNhapDAO.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+            ConnectedDatabase.closeConnectedDB(conn);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return ListPN;
     }
     public ArrayList<PhieuNhapDTO> listPNFull() {
         ArrayList<PhieuNhapDTO> ListPN = new ArrayList<>();
-        String sqlListPN = "SELECT * FROM PhieuNhap ";
-        PreparedStatement ps;
-        ResultSet rs;
         try {
+            String sqlListPN = "SELECT * FROM PhieuNhap ";
+            PreparedStatement ps;
+            ResultSet rs;
+            Connection conn = ConnectedDatabase.getConnectedDB();
             ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlListPN);
             rs = ps.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 String maPN = rs.getString("maPN");
                 int maNV = rs.getInt("maNV");
                 int maNCC = rs.getInt("maNCC");
                 Date thoigian = rs.getDate("thoigian");
                 long tongtien = rs.getLong("tongtien");
-                ListPN.add(new PhieuNhapDTO(maPN,maNV,maNCC,thoigian,tongtien));
+                ListPN.add(new PhieuNhapDTO(maPN, maNV, maNCC, thoigian, tongtien));
             }
-        } catch (SQLException ex) {
-                    Logger.getLogger(PhieuNhapDAO.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+            ConnectedDatabase.closeConnectedDB(conn);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return ListPN;
     }
     //Lấy phiếu nhập by mã phiếu nhập (ahuy)
     public PhieuNhapDTO getPhieuNhapByMaPN(String maPN) {
-        String sql = "SELECT * FROM PhieuNhap WHERE maPN = ? ";
-        PreparedStatement ps;
-        ResultSet rs;
         try {
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            String sql = "SELECT * FROM PhieuNhap WHERE maPN = ? ";
+            PreparedStatement ps;
+            ResultSet rs;
+            Connection conn =ConnectedDatabase.getConnectedDB();
+            ps = conn.prepareStatement(sql);
             ps.setString(1, maPN);
             rs = ps.executeQuery();
             if (rs.next()) {
@@ -181,8 +191,9 @@ public class PhieuNhapDAO {
                 long tongtien = rs.getLong("tongtien");
                 return new PhieuNhapDTO(maPN, maNV, maNCC, thoigian, tongtien);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(PhieuNhapDAO.class.getName()).log(Level.SEVERE, null, ex);
+            ConnectedDatabase.closeConnectedDB(conn);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return null;
     }

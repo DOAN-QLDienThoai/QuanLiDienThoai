@@ -11,54 +11,62 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.util.HashMap;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class HeDieuHanhDAO {
 
     public int insertHeDieuHanh(HeDieuHanhDTO hdh) {
-        String sqlAddHDH = "INSERT INTO HeDieuHanh(tenHDH,trangThai)"
-                + "VALUES (?,1)";
-        PreparedStatement ps;
         try {
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlAddHDH);
+            String sqlAddHDH = "INSERT INTO HeDieuHanh(tenHDH,trangThai)"
+                    + "VALUES (?,1)";
+            PreparedStatement ps;
+            Connection conn =ConnectedDatabase.getConnectedDB();
+            ps = conn.prepareStatement(sqlAddHDH);
             ps.setString(1, hdh.getTenHDH());
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Thêm hệ điều hành thành công", "Success", 1);
                 return 1;
             }
-        } catch (Exception e) {
+            ConnectedDatabase.closeConnectedDB(conn);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
     }
 
     public int updateHDH(HeDieuHanhDTO hdh) {
-        String sqlUpdateHDH = "UPDATE HeDieuHanh SET tenHDH=? WHERE maHDH=? ";
-        PreparedStatement ps;
         try {
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlUpdateHDH);
+            String sqlUpdateHDH = "UPDATE HeDieuHanh SET tenHDH=? WHERE maHDH=? ";
+            PreparedStatement ps;
+            Connection conn = ConnectedDatabase.getConnectedDB();
+            ps = conn.prepareStatement(sqlUpdateHDH);
             ps.setString(1, hdh.getTenHDH());
             ps.setInt(2, hdh.getMaHDH());
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Cập nhật thành công", "Success", 1);
                 return 1;
             }
-        } catch (Exception e) {
+            ConnectedDatabase.closeConnectedDB(conn);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
     }
 
     public int deleteHDH(int maHDH) {
-        String sqlDelete = "UPDATE HeDieuHanh SET trangThai=0 WHERE maHDH=? ";
-        PreparedStatement ps;
         try {
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlDelete);
+            String sqlDelete = "UPDATE HeDieuHanh SET trangThai=0 WHERE maHDH=? ";
+            PreparedStatement ps;
+            Connection conn =ConnectedDatabase.getConnectedDB();
+            ps = conn.prepareStatement(sqlDelete);
             ps.setInt(1, maHDH);
             if (ps.executeUpdate() > 0) {
                 JOptionPane.showMessageDialog(null, "Xóa thành công", "Success", 1);
                 return 1;
             }
-        } catch (Exception e) {
+            ConnectedDatabase.closeConnectedDB(conn);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
@@ -66,18 +74,20 @@ public class HeDieuHanhDAO {
 
     public ArrayList<HeDieuHanhDTO> listHDH() {
         ArrayList<HeDieuHanhDTO> listHDH = new ArrayList<HeDieuHanhDTO>();
-        String sqlAllHDH = "SELECT * FROM HeDieuHanh WHERE trangThai=1 ";
-        PreparedStatement ps;
-        ResultSet rs;
         try {
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlAllHDH);
+            String sqlAllHDH = "SELECT * FROM HeDieuHanh WHERE trangThai=1 ";
+            PreparedStatement ps;
+            ResultSet rs;
+            Connection conn = ConnectedDatabase.getConnectedDB();
+            ps = conn.prepareStatement(sqlAllHDH);
             rs = ps.executeQuery();
             while (rs.next()) {
                 int maHDH = rs.getInt("maHDH");
                 String tenHDH = rs.getString("tenHDH");
                 listHDH.add(new HeDieuHanhDTO(maHDH, tenHDH));
             }
-        } catch (Exception e) {
+            ConnectedDatabase.closeConnectedDB(conn);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return listHDH;
