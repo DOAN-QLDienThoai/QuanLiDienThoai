@@ -538,19 +538,19 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
                 if (searchType.equals("Khách hàng") && !tenKHDB.toLowerCase().contains(keyword)) hopLe = false;
                 if (searchType.equals("Nhân viên xuất") && !tenNVDB.toLowerCase().contains(keyword)) hopLe = false; // 🔥 Sửa tại đây
             }
+            else if(searchType.equals("Tất cả")){
+               if (hopLe) {
+                model.addRow(new Object[]{stt++,px.getMaPX(),tenKHDB,tenNVDB, px.getThoiGian().toString().replace("T", " "),df.format(tongTien) + "đ"
+            }); 
+            }
             if (!tuTienStr.equals("Tất cả") && !tuTienStr.isEmpty() && tongTien < Double.parseDouble(tuTienStr)) hopLe = false;
             if (!denTienStr.equals("Tất cả") && !denTienStr.isEmpty() && tongTien > Double.parseDouble(denTienStr)) hopLe = false;
             if (hopLe) {
-                model.addRow(new Object[]{
-                stt++,
-                px.getMaPX(),
-                tenKHDB,
-                tenNVDB, 
-                px.getThoiGian().toString().replace("T", " "),
-                df.format(tongTien) + "đ"
+                model.addRow(new Object[]{stt++,px.getMaPX(),tenKHDB,tenNVDB, px.getThoiGian().toString().replace("T", " "),df.format(tongTien) + "đ"
             });
             }
         }
+    }
     }
     private void loadComboBoxKhachHang() {
         jComboBox7.removeAllItems();
