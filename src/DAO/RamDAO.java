@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.sql.Connection;
 
 public class RamDAO {
@@ -67,28 +66,7 @@ public class RamDAO {
         }
         return 0;
     }
-    //Kiểm tra ram đã đc phiên bản nào sử dụng hay chưa (ahuy)
-    public boolean isRamDangDuocSuDung(int maRam) {
-        try {
-            String sql = "SELECT COUNT(*) FROM PhienBanDienThoai WHERE maRam = ?";
-            PreparedStatement ps;
-            Connection conn = ConnectedDatabase.getConnectedDB();
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, maRam);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                int count = rs.getInt(1);
-                if (count > 0) {
-                    JOptionPane.showMessageDialog(null, "Ram đã được phiên bản sử dụng", "Error", 0);
-                    return false;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return true;
-    }
-    //Lấy danh sách Ram (ahuy)
+    //Lấy danh sách Ram đang hoạt động (ahuy)
     public ArrayList<RamDTO> listRam() {
         ArrayList<RamDTO> listRam = new ArrayList<RamDTO>();
         try {
@@ -108,23 +86,24 @@ public class RamDAO {
         }
         return listRam;
     }
-    public HashMap<Integer, Integer> listMapRam() {
-        HashMap<Integer, Integer> mapRam = new HashMap<>();
+    //Lấy full tất cả danh sách Ram (ahuy)
+    public ArrayList<RamDTO> arrlistRam() {
+        ArrayList<RamDTO> arrlistRam = new ArrayList<RamDTO>();
         try {
-            String sql = "SELECT * FROM Ram where trangThai=1";
+            String sqlAllRam = "SELECT * FROM Ram ";
             PreparedStatement ps;
             ResultSet rs;
             Connection conn = ConnectedDatabase.getConnectedDB();
-            ps = conn.prepareStatement(sql);
+            ps = conn.prepareStatement(sqlAllRam);
             rs = ps.executeQuery();
             while (rs.next()) {
                 int maRam = rs.getInt("maRam");
                 int dungLuongRam = rs.getInt("dungLuongRam");
-                mapRam.put(dungLuongRam, maRam);
+                arrlistRam.add(new RamDTO(maRam, dungLuongRam));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return mapRam;
+        return arrlistRam;
     }
 }

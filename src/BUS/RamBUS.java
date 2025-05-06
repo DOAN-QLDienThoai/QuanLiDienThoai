@@ -19,26 +19,8 @@ public class RamBUS {
         listRAM=ramDao.listRam();
     }
     public ArrayList<RamDTO> listRAM(){
+        listRAM=ramDao.listRam();
         return listRAM;
-    }
-    public int getIndexByID(int maRam){
-        int i=0;
-        int vitri=-1;
-        while(vitri==-1&&i<listRAM.size()){
-            if(listRAM.get(i).getMaRam()==maRam)
-                vitri=i;
-            else
-                i++;
-        }
-        return vitri;
-    }
-    public int getIDByDungLuongRam(int dungLuongRam){
-        for(RamDTO ram:listRAM){
-            if(ram.getDungLuongRam()==dungLuongRam){
-                return ram.getMaRam();
-            }
-        }
-        return -1;
     }
     public int insertRam(int dungLuongRam){
         int check=ramDao.insertRam(new RamDTO(dungLuongRam));
@@ -58,13 +40,34 @@ public class RamBUS {
             listRAM=ramDao.listRam();
         return check;
     }
+    public int getIndexByID(int maRam){
+        ArrayList<RamDTO> arrlistRam=ramDao.arrlistRam();
+        int i=0;
+        int vitri=-1;
+        while(vitri==-1&&i<arrlistRam.size()){
+            if(arrlistRam.get(i).getMaRam()==maRam)
+                vitri=i;
+            else
+                i++;
+        }
+        return vitri;
+    }
+    public int getIDByDungLuongRam(int dungLuongRam){
+         ArrayList<RamDTO> arrlistRam=ramDao.arrlistRam();
+        for(RamDTO ram: arrlistRam){
+            if(ram.getDungLuongRam()==dungLuongRam){
+                return ram.getMaRam();
+            }
+        }
+        return -1;
+    }
     public int getDungLuongRambyID(int maRam){
-        listRAM = ramDao.listRam();
+        ArrayList<RamDTO> arrlistRam=ramDao.arrlistRam();
         int index = getIndexByID(maRam);
         if (index == -1) {
             return -1;
         }
-        return listRAM.get(index).getDungLuongRam();
+        return arrlistRam.get(index).getDungLuongRam();
     }
     public boolean checkDup(int dungLuongRam){
         boolean check=true;
@@ -77,7 +80,17 @@ public class RamBUS {
         }
         return check;
     }
-    public boolean isRamDuocSuDung(int maRam){
-        return ramDao.isRamDangDuocSuDung(maRam);
+    public ArrayList<RamDTO> timKiem(String text_find) {
+        ArrayList<RamDTO> listRamTemp = new ArrayList<>();
+        String text = text_find.toLowerCase();
+        listRAM = ramDao.listRam();
+        for (RamDTO ram : listRAM) {
+            String maRam = String.valueOf(ram.getMaRam()).toLowerCase();
+            String dungLuongRam = String.valueOf(ram.getDungLuongRam()).toLowerCase();
+            if (maRam.contains(text) || dungLuongRam.contains(text)) {
+                listRamTemp.add(ram);
+            }
+        }
+        return listRamTemp;
     }
 }

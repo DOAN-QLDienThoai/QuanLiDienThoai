@@ -7,16 +7,11 @@ package GUI.Dialog;
 import BUS.MauSacBUS;
 import BUS.RamBUS;
 import BUS.RomBUS;
-import DAO.MauSacDAO;
-import DAO.RamDAO;
-import DAO.RomDAO;
 import DTO.DienThoaiDTO;
 import DTO.PhienBanDienThoaiDTO;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import javax.swing.table.DefaultTableModel;
 import util.Func_class;
 

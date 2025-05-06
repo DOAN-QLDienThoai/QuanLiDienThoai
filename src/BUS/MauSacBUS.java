@@ -19,27 +19,8 @@ public class MauSacBUS {
         this.listMS=msDao.listMS();
     }
     public ArrayList<MauSacDTO> listMS(){
+        listMS=msDao.listMS();
         return this.listMS;
-    }
-    public int getIndexByID(int maMS){
-        int vitri=-1;
-        int i=0;
-        while(vitri==-1&&listMS.size()>i){
-            if(listMS.get(i).getMaMau()==maMS){
-                vitri=i;
-            }
-            else{
-                i++;
-            }
-        }
-        return vitri;
-    }
-    public int getIDByTenMau(String tenMau){
-        for(MauSacDTO ms : listMS){
-            if(ms.getTenMau().equals(tenMau))
-                return ms.getMaMau();
-        }
-        return -1;
     }
     public int insertMauSac(String tenMau){
         int check=msDao.insertMauSac(new MauSacDTO(tenMau));
@@ -62,13 +43,37 @@ public class MauSacBUS {
         }
         return check;
     }
-    public String getTenMauByID(int maMS){
-        listMS = msDao.listMS();
+    public int getIndexByID(int maMS) {
+        ArrayList<MauSacDTO> arrlistMS=msDao.arrlistMS();
+        int vitri = -1;
+        int i = 0;
+        while (vitri == -1 && arrlistMS.size() > i) {
+            if (arrlistMS.get(i).getMaMau() == maMS) {
+                vitri = i;
+            } else {
+                i++;
+            }
+        }
+        return vitri;
+    }
+
+    public int getIDByTenMau(String tenMau) {
+        ArrayList<MauSacDTO> arrlistMS=msDao.arrlistMS();
+        for (MauSacDTO ms : arrlistMS) {
+            if (ms.getTenMau().equals(tenMau)) {
+                return ms.getMaMau();
+            }
+        }
+        return -1;
+    }
+
+    public String getTenMauByID(int maMS) {
+        ArrayList<MauSacDTO> arrlistMS=msDao.arrlistMS();
         int index = getIndexByID(maMS);
         if (index == -1) {
             return null;
         }
-        return listMS.get(index).getTenMau();
+        return arrlistMS.get(index).getTenMau();
     }
     public boolean checkDup(String tenMau){
         boolean check=true;
@@ -82,7 +87,17 @@ public class MauSacBUS {
         }
         return check;
     }
-    public boolean isMauSacDuocSuDung(int maMau){
-        return msDao.isMauSacDangDuocSuDung(maMau);
+    public ArrayList<MauSacDTO> timKiem(String text_find) {
+        ArrayList<MauSacDTO> listMSTemp = new ArrayList<>();
+        String text = text_find.toLowerCase();
+        listMS = msDao.listMS();
+        for (MauSacDTO ms : listMS) {
+            String maMau = String.valueOf(ms.getMaMau()).toLowerCase();
+            String tenMau = ms.getTenMau().toLowerCase();
+            if (maMau.contains(text) || tenMau.contains(text)) {
+                listMSTemp.add(ms);
+            }
+        }
+        return listMSTemp;
     }
 }

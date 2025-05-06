@@ -115,6 +115,8 @@ public class PanelNhanVien extends javax.swing.JPanel {
             }
         };
         table_nv.setModel(model);
+        table_nv.getColumnModel().getColumn(0).setPreferredWidth(35);
+        table_nv.getColumnModel().getColumn(1).setPreferredWidth(160);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -357,11 +359,9 @@ public class PanelNhanVien extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(null, "Không thể xóa tài khoản đang đăng nhập", "Error", 0);
                 return;
             }
-            int result = nhanvienBUS.deleteCheckNhanVien(maNV);
-            if (result == 1) {
-                addDataTableNV(nhanvienBUS.listNV());
-                func.centerTable(table_nv);
-            }
+            nhanvienBUS.deleteNhanVien(maNV);
+            addDataTableNV(nhanvienBUS.listNV());
+            func.centerTable(table_nv);
         }
     }//GEN-LAST:event_jlabel_delete_nvMouseClicked
 

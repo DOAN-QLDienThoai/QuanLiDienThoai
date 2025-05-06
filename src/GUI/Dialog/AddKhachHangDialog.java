@@ -7,18 +7,21 @@ package GUI.Dialog;
 import GUI.Panel.PanelKhachHang;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import util.Func_class;
 
 /**
  *
  * @author kiman
  */
 public class AddKhachHangDialog extends javax.swing.JDialog {
-    private PanelKhachHang khPanel;
+    PanelKhachHang khPanel;
+    Func_class func = new Func_class();
     public AddKhachHangDialog(java.awt.Frame parent, boolean modal,PanelKhachHang khPanel) {
         super(parent, modal);
         initComponents();
         this.setLocationRelativeTo(null);
         this.khPanel=khPanel;
+        func.notAllowText(jTextField3);
     }
 
     /**
@@ -213,14 +216,16 @@ public class AddKhachHangDialog extends javax.swing.JDialog {
         String tenKH = jTextField2.getText().trim();
         String sdtKh = jTextField3.getText().trim();
         String diachiKh = jTextField1.getText().trim();
-
         if (tenKH.isEmpty() || sdtKh.isEmpty() || diachiKh.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập đầy đủ thông tin", "Lỗi", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+        if (sdtKh.length() != 10 || sdtKh.charAt(0) != '0') {
+            JOptionPane.showMessageDialog(this, "Số điện thoại không hợp lệ", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         try {
-            ArrayList<DTO.KhachHangDTO> list = new DAO.KhachHangDAO().listKh();
+            ArrayList<DTO.KhachHangDTO> list = new DAO.KhachHangDAO().arrlistKH();
             int max = 0;
             for (DTO.KhachHangDTO kh : list) {
                 try {

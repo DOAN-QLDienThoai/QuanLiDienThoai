@@ -468,6 +468,7 @@ public class PanelPhieuNhap extends javax.swing.JPanel {
         String idNew=createIDPhieuNhapTuDong();
         main.getPanelNhapPN().setJTextFile(idNew);
         main.getPanelNhapPN().setUpEnableSuaXoa();
+        main.getPanelNhapPN().fillComboboxNhaCungCap();
     }//GEN-LAST:event_jlabel_add_pnMouseClicked
     //Xem chi tiết phiếu nhập
     private void jlabel_chiTiet_pnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlabel_chiTiet_pnMouseClicked

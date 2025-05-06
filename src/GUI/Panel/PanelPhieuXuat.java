@@ -39,6 +39,7 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.BorderFactory;
 import java.awt.Color;
+import org.jdesktop.swingx.prompt.PromptSupport;
 import util.DropShadowBorder;
 
 
@@ -70,6 +71,9 @@ public class PanelPhieuXuat extends javax.swing.JPanel {
         jdatechooser_ngaytaopx2.setMaxSelectableDate(new java.util.Date());
         this.main=main;
         this.jTablePhieuXuat = table_px;
+        PromptSupport.setPrompt("Tìm kiếm nhanh", txt_search_px);
+        PromptSupport.setForeground(Color.GRAY, txt_search_px);
+        PromptSupport.setFocusBehavior(PromptSupport.FocusBehavior.SHOW_PROMPT, txt_search_px);
         setCursorPointer();
         setIconForJLabel();
         setUpTable();

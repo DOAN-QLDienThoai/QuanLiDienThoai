@@ -75,7 +75,7 @@ public class NhaCungCapDAO {
         }
         return 0;
     }
-    //Lấy danh sách nhà cung cấp (ahuy)
+    //Lấy danh sách nhà cung cấp đang hoạt động (ahuy)
     public ArrayList<NhaCungCapDTO> listNCC() {
         ArrayList<NhaCungCapDTO> listNcc = new ArrayList<NhaCungCapDTO>();
         try {
@@ -99,56 +99,29 @@ public class NhaCungCapDAO {
         }
         return listNcc;
     }
-    //Kiểm tra có khóa ngoại nào đang tham chiếu đến nhà cung cấp không để ngăn chặn xóa (ahuy)
-    public int deleteCheckNhaCungCap(int maNCC) {
+    //Lấy danh sách nhà cung cấp (ahuy)
+    public ArrayList<NhaCungCapDTO> arrlistNCC() {
+        ArrayList<NhaCungCapDTO> arrlistNcc = new ArrayList<NhaCungCapDTO>();
         try {
-            String checkSQL = "SELECT COUNT(*) FROM PhieuNhap WHERE maNCC = ? AND trangthai = 1";
-            String deleteSQL = "UPDATE NhaCungCap SET trangThai=0 "
-                    + "WHERE maNCC=?";
-            PreparedStatement psCheck, psDelete;
+            String sqlSelect = "SELECT * FROM NhaCungCap ";
+            PreparedStatement ps;
             ResultSet rs;
             Connection conn = ConnectedDatabase.getConnectedDB();
-            psCheck = conn.prepareStatement(checkSQL);
-            psCheck.setInt(1, maNCC);
-            rs = psCheck.executeQuery();
-            if (rs.next() && rs.getInt(1) > 0) {
-                JOptionPane.showMessageDialog(null,
-                        "Không thể xóa nhà cung cấp này vì đang được sử dụng trong phiếu nhập.",
-                        "Lỗi", 1);
-                return 0;
-            }
-            // Nếu không có ràng buộc => thực hiện xóa
-            psDelete = conn.prepareStatement(deleteSQL);
-            psDelete.setInt(1, maNCC);
-            if (psDelete.executeUpdate() > 0) {
-                JOptionPane.showMessageDialog(null,
-                        "Xóa nhà cung cấp thành công",
-                        "Success", 1);
-                return 1;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    //HashMap lưu mã và tên nhà cung cấp (ahuy)
-    public HashMap<String, Integer> mapNhaCungCap() {
-        HashMap<String, Integer> mapNCC = new HashMap<>();
-        String sql = "SELECT * FROM NhaCungCap WHERE trangThai = 1";
-        PreparedStatement ps;
-        ResultSet rs;
-        try {
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
+            ps = conn.prepareStatement(sqlSelect);
             rs = ps.executeQuery();
             while (rs.next()) {
                 int maNCC = rs.getInt("maNCC");
-                String tenNCC = rs.getString("tenNCC");
-                mapNCC.put(tenNCC, maNCC);
+                String name = rs.getString("tenNCC");
+                String address = rs.getString("diaChi");
+                String sdt = rs.getString("sdt");
+                String email = rs.getString("email");
+                NhaCungCapDTO ncc = new NhaCungCapDTO(maNCC, name, address, sdt, email);
+                arrlistNcc.add(ncc);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return mapNCC;
+        return arrlistNcc;
     }
+   
 }

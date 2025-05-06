@@ -25,6 +25,7 @@ import java.awt.*;
 import javax.swing.border.Border;
 import util.RoundedBorder;
 import java.sql.Connection;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -245,7 +246,7 @@ public class PanelNhapPhieuXuat extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã sản phẩm", "Tên sản phẩm", "Số lượng"
+                "Mã SP", "Tên sản phẩm", "Số lượng"
             }
         ));
         jScrollPane6.setViewportView(jTable1);
@@ -798,6 +799,9 @@ public class PanelNhapPhieuXuat extends javax.swing.JPanel {
                 tongSoLuong
             });
         }
+        TableColumnModel columnModel = jTable1.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(30);  
+        columnModel.getColumn(1).setPreferredWidth(160);
     }
 
     private void timKiemTuDong() {

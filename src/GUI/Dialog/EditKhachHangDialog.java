@@ -15,9 +15,9 @@ import util.Func_class;
  * @author kiman
  */
 public class EditKhachHangDialog extends javax.swing.JDialog {
-    private KhachHangDTO kh;
-    private PanelKhachHang khPanel;
-    private Func_class func=new Func_class();
+    KhachHangDTO kh;
+    PanelKhachHang khPanel;
+    Func_class func=new Func_class();
     public EditKhachHangDialog(java.awt.Frame parent, boolean modal,KhachHangDTO kh,PanelKhachHang khPanel) {
         super(parent, modal);
         initComponents();
@@ -27,6 +27,7 @@ public class EditKhachHangDialog extends javax.swing.JDialog {
         txtTenKh.setText(kh.getName());
         txtSdtKh.setText(kh.getSDT());
         txtDiachiKh.setText(kh.getAddress());
+        func.notAllowText(txtSdtKh);
     }
 
     /**

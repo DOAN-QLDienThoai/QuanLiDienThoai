@@ -11,13 +11,11 @@ import java.sql.ResultSet;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 public class KhachHangDAO {
     public int insertKhachHang(KhachHangDTO kh) throws SQLException {
-        String sql = "INSERT INTO KhachHang (maKh,tenKh,diaChikh,sdtKH,ngayThamGia)"
-                + "VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO KhachHang (maKh,tenKh,diaChikh,sdtKH,ngayThamGia,trangthai)"
+                + "VALUES (?,?,?,?,?,1)";
         PreparedStatement ps;
         try {
             ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
@@ -31,7 +29,7 @@ public class KhachHangDAO {
                 JOptionPane.showMessageDialog(null, "Thêm Khách hàng thành công", "Success", 1);
             }
             return rows;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return 0;
@@ -66,12 +64,10 @@ public class KhachHangDAO {
                 "Xác nhận xóa",
                 JOptionPane.YES_NO_OPTION
         );
-
         if (confirm != JOptionPane.YES_OPTION) {
             return 0; // Hủy thao tác nếu chọn "Không"
         }
-
-        String sqlDelete = "DELETE FROM KhachHang WHERE maKh=?";
+        String sqlDelete = "UPDATE KhachHang SET trangthai=0 WHERE maKh=? ";
         try {
             PreparedStatement ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlDelete);
             ps.setString(1, maKh);
@@ -80,7 +76,7 @@ public class KhachHangDAO {
                 JOptionPane.showMessageDialog(null, "Xóa thành công", "Thành công", JOptionPane.INFORMATION_MESSAGE);
             }
             return rows;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Xảy ra lỗi khi xóa", "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
@@ -91,7 +87,7 @@ public class KhachHangDAO {
         ArrayList<KhachHangDTO> listKh = new ArrayList<KhachHangDTO>();
         PreparedStatement ps;
         ResultSet rs;
-        String sqlSelect = "SELECT * FROM KhachHang";
+        String sqlSelect = "SELECT * FROM KhachHang WHERE trangthai=1";
         try {
             ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlSelect);
             rs = ps.executeQuery();
@@ -104,8 +100,31 @@ public class KhachHangDAO {
                 KhachHangDTO kh = new KhachHangDTO(maKh, tenKh, diachiKh, sdtKh, ngayThamGia);
                 listKh.add(kh);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(KhachHangDAO.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listKh;
+    }
+    
+    public ArrayList<KhachHangDTO> arrlistKH() {
+        ArrayList<KhachHangDTO> listKh = new ArrayList<KhachHangDTO>();
+        PreparedStatement ps;
+        ResultSet rs;
+        String sqlSelect = "SELECT * FROM KhachHang ";
+        try {
+            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sqlSelect);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                String maKh = rs.getString("makh");
+                String tenKh = rs.getString("tenKh");
+                String diachiKh = rs.getString("diachiKh");
+                String sdtKh = rs.getString("sdtKh");
+                java.sql.Date ngayThamGia = rs.getDate("ngayThamGia");
+                KhachHangDTO kh = new KhachHangDTO(maKh, tenKh, diachiKh, sdtKh, ngayThamGia);
+                listKh.add(kh);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return listKh;
     }
@@ -127,7 +146,7 @@ public class KhachHangDAO {
                 ngayThamGia = rs.getDate("ngaythamgia");
             }
             rs.close();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return ngayThamGia;

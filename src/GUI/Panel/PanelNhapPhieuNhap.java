@@ -53,7 +53,6 @@ public class PanelNhapPhieuNhap extends javax.swing.JPanel {
     PhieuNhapBUS pnBus=new PhieuNhapBUS();
     ChiTietPhieuNhapBUS ctpnBus=new ChiTietPhieuNhapBUS();
     ActionListener eventAct;
-    ActionListener eventActionHinhThucNhap;
     double tongTien=0;
     ArrayList<ChiTietPhieuNhapDTO> listCTPNTemp=new ArrayList<>();
     public PanelNhapPhieuNhap(Main main) {
@@ -124,6 +123,7 @@ public class PanelNhapPhieuNhap extends javax.swing.JPanel {
         table_thongTin_cauHinh.getColumnModel().getColumn(1).setPreferredWidth(180);
     }
     public void fillComboboxNhaCungCap(){
+        combobox_ncc.removeAllItems();
         combobox_ncc.setBackground(Color.WHITE);
         for(NhaCungCapDTO ncc : nccBus.listNCC()){
             combobox_ncc.addItem(ncc.getmaNCC()+"-"+ncc.getName());

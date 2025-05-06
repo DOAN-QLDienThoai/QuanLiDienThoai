@@ -21,18 +21,6 @@ public class ThuongHieuBUS {
     public ArrayList<ThuongHieuDTO> listTH(){
         return this.listTH;
     }
-    public int getIndexByID(int maTH){
-        int i=0;
-        int vitri=-1;
-        while(i<listTH.size()&&vitri==-1){
-            if(listTH.get(i).getMaThuongHieu()==maTH){
-                vitri=i;
-        }else{
-                i++;
-        }
-    }
-        return vitri;
-    }
     public int insertThuongHieu(String name){
         ThuongHieuDTO th=new ThuongHieuDTO(name);
         int check=thDAO.insertThuongHieu(th);
@@ -55,21 +43,37 @@ public class ThuongHieuBUS {
         }
         return check;
     }
-    public int getIDByTenTH(String tenTH){
-        listTH=thDAO.listThuongHieu();
-        for(ThuongHieuDTO th : listTH){
-            if(th.getTenThuongHieu().equals(tenTH))
+    public int getIndexByID(int maTH) {
+        ArrayList<ThuongHieuDTO> arrlistTH=thDAO.arrlistTH();
+        int i = 0;
+        int vitri = -1;
+        while (i < arrlistTH.size() && vitri == -1) {
+            if (arrlistTH.get(i).getMaThuongHieu() == maTH) {
+                vitri = i;
+            } else {
+                i++;
+            }
+        }
+        return vitri;
+    }
+
+    public int getIDByTenTH(String tenTH) {
+        ArrayList<ThuongHieuDTO> arrlistTH=thDAO.arrlistTH();
+        for (ThuongHieuDTO th : arrlistTH) {
+            if (th.getTenThuongHieu().equals(tenTH)) {
                 return th.getMaThuongHieu();
+            }
         }
         return -1;
     }
+
     public String getTenByMaTH(int maTH) {
-        listTH = thDAO.listThuongHieu();
+        ArrayList<ThuongHieuDTO> arrlistTH=thDAO.arrlistTH();
         int index = getIndexByID(maTH);
         if (index == -1) {
             return null;
         }
-        return listTH.get(index).getTenThuongHieu();
+        return arrlistTH.get(index).getTenThuongHieu();
     }
     public boolean checkDup(String name){
         boolean check=true;
@@ -83,5 +87,18 @@ public class ThuongHieuBUS {
             }
         }
         return check;
+    }
+    public ArrayList<ThuongHieuDTO> timKiem(String text_find) {
+        ArrayList<ThuongHieuDTO> listTHTemp = new ArrayList<>();
+        String text = text_find.toLowerCase();
+        listTH = thDAO.listThuongHieu();
+        for (ThuongHieuDTO th : listTH) {
+            String maTH = String.valueOf(th.getMaThuongHieu()).toLowerCase();
+            String tenTH = th.getTenThuongHieu().toLowerCase();
+            if (maTH.contains(text) || tenTH.contains(text)) {
+                listTHTemp.add(th);
+            }
+        }
+        return listTHTemp;
     }
 }

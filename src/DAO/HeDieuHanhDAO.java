@@ -89,6 +89,26 @@ public class HeDieuHanhDAO {
         return listHDH;
     }
     
+    public ArrayList<HeDieuHanhDTO> arrlistHDH() {
+        ArrayList<HeDieuHanhDTO> arrList = new ArrayList<HeDieuHanhDTO>();
+        try {
+            String sqlAllHDH = "SELECT * FROM HeDieuHanh ";
+            PreparedStatement ps;
+            ResultSet rs;
+            Connection conn = ConnectedDatabase.getConnectedDB();
+            ps = conn.prepareStatement(sqlAllHDH);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int maHDH = rs.getInt("maHDH");
+                String tenHDH = rs.getString("tenHDH");
+                arrList.add(new HeDieuHanhDTO(maHDH, tenHDH));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return arrList;
+    }
+    
     public HashMap<String,Integer> listMapHDH() {
         HashMap<String, Integer> mapHDH = new HashMap<>();
         String sql = "SELECT * FROM HeDieuHanh WHERE trangThai=1";

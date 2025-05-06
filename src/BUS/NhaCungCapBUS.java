@@ -42,19 +42,12 @@ public class NhaCungCapBUS {
         }
         return check;
     }
-    public int deleteCheckNhaCungCap(int maNCC){
-        int check=nccDao.deleteCheckNhaCungCap(maNCC);
-        if(check==1){
-            listNCC=nccDao.listNCC();
-        }
-        return check;
-    }
     public int getIndexByID(int maNCC){
-        listNCC=nccDao.listNCC();
+        ArrayList<NhaCungCapDTO> arrlistNCC=nccDao.arrlistNCC();
         int i=0;
         int vitri=-1;
-        while(i<listNCC.size()&&vitri==-1){
-            if(listNCC.get(i).getmaNCC()==maNCC){
+        while(i<arrlistNCC.size()&&vitri==-1){
+            if(arrlistNCC.get(i).getmaNCC()==maNCC){
                 vitri=i;
             }else{
                 i++;
@@ -63,12 +56,12 @@ public class NhaCungCapBUS {
         return vitri;
     }
     public String getTenNCCByID(int maNCC) {
-        listNCC=nccDao.listNCC();
+        ArrayList<NhaCungCapDTO> arrlistNCC=nccDao.arrlistNCC();
         int index = getIndexByID(maNCC);
         if (index == -1) {
             return null;
         }
-        return listNCC.get(index).getName();
+        return arrlistNCC.get(index).getName();
     }
     public ArrayList<NhaCungCapDTO> timKiem(String text,String type){
         listNCC=nccDao.listNCC();

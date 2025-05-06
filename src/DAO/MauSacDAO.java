@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.sql.Connection;
 public class MauSacDAO {
     //Thêm màu sắc (ahuy)
@@ -67,28 +66,7 @@ public class MauSacDAO {
         }
         return 0;
     }
-    //Kiểm tra màu sắc đã được sử dụng ở phiên bản chưa (ahuy)
-    public boolean isMauSacDangDuocSuDung(int maMau) {
-        try {
-            String sql = "SELECT COUNT(*) FROM PhienBanDienThoai WHERE maMau = ?";
-            PreparedStatement ps;
-            ps = ConnectedDatabase.getConnectedDB().prepareStatement(sql);
-            Connection conn =ConnectedDatabase.getConnectedDB();
-            ps.setInt(1, maMau);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                int count = rs.getInt(1);
-                if (count > 0) {
-                    JOptionPane.showMessageDialog(null, "Màu sắc đã được phiên bản sử dụng", "Error", JOptionPane.ERROR_MESSAGE);
-                    return false;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return true;
-    }
-    //Lấy danh sách màu sắc (ahuy)
+    //Lấy danh sách màu sắcđang hoạt động (ahuy)
     public ArrayList<MauSacDTO> listMS() {
         ArrayList<MauSacDTO> listMS = new ArrayList<MauSacDTO>();
         try {
@@ -108,25 +86,32 @@ public class MauSacDAO {
         }
         return listMS;
     }
-    public HashMap<String, Integer> listMapMS() {
-        HashMap<String, Integer> mapMS = new HashMap<>();
+    //Lấy full tất cả màu sắc (ahuy)
+    public ArrayList<MauSacDTO> arrlistMS() {
+        ArrayList<MauSacDTO> arrlistMS = new ArrayList<MauSacDTO>();
         try {
-            String sql = "SELECT * FROM MauSac WHERE trangThai=1";
+            String sqlAllMS = "SELECT * FROM MauSac ";
             PreparedStatement ps;
             ResultSet rs;
-            Connection conn =ConnectedDatabase.getConnectedDB();
-            ps = conn.prepareStatement(sql);
+            Connection conn = ConnectedDatabase.getConnectedDB();
+            ps = conn.prepareStatement(sqlAllMS);
             rs = ps.executeQuery();
             while (rs.next()) {
                 int maMau = rs.getInt("maMau");
                 String tenMau = rs.getString("tenMau");
-                mapMS.put(tenMau, maMau);
+                arrlistMS.add(new MauSacDTO(maMau, tenMau));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return mapMS;
+        return arrlistMS;
     }
+
+    
+    
+    
+    
+    
     public int getMaMauByTen(String tenMau) {
         int maMau = -1;
         try {

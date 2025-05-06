@@ -13,25 +13,14 @@ import java.util.ArrayList;
  * @author kiman
  */
 public class HeDieuHanhBUS {
-    private HeDieuHanhDAO hdhDao =new HeDieuHanhDAO();
-    private ArrayList<HeDieuHanhDTO> listHDH=new ArrayList<>();
+    HeDieuHanhDAO hdhDao =new HeDieuHanhDAO();
+    ArrayList<HeDieuHanhDTO> listHDH=new ArrayList<>();
     public HeDieuHanhBUS(){
         listHDH=hdhDao.listHDH();
     }
     public ArrayList<HeDieuHanhDTO> listHDH(){
+        listHDH=hdhDao.listHDH();
         return this.listHDH;
-    }
-    public int getIndexByID(int maHDH){
-        int i=0;
-        int vitri=-1;
-        while(i<listHDH.size()&&vitri==-1){
-            if(listHDH.get(i).getMaHDH()==maHDH){
-                vitri=i;
-        }else{
-                i++;
-        }
-    }
-        return vitri;
     }
     public int insertHeDieuHanh(String name){
         HeDieuHanhDTO th=new HeDieuHanhDTO(name);
@@ -55,21 +44,34 @@ public class HeDieuHanhBUS {
         }
         return check;
     }
+    public int getIndexByID(int maHDH) {
+        ArrayList<HeDieuHanhDTO> arrlistHDH =hdhDao.arrlistHDH();
+        int i = 0;
+        int vitri = -1;
+        while (i < arrlistHDH.size() && vitri == -1) {
+            if (arrlistHDH.get(i).getMaHDH() == maHDH) {
+                vitri = i;
+            } else {
+                i++;
+            }
+        }
+        return vitri;
+    }
     public int getIDByTenHDH(String tenHDH){
-        listHDH=hdhDao.listHDH();
-        for(HeDieuHanhDTO hdh : listHDH){
+        ArrayList<HeDieuHanhDTO> arrayListHDH=hdhDao.arrlistHDH();
+        for(HeDieuHanhDTO hdh : arrayListHDH){
             if(hdh.getTenHDH().equals(tenHDH))
                 return hdh.getMaHDH();
         }
         return -1;
     }
     public String getTenByMaHDH(int maHDH){
-        listHDH = hdhDao.listHDH();
+        ArrayList<HeDieuHanhDTO> arrlistHDH =hdhDao.arrlistHDH();
         int index = getIndexByID(maHDH);
         if (index == -1) {
             return null;
         }
-        return listHDH.get(index).getTenHDH();
+        return arrlistHDH.get(index).getTenHDH();
     }
     public boolean checkDup(String name){
         boolean check=true;
@@ -83,5 +85,18 @@ public class HeDieuHanhBUS {
             }
         }
         return check;
+    }
+    public ArrayList<HeDieuHanhDTO> timKiem(String text_find) {
+        ArrayList<HeDieuHanhDTO> listHDHTemp = new ArrayList<>();
+        String text = text_find.toLowerCase();
+        listHDH = hdhDao.listHDH();
+        for (HeDieuHanhDTO hdh : listHDH) {
+            String maHDH = String.valueOf(hdh.getMaHDH()).toLowerCase();
+            String tenHDH = hdh.getTenHDH().toLowerCase();
+            if (maHDH.contains(text) || tenHDH.contains(text)) {
+                listHDHTemp.add(hdh);
+            }
+        }
+        return listHDHTemp;
     }
 }

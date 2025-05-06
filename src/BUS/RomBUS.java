@@ -19,18 +19,8 @@ public class RomBUS {
         listROM=RomDao.listRom();
     }
     public ArrayList<RomDTO> listROM(){
+        listROM=RomDao.listRom();
         return listROM;
-    }
-    public int getIndexByID(int maRom){
-        int i=0;
-        int vitri=-1;
-        while(vitri==-1&&i<listROM.size()){
-            if(listROM.get(i).getMaRom()==maRom)
-                vitri=i;
-            else
-                i++;
-        }
-        return vitri;
     }
     public int insertRom(int dungLuongRom){
         int check=RomDao.insertRom(new RomDTO(dungLuongRom));
@@ -50,16 +40,29 @@ public class RomBUS {
             listROM=RomDao.listRom();
         return check;
     }
+    public int getIndexByID(int maRom){
+        ArrayList<RomDTO> arrlistRom = RomDao.arrlistRom();
+        int i=0;
+        int vitri=-1;
+        while(vitri==-1&&i<arrlistRom.size()){
+            if(arrlistRom.get(i).getMaRom()==maRom)
+                vitri=i;
+            else
+                i++;
+        }
+        return vitri;
+    }
     public int getDungLuongRombyID(int maRom){
-        listROM = RomDao.listRom();
+        ArrayList<RomDTO> arrlistRom = RomDao.arrlistRom();
         int index = getIndexByID(maRom);
         if (index == -1) {
             return -1;
         }
-        return listROM.get(index).getDungLuongRom();
+        return arrlistRom.get(index).getDungLuongRom();
     }
     public int getIDByDungLuongRom(int dungLuongRom) {
-        for (RomDTO rom : listROM) {
+        ArrayList<RomDTO> arrlistRom = RomDao.arrlistRom();
+        for (RomDTO rom : arrlistRom) {
             if (rom.getDungLuongRom() == dungLuongRom) {
                 return rom.getMaRom();
             }
@@ -77,7 +80,17 @@ public class RomBUS {
         }
         return check;
     }
-    public boolean isRomDuocSuDung(int maRom){
-        return RomDao.isRomDangDuocSuDung(maRom);
+    public ArrayList<RomDTO> timKiem(String text_find) {
+        ArrayList<RomDTO> listRomTemp = new ArrayList<>();
+        String text = text_find.toLowerCase();
+        listROM = RomDao.listRom();
+        for (RomDTO rom : listROM) {
+            String maRom = String.valueOf(rom.getMaRom()).toLowerCase();
+            String dungLuongRom = String.valueOf(rom.getDungLuongRom()).toLowerCase();
+            if (maRom.contains(text) || dungLuongRom.contains(text)) {
+                listRomTemp.add(rom);
+            }
+        }
+        return listRomTemp;
     }
 }

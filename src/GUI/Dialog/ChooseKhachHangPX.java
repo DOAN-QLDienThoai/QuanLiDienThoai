@@ -21,6 +21,11 @@ import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.BorderFactory;
 import java.awt.Dimension;
+import javax.swing.RowFilter;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -35,31 +40,47 @@ public class ChooseKhachHangPX extends javax.swing.JFrame {
     public ChooseKhachHangPX(PanelNhapPhieuXuat parent) {
         this.parentPanel = parent;
         initComponents();
-        styleTable(jTable1);
-        jTextField1.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
-        jTextField1.setBackground(Color.WHITE);
-        jTextField1.setForeground(Color.GRAY); // Placeholder
-        jTextField1.setBorder(new util.RoundedBorder(10));
+        styleTable(table_kh);
+        txt_search_kh.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
+        txt_search_kh.setBackground(Color.WHITE);
+        txt_search_kh.setForeground(Color.GRAY); // Placeholder
+        txt_search_kh.setBorder(new util.RoundedBorder(10));
         loadDanhSachKhachHang();
         setLocationRelativeTo(null);
-        jTextField1.setText("Tìm kiếm khách hàng...");
-        jTextField1.setForeground(java.awt.Color.GRAY);
-        jTextField1.requestFocusInWindow();
-        jTextField1.addFocusListener(new java.awt.event.FocusAdapter() {
+        txt_search_kh.setText("Tìm kiếm khách hàng...");
+        txt_search_kh.setForeground(java.awt.Color.GRAY);
+        txt_search_kh.requestFocusInWindow();
+        txt_search_kh.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                if (jTextField1.getText().equals("Tìm kiếm khách hàng...")) {
-                    jTextField1.setText("");
-                    jTextField1.setForeground(java.awt.Color.BLACK);
+                if (txt_search_kh.getText().equals("Tìm kiếm khách hàng...")) {
+                    txt_search_kh.setText("");
+                    txt_search_kh.setForeground(java.awt.Color.BLACK);
                 }
-        }
-
-        public void focusLost(java.awt.event.FocusEvent evt) {
-            if (jTextField1.getText().trim().equals("")) {
-                jTextField1.setText("Tìm kiếm khách hàng...");
-                jTextField1.setForeground(java.awt.Color.GRAY);
             }
-        }
-    });
+
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                if (txt_search_kh.getText().trim().equals("")) {
+                    txt_search_kh.setText("Tìm kiếm khách hàng...");
+                    txt_search_kh.setForeground(java.awt.Color.GRAY);
+                }
+            }
+        });
+        txt_search_kh.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                searchKhachHang();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                searchKhachHang();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                searchKhachHang();
+            }
+        });
     }
 
     /**
@@ -72,20 +93,20 @@ public class ChooseKhachHangPX extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
+        txt_search_kh = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table_kh = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Chọn khách hàng");
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txt_search_kh.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txt_search_khActionPerformed(evt);
             }
         });
 
@@ -108,7 +129,7 @@ public class ChooseKhachHangPX extends javax.swing.JFrame {
                 .addGap(34, 34, 34)
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 571, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(txt_search_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 571, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -118,21 +139,21 @@ public class ChooseKhachHangPX extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txt_search_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(12, Short.MAX_VALUE))
         );
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        table_kh.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Mã khách hàng", "Tên khách hàng", "Địa chỉ", "Số điện thoại", "Ngày tham gia"
+                "Mã KH", "Tên khách hàng", "Địa chỉ", "Số điện thoại", "Ngày tham gia"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(table_kh);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -166,36 +187,54 @@ public class ChooseKhachHangPX extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txt_search_khActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_search_khActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txt_search_khActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-         int selectedRow = jTable1.getSelectedRow();
-    if (selectedRow >= 0) {
-        String maKH = jTable1.getValueAt(selectedRow, 0).toString();  // Cột 0 = maKH
-        String tenKH = jTable1.getValueAt(selectedRow, 1).toString(); // Cột 1 = tênKH
-        parentPanel.setKhachHang(maKH, tenKH); // gọi phương thức mới
-        dispose();
-    } else {
-        JOptionPane.showMessageDialog(this, "Vui lòng chọn một khách hàng!");
-    }
+        int selectedRow = table_kh.getSelectedRow();
+        if (selectedRow >= 0) {
+            String maKH = table_kh.getValueAt(selectedRow, 0).toString();  // Cột 0 = maKH
+            String tenKH = table_kh.getValueAt(selectedRow, 1).toString(); // Cột 1 = tênKH
+            parentPanel.setKhachHang(maKH, tenKH); // gọi phương thức mới
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn một khách hàng!");
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
     private void loadDanhSachKhachHang() {
-    DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
-    model.setRowCount(0); // Xoá dữ liệu cũ
+        DefaultTableModel model = (DefaultTableModel) table_kh.getModel();
+        model.setRowCount(0); // Xoá dữ liệu cũ
 
-    ArrayList<KhachHangDTO> danhSach = new KhachHangBUS().layTatCaKhachHang();
-    for (KhachHangDTO kh : danhSach) {
-        model.addRow(new Object[]{
-            kh.getID(),
-            kh.getName(),
-            kh.getAddress(),
-            kh.getSDT(),
-            kh.getNgayThamGia()
-        });
+        ArrayList<KhachHangDTO> danhSach = new KhachHangBUS().layTatCaKhachHang();
+        for (KhachHangDTO kh : danhSach) {
+            model.addRow(new Object[]{
+                kh.getID(),
+                kh.getName(),
+                kh.getAddress(),
+                kh.getSDT(),
+                kh.getNgayThamGia()
+            });
+        }
+        TableColumnModel columnModel = table_kh.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(30);
+        columnModel.getColumn(1).setPreferredWidth(150);
+        columnModel.getColumn(2).setPreferredWidth(210);
     }
+
+    private void searchKhachHang() {
+        String keyword = txt_search_kh.getText().trim().toLowerCase();
+        DefaultTableModel model = (DefaultTableModel) table_kh.getModel();
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(model);
+        table_kh.setRowSorter(sorter);
+
+        if (keyword.isEmpty()) {
+            sorter.setRowFilter(null);
+            return;
+        }
+
+        sorter.setRowFilter(RowFilter.regexFilter("(?i)" + keyword));
     }
     private void styleTable(JTable table) {
         table.setShowGrid(true);
@@ -260,7 +299,7 @@ public class ChooseKhachHangPX extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTable table_kh;
+    private javax.swing.JTextField txt_search_kh;
     // End of variables declaration//GEN-END:variables
 }

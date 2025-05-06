@@ -62,13 +62,16 @@ public class PhienBanDienThoaiBUS {
         return true;
     }
 
-    public boolean checkDupEdit(ArrayList<PhienBanDienThoaiDTO> listPBTemp, PhienBanDienThoaiDTO pb,int index) {
+    public boolean checkDupEdit(ArrayList<PhienBanDienThoaiDTO> listPBTemp, PhienBanDienThoaiDTO pb, int index) {
         for (int i = 0; i < listPBTemp.size(); i++) {
-        if (i != index && listPBTemp.get(i).isSameConFig(pb)) {
-            return false;
+            if (i != index && listPBTemp.get(i).isSameConFig(pb)) {
+                return false;
+            }
         }
+        return true;
     }
-    return true;
+    public int getMaPhienBanByCauHinh(int maDT,int maRam,int maRom,int maMau){
+        return pbDao.getMaPhienBanByCauHinh(maDT, maRam, maRom, maMau);
     }
     public boolean isPhienBanDaDuocNhap(int maPhienBan){
         return pbDao.existsNhapByMaPhienBan(maPhienBan);

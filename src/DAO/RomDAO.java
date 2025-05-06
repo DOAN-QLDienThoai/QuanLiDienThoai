@@ -10,7 +10,6 @@ import java.sql.PreparedStatement;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import java.sql.ResultSet;
-import java.util.HashMap;
 import java.sql.Connection;
 import java.sql.SQLException;
 
@@ -68,28 +67,7 @@ public class RomDAO {
         }
         return 0;
     }
-    //Kiểm tra rom đã được phiên bản sử dụng hay chưa (ahuy)
-    public boolean isRomDangDuocSuDung(int maRom) {
-        try {
-            String sql = "SELECT COUNT(*) FROM PhienBanDienThoai WHERE maRom = ?";
-            PreparedStatement ps;
-            Connection conn =ConnectedDatabase.getConnectedDB();
-            ps = conn.prepareStatement(sql);
-            ps.setInt(1, maRom);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                int count = rs.getInt(1);
-                if (count > 0) {
-                    JOptionPane.showMessageDialog(null, "Rom đã được phiên bản sử dụng", "Error", JOptionPane.ERROR_MESSAGE);
-                    return false;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return true;
-    }
-    //Láy danh sách Rom (ahuy)
+    //Láy danh sách Rom đang hoạt động(ahuy)
     public ArrayList<RomDTO> listRom() {
         ArrayList<RomDTO> listRom = new ArrayList<RomDTO>();
         try {
@@ -109,24 +87,25 @@ public class RomDAO {
         }
         return listRom;
     }
-    
-    public HashMap<Integer, Integer> listMapRom() {
-        HashMap<Integer, Integer> mapRom = new HashMap<>();
+    //Lấy full tất cả danh sách rom (ahuy)
+    public ArrayList<RomDTO> arrlistRom() {
+        ArrayList<RomDTO> arrlistRom = new ArrayList<RomDTO>();
         try {
-            String sql = "SELECT * FROM Rom WHERE trangThai=1";
+            String sqlAllRom = "SELECT * FROM Rom ";
             PreparedStatement ps;
             ResultSet rs;
             Connection conn = ConnectedDatabase.getConnectedDB();
-            ps = conn.prepareStatement(sql);
+            ps = conn.prepareStatement(sqlAllRom);
             rs = ps.executeQuery();
             while (rs.next()) {
                 int maRom = rs.getInt("maRom");
                 int dungLuongRom = rs.getInt("dungLuongRom");
-                mapRom.put(dungLuongRom, maRom);
+                arrlistRom.add(new RomDTO(maRom, dungLuongRom));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return mapRom;
+        return arrlistRom;
     }
+    
 }

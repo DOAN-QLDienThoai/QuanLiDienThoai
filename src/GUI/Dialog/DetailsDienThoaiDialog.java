@@ -32,29 +32,25 @@ public class DetailsDienThoaiDialog extends javax.swing.JDialog {
     Func_class func=new Func_class();
     ArrayList<PhienBanDienThoaiDTO> listPBDTTemp=new ArrayList<>();
     ArrayList<PhienBanDienThoaiDTO> listPBDT;
-    public DetailsDienThoaiDialog(java.awt.Frame parent, boolean modal,DienThoaiDTO dt) {
+    public DetailsDienThoaiDialog(java.awt.Frame parent, boolean modal, DienThoaiDTO dt) {
         super(parent, modal);
         initComponents();
         this.dt = dt;
+        System.out.println("Hahahha");
         this.setTitle("Xem chi tiết điện thoại");
         this.setLocationRelativeTo(null);
         khoiTao();
     }
+
     public void khoiTao() {
         jtf_tenDT.setText(dt.getTenDT());
         jtf_tenDT.setEditable(false);
-        String tenThuongHieu;
-        if(dt.getThuongHieu()!=-1){
-            tenThuongHieu=thBus.getTenByMaTH(dt.getThuongHieu());
-            cbb_ThuongHieu.addItem(tenThuongHieu);
-            cbb_ThuongHieu.setSelectedItem(tenThuongHieu);
-        }
-        String tenHDH;
-        if(dt.getHeDieuHanh()!=-1){
-            tenHDH=hdhBus.getTenByMaHDH(dt.getHeDieuHanh());
-            cbb_HDH.addItem(tenHDH);
-            cbb_HDH.setSelectedItem(tenHDH);
-        }
+        String tenThuongHieu = thBus.getTenByMaTH(dt.getThuongHieu());
+        cbb_ThuongHieu.addItem(tenThuongHieu);
+        cbb_ThuongHieu.setSelectedItem(tenThuongHieu);
+        String tenHDH = hdhBus.getTenByMaHDH(dt.getHeDieuHanh());
+        cbb_HDH.addItem(tenHDH);
+        cbb_HDH.setSelectedItem(tenHDH);
         jtf_chip.setText(dt.getChipXuLy());
         jtf_chip.setEditable(false);
         jtf_dungLuongPin.setText(String.valueOf(dt.getDungLuongPin()));
@@ -65,7 +61,7 @@ public class DetailsDienThoaiDialog extends javax.swing.JDialog {
         setUPcomBobox();
         jPanel3.setBorder(border);
         jPanel4.setBorder(border);
-        func.setUpBtnTwo(btn_view_cauHinh, Color.CYAN, Color.CYAN,new Color(211,218,211),14);
+        func.setUpBtnTwo(btn_view_cauHinh, Color.CYAN, Color.CYAN, new Color(211, 218, 211), 14);
     }
     public void setUPcomBobox(){
         func.setUpComBoBox(cbb_HDH);
@@ -283,17 +279,18 @@ public class DetailsDienThoaiDialog extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_view_cauHinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_view_cauHinhMouseClicked
-        int maDT=dt.getMaDT();
-        if(!listPBDTTemp.isEmpty())
-        listPBDTTemp.clear();
-        listPBDT=pbBus.listPB();
-        for(PhienBanDienThoaiDTO pb : listPBDT){
-            if(pb.getMaDT()==maDT){
+        int maDT = dt.getMaDT();
+        if (!listPBDTTemp.isEmpty()) {
+            listPBDTTemp.clear();
+        }
+        listPBDT = pbBus.listPB();
+        for (PhienBanDienThoaiDTO pb : listPBDT) {
+            if (pb.getMaDT() == maDT) {
                 listPBDTTemp.add(pb);
             }
         }
         Window parentWindow = SwingUtilities.getWindowAncestor(this);
-        new DetailsCauHinhDialog((Frame) parentWindow, true,maDT,listPBDTTemp).setVisible(true);
+        new DetailsCauHinhDialog((Frame) parentWindow, true, maDT, listPBDTTemp).setVisible(true);
     }//GEN-LAST:event_btn_view_cauHinhMouseClicked
 
 

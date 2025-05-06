@@ -4,6 +4,8 @@
  */
 package GUI.Dialog;
 
+import BUS.HeDieuHanhBUS;
+import BUS.ThuongHieuBUS;
 import DAO.HeDieuHanhDAO;
 import DAO.ThuongHieuDAO;
 import DTO.DienThoaiDTO;
@@ -28,10 +30,12 @@ import util.Func_class;
  */
 public class AddDienThoaiDialog extends javax.swing.JDialog {
     Border border=BorderFactory.createEtchedBorder();
-    private Func_class func=new Func_class();
-    private DienThoaiDTO DTTemp;
-    private String url_img;
-    private PanelDienThoai dtPanel;
+    Func_class func=new Func_class();
+    DienThoaiDTO DTTemp;
+    String url_img;
+    HeDieuHanhBUS hdhBus=new HeDieuHanhBUS();
+    ThuongHieuBUS thBus=new ThuongHieuBUS();
+    PanelDienThoai dtPanel;
     public AddDienThoaiDialog(java.awt.Frame parent, boolean modal,PanelDienThoai dtPanel) {
         super(parent, modal);
         this.setTitle("Thêm điện thoại");
@@ -353,10 +357,8 @@ public class AddDienThoaiDialog extends javax.swing.JDialog {
         int result = check_add_sanPham();
         if (result == 1) {
             String tenDT = jtf_tensp.getText();
-            HashMap<String, Integer> mapHeDieuHanh = new HeDieuHanhDAO().listMapHDH();
-            int maHDH = mapHeDieuHanh.get(cbb_hdh.getSelectedItem().toString());
-            HashMap<String, Integer> mapThuongHieu = new ThuongHieuDAO().listMapThuongHieu();
-            int maThuongHieu = mapThuongHieu.get(cbb_thuongHieu.getSelectedItem().toString());
+            int maHDH = hdhBus.getIDByTenHDH(cbb_hdh.getSelectedItem().toString());
+            int maThuongHieu = thBus.getIDByTenTH(cbb_thuongHieu.getSelectedItem().toString());
             String chip = jtf_chip.getText();
             int dungLuongPin = Integer.parseInt(jtf_dungLuongPin.getText());
             double kichThuocMan = Double.parseDouble(jtf_kichThuocMan.getText());

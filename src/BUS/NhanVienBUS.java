@@ -18,6 +18,10 @@ public class NhanVienBUS {
     public NhanVienBUS(){
         this.listNV=nvDao.listNV();
     }
+    public ArrayList<NhanVienDTO> listNV(){
+        listNV=nvDao.listNV();
+        return listNV;
+    }
     public int insertNhanVien(NhanVienDTO nv){
         int check=nvDao.insertNhanVien(nv);
         if(check==1){
@@ -39,18 +43,12 @@ public class NhanVienBUS {
         }
         return check;
     }
-    public int deleteCheckNhanVien(int maNV) {
-        int check = nvDao.deleteCheckNhanVien(maNV);
-        if (check == 1) {
-            listNV = nvDao.listNV();
-        }
-        return check;
-    }
     public int getIndexByID(int maNV){
+        ArrayList<NhanVienDTO> arrlistNV=nvDao.arrlistNV();
         int i=0;
         int vitri=-1;
-        while(i<listNV.size()&&vitri==-1){
-            if(listNV.get(i).getMaNV()==maNV){
+        while(i<arrlistNV.size()&&vitri==-1){
+            if(arrlistNV.get(i).getMaNV()==maNV){
                 vitri=i;
             }else{
                 i++;
@@ -59,25 +57,21 @@ public class NhanVienBUS {
         return vitri;
     }
     public String getTenNVByID(int maNV) {
-        listNV = nvDao.listNV();
+        ArrayList<NhanVienDTO> arrlistNV=nvDao.arrlistNV();
         int index = getIndexByID(maNV);
         if (index == -1) {
             return null;
         }
-        return listNV.get(index).getHoTen();
+        return arrlistNV.get(index).getHoTen();
     }
     public int getIDByTenNV(String tenNV) {
-        listNV = nvDao.listNV();
-        for (NhanVienDTO nv : listNV) {
+        ArrayList<NhanVienDTO> arrlistNV=nvDao.arrlistNV();
+        for (NhanVienDTO nv : arrlistNV) {
             if (nv.getHoTen().equalsIgnoreCase(tenNV)) {
-                return nv.getMaNV(); // trả về ID đầu tiên
+                return nv.getMaNV(); 
             }
         }
-        return -1; // không tìm thấy
-    }
-    public ArrayList<NhanVienDTO> listNV(){
-        listNV=nvDao.listNV();
-        return listNV;
+        return -1; 
     }
     public ArrayList<NhanVienDTO> timKiem(String text,String type){
         listNV=nvDao.listNV();

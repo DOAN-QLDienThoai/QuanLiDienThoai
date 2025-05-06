@@ -40,55 +40,6 @@ public class PanelDienThoai extends javax.swing.JPanel {
         initComponents();
         khoiTao();
     }
-//    public void addDataTableDienThoai(ArrayList<DienThoaiDTO> listDT) {
-//        String[] colNames = {"Mã ĐT", "Tên Điện Thoại", "Hình ảnh", "Hệ điều hành", "Thương hiệu", "Chip xử lý", "Dung lượng pin", "Kích thước màn"};
-//        Object[][] rows = new Object[listDT.size()][colNames.length];
-//        for (int i = 0; i < listDT.size(); i++) {
-//            rows[i][0] = listDT.get(i).getMaDT();
-//            rows[i][1] = listDT.get(i).getTenDT();
-//            // Xử lý hình ảnh (cột 2)
-//            String imagePath = listDT.get(i).getHinhAnh(); // Đường dẫn ảnh
-//            if (imagePath != null && new File(imagePath).exists()) {
-//                rows[i][2] = new ImageIcon(new ImageIcon(imagePath).getImage().getScaledInstance(100, 80, Image.SCALE_SMOOTH));
-//            } else {
-//                rows[i][2] = new ImageIcon(new ImageIcon("no_image.jpg").getImage().getScaledInstance(100, 80, Image.SCALE_SMOOTH));
-//            }
-//            int maHDH = listDT.get(i).getHeDieuHanh();
-//            rows[i][3] = hdhBus.getTenByMaHDH(maHDH);
-//            int maThuongHieu = listDT.get(i).getThuongHieu();
-//            rows[i][4] = thBus.getTenByMaTH(maThuongHieu);
-//            rows[i][5] = listDT.get(i).getChipXuLy();
-//            rows[i][6] = listDT.get(i).getDungLuongPin() + "mAh";
-//            rows[i][7] = listDT.get(i).getKichThuocMan() + " inch";
-//        }
-//        // Tạo model với cột ảnh là ImageIcon
-//        DefaultTableModel model = new DefaultTableModel(rows, colNames) {
-//            @Override
-//            public Class<?> getColumnClass(int column) {
-//                return (column == 2) ? ImageIcon.class : Object.class; // Cột ảnh là index 2
-//            }
-//        };
-//        table_dt.setModel(model);
-//        // Căn giữa nội dung các ô (trừ ảnh)
-//        DefaultTableCellRenderer center = new DefaultTableCellRenderer();
-//        center.setHorizontalAlignment(JLabel.CENTER);
-//        for (int i = 0; i < table_dt.getColumnCount(); i++) {
-//            // Không áp dụng renderer cho cột hình ảnh (cột thứ 3 - index 2)
-//            if (table_dt.getColumnClass(i) != ImageIcon.class) {
-//                table_dt.getColumnModel().getColumn(i).setCellRenderer(center);
-//            }
-//        }
-//
-//        // Căn giữa tiêu đề bảng
-//        DefaultTableCellRenderer centerHeader = (DefaultTableCellRenderer) table_dt.getTableHeader().getDefaultRenderer();
-//        centerHeader.setHorizontalAlignment(JLabel.CENTER);
-//
-//        // Tùy chỉnh hiển thị
-//        table_dt.setRowHeight(80); // Hiển thị đầy đủ ảnh
-//        table_dt.getColumnModel().getColumn(0).setPreferredWidth(30);
-//        table_dt.getColumnModel().getColumn(1).setPreferredWidth(150);
-//        table_dt.getColumnModel().getColumn(2).setPreferredWidth(100);
-//    }
     public void khoiTao(){
         setUpTable();
         setIconForJlabel();
@@ -405,23 +356,10 @@ public class PanelDienThoai extends javax.swing.JPanel {
         }
         int maDT=Integer.parseInt(table_dt.getValueAt(vitriRow,0).toString());
         String tenDT=table_dt.getValueAt(vitriRow,1).toString();
-        int maHDH;
-        Object hdh = table_dt.getValueAt(vitriRow,2);
-        if(hdh!=null){
-            maHDH=hdhBus.getIDByTenHDH(table_dt.getValueAt(vitriRow,2).toString());
-        }
-        else{
-            maHDH=-1;
-        }
-        int maTH;
-        Object th = table_dt.getValueAt(vitriRow,3);
-        if(th!=null){
-            maTH=thBus.getIDByTenTH(table_dt.getValueAt(vitriRow,3).toString());
-        }
-        else{
-            maTH=-1;
-        }
-        int maThuongHieu=thBus.getIDByTenTH(table_dt.getValueAt(vitriRow,3).toString());
+        String tenHDH=table_dt.getValueAt(vitriRow,2).toString();
+        int maHDH=hdhBus.getIDByTenHDH(tenHDH);
+        String tenTH=table_dt.getValueAt(vitriRow,3).toString();
+        int maThuongHieu=thBus.getIDByTenTH(tenTH);
         String tenChip=table_dt.getValueAt(vitriRow,4).toString();
         int dungLuongPin=Integer.parseInt(table_dt.getValueAt(vitriRow,5).toString().replaceAll("mAh",""));
         double kichThuocMan=Double.parseDouble(table_dt.getValueAt(vitriRow, 6).toString().replaceAll("inch",""));

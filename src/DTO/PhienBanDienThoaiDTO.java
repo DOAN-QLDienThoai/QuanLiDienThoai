@@ -9,7 +9,6 @@ package DTO;
  * @author kiman
  */
 public class PhienBanDienThoaiDTO {
-
     private int maPhienBan;
     private int maDT;
     private int maRam;

@@ -4,6 +4,7 @@
  */
 package GUI.Panel;
 
+import BUS.KhachHangBUS;
 import DAO.KhachHangDAO;
 import DTO.KhachHangDTO;
 import GUI.Dialog.AddKhachHangDialog;
@@ -11,9 +12,7 @@ import GUI.Dialog.DetailsKhachHangDialog;
 import GUI.Dialog.EditKhachHangDialog;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.Window;
@@ -21,19 +20,14 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import javax.swing.BorderFactory;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import javax.swing.JScrollBar;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.plaf.basic.BasicScrollBarUI;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import javax.swing.table.TableRowSorter;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -43,11 +37,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import util.Func_class;
 import util.RoundedBorder;
 import javax.swing.JComboBox;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JList;
-import javax.swing.SwingConstants;
 import javax.swing.JTextField;
+import javax.swing.table.TableColumnModel;
 import org.jdesktop.swingx.prompt.PromptSupport;
 import util.DropShadowBorder;
 
@@ -56,8 +48,9 @@ import util.DropShadowBorder;
  * @author kiman
  */
 public class PanelKhachHang extends javax.swing.JPanel {
-    private Func_class func = new Func_class();
-    private int hoverIndex = -1;
+    Func_class func = new Func_class();
+    int hoverIndex = -1;
+    KhachHangBUS khBus=new KhachHangBUS();
     public PanelKhachHang() {
         initComponents();
         setupUIComponents();
@@ -91,11 +84,10 @@ public class PanelKhachHang extends javax.swing.JPanel {
         return table_kh;
     }
     public void addDataTableKhachHang() {
-        KhachHangDAO dao = new KhachHangDAO();
-        ArrayList<KhachHangDTO> dsKH = dao.listKh();
+        ArrayList<KhachHangDTO> dsKH = khBus.layTatCaKhachHang();
         DefaultTableModel model = new DefaultTableModel(
                 new Object[][]{},
-                new String[]{"Mã khách hàng", "Tên khách hàng", "Địa chỉ", "Số điện thoại", "Ngày tham gia"}
+                new String[]{"Mã KH", "Tên khách hàng", "Địa chỉ", "Số điện thoại", "Ngày tham gia"}
         ) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -108,54 +100,12 @@ public class PanelKhachHang extends javax.swing.JPanel {
             });
         }
         table_kh.setModel(model);
-        table_kh.setSelectionBackground(new Color(230, 230, 230));
-        table_kh.setSelectionForeground(Color.BLACK);      
-        JScrollBar verticalBar = jScrollPane4.getVerticalScrollBar();
-        verticalBar.setPreferredSize(new Dimension(8, Integer.MAX_VALUE)); 
-        verticalBar.setUI(new BasicScrollBarUI() {
-            @Override
-            protected void configureScrollBarColors() {
-                this.thumbColor = new Color(180, 180, 180);
-                this.trackColor = new Color(245, 245, 245); 
-            }
-            @Override
-            protected JButton createDecreaseButton(int orientation) {
-                return createZeroButton();
-            }
-            @Override
-            protected JButton createIncreaseButton(int orientation) {
-                return createZeroButton();
-            }
-            private JButton createZeroButton() {
-                JButton button = new JButton();
-                button.setPreferredSize(new Dimension(0, 0));
-                button.setMinimumSize(new Dimension(0, 0));
-                button.setMaximumSize(new Dimension(0, 0));
-                return button;
-            }
-        });
-        JTableHeader header = table_kh.getTableHeader();
-        header.setDefaultRenderer(new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                    boolean isSelected, boolean hasFocus, int row, int column) {
-                JLabel label = new JLabel(value.toString());
-                label.setFont(label.getFont().deriveFont(Font.BOLD)); 
-                label.setHorizontalAlignment(SwingConstants.CENTER);
-                label.setOpaque(true);
-                label.setBackground(new Color(245, 245, 245)); 
-                label.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5)); 
-                return label;
-            }
-        });
         func.centerTable(table_kh);
-        table_kh.getTableHeader().setReorderingAllowed(false);
-        table_kh.getTableHeader().setResizingAllowed(false);
-        table_kh.setShowGrid(true); 
-        table_kh.setGridColor(new Color(240, 240, 240)); 
-        table_kh.setIntercellSpacing(new Dimension(0, 1));
-        table_kh.setBorder(null);
-        jScrollPane4.setBorder(null);
+        func.setUpTable(table_kh);
+        TableColumnModel columnModel = table_kh.getColumnModel();
+        columnModel.getColumn(0).setPreferredWidth(30);  
+        columnModel.getColumn(1).setPreferredWidth(160);
+        columnModel.getColumn(2).setPreferredWidth(200);
     }
     public void setIconForJLabel() {
         jlabel_add_kh1.setIcon(new FlatSVGIcon("./resources/icon/add.svg", 0.06f));
@@ -276,6 +226,7 @@ public class PanelKhachHang extends javax.swing.JPanel {
         reset_kh = new javax.swing.JButton();
         txt_search_kh = new javax.swing.JTextField();
         cbb_search_kh = new javax.swing.JComboBox<>();
+        jLabel6 = new javax.swing.JLabel();
         jScrollPane4 = new javax.swing.JScrollPane();
         table_kh = new javax.swing.JTable();
 
@@ -394,23 +345,32 @@ public class PanelKhachHang extends javax.swing.JPanel {
 
         cbb_search_kh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        jLabel6.setText("Tìm kiếm theo");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addComponent(cbb_search_kh, 0, 148, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txt_search_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(reset_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(cbb_search_kh, 0, 148, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txt_search_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(reset_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(27, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(jLabel6)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(reset_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_search_kh, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -423,7 +383,7 @@ public class PanelKhachHang extends javax.swing.JPanel {
                 {null, null, null, null}
             },
             new String [] {
-                "Mã khách hàng", "Tên khách hàng", "Địa chỉ", "Số điện thoại"
+                "Mã KH", "Tên khách hàng", "Địa chỉ", "Số điện thoại"
             }
         ));
         table_kh.setPreferredSize(new java.awt.Dimension(962, 591));
@@ -452,7 +412,7 @@ public class PanelKhachHang extends javax.swing.JPanel {
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -623,6 +583,7 @@ public class PanelKhachHang extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JLabel jlabel_add_kh1;

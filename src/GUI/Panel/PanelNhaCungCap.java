@@ -113,9 +113,10 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
             }
         };
         table_ncc.setModel(model);
-        table_ncc.getColumnModel().getColumn(0).setPreferredWidth(30);
-        table_ncc.getColumnModel().getColumn(2).setPreferredWidth(150);
-        table_ncc.getColumnModel().getColumn(2).setPreferredWidth(180);
+        table_ncc.getColumnModel().getColumn(0).setPreferredWidth(25);
+        table_ncc.getColumnModel().getColumn(1).setPreferredWidth(170);
+        table_ncc.getColumnModel().getColumn(2).setPreferredWidth(200);
+        table_ncc.getColumnModel().getColumn(4).setPreferredWidth(140);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -353,11 +354,9 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
                 "Bạn có chắc chắn muốn xóa nhà cung cấp này không?",
                 "Xác nhận xóa", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
         if (confirm == JOptionPane.YES_OPTION) {
-            int result = nccBus.deleteCheckNhaCungCap(maNCC);
-            if (result == 1) {
-                addDataTableNCC(nccBus.listNCC());
-                func.centerTable(table_ncc);
-            }
+            nccBus.deleteNhaCungCap(maNCC);
+            addDataTableNCC(nccBus.listNCC());
+            func.centerTable(table_ncc);
         }
     }//GEN-LAST:event_jlabel_delete_nccMouseClicked
 

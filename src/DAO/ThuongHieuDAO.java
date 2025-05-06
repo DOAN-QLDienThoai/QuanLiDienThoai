@@ -65,6 +65,7 @@ public class ThuongHieuDAO {
         }
         return 0;
     }
+    //Lấy danh sách thương hiệu đang hoạt động (ahuy)
     public ArrayList<ThuongHieuDTO> listThuongHieu() {
         ArrayList<ThuongHieuDTO> listThuongHieu = new ArrayList<ThuongHieuDTO>();
         try {
@@ -83,6 +84,26 @@ public class ThuongHieuDAO {
             e.printStackTrace();
         }
         return listThuongHieu;
+    }
+    //Lấy tất cả danh sách thương hiệu (ahuy)
+    public ArrayList<ThuongHieuDTO> arrlistTH() {
+        ArrayList<ThuongHieuDTO> arrlistTH = new ArrayList<ThuongHieuDTO>();
+        try {
+            String sqlAllThuongHieu = "SELECT * FROM ThuongHieu WHERE trangThai=1 ";
+            PreparedStatement ps;
+            ResultSet rs;
+            Connection conn = ConnectedDatabase.getConnectedDB();
+            ps = conn.prepareStatement(sqlAllThuongHieu);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                int maThuongHieu = rs.getInt("maThuongHieu");
+                String tenThuongHieu = rs.getString("tenThuongHieu");
+                arrlistTH.add(new ThuongHieuDTO(maThuongHieu, tenThuongHieu));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return arrlistTH;
     }
     
     public HashMap<String, Integer> listMapThuongHieu() {

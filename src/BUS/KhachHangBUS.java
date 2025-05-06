@@ -15,11 +15,11 @@ public class KhachHangBUS {
         return khachHangDAO.listKh();
     }
     public int getIndexByID(String maKH){
-        listKH=khachHangDAO.listKh();
+        ArrayList<KhachHangDTO> arrlistKH = khachHangDAO.arrlistKH();
         int i=0;
         int vitri=-1;
-        while(i<listKH.size()&&vitri==-1){
-            if(listKH.get(i).getID().equals(maKH)){
+        while(i<arrlistKH.size()&&vitri==-1){
+            if(arrlistKH.get(i).getID().equals(maKH)){
                 vitri=i;
             }else{
                 i++;
@@ -28,11 +28,11 @@ public class KhachHangBUS {
         return vitri;
     }
     public String getTenKHByID(String maKH) {
-        listKH = khachHangDAO.listKh();
+        ArrayList<KhachHangDTO> arrlistKH = khachHangDAO.arrlistKH();
         int index = getIndexByID(maKH);
         if (index == -1) {
             return null;
         }
-        return listKH.get(index).getName();
+        return arrlistKH.get(index).getName();
     }
 }

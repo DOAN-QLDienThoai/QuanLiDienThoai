@@ -33,6 +33,7 @@ public class PhienBanDienThoaiDAO {
             ps.setDouble(5, pb.getGiaNhap());
             ps.setDouble(6, pb.getGiaXuat());
             if (ps.executeUpdate() > 0) {
+                JOptionPane.showMessageDialog(null, "Thêm phiên bản thành công", "Success", 1);
                 return 1;
             }
         } catch (SQLException e) {
@@ -54,6 +55,7 @@ public class PhienBanDienThoaiDAO {
             ps.setDouble(5, pb.getGiaXuat());
             ps.setInt(6, pb.getMaPhienBan());
             if (ps.executeUpdate() > 0) {
+                JOptionPane.showMessageDialog(null, "Update phiên bản thành công", "Success", 1);
                 return 1;
             }
         } catch (SQLException e) {
@@ -316,10 +318,10 @@ public class PhienBanDienThoaiDAO {
         }
         return true;
     }
-     //Kiểm tra phiên bản đã được xuất hay chưa (ahuy)
+    //Kiểm tra phiên bản đã được xuất hay chưa (ahuy)
     public boolean existsXuatByMaPhienBan(int maPhienBan) {
         try {
-            String sql = "SELECT TOP 1 1 FROM phieuxuat WHERE maPhienBan = ? ";
+            String sql = "SELECT TOP 1 1 FROM chitietphieuxuat WHERE maPhienBan = ? ";
             PreparedStatement ps;
             ResultSet rs;
             Connection conn = ConnectedDatabase.getConnectedDB();

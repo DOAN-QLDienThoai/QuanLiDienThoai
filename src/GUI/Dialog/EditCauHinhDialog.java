@@ -4,21 +4,20 @@
  */
 package GUI.Dialog;
 
+import BUS.DienThoaiBUS;
 import BUS.MauSacBUS;
 import BUS.PhienBanDienThoaiBUS;
 import BUS.RamBUS;
 import BUS.RomBUS;
-import DAO.MauSacDAO;
-import DAO.PhienBanDienThoaiDAO;
-import DAO.RamDAO;
-import DAO.RomDAO;
 import DTO.DienThoaiDTO;
+import DTO.MauSacDTO;
 import DTO.PhienBanDienThoaiDTO;
+import DTO.RamDTO;
+import DTO.RomDTO;
 import GUI.Panel.PanelDienThoai;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashMap;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import util.Func_class;
@@ -36,6 +35,7 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
     RamBUS ramBus =new RamBUS();
     RomBUS romBUS=new RomBUS();
     MauSacBUS msBus=new MauSacBUS();
+    DienThoaiBUS dtBus=new DienThoaiBUS();
     public EditCauHinhDialog(java.awt.Frame parent, boolean modal, int maDT, ArrayList<PhienBanDienThoaiDTO> listPBDTTemp, PanelDienThoai dtPanel) {
         super(parent, modal);
         initComponents();
@@ -43,6 +43,7 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);
         this.dtPanel = dtPanel;
         this.listPBDTTemp = listPBDTTemp;
+        System.out.println("Do dai danh sach cau hinhban dau : "+listPBDTTemp.size());
         dt.setMaDT(maDT);
         khoiTao();
     }
@@ -73,29 +74,26 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
         func.setUpComBoBox(cbb_ms);
     }
     public void fillComboboxMauSac() {
-        HashMap<String, Integer> mapMS = new MauSacDAO().listMapMS();
-        cbb_ms.setBackground(Color.WHITE);
-        for (String ms : mapMS.keySet()) {
-            cbb_ms.addItem(ms);
+        func.setUpComBoBox(cbb_ms);
+        for (MauSacDTO ms : msBus.listMS()) {
+            cbb_ms.addItem(ms.getTenMau());
         }
     }
     public void setIcon(){
         btn_return.setIcon(new FlatSVGIcon("./resources/icon/left.svg",0.4f));
     }
     public void fillComboboxRam() {
-        HashMap<Integer, Integer> mapRam = new RamDAO().listMapRam();
-        cbb_ram.setBackground(Color.WHITE);
-        for (int ram : mapRam.keySet()) {
-            cbb_ram.addItem(String.valueOf(ram));
+        func.setUpComBoBox(cbb_ram);
+        for (RamDTO ram : ramBus.listRAM()) {
+            cbb_ram.addItem(String.valueOf(ram.getDungLuongRam()));
         }
 
     }
 
     public void fillComboboxRom() {
-        HashMap<Integer, Integer> mapRom = new RomDAO().listMapRom();
-        cbb_rom.setBackground(Color.WHITE);
-        for (int rom : mapRom.keySet()) {
-            cbb_rom.addItem(String.valueOf(rom));
+        func.setUpComBoBox(cbb_rom);
+        for (RomDTO rom : romBUS.listROM()) {
+            cbb_rom.addItem(String.valueOf(rom.getDungLuongRom()));
         }
     }
 
@@ -329,6 +327,9 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
 
     private void table_cauHinhMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_table_cauHinhMouseClicked
         int vitriRow = table_cauHinh.getSelectedRow();
+        if (vitriRow == -1) {
+            return;
+        }
         int dungLuongRam=Integer.parseInt(table_cauHinh.getValueAt(vitriRow,1).toString());
         int dungLuongRom=Integer.parseInt(table_cauHinh.getValueAt(vitriRow,2).toString());
         String tenMau=table_cauHinh.getValueAt(vitriRow,3).toString();
@@ -355,9 +356,10 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
                 PhienBanDienThoaiDTO pb = new PhienBanDienThoaiDTO(dt.getMaDT(), maRam, maRom, maMau, giaNhap, giaXuat);
                 if (pbBus.checkDupAdd(listPBDTTemp, pb)) {
                     listPBDTTemp.add(pb);
-                    new PhienBanDienThoaiDAO().insertPhienBan(pb);
+                    pbBus.insertPhienBanDienThoai(pb);
                     resetGia();
                     setUpTable();
+                    System.out.println("Do dai danh sach cau hinh sau khi them : "+listPBDTTemp.size());
                     return;
                 }
                 JOptionPane.showMessageDialog(null, "Cấu hình đã tồn tại", "Error", 0);
@@ -387,6 +389,7 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
             return;
         }
         PhienBanDienThoaiDTO phienBanUpdate = listPBDTTemp.get(vitriRow);
+        int maPB = pbBus.getMaPhienBanByCauHinh(phienBanUpdate.getMaDT(),phienBanUpdate.getmaRam(),phienBanUpdate.getmaRom(),phienBanUpdate.getmaMau());
         int dungLuongRam = Integer.parseInt(cbb_ram.getSelectedItem().toString()); // Chuyển String -> Integer
         int maRam = ramBus.getIDByDungLuongRam(dungLuongRam);
         int dungLuongRom = Integer.parseInt(cbb_rom.getSelectedItem().toString()); // Chuyển String -> Integer
@@ -397,6 +400,7 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
         if (checkGiaNhapGiaXuat(giaNhap, giaXuat)) {
             PhienBanDienThoaiDTO pbNew = new PhienBanDienThoaiDTO(0, phienBanUpdate.getMaDT(), maRam, maRom, maMau, giaNhap, giaXuat);
             if (pbBus.checkDupEdit(listPBDTTemp, pbNew,vitriRow)) {
+                phienBanUpdate.setMaPhienBan(maPB);
                 phienBanUpdate.setRam(maRam);
                 phienBanUpdate.setRom(maRom);
                 phienBanUpdate.setMausac(maMau);
@@ -405,6 +409,7 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
                 pbBus.updatePhienBanDienThoai(phienBanUpdate);
                 setUpTable();
                 resetGia();
+                System.out.println("Do dai danh sach cau hinh sau khi sửa : "+listPBDTTemp.size());
                 return;
             }
             JOptionPane.showMessageDialog(null, "Cấu hình đã tồn tại", "Error", 0);
@@ -418,10 +423,15 @@ public class EditCauHinhDialog extends javax.swing.JDialog {
             return;
         }
         PhienBanDienThoaiDTO phienBanDelete = listPBDTTemp.get(vitriRow);
-        if (pbBus.isPhienBanDaDuocNhap(phienBanDelete.getMaPhienBan()) && pbBus.isPhienBanDaDuocXuat(phienBanDelete.getMaPhienBan())) {
-            listPBDTTemp.remove(phienBanDelete);
-            pbBus.deletePhienBanDienThoai(phienBanDelete.getMaPhienBan());
-            setUpTable();
+        int maPB=pbBus.getMaPhienBanByCauHinh(phienBanDelete.getMaDT(),phienBanDelete.getmaRam(),phienBanDelete.getmaRom(),phienBanDelete.getmaMau());
+        int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc chắn muốn xóa ? ", "Xác nhận xóa",
+                JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+        if (confirm == JOptionPane.YES_OPTION) {
+            if (pbBus.isPhienBanDaDuocNhap(phienBanDelete.getMaPhienBan()) && pbBus.isPhienBanDaDuocXuat(phienBanDelete.getMaPhienBan())) {
+                listPBDTTemp.remove(phienBanDelete);
+                pbBus.deletePhienBanDienThoai(maPB);
+                setUpTable();
+            }
         }
     }//GEN-LAST:event_btn_delete_cauHinhMouseClicked
 

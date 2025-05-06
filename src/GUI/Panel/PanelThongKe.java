@@ -99,11 +99,6 @@ public class PanelThongKe extends javax.swing.JPanel {
         jlabel_ncc_soLuong.setFont(font1);
         jlabel_ncc_soLuong.setText(String.valueOf(nccBus.listNCC().size()));
     }
-//    public void setUpButton(){
-//        func.setUpBtn(btn_sp, Color.WHITE,new Color(211,218,211));
-//        func.setUpBtn(btn_phieuNhap, Color.WHITE,new Color(211,218,211));
-//        func.setUpBtn(btn_phieuXuat, Color.WHITE,new Color(211,218,211));
-//    }
     public void loadDataSanPham(ArrayList<DienThoaiDTO> listDT){
         String[] colNames={"Số thứ tự","Mã máy","Tên máy","Số lượng nhập","Số lượng xuất","Còn lại kho"};
         Object[][] rows=new Object[listDT.size()][colNames.length];
@@ -113,14 +108,14 @@ public class PanelThongKe extends javax.swing.JPanel {
             rows[i][0]=i+1;
             rows[i][1]=listDT.get(i).getMaDT();
             rows[i][2]=listDT.get(i).getTenDT();
-            rows[i][3] = mapNhap.getOrDefault(listDT.get(i).getMaDT(), 0); // Sửa tại đây
+            rows[i][3] = mapNhap.getOrDefault(listDT.get(i).getMaDT(), 0); 
             rows[i][4]=mapXuat.getOrDefault(listDT.get(i).getMaDT(), 0);
             rows[i][5]=mapNhap.getOrDefault(listDT.get(i).getMaDT(), 0)-mapXuat.getOrDefault(listDT.get(i).getMaDT(), 0);
         }
         DefaultTableModel model = new DefaultTableModel(rows, colNames) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Tắt chỉnh sửa toàn bộ
+                return false; 
             }
         };
         table.setModel(model);
@@ -215,7 +210,9 @@ public class PanelThongKe extends javax.swing.JPanel {
                 setUpTablePN();
                 jlabel_tongTien.setVisible(true);
                 jlabel_tongPhieu.setVisible(true);
-                tongTienNhap=0;
+                jlabel_tongPhieu.setFont(new Font("Times New Roman", Font.BOLD, 18));
+                jlabel_tongTien.setFont(new Font("Times New Roman", Font.BOLD, 18));
+                tongTienNhap = 0;
                 highlightSelectedButton(btn_sp, btn_phieuNhap, btn_phieuXuat, btn_phieuNhap);
             }
         });
@@ -225,7 +222,9 @@ public class PanelThongKe extends javax.swing.JPanel {
                 setUpTablePX();
                 jlabel_tongTien.setVisible(true);
                 jlabel_tongPhieu.setVisible(true);
-                tongTienXuat=0;
+                jlabel_tongPhieu.setFont(new Font("Times New Roman", Font.BOLD, 18));
+                jlabel_tongTien.setFont(new Font("Times New Roman", Font.BOLD, 18));
+                tongTienXuat = 0;
                 highlightSelectedButton(btn_sp, btn_phieuNhap, btn_phieuXuat, btn_phieuXuat);
             }
         });
@@ -445,10 +444,10 @@ public class PanelThongKe extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jlabel_tongTien.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jlabel_tongTien.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jlabel_tongTien.setText("TỔNG TIỀN :");
 
-        jlabel_tongPhieu.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jlabel_tongPhieu.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jlabel_tongPhieu.setText("TỔNG PHIẾU :");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -457,16 +456,16 @@ public class PanelThongKe extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addContainerGap())
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(118, 118, 118)
-                        .addComponent(jlabel_tongPhieu, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jlabel_tongPhieu, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jlabel_tongTien, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(120, 120, 120))))
+                        .addComponent(jlabel_tongTien, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(99, 99, 99))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -479,9 +478,9 @@ public class PanelThongKe extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jlabel_tongTien, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jlabel_tongPhieu, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jlabel_tongPhieu, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jlabel_tongTien, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 26, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
