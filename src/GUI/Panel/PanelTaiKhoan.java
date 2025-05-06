@@ -53,8 +53,7 @@ public class PanelTaiKhoan extends javax.swing.JPanel {
     }
     public void setUpTable(){
         loadData(tkBus.listTaiKhoan());
-        func.centerTable(table_taiKhoan);
-        func.setUpTable(table_taiKhoan);
+        func.beautifyTable(table_taiKhoan, jScrollPane1);
     }
     public void setCursorPointer(){
         func.cursorPointer(jlabel_add);
@@ -307,8 +306,7 @@ public class PanelTaiKhoan extends javax.swing.JPanel {
         String type=cbb_items.getSelectedItem().toString();
         ArrayList<TaiKhoanDTO> listTKTemp =tkBus.timKiem(textfind, type);
         loadData(listTKTemp);
-        func.centerTable(table_taiKhoan);
-        func.setUpTable(table_taiKhoan);
+        func.beautifyTable(table_taiKhoan, jScrollPane1);
     }//GEN-LAST:event_btn_lookActionPerformed
 
     private void btn_refreshActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_refreshActionPerformed

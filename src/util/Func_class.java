@@ -39,6 +39,9 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import javax.swing.JScrollBar;
+import javax.swing.plaf.basic.BasicScrollBarUI;
+import javax.swing.JScrollPane;
 
 
 /**
@@ -245,5 +248,82 @@ public class Func_class {
             workbook.close();
         }
     }
+    // Làm đẹp bảng: căn giữa, đường kẻ ngang mảnh, header bo sáng
+    public void beautifyTable(JTable table, JScrollPane scrollPane) {
+    // 🎯 Renderer căn giữa cho toàn bộ cell (trừ cột ảnh nếu có)
+    DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+    centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+    centerRenderer.setBackground(Color.WHITE);
+    centerRenderer.setForeground(Color.BLACK);
+    centerRenderer.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+
+    for (int i = 0; i < table.getColumnCount(); i++) {
+        if (table.getColumnClass(i) != ImageIcon.class) {
+            table.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+        }
+    }
+
+    // 🎯 Tùy chỉnh header
+    table.getTableHeader().setDefaultRenderer(new DefaultTableCellRenderer() {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                                                       boolean hasFocus, int row, int column) {
+            JLabel label = new JLabel(value.toString());
+            label.setFont(new Font("Segoe UI", Font.BOLD, 14));
+            label.setHorizontalAlignment(JLabel.CENTER);
+            label.setOpaque(true);
+            label.setBackground(new Color(245, 245, 245)); // Màu xám sáng
+            label.setForeground(Color.BLACK);
+            label.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
+            return label;
+        }
+    });
+
+    // 🧾 Thiết lập chung cho table
+    table.setShowHorizontalLines(true);
+    table.setShowVerticalLines(false); // ❌ Tắt đường kẻ dọc
+    table.setGridColor(new Color(230, 230, 230)); // ✅ Màu nhẹ cho đường ngang
+    table.setIntercellSpacing(new Dimension(0, 1)); // ✅ Khoảng cách 1px cho đường ngang
+    table.setBackground(Color.WHITE);
+    table.setSelectionBackground(new Color(230, 230, 230));
+    table.setSelectionForeground(Color.BLACK);
+    table.setRowHeight(28);
+    table.getTableHeader().setReorderingAllowed(false);
+    table.getTableHeader().setResizingAllowed(false);
+
+    // 🎯 Tùy chỉnh ScrollPane
+    if (scrollPane != null) {
+        scrollPane.setBorder(null);
+        JScrollBar verticalBar = scrollPane.getVerticalScrollBar();
+        verticalBar.setPreferredSize(new Dimension(8, Integer.MAX_VALUE));
+        verticalBar.setUI(new BasicScrollBarUI() {
+            @Override
+            protected void configureScrollBarColors() {
+                this.thumbColor = new Color(180, 180, 180);  // Màu thanh kéo
+                this.trackColor = new Color(245, 245, 245);  // Màu nền rãnh
+            }
+
+            @Override
+            protected JButton createDecreaseButton(int orientation) {
+                return createZeroButton();
+            }
+
+            @Override
+            protected JButton createIncreaseButton(int orientation) {
+                return createZeroButton();
+            }
+
+            private JButton createZeroButton() {
+                JButton button = new JButton();
+                button.setPreferredSize(new Dimension(0, 0));
+                button.setMinimumSize(new Dimension(0, 0));
+                button.setMaximumSize(new Dimension(0, 0));
+                return button;
+            }
+        });
+    }
+}
+
+
 }
 

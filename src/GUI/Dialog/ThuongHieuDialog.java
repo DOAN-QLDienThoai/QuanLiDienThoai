@@ -6,8 +6,13 @@ package GUI.Dialog;
 
 import BUS.ThuongHieuBUS;
 import DTO.ThuongHieuDTO;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.util.ArrayList;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollBar;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.table.DefaultTableModel;
 import util.Func_class;
 
@@ -23,6 +28,7 @@ public class ThuongHieuDialog extends javax.swing.JDialog {
         initComponents();
         this.setTitle("Thương hiệu");
         this.setLocationRelativeTo(null);
+
         setUpTable();
     }
     public void loadDataTable(ArrayList<ThuongHieuDTO> listTH) {
@@ -38,8 +44,7 @@ public class ThuongHieuDialog extends javax.swing.JDialog {
 
     public void setUpTable() {
         loadDataTable(thBus.listTH());
-        func.setUpTable(table_thuongHieu);
-        func.centerTable(table_thuongHieu);
+        func.beautifyTable(table_thuongHieu, jScrollPane1); 
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

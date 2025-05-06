@@ -72,19 +72,16 @@ public class PanelThongKe extends javax.swing.JPanel {
     }
     public void setUpTableDT(){
         loadDataSanPham(dtBus.listDT());
-        func.centerTable(table);
-        func.setUpTable(table);
+        func.beautifyTable(table, jScrollPane1);
     }
     public void setUpTablePN() {
         loadDataPhieuNhap(pnBus.listPN());
-        func.centerTable(table);
-        func.setUpTable(table);
+        func.beautifyTable(table, jScrollPane1);
     }
 
     public void setUpTablePX() {
         loadDataPhieuXuat(new PhieuXuatDAO().layTatCaPhieuXuat());
-        func.centerTable(table);
-        func.setUpTable(table);
+        func.beautifyTable(table, jScrollPane1);
     }
     public void setIcon(){
         jlabel_phone_static.setIcon(new FlatSVGIcon("./resources/icon/phone_static.svg",0.8f));

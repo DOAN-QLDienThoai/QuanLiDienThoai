@@ -11,14 +11,18 @@ import GUI.Dialog.DetailsNhaCungCapDialog;
 import GUI.Dialog.EditNhaCungCapDialog;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Window;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollBar;
 import javax.swing.JTable;
 import javax.swing.SwingUtilities;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.table.DefaultTableModel;
 import org.jdesktop.swingx.prompt.PromptSupport;
 import util.DropShadowBorder;
@@ -57,7 +61,7 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
         jlabel_delete_ncc.setIcon(new FlatSVGIcon("./resources/icon/delete.svg", 0.75f));
         btn_look_ncc.setIcon(new FlatSVGIcon("./resources/icon/look.svg", 0.6f));
         jlabel_chiTiet_ncc.setIcon(new FlatSVGIcon("./resources/icon/details.svg", 0.45f));
-        jlabel_xuat_excel_ncc.setIcon(new FlatSVGIcon("./resources/icon/export_excel.svg", 0.85f));
+        jlabel_xuat_excel_ncc.setIcon(new FlatSVGIcon("./resources/icon/excel.svg", 0.5f));
         btn_refresh_ncc.setIcon(new FlatSVGIcon("./resources/icon/refresh.svg",0.25f));
     }
     public void setUpJTF(){
@@ -88,6 +92,7 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
         addDataTableNCC(nccBus.listNCC());
         func.centerTable(table_ncc);
         func.setUpTable(table_ncc);
+        func.beautifyTable(table_ncc, jScrollPane2); 
     }
     //Hàm thêm biểu tượng chuột vào cái jlabel
     public void setCusorPointer() {
@@ -137,7 +142,6 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
         jpanel_timkiem_ncc = new javax.swing.JPanel();
         jtf_find_ncc = new javax.swing.JTextField();
         combobox_find_ncc = new javax.swing.JComboBox<>();
-        jLabel18 = new javax.swing.JLabel();
         btn_refresh_ncc = new javax.swing.JButton();
         btn_look_ncc = new javax.swing.JButton();
 
@@ -245,8 +249,6 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
         ));
         jScrollPane2.setViewportView(table_ncc);
 
-        jLabel18.setText("Tìm kiếm theo");
-
         btn_refresh_ncc.setText("Làm mới");
         btn_refresh_ncc.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -265,25 +267,20 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
         jpanel_timkiem_nccLayout.setHorizontalGroup(
             jpanel_timkiem_nccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jpanel_timkiem_nccLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jpanel_timkiem_nccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jpanel_timkiem_nccLayout.createSequentialGroup()
-                        .addComponent(combobox_find_ncc, 0, 148, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jtf_find_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 212, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_look_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btn_refresh_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(7, 7, 7))
+                .addGap(20, 20, 20)
+                .addComponent(combobox_find_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
+                .addComponent(jtf_find_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btn_look_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btn_refresh_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(13, 13, 13))
         );
         jpanel_timkiem_nccLayout.setVerticalGroup(
             jpanel_timkiem_nccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpanel_timkiem_nccLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel18)
-                .addGap(2, 2, 2)
                 .addGroup(jpanel_timkiem_nccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btn_look_ncc, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jpanel_timkiem_nccLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -397,12 +394,10 @@ public class PanelNhaCungCap extends javax.swing.JPanel {
         func.centerTable(table_ncc);
     }//GEN-LAST:event_btn_look_nccActionPerformed
 
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_look_ncc;
     private javax.swing.JButton btn_refresh_ncc;
     private javax.swing.JComboBox<String> combobox_find_ncc;
-    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;

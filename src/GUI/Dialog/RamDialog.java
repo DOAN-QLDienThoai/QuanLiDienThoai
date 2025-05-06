@@ -10,7 +10,11 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import util.Func_class;
-
+import javax.swing.JScrollBar;
+import javax.swing.plaf.basic.BasicScrollBarUI;
+import javax.swing.JButton;
+import java.awt.Dimension;
+import java.awt.Color;
 /**
  *
  * @author kiman
@@ -40,8 +44,7 @@ public class RamDialog extends javax.swing.JDialog {
 
     public void setUpTable() {
         loadDataTable(ramBus.listRAM());
-        func.setUpTable(table_ram);
-        func.centerTable(table_ram);
+        func.beautifyTable(table_ram, jScrollPane1);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

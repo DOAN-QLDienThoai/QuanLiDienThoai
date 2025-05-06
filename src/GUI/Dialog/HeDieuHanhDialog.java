@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import util.Func_class;
-
 /**
  *
  * @author kiman
@@ -37,8 +36,8 @@ public class HeDieuHanhDialog extends javax.swing.JDialog {
     }
     public void setUpTable() {
         loadDataTable(hdhBus.listHDH());
-        func.setUpTable(table_hdh);
-        func.centerTable(table_hdh);
+        func.beautifyTable(table_hdh, jScrollPane1);
+
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -260,7 +259,7 @@ public class HeDieuHanhDialog extends javax.swing.JDialog {
             func.centerTable(table_hdh);
         }
     }//GEN-LAST:event_btn_deleteMouseClicked
-
+ 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_add;
     private javax.swing.JButton btn_delete;

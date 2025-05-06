@@ -11,6 +11,11 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import util.Func_class;
+import javax.swing.JScrollBar;
+import javax.swing.plaf.basic.BasicScrollBarUI;
+import javax.swing.JButton;
+import java.awt.Dimension;
+import java.awt.Color;
 
 /**
  *
@@ -24,6 +29,7 @@ public class RomDialog extends javax.swing.JDialog {
         initComponents();
         this.setTitle("Rom");
         this.setLocationRelativeTo(null);
+       
         setUpTable();
     }
     public void loadDataTable(ArrayList<RomDTO> listRom) {
@@ -40,8 +46,7 @@ public class RomDialog extends javax.swing.JDialog {
 
     public void setUpTable() {
         loadDataTable(romBus.listROM());
-        func.setUpTable(table_rom);
-        func.centerTable(table_rom);
+        func.beautifyTable(table_rom, jScrollPane1);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -262,6 +267,7 @@ public class RomDialog extends javax.swing.JDialog {
             }
         }
     }//GEN-LAST:event_btn_deleteMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_add;

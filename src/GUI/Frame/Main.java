@@ -669,6 +669,10 @@ public class Main extends javax.swing.JFrame {
         nhapphieunhap.setVisible(false);
         user.setVisible(true);
     }//GEN-LAST:event_btn_taiKhoanActionPerformed
+    private void btn_tcActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO: Thêm xử lý cho nút "Tra cứu"
+        System.out.println("btn_tc clicked");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_dt;

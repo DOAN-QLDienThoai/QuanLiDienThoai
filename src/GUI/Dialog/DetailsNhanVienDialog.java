@@ -5,7 +5,9 @@
 package GUI.Dialog;
 import DTO.NhanVienDTO;
 import javax.swing.ButtonGroup;
+
 public class DetailsNhanVienDialog extends javax.swing.JDialog {
+private com.toedter.calendar.JDateChooser jdateChooser_ngaySinh;
 
     /**
      * Creates new form DetailsNhanVienDialog
@@ -48,7 +50,6 @@ public class DetailsNhanVienDialog extends javax.swing.JDialog {
         btn_exit2 = new javax.swing.JButton();
         jradio_nam = new javax.swing.JRadioButton();
         jradio_nu = new javax.swing.JRadioButton();
-        jdateChooser_ngaySinh = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Chi tiết nhân viên");
@@ -130,9 +131,6 @@ public class DetailsNhanVienDialog extends javax.swing.JDialog {
                         .addContainerGap()
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jdateChooser_ngaySinh, javax.swing.GroupLayout.PREFERRED_SIZE, 196, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(139, 139, 139)
                         .addComponent(btn_exit2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -157,9 +155,7 @@ public class DetailsNhanVienDialog extends javax.swing.JDialog {
                     .addComponent(jradio_nu))
                 .addGap(18, 18, 18)
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jdateChooser_ngaySinh, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addGap(52, 52, 52)
                 .addComponent(btn_exit2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
         );
@@ -179,7 +175,6 @@ public class DetailsNhanVienDialog extends javax.swing.JDialog {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
-    private com.toedter.calendar.JDateChooser jdateChooser_ngaySinh;
     private javax.swing.JRadioButton jradio_nam;
     private javax.swing.JRadioButton jradio_nu;
     private javax.swing.JTextField jtf_name_nv;

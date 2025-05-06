@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import util.Func_class;
-
 /**
  *
  * @author kiman
@@ -38,8 +37,7 @@ public class MauSacDialog extends javax.swing.JDialog {
 
     public void setUpTable() {
         loadDataTable(msBus.listMS());
-        func.setUpTable(table_mausac);
-        func.centerTable(table_mausac);
+        func.beautifyTable(table_mausac, jScrollPane1); // ✅ truyền đúng 2 tham số
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
